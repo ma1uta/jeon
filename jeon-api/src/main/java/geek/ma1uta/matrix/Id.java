@@ -91,4 +91,17 @@ public abstract class Id {
 
         return itemId;
     }
+
+    public static boolean isId(String id) {
+        Matcher matcher = PATTERN.matcher(id);
+        if (!matcher.find()) {
+            return false;
+        }
+        try {
+            new URL(matcher.group(2));
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
 }

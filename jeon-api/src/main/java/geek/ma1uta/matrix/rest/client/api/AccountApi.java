@@ -1,15 +1,15 @@
 package geek.ma1uta.matrix.rest.client.api;
 
 import geek.ma1uta.matrix.rest.client.model.RegisterType;
-import geek.ma1uta.matrix.rest.client.model.rest.DeactivateRequest;
-import geek.ma1uta.matrix.rest.client.model.rest.EmptyResponse;
-import geek.ma1uta.matrix.rest.client.model.rest.LoginResponse;
-import geek.ma1uta.matrix.rest.client.model.rest.PasswordRequest;
-import geek.ma1uta.matrix.rest.client.model.rest.RegisterRequest;
-import geek.ma1uta.matrix.rest.client.model.rest.RequestToken;
-import geek.ma1uta.matrix.rest.client.model.rest.ThreePidRequest;
-import geek.ma1uta.matrix.rest.client.model.rest.ThreePidResponse;
-import geek.ma1uta.matrix.rest.client.model.rest.WhoamiResponse;
+import geek.ma1uta.matrix.rest.client.model.DeactivateRequest;
+import geek.ma1uta.matrix.rest.client.model.EmptyResponse;
+import geek.ma1uta.matrix.rest.client.model.LoginResponse;
+import geek.ma1uta.matrix.rest.client.model.PasswordRequest;
+import geek.ma1uta.matrix.rest.client.model.RegisterRequest;
+import geek.ma1uta.matrix.rest.client.model.RequestToken;
+import geek.ma1uta.matrix.rest.client.model.ThreePidRequest;
+import geek.ma1uta.matrix.rest.client.model.ThreePidResponse;
+import geek.ma1uta.matrix.rest.client.model.WhoamiResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;

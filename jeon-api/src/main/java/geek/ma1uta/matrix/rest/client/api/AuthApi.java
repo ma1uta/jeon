@@ -1,8 +1,8 @@
 package geek.ma1uta.matrix.rest.client.api;
 
-import geek.ma1uta.matrix.rest.client.model.rest.EmptyResponse;
-import geek.ma1uta.matrix.rest.client.model.rest.LoginRequest;
-import geek.ma1uta.matrix.rest.client.model.rest.LoginResponse;
+import geek.ma1uta.matrix.rest.client.model.EmptyResponse;
+import geek.ma1uta.matrix.rest.client.model.LoginRequest;
+import geek.ma1uta.matrix.rest.client.model.LoginResponse;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

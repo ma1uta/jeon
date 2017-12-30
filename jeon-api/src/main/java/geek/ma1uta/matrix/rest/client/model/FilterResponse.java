@@ -8,10 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Getter
 @Setter
 @XmlRootElement
-public class UnsignedData {
-    private Long age;
+public class FilterResponse {
 
-    private Event redactedBecause;
-
-    private String transactionId;
+    private String filterId;
 }
