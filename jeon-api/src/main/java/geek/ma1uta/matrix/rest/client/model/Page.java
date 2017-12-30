@@ -1,4 +1,4 @@
-package geek.ma1uta.matrix;
+package geek.ma1uta.matrix.rest.client.model;
 
 import lombok.Getter;
 import lombok.Setter;
