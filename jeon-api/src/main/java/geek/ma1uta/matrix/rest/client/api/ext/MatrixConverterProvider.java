@@ -14,7 +14,7 @@ import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class EnumWithCodeConverterProvider implements ParamConverterProvider {
+public class MatrixConverterProvider implements ParamConverterProvider {
     @Override
     public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
         if (EventType.class.isAssignableFrom(rawType)) {

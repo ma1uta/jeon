@@ -30,7 +30,7 @@ public abstract class Id {
 
     public abstract char sigil();
 
-    public static Id of(String id) {
+    public static <I extends Id> I of(String id) {
         if (LOGGER.isTraceEnabled()) {
             LOGGER.trace(String.format("Parse id: '%s'", id));
         }
@@ -89,7 +89,7 @@ public abstract class Id {
             LOGGER.trace(String.format("Id class: '%s'", itemId.getClass().getCanonicalName()));
         }
 
-        return itemId;
+        return (I) itemId;
     }
 
     public static boolean isId(String id) {
@@ -103,5 +103,14 @@ public abstract class Id {
         } catch (MalformedURLException e) {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return sigil() + localpart + SEPARATOR + domain;
+    }
+
+    public static Id valueOf(String value) {
+        return Id.of(value);
     }
 }

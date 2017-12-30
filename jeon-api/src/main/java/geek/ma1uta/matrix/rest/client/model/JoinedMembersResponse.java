@@ -1,5 +1,6 @@
 package geek.ma1uta.matrix.rest.client.model;
 
+import geek.ma1uta.matrix.RoomId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +12,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class JoinedMembersResponse {
 
-    private Map<String, RoomMember> joined;
+    private Map<RoomId, RoomMember> joined;
 }

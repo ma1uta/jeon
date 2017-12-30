@@ -1,5 +1,6 @@
 package geek.ma1uta.matrix.rest.client.model;
 
+import geek.ma1uta.matrix.RoomId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class RoomFilter {
 
-    private List<String> notRooms;
-    private List<String> rooms;
+    private List<RoomId> notRooms;
+    private List<RoomId> rooms;
     private RoomEventFilter ephemeral;
     private Boolean includeLeave;
     private RoomEventFilter state;

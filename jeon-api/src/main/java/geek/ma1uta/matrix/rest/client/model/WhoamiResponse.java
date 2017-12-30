@@ -1,5 +1,6 @@
 package geek.ma1uta.matrix.rest.client.model;
 
+import geek.ma1uta.matrix.UserId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +11,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class WhoamiResponse {
 
-    private String userId;
+    private UserId userId;
 }

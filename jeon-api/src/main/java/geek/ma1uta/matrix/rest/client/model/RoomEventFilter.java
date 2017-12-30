@@ -1,5 +1,7 @@
 package geek.ma1uta.matrix.rest.client.model;
 
+import geek.ma1uta.matrix.RoomId;
+import geek.ma1uta.matrix.UserId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,11 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RoomEventFilter {
 
     private Long limit;
-    private List<String> notSenders;
-    private List<String> notTypes;
-    private List<String> senders;
-    private List<String> types;
-    private List<String> notRooms;
-    private List<String> rooms;
+    private List<UserId> notSenders;
+    private List<EventType> notTypes;
+    private List<UserId> senders;
+    private List<EventType> types;
+    private List<RoomId> notRooms;
+    private List<RoomId> rooms;
     private Boolean containsUrl;
 }
