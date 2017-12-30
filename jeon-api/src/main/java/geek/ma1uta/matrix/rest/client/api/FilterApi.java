@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 @Path("/_matrix/client/r0/user")
+@JsonRest
 public interface FilterApi {
 
     @POST

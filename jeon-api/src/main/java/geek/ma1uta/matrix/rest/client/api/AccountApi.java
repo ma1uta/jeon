@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 @Path("/_matrix/client/r0")
+@JsonRest
 public interface AccountApi {
 
     @POST

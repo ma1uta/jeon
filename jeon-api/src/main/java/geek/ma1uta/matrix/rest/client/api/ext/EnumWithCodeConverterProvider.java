@@ -4,6 +4,7 @@ import geek.ma1uta.matrix.rest.client.model.AuthType;
 import geek.ma1uta.matrix.rest.client.model.EventFormat;
 import geek.ma1uta.matrix.rest.client.model.EventType;
 import geek.ma1uta.matrix.rest.client.model.MessageType;
+import geek.ma1uta.matrix.rest.client.model.PresenceType;
 import geek.ma1uta.matrix.rest.client.model.RegisterType;
 
 import java.lang.annotation.Annotation;
@@ -26,6 +27,8 @@ public class EnumWithCodeConverterProvider implements ParamConverterProvider {
             return (ParamConverter<T>) new RegisterTypeConverter();
         } else if (EventFormat.class.isAssignableFrom(rawType)) {
             return (ParamConverter<T>) new EventFormatConverter();
+        } else if (PresenceType.class.isAssignableFrom(rawType)) {
+            return (ParamConverter<T>) new PresenceTypeConverter();
         }
         return null;
     }
