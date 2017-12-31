@@ -1,7 +1,7 @@
 package geek.ma1uta.matrix.rest.client.api;
 
-import geek.ma1uta.matrix.rest.client.model.FilterData;
-import geek.ma1uta.matrix.rest.client.model.FilterResponse;
+import geek.ma1uta.matrix.rest.client.model.filter.FilterData;
+import geek.ma1uta.matrix.rest.client.model.filter.FilterResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;

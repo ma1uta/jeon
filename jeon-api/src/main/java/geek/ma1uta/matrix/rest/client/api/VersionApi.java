@@ -1,6 +1,6 @@
 package geek.ma1uta.matrix.rest.client.api;
 
-import geek.ma1uta.matrix.rest.client.model.VersionsResponse;
+import geek.ma1uta.matrix.rest.client.model.version.VersionsResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

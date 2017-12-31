@@ -1,7 +1,7 @@
 package geek.ma1uta.matrix.rest.client.api;
 
-import geek.ma1uta.matrix.rest.client.model.SyncRequest;
-import geek.ma1uta.matrix.rest.client.model.SyncResponse;
+import geek.ma1uta.matrix.rest.client.model.sync.SyncRequest;
+import geek.ma1uta.matrix.rest.client.model.sync.SyncResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
