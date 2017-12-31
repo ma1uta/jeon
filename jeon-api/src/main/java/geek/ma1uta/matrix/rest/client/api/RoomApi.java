@@ -19,6 +19,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
 @Path("/_matrix/client/r0")
+@JsonRest
 public interface RoomApi {
 
     @POST
