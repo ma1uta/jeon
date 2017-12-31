@@ -13,7 +13,7 @@ public class Filter {
 
     private Long limit;
     private List<String> notSenders;
-    private List<EventType> notTypes;
+    private List<String> notTypes;
     private List<String> senders;
-    private List<EventType> types;
+    private List<String> types;
 }

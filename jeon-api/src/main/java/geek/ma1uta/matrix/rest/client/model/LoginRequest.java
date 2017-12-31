@@ -10,7 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class LoginRequest {
 
-    private AuthType type;
+    /** AuthType */
+    private String type;
     private String user;
     private String medium;
     private String address;

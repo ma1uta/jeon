@@ -10,7 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AuthenticationData {
 
-    private AuthType type;
+    /** AuthType */
+    private String type;
     private String session;
 
     private String user;

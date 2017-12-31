@@ -15,6 +15,7 @@ public class AuthenticationFlows {
     private String error;
     private String[] completed;
     private AuthenticationStage[] flows;
-    private Map<AuthType, Map<String, String>> params;
+    /** AuthType */
+    private Map<String, Map<String, String>> params;
     private String session;
 }

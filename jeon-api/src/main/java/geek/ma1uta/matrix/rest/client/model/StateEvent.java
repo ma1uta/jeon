@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class StateEvent {
 
     private Object content;
-    private EventType type;
+    private String type;
     private String eventId;
     private String roomId;
     private String sender;

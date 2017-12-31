@@ -10,9 +10,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class SyncRequest {
 
+    public interface Presense {
+        String OFFLINE = "offline";
+    }
+
     private String filter;
     private String since;
     private Boolean fullState;
-    private PresenceType setPresence;
+    private String setPresence;
     private Long timeout;
 }

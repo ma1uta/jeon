@@ -18,7 +18,7 @@ public class Event {
     private Long originServerTs;
     private String sender;
     private String stateKey;
-    private EventType type;
+    private String type;
     private Unsigned unsigned;
     private Map<String, Object> prevContent;
     private List<StrippedState> inviteRoomState;

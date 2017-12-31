@@ -1,26 +1,13 @@
 package geek.ma1uta.matrix.rest.client.model;
 
-import geek.ma1uta.matrix.EnumWithCode;
+public interface MessageType {
 
-public enum MessageType implements EnumWithCode {
-
-    TEXT("m.text"),
-    EMOTE("m.emote"),
-    NOTICE("m.notice"),
-    IMAGE("m.image"),
-    FILE("m.file"),
-    LOCATION("m.location"),
-    VIDEO("m.video"),
-    AUDIO("m.audio");
-
-    private String code;
-
-    MessageType(String code) {
-        this.code = code;
-    }
-
-    @Override
-    public String code() {
-        return code;
-    }
+    String TEXT = "m.text";
+    String EMOTE = "m.emote";
+    String NOTICE = "m.notice";
+    String IMAGE = "m.image";
+    String FILE = "m.file";
+    String LOCATION = "m.location";
+    String VIDEO = "m.video";
+    String AUDIO = "m.audio";
 }

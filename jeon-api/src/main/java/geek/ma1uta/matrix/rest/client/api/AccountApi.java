@@ -1,6 +1,5 @@
 package geek.ma1uta.matrix.rest.client.api;
 
-import geek.ma1uta.matrix.rest.client.model.RegisterType;
 import geek.ma1uta.matrix.rest.client.model.DeactivateRequest;
 import geek.ma1uta.matrix.rest.client.model.EmptyResponse;
 import geek.ma1uta.matrix.rest.client.model.LoginResponse;
@@ -20,9 +19,16 @@ import javax.ws.rs.QueryParam;
 @JsonRest
 public interface AccountApi {
 
+    interface RegiterType {
+        String GUEST = "guest";
+
+        String USER = "user";
+
+    }
+
     @POST
     @Path("/register")
-    LoginResponse register(@QueryParam("kind") RegisterType kind, RegisterRequest registerRequest);
+    LoginResponse register(@QueryParam("kind") String kind, RegisterRequest registerRequest);
 
     @POST
     @Path("/register/email/requestToken")

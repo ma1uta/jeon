@@ -13,5 +13,5 @@ public class StrippedState {
 
     private Map<String, Object> content;
     private String stateKey;
-    private EventType type;
+    private String type;
 }

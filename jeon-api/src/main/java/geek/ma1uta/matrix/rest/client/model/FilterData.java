@@ -11,8 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class FilterData {
 
+    interface EventFormat {
+        String CLIENT = "client";
+        String FEDERATION = "federation";
+    }
+
     private List<String> eventFields;
-    private EventFormat eventFormat;
+    private String eventFormat;
     private Filter presence;
     private Filter accountData;
     private RoomFilter room;

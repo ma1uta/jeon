@@ -13,9 +13,9 @@ public class RoomEventFilter {
 
     private Long limit;
     private List<String> notSenders;
-    private List<EventType> notTypes;
+    private List<String> notTypes;
     private List<String> senders;
-    private List<EventType> types;
+    private List<String> types;
     private List<String> notRooms;
     private List<String> rooms;
     private Boolean containsUrl;

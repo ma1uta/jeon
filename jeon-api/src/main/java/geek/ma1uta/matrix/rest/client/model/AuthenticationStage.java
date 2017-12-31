@@ -10,5 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AuthenticationStage {
 
-    private AuthType[] stages;
+    /** AuthType */
+    private String[] stages;
 }
