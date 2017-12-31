@@ -1,6 +1,5 @@
 package geek.ma1uta.matrix.rest.client.api;
 
-import geek.ma1uta.matrix.UserId;
 import geek.ma1uta.matrix.rest.client.model.FilterData;
 import geek.ma1uta.matrix.rest.client.model.FilterResponse;
 
@@ -15,9 +14,9 @@ public interface FilterApi {
 
     @POST
     @Path("/{userId}/filter")
-    FilterResponse uploadFilter(@PathParam("userId") UserId userId, FilterData filterData);
+    FilterResponse uploadFilter(@PathParam("userId") String userId, FilterData filterData);
 
     @GET
     @Path("/{userId}/filter/{filterId}")
-    FilterData getFilter(@PathParam("userId") UserId userId, @PathParam("filterId") String filterId);
+    FilterData getFilter(@PathParam("userId") String userId, @PathParam("filterId") String filterId);
 }

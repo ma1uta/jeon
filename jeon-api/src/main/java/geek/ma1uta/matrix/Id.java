@@ -1,6 +1,5 @@
 package geek.ma1uta.matrix;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,49 +9,46 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Getter
 public abstract class Id {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Id.class);
 
-    public static final char SEPARATOR = ':';
+    public static final Pattern PATTERN = Pattern.compile("^[@!$#+]([a-z0-9\\._=\\-/]):(.*)$");
 
-    public static final Pattern PATTERN = Pattern.compile("^[@!$#+]([a-z0-9\\._=\\-/])" + SEPARATOR + "(.*)$");
-
-    private String localpart;
-
-    private String domain;
-
-    protected Id(String localpart, String domain) {
-        this.localpart = localpart;
-        this.domain = domain;
+    public static class Sigil {
+        public static char EVENT = '$';
+        public static char USER = '@';
+        public static char ROOM = '!';
+        public static char ALIAS = '#';
+        public static char GROUP = '+';
     }
 
-    public abstract char sigil();
-
-    public static <I extends Id> I of(String id) {
-        if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace(String.format("Parse id: '%s'", id));
+    public static boolean isId(String id) {
+        try {
+            validate(id);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
+    }
+
+    private static Matcher validate(String id) {
         if (StringUtils.isBlank(id)) {
             String message = "Empty id";
             LOGGER.error(message);
             throw new IllegalArgumentException(message);
         }
 
-        String trimmedId = id.trim();
-        Matcher matcher = PATTERN.matcher(trimmedId);
+        Matcher matcher = PATTERN.matcher(id.trim());
         if (!matcher.matches()) {
-            String message = String.format("Invalid id: '%s'", trimmedId);
+            String message = String.format("Invalid id: '%s'", id);
             LOGGER.error(message);
             throw new IllegalArgumentException(message);
         }
 
         String localpart = matcher.group(1);
         String domain = matcher.group(2);
-        if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("localpart: '%s', domain: '%s'", localpart, domain);
-        }
+        LOGGER.trace("localpart: '%s', domain: '%s'", localpart, domain);
 
         try {
             new URL(domain);
@@ -61,56 +57,39 @@ public abstract class Id {
             LOGGER.error(message);
             throw new IllegalArgumentException(message);
         }
-
-        Id itemId;
-        switch (trimmedId.charAt(0)) {
-            case UserId.SIGIL:
-                itemId = new UserId(localpart, domain);
-                break;
-            case RoomId.SIGIL:
-                itemId = new RoomId(localpart, domain);
-                break;
-            case EventId.SIGIL:
-                itemId = new EventId(localpart, domain);
-                break;
-            case RoomAlias.SIGIL:
-                itemId = new RoomAlias(localpart, domain);
-                break;
-            case GroupId.SIGIL:
-                itemId = new GroupId(localpart, domain);
-                break;
-            default:
-                String message = String.format("Unknown id: '%s'", id);
-                LOGGER.error(message);
-                throw new IllegalArgumentException(message);
-        }
-
-        if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace(String.format("Id class: '%s'", itemId.getClass().getCanonicalName()));
-        }
-
-        return (I) itemId;
+        return matcher;
     }
 
-    public static boolean isId(String id) {
-        Matcher matcher = PATTERN.matcher(id);
-        if (!matcher.find()) {
-            return false;
-        }
-        try {
-            new URL(matcher.group(2));
-            return true;
-        } catch (MalformedURLException e) {
-            return false;
-        }
+    public static char sigil(String id) {
+        validate(id);
+        return id.charAt(0);
     }
 
-    @Override
-    public String toString() {
-        return sigil() + localpart + SEPARATOR + domain;
+    public static String localpart(String id) {
+        return validate(id).group(1);
     }
 
-    public static Id valueOf(String value) {
-        return Id.of(value);
+    public static String domain(String id) {
+        return validate(id).group(2);
+    }
+
+    public static boolean isUserId(String id) {
+        return sigil(id) == Sigil.USER;
+    }
+
+    public static boolean isEventId(String id) {
+        return sigil(id) == Sigil.EVENT;
+    }
+
+    public static boolean isRoomId(String id) {
+        return sigil(id) == Sigil.ROOM;
+    }
+
+    public static boolean isAliasIs(String id) {
+        return sigil(id) == Sigil.ALIAS;
+    }
+
+    public static boolean isGroupId(String id) {
+        return sigil(id) == Sigil.GROUP;
     }
 }
