@@ -6,6 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 @Path("/_matrix/client/r0/voip")
+@JsonRest
 public interface VoipApi {
 
     @GET
