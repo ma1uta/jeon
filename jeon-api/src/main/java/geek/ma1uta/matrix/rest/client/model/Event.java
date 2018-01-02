@@ -71,6 +71,13 @@ public class Event {
         String KNOCK = "knock";
     }
 
+    interface Visibility {
+        String WORLD_READABLE = "world_readable";
+        String SHARED = "shared";
+        String INVITED = "invited";
+        String JOINED = "joined";
+    }
+
     private String eventId;
     private String roomId;
     private Map<String, Object> content;
