@@ -1,7 +1,7 @@
 package geek.ma1uta.matrix.client.model.eventcontext;
 
-import geek.ma1uta.matrix.rest.client.model.Event;
-import geek.ma1uta.matrix.rest.client.model.StateEvent;
+import geek.ma1uta.matrix.client.model.Event;
+import geek.ma1uta.matrix.client.model.StateEvent;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,6 @@
 package geek.ma1uta.matrix.client.model.device;
 
-import geek.ma1uta.matrix.rest.client.model.account.AuthenticationData;
+import geek.ma1uta.matrix.client.model.account.AuthenticationData;
 import lombok.Getter;
 import lombok.Setter;
 

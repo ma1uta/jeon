@@ -1,8 +1,7 @@
 package geek.ma1uta.matrix.client.model.search;
 
 import geek.ma1uta.matrix.client.model.profile.Profile;
-import geek.ma1uta.matrix.rest.client.model.Event;
-import geek.ma1uta.matrix.rest.client.model.profile.Profile;
+import geek.ma1uta.matrix.client.model.Event;
 import lombok.Getter;
 import lombok.Setter;
 

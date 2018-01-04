@@ -1,0 +1,5 @@
+
+description = 'matrix-api'
+dependencies {
+    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.1'
+}

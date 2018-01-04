@@ -1,6 +1,6 @@
 package geek.ma1uta.matrix.client.model.search;
 
-import geek.ma1uta.matrix.rest.client.model.filter.Filter;
+import geek.ma1uta.matrix.client.model.filter.Filter;
 import lombok.Getter;
 import lombok.Setter;
 
