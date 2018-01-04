@@ -1,4 +1,3 @@
 rootProject.name = 'jeon-parent'
 include ':matrix-api'
-
-project(':matrix-api').projectDir = "$rootDir/matrix-api" as File
+include 'jeon-core'
