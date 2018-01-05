@@ -13,11 +13,11 @@ import javax.inject.Inject
 class VersionTest {
 
     @Inject
-    var restTemplate: TestRestTemplate? = null
+    lateinit var restTemplate: TestRestTemplate
 
     @Test
     fun version() {
-        val versionsResponse = restTemplate?.getForObject("/_matrix/client/versions", VersionsResponse::class.java) ?: error("empty response")
+        val versionsResponse = restTemplate.getForObject("/_matrix/client/versions", VersionsResponse::class.java) ?: error("empty response")
         assert(versionsResponse.versions.contentEquals(arrayOf("r0.3.0")), { "wrong version" })
     }
 }
