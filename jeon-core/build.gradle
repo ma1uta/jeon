@@ -31,6 +31,7 @@ dependencies {
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" as String // Required for Kotlin integration
     compile 'org.springframework.boot:spring-boot-starter-jersey'
+    compile 'org.springframework.boot:spring-boot-starter-test'
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-undertow'
 
