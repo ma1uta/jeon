@@ -1,5 +1,5 @@
-
 description = 'matrix-api'
 dependencies {
     compile 'javax.ws.rs:javax.ws.rs-api:2.1'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.0'
 }

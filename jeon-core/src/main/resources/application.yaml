@@ -1,3 +1,19 @@
 jeon:
   versions:
     - r0.3.0
+
+spring:
+  datasource:
+    initialize: false
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    url: 'jdbc:postgresql://localhost/jeon'
+    username: "jeon"
+    password: "jeon"
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin
+
