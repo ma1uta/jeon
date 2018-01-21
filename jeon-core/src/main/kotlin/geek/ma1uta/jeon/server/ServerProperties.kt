@@ -5,4 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties("jeon")
 class ServerProperties {
     val versions = ArrayList<String>()
+
+    var name: String = ""
+
+    var macaroon: String = ""
 }

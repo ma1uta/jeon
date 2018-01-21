@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
  * @author ma1uta
  */
 @Path("/_matrix/client/versions")
-public interface VersionApi {
+public interface VersionApi extends ClientApi {
 
     /**
      * Gets the versions of the specification supported by the server.

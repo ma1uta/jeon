@@ -1,6 +1,8 @@
 jeon:
   versions:
     - r0.3.0
+  name: 'localhost'
+  macaroon: 'secretkey'
 
 spring:
   datasource:
@@ -14,6 +16,11 @@ security:
   basic:
     enabled: false
   user:
-    name: admin
-    password: admin
+    name: jeon
+    password: jeon
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+
+
 

@@ -1,28 +1,10 @@
 package geek.ma1uta.jeon.server
 
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.context.annotation.PropertySource
+class Query(val user: User, val device: Device, val token: Token) {
 
-@PropertySource("query")
-@ConfigurationProperties
-class Query {
+    class User(val read: String)
 
-    val user = User()
-    val token = Token()
+    class Device(val insertOrUpdate: String)
 
-    class User {
-        var create = ""
-        var read = ""
-        var update = ""
-
-        var findByToken = ""
-    }
-
-    class Token {
-        var validate = ""
-    }
-
-    class Device {
-        var findByToken = ""
-    }
+    class Token(val insertOrUpdate: String)
 }

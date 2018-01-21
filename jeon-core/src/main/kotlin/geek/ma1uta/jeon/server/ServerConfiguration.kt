@@ -6,14 +6,13 @@ import org.glassfish.jersey.server.ResourceConfig
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @Configuration
-@EnableConfigurationProperties(value = [ServerProperties::class, Query::class])
+@EnableConfigurationProperties(value = [ServerProperties::class])
 @EnableGlobalMethodSecurity
-@EnableWebSecurity
 class ServerConfiguration {
 
     @Bean
@@ -28,4 +27,7 @@ class ServerConfiguration {
 
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
+
+    @Bean
+    fun propertySourcesPlaceholderConfigurer() = PropertySourcesPlaceholderConfigurer().apply { setPlaceholderPrefix("%{") }
 }
