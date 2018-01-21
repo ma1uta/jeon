@@ -1,62 +1,34 @@
 package geek.ma1uta.jeon.server.auth
 
-import geek.ma1uta.jeon.server.exception.MatrixException
-import geek.ma1uta.matrix.client.model.ErrorMessage
+import org.springframework.security.core.Authentication
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import java.util.regex.Pattern
-import javax.servlet.Filter
-import javax.servlet.FilterChain
-import javax.servlet.FilterConfig
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
-class JeonSecurityFilter(val tokenService: TokenService) : Filter {
-
-    private val filterApplied = JeonSecurityFilter::class.java.name + ".APPLIED"
+class JeonSecurityFilter : AbstractAuthenticationProcessingFilter(AntPathRequestMatcher("/_matrix/client/r0/login", "POST")) {
     private val bearerPattern = Pattern.compile("^\\s*Bearer\\s+(\\w+)\\s*$", Pattern.UNICODE_CHARACTER_CLASS)
 
-    override fun destroy() {
-    }
+    override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
 
-    override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
-
-        if (request?.getAttribute(filterApplied) != null) {
-            chain?.doFilter(request, response)
+        var token: String? = null
+        val header = request?.getHeader("Authentication")
+        if (header != null) {
+            val matcher = bearerPattern.matcher(header)
+            if (matcher.matches()) {
+                token = matcher.group(1)
+            }
         }
 
-        try {
-            request?.setAttribute(filterApplied, true)
-
-            var token: String? = null
-            if (request is HttpServletRequest) {
-                val header = request.getHeader("Authorization")
-                if (header != null) {
-                    val matcher = bearerPattern.matcher(header)
-                    if (matcher.find()) {
-                        token = matcher.group(1)
-                    }
-                }
-            }
-
-            if (token == null) {
-                token = request?.getParameter("access_token")
-            }
-
-            if (token == null) {
-                throw MatrixException(ErrorMessage.Code.M_MISSING_TOKEN, "Missing access token.")
-            }
-
-            if (tokenService.validate(token)) {
-                chain?.doFilter(request, response)
-            } else {
-                throw MatrixException(ErrorMessage.Code.M_UNKNOWN_TOKEN, "Unrecognized access token.")
-            }
-
-        } finally {
-            request?.removeAttribute(filterApplied)
+        if (token == null) {
+            token = request?.getParameter("access_token")
         }
-    }
 
-    override fun init(filterConfig: FilterConfig?) {
+        val userAuthentication = UserAuthentication(token)
+
+        userAuthentication.details = this.authenticationDetailsSource.buildDetails(request)
+
+        return this.authenticationManager.authenticate(userAuthentication)
     }
 }

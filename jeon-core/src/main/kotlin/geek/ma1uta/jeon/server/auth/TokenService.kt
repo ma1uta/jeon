@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 @Component
 class TokenService(val template: NamedParameterJdbcTemplate, val query: Query) {
 
-    fun validate(token: String): Boolean {
-        return false
-    }
+    fun validate(token: String) = template.queryForObject(query.token.validate, mutableMapOf(Pair("token", token)), Int::class.java) > 0
+
+
 }

@@ -14,9 +14,15 @@ class Query {
         var create = ""
         var read = ""
         var update = ""
+
+        var findByToken = ""
     }
 
     class Token {
         var validate = ""
+    }
+
+    class Device {
+        var findByToken = ""
     }
 }

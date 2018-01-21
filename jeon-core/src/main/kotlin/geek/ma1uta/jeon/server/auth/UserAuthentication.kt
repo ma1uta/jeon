@@ -1,37 +1,20 @@
 package geek.ma1uta.jeon.server.auth
 
-import org.springframework.security.core.Authentication
+import geek.ma1uta.jeon.server.model.Device
+import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
-class UserAuthentication(val userId: String, val deviceId: String, val sessionId: String, val token: String) : Authentication {
+class UserAuthentication(private val device: Device?, private val token: String?, authorities: MutableCollection<GrantedAuthority>?) : AbstractAuthenticationToken(authorities) {
 
-    private var authenticated = false
+    constructor(device: Device?, token: String?) : this(device, token, null)
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    constructor(token: String?) : this(null, token)
+
+    override fun getCredentials(): Any? {
+        return token
     }
 
-    override fun setAuthenticated(isAuthenticated: Boolean) {
-        authenticated = true
-    }
-
-    override fun getName(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getCredentials(): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getPrincipal(): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun isAuthenticated(): Boolean {
-        return authenticated;
-    }
-
-    override fun getDetails(): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getPrincipal(): Any? {
+        return device
     }
 }

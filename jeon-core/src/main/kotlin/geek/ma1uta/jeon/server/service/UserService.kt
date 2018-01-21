@@ -16,11 +16,13 @@ class UserService(val query: Query, val template: NamedParameterJdbcTemplate) {
 
     fun update(user: User) = change(user, query.user.update)
 
+    fun findUserByToken(token: String) = template.queryForObject(query.user.findByToken, mutableMapOf(Pair("token", token)), UserService.UserRowMapper())
+
     protected fun change(user: User, sql: String): User {
         template.execute(sql, mutableMapOf(
                 Pair("id", user.id),
-                Pair("displayname", user.displayName),
-                Pair("avatar", user.avatar)
+                Pair("display_name", user.displayName),
+                Pair("avatar_url", user.avatarUrl)
         ), { ps -> ps.execute() })
         return template.queryForObject(sql, mutableMapOf(Pair("id", user.id)), UserRowMapper())
     }
@@ -28,8 +30,8 @@ class UserService(val query: Query, val template: NamedParameterJdbcTemplate) {
     class UserRowMapper : RowMapper<User> {
         override fun mapRow(rs: ResultSet?, rowNum: Int) = User(
                 rs!!.getString("id"),
-                rs.getString("displayname"),
-                rs.getArray("avatar").array as Array<Byte>
+                rs.getString("display_name"),
+                rs.getString("avatar_url")
         )
     }
 }
