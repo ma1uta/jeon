@@ -1,16 +1,16 @@
 CREATE TABLE "user" (
-  id          TEXT PRIMARY KEY,
-  displayname TEXT UNIQUE,
-  avatar_url  TEXT,
-  password    TEXT NOT NULL,
-  kind        TEXT DEFAULT 'user'
+  id           TEXT PRIMARY KEY,
+  display_name TEXT UNIQUE,
+  avatar_url   TEXT,
+  password     TEXT NOT NULL,
+  kind         TEXT DEFAULT 'user'
 );
 
 CREATE TABLE "device" (
   device_id    TEXT UNIQUE NOT NULL,
   user_id      TEXT        NOT NULL,
   display_name TEXT,
-  last_seen_ip INET,
+  last_seen_ip TEXT,
   last_seen_ts BIGINT,
   PRIMARY KEY (device_id, user_id),
   FOREIGN KEY (user_id) REFERENCES "user" (id)

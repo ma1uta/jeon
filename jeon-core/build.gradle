@@ -33,7 +33,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework.boot:spring-boot-starter-jersey'
     compile 'org.springframework.boot:spring-boot-starter-jdbc'
-    compile 'org.springframework.boot:spring-boot-starter-test'
+    compile 'org.springframework.boot:spring-boot-configuration-processor'
     compile 'org.flywaydb:flyway-core:5.0.6'
     compile 'org.postgresql:postgresql:42.1.4'
     compile 'com.zaxxer:HikariCP:2.7.6'
@@ -42,7 +42,7 @@ dependencies {
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-undertow'
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 
     optional 'org.springframework.boot:spring-boot-configuration-processor'
 }

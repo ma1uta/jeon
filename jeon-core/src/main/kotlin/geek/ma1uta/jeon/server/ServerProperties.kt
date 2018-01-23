@@ -6,7 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class ServerProperties {
     val versions = ArrayList<String>()
 
-    var name: String = ""
+    var name: String = "localhost"
 
-    var macaroon: String = ""
+    var macaroon: String = "macaroon_seed"
+
+    var updateLastSeen: Boolean = true
 }

@@ -4,7 +4,7 @@ class Query(val user: User, val device: Device, val token: Token) {
 
     class User(val read: String)
 
-    class Device(val insertOrUpdate: String)
+    class Device(val insertOrUpdate: String, val updateLastSeen: String)
 
-    class Token(val insertOrUpdate: String)
+    class Token(val insertOrUpdate: String, val deleteByUserAndDevice: String, val findByToken: String, val deleteByToken: String)
 }

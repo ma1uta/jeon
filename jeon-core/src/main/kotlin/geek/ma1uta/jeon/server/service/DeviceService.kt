@@ -15,4 +15,10 @@ class DeviceService(val query: Query, val template: NamedParameterJdbcTemplate) 
                             Pair("display_name", device.displayName),
                             Pair("last_seen_ip", device.lastSeenIp),
                             Pair("last_seen_ts", device.lastSeenTs)))
+
+    fun updateLastSeen(device: Device) = template.update(query.device.updateLastSeen,
+            mutableMapOf(Pair("last_seen_ip", device.lastSeenIp),
+                    Pair("last_seen_ts", device.lastSeenTs),
+                    Pair("device_id", device.deviceId),
+                    Pair("user_id", device.user.id)))
 }

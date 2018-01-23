@@ -1,8 +1,9 @@
 jeon:
-  versions:
-    - r0.3.0
   name: 'localhost'
   macaroon: 'secretkey'
+  update-last-seen: true
+  versions:
+    - r0.3.0
 
 spring:
   datasource:

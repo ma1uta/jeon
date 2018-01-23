@@ -10,9 +10,9 @@ import geek.ma1uta.jeon.server.service.DeviceService
 import geek.ma1uta.jeon.server.service.TokenService
 import geek.ma1uta.jeon.server.service.UserService
 import geek.ma1uta.matrix.client.model.ErrorMessage
+import geek.ma1uta.matrix.client.model.auth.AuthType
 import geek.ma1uta.matrix.client.model.auth.LoginRequest
 import geek.ma1uta.matrix.client.model.auth.LoginResponse
-import org.apache.commons.lang3.StringUtils
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
@@ -25,8 +25,11 @@ class UsernamePasswordLoginProvider(val passwordEncoder: BCryptPasswordEncoder, 
                                     val serverProperties: ServerProperties) : LoginProvider {
 
     override fun login(loginRequest: LoginRequest, request: HttpServletRequest): LoginResponse? {
-        if (StringUtils.isBlank(loginRequest.user) || StringUtils.isBlank(loginRequest.password)) {
+        if (loginRequest.type.isNullOrBlank() || AuthType.PASSWORD != loginRequest.type) {
             return null
+        }
+        if (loginRequest.user.isNullOrBlank() || loginRequest.password.isNullOrBlank()) {
+            throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password", null, 403)
         }
 
         val username = loginRequest.user.trim()
@@ -35,22 +38,24 @@ class UsernamePasswordLoginProvider(val passwordEncoder: BCryptPasswordEncoder, 
         val user = userService.read(username) ?: throw MatrixException(ErrorMessage.Code.M_NOT_FOUND, "User not found")
 
         if (user.password != password) {
-            throw MatrixException(ErrorMessage.Code.M_INVALID_PASSWORD, "Invalid password")
+            throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
         }
 
         val deviceId =
-                if (StringUtils.isBlank(loginRequest.deviceId)) MacaroonsBuilder.create(serverProperties.name, serverProperties.macaroon,
-                        user.id).serialize() else loginRequest.deviceId
-        val deviceName = if (StringUtils.isNotBlank(loginRequest.initialDeviceDisplayName)) loginRequest.initialDeviceDisplayName else null
-        val lastSeenIp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+                if (loginRequest.deviceId.isNullOrBlank())
+                    MacaroonsBuilder.create(serverProperties.name, serverProperties.macaroon, user.id).serialize()
+                else loginRequest.deviceId
+        val deviceName = if (!loginRequest.initialDeviceDisplayName.isNullOrBlank()) loginRequest.initialDeviceDisplayName else null
+        val lastSeenTs = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
 
-        val device = Device(deviceId, User(username, password), deviceName, request.remoteAddr, lastSeenIp)
+        val device = Device(deviceId, User(username, password), deviceName, request.remoteAddr, lastSeenTs)
 
         deviceService.insertOrUpdate(device)
 
         val tokenId = MacaroonsBuilder.create(serverProperties.name, serverProperties.macaroon, username + deviceId).serialize()
         val token = Token(tokenId, device, user)
 
+        tokenService.deleteByUserAndDevice(user, device)
         tokenService.insertOrUpdate(token)
 
         val loginResponse = LoginResponse()

@@ -7,11 +7,14 @@ import geek.ma1uta.matrix.client.model.EmptyResponse
 import geek.ma1uta.matrix.client.model.ErrorMessage
 import geek.ma1uta.matrix.client.model.auth.LoginRequest
 import geek.ma1uta.matrix.client.model.auth.LoginResponse
+import org.springframework.beans.factory.config.ConfigurableBeanFactory
+import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Context
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 class Auth(val loginService: LoginService) : AuthApi {
 
     @Context
@@ -27,7 +30,7 @@ class Auth(val loginService: LoginService) : AuthApi {
     }
 
     override fun logout(): EmptyResponse {
-        loginService.logout()
+        loginService.logout(request)
         return EmptyResponse()
     }
 }

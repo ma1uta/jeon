@@ -5,11 +5,12 @@ import geek.ma1uta.jeon.server.model.User
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.sql.ResultSet
 
 @Service
-class UserService(val query: Query, val template: NamedParameterJdbcTemplate) {
+class UserService(val query: Query, val template: NamedParameterJdbcTemplate, val passwordEncoder: BCryptPasswordEncoder) {
 
     fun read(userId: String): User? {
         return try {

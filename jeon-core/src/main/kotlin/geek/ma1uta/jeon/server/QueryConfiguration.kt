@@ -16,8 +16,14 @@ class QueryConfiguration {
     @Bean
     fun query(): Query {
         val user = Query.User(env.getProperty("user.read"))
-        val device = Query.Device(env.getProperty("device.insertOrUpdate"))
-        val token = Query.Token(env.getProperty("token.insertOrUpdate"))
+
+        val device = Query.Device(env.getProperty("device.insertOrUpdate"),
+                env.getProperty("device.updateLastSeen"))
+
+        val token = Query.Token(env.getProperty("token.insertOrUpdate"),
+                env.getProperty("token.deleteByUserAndDevice"),
+                env.getProperty("token.findByToken"),
+                env.getProperty("token.deleteByToken"))
 
         return Query(user, device, token)
     }

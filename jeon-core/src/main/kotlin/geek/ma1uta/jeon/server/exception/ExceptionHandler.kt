@@ -14,8 +14,10 @@ class ExceptionHandler : ExceptionMapper<Throwable> {
     val logger = LoggerFactory.getLogger(ExceptionHandler::class.java)!!
 
     override fun toResponse(exception: Throwable?): Response {
-        val message = handle(exception ?: MatrixException(M_INTERNAL, "Internal error."))
-        return Response.status(500).entity(message).build()
+        val matrixException = exception ?: MatrixException(M_INTERNAL, "Internal error.")
+        val message = handle(matrixException)
+        val status = Response.Status.fromStatusCode((matrixException as? MatrixException)?.status ?: 500)
+        return Response.status(status).entity(message).build()
     }
 
     @ExceptionHandler(Throwable::class)
