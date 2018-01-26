@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class JerseyConfig(val clientApis: List<ClientApi>, val exceptionHandler: ExceptionHandler) : ResourceConfigCustomizer {
     override fun customize(config: ResourceConfig?) {
-        clientApis.forEach { config!!.register(it) }
+        clientApis.forEach { config!!.register(it::class.java) }
         config!!.register(exceptionHandler)
     }
 }

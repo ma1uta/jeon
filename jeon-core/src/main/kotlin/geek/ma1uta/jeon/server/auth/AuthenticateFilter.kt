@@ -3,6 +3,8 @@ package geek.ma1uta.jeon.server.auth
 import geek.ma1uta.jeon.server.ServerProperties
 import geek.ma1uta.jeon.server.service.DeviceService
 import geek.ma1uta.jeon.server.service.TokenService
+import org.springframework.security.authentication.AnonymousAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.util.regex.Pattern
 import javax.servlet.Filter
@@ -11,8 +13,6 @@ import javax.servlet.FilterConfig
 import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
-
-const val SESSION_TOKEN = "sessionToken"
 
 @Component
 class AuthenticateFilter(val tokenService: TokenService, val deviceService: DeviceService, val serverProperties: ServerProperties) :
@@ -24,9 +24,10 @@ class AuthenticateFilter(val tokenService: TokenService, val deviceService: Devi
     }
 
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
-        val applied = request?.getAttribute(filterApplied) == null
+        val applied = request?.getAttribute(filterApplied) != null
         if (applied) {
             chain?.doFilter(request, response)
+            return
         }
 
         try {
@@ -54,14 +55,22 @@ class AuthenticateFilter(val tokenService: TokenService, val deviceService: Devi
                     if (serverProperties.updateLastSeen) {
                         deviceService.updateLastSeen(token.device)
                     }
-                    request?.setAttribute(SESSION_TOKEN, token)
+
+                    var securityContext = SecurityContextHolder.getContext()
+                    if (securityContext == null) {
+                        securityContext = SecurityContextHolder.createEmptyContext()
+                    }
+                    securityContext.authentication = MatrixAuthentication(token)
+                    securityContext.authentication.isAuthenticated = true
+
+                    SecurityContextHolder.setContext(securityContext)
                 }
             }
 
             chain?.doFilter(request, response)
 
         } finally {
-            request?.removeAttribute(SESSION_TOKEN)
+            SecurityContextHolder.clearContext()
             request?.removeAttribute(filterApplied)
         }
     }

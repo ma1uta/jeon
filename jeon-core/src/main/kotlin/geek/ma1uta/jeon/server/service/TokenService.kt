@@ -33,17 +33,17 @@ class TokenService(val query: Query, val template: NamedParameterJdbcTemplate) {
 
     class TokenRowMapper : RowMapper<Token> {
         override fun mapRow(rs: ResultSet?, rowNum: Int): Token {
-            val user = User(rs!!.getString("u.id"), "",
-                    rs.getString("u.display_name"),
-                    rs.getString("u.avatar_url"),
-                    rs.getString("u.kind"))
+            val user = User(rs!!.getString("u_id"), "",
+                    rs.getString("u_display_name"),
+                    rs.getString("u_avatar_url"),
+                    rs.getString("u_kind"))
 
-            val device = Device(rs.getString("d.deviceId"), user,
-                    rs.getString("display_name"),
-                    rs.getString("last_seen_ip"),
-                    rs.getLong("last_seen_ts"))
+            val device = Device(rs.getString("d_device_id"), user,
+                    rs.getString("d_display_name"),
+                    rs.getString("d_last_seen_ip"),
+                    rs.getLong("d_last_seen_ts"))
 
-            return Token(rs.getString("token"), device, user)
+            return Token(rs.getString("t_token"), device, user)
         }
     }
 }

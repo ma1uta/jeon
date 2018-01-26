@@ -35,7 +35,7 @@ public class LoginRequest {
     /**
      * Required when type is m.login.password. The user's password.
      */
-    private String password;
+    private CharSequence password;
 
     /**
      * Required when type is m.login.token. The login token.

@@ -20,6 +20,14 @@ class UserService(val query: Query, val template: NamedParameterJdbcTemplate, va
         }
     }
 
+    fun insert(user: User) {
+        template.update(query.user.insert, mutableMapOf(Pair("id", user.id),
+                Pair("password", passwordEncoder.encode(user.password.trim())),
+                Pair("display_name", user.displayName),
+                Pair("avatar_url", user.avatarUrl),
+                Pair("kind", user.kind)))
+    }
+
     class UserRowMapper : RowMapper<User> {
         override fun mapRow(rs: ResultSet?, rowNum: Int) = User(
                 rs!!.getString("id"),

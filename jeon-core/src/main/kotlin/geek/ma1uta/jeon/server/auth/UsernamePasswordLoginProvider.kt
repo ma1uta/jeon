@@ -33,11 +33,12 @@ class UsernamePasswordLoginProvider(val passwordEncoder: BCryptPasswordEncoder, 
         }
 
         val username = loginRequest.user.trim()
-        val password = passwordEncoder.encode(loginRequest.password.trim())
+        val password = loginRequest.password.trim()
 
-        val user = userService.read(username) ?: throw MatrixException(ErrorMessage.Code.M_NOT_FOUND, "User not found")
+        val user =
+                userService.read(username) ?: throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
 
-        if (user.password != password) {
+        if (!passwordEncoder.matches(password, user.password)) {
             throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
         }
 
@@ -48,7 +49,7 @@ class UsernamePasswordLoginProvider(val passwordEncoder: BCryptPasswordEncoder, 
         val deviceName = if (!loginRequest.initialDeviceDisplayName.isNullOrBlank()) loginRequest.initialDeviceDisplayName else null
         val lastSeenTs = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
 
-        val device = Device(deviceId, User(username, password), deviceName, request.remoteAddr, lastSeenTs)
+        val device = Device(deviceId, User(username, user.password), deviceName, request.remoteAddr, lastSeenTs)
 
         deviceService.insertOrUpdate(device)
 

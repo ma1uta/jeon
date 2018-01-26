@@ -7,21 +7,21 @@ import geek.ma1uta.matrix.client.model.EmptyResponse
 import geek.ma1uta.matrix.client.model.ErrorMessage
 import geek.ma1uta.matrix.client.model.auth.LoginRequest
 import geek.ma1uta.matrix.client.model.auth.LoginResponse
-import org.springframework.beans.factory.config.ConfigurableBeanFactory
-import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import javax.inject.Inject
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Context
 
 @Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-class Auth(val loginService: LoginService) : AuthApi {
+class Auth : AuthApi {
+
+    @Inject
+    lateinit var loginService: LoginService
 
     @Context
     lateinit var request: HttpServletRequest
 
     override fun login(loginRequest: LoginRequest?): LoginResponse {
-
         if (loginRequest == null) {
             throw MatrixException(ErrorMessage.Code.M_NOT_JSON, "Missing json.")
         }
@@ -30,7 +30,7 @@ class Auth(val loginService: LoginService) : AuthApi {
     }
 
     override fun logout(): EmptyResponse {
-        loginService.logout(request)
+        loginService.logout()
         return EmptyResponse()
     }
 }
