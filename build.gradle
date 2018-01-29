@@ -3,7 +3,7 @@ allprojects {
     // TODO white javadocs
     // apply plugin: 'checkstyle'
 
-    group = 'geek.ma1uta'
+    group = 'io.github.ma1uta'
     version = '0.0.1-SNAPSHOT'
 }
 

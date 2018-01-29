@@ -1,0 +1,23 @@
+package io.github.ma1uta.jeon.server.service
+
+import io.github.ma1uta.jeon.server.model.Device
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.stereotype.Service
+
+@Service
+class DeviceService(val query: io.github.ma1uta.jeon.server.Query, val template: NamedParameterJdbcTemplate) {
+
+    fun insertOrUpdate(device: Device) =
+            template.update(query.device.insertOrUpdate,
+                    mutableMapOf(Pair("device_id", device.deviceId),
+                            Pair("user_id", device.user.id),
+                            Pair("display_name", device.displayName),
+                            Pair("last_seen_ip", device.lastSeenIp),
+                            Pair("last_seen_ts", device.lastSeenTs)))
+
+    fun updateLastSeen(device: Device) = template.update(query.device.updateLastSeen,
+            mutableMapOf(Pair("last_seen_ip", device.lastSeenIp),
+                    Pair("last_seen_ts", device.lastSeenTs),
+                    Pair("device_id", device.deviceId),
+                    Pair("user_id", device.user.id)))
+}

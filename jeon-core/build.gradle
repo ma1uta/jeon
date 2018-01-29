@@ -27,7 +27,7 @@ configurations {
 }
 
 dependencies {
-    compile project(':matrix-api')
+    compile project(':client-api')
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" as String // Required for Kotlin integration
     compile 'org.springframework.boot:spring-boot-starter-security'
