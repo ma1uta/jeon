@@ -1,3 +1,4 @@
 rootProject.name = 'jeon-parent'
 include ':client-api'
+include ':identity-api'
 include ':jeon-core'
