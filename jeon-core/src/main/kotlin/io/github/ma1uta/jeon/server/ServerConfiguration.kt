@@ -42,7 +42,7 @@ class ServerConfiguration {
     @Bean
     fun initialUserCreation(userService: UserService) = InitializingBean {
         if (userService.read("dummy") == null) {
-            userService.insert(User("dummy", "1"))
+            userService.insert(User("dummy", "dummy"))
         }
     }
 }

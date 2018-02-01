@@ -9,6 +9,7 @@ CREATE TABLE "user" (
 CREATE TABLE "device" (
   device_id    TEXT UNIQUE NOT NULL,
   user_id      TEXT        NOT NULL,
+  token        TEXT UNIQUE,
   display_name TEXT,
   last_seen_ip TEXT,
   last_seen_ts BIGINT,
@@ -16,24 +17,3 @@ CREATE TABLE "device" (
   FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
-CREATE TABLE "room" (
-  id          TEXT PRIMARY KEY,
-  displayname TEXT
-);
-
-CREATE TABLE "member" (
-  user_id TEXT,
-  room_id TEXT,
-  PRIMARY KEY (room_id, user_id),
-  FOREIGN KEY (user_id) REFERENCES "user" (id),
-  FOREIGN KEY (room_id) REFERENCES "room" (id)
-);
-
-CREATE TABLE "token" (
-  token     TEXT UNIQUE,
-  device_id TEXT,
-  user_id   TEXT,
-  PRIMARY KEY (token, device_id, user_id),
-  FOREIGN KEY (user_id) REFERENCES "user" (id),
-  FOREIGN KEY (device_id) REFERENCES "device" (device_id)
-);

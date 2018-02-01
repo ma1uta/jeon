@@ -1,4 +1,4 @@
-package io.github.ma1uta.jeon.server.auth
+package io.github.ma1uta.jeon.server.interaction
 
 import io.github.ma1uta.matrix.client.model.auth.AuthenticationStage
 

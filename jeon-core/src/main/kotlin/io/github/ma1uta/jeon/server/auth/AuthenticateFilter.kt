@@ -2,7 +2,6 @@ package io.github.ma1uta.jeon.server.auth
 
 import io.github.ma1uta.jeon.server.ServerProperties
 import io.github.ma1uta.jeon.server.service.DeviceService
-import io.github.ma1uta.jeon.server.service.TokenService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.util.regex.Pattern
@@ -14,7 +13,7 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
 @Component
-class AuthenticateFilter(val tokenService: TokenService, val deviceService: DeviceService, val serverProperties: ServerProperties) :
+class AuthenticateFilter(val deviceService: DeviceService, val serverProperties: ServerProperties) :
         Filter {
     val filterApplied = AuthenticateFilter::class.java.name + ".APPLIED"
     val bearerPattern: Pattern = Pattern.compile("^\\s*Bearer\\s+(\\w+)\\s*$")
@@ -48,18 +47,18 @@ class AuthenticateFilter(val tokenService: TokenService, val deviceService: Devi
             }
 
             if (accessToken != null && accessToken.isNotBlank()) {
-                val token = tokenService.findByToken(accessToken)
+                val device = deviceService.findByToken(accessToken)
 
-                if (token != null) {
+                if (device != null) {
                     if (serverProperties.updateLastSeen) {
-                        deviceService.updateLastSeen(token.device)
+                        deviceService.updateLastSeen(device)
                     }
 
                     var securityContext = SecurityContextHolder.getContext()
                     if (securityContext == null) {
                         securityContext = SecurityContextHolder.createEmptyContext()
                     }
-                    securityContext.authentication = MatrixAuthentication(token)
+                    securityContext.authentication = MatrixAuthentication(device)
                     securityContext.authentication.isAuthenticated = true
 
                     SecurityContextHolder.setContext(securityContext)

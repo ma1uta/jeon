@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 import javax.servlet.http.HttpServletRequest
 
 @Service
-class LoginService(val loginProviders: List<LoginProvider>, val tokenService: TokenService) {
+class LoginService(val loginProviders: List<LoginProvider>, val deviceService: DeviceService) {
 
     fun login(loginRequest: LoginRequest, request: HttpServletRequest): LoginResponse {
         var loginResponse: LoginResponse? = null
@@ -33,6 +33,6 @@ class LoginService(val loginProviders: List<LoginProvider>, val tokenService: To
     @PreAuthorize("isFullyAuthenticated()")
     fun logout() {
         val authentication = SecurityContextHolder.getContext().authentication as MatrixAuthentication
-        tokenService.deleteByToken(authentication.token)
+        deviceService.deleteToken(authentication.device)
     }
 }

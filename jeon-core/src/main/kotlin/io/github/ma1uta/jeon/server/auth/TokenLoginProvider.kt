@@ -13,20 +13,21 @@ import org.springframework.stereotype.Component
 import javax.servlet.http.HttpServletRequest
 
 @Component
-class UsernamePasswordLoginProvider(passwordEncoder: BCryptPasswordEncoder, userService: UserService,
-                                    deviceService: DeviceService, serverProperties: ServerProperties) :
+class TokenLoginProvider(passwordEncoder: BCryptPasswordEncoder, userService: UserService,
+                         deviceService: DeviceService, serverProperties: ServerProperties) :
         AbstractPasswordLoginProvider(passwordEncoder, userService, deviceService, serverProperties) {
 
     override fun login(loginRequest: LoginRequest, request: HttpServletRequest): LoginResponse? {
-        if (loginRequest.type.isNullOrBlank() || AuthType.PASSWORD != loginRequest.type || loginRequest.user.isNullOrBlank()) {
+        if (loginRequest.type.isNullOrBlank() || AuthType.TOKEN != loginRequest.type) {
             return null
         }
-        if (loginRequest.password.isNullOrBlank()) {
-            throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password", null, 403)
+        if (loginRequest.token.isNullOrBlank()) {
+            throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid token", null, 403)
         }
 
-        val username = loginRequest.user.trim()
-        val password = loginRequest.password.trim()
+        //TODO receive username and password by token via identity server
+        val username = "dummy"
+        val password = "dummy"
 
         return authenticate(username, password, loginRequest, request)
     }

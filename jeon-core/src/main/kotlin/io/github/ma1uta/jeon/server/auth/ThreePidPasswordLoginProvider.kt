@@ -13,20 +13,25 @@ import org.springframework.stereotype.Component
 import javax.servlet.http.HttpServletRequest
 
 @Component
-class UsernamePasswordLoginProvider(passwordEncoder: BCryptPasswordEncoder, userService: UserService,
+class ThreePidPasswordLoginProvider(passwordEncoder: BCryptPasswordEncoder, userService: UserService,
                                     deviceService: DeviceService, serverProperties: ServerProperties) :
         AbstractPasswordLoginProvider(passwordEncoder, userService, deviceService, serverProperties) {
 
     override fun login(loginRequest: LoginRequest, request: HttpServletRequest): LoginResponse? {
-        if (loginRequest.type.isNullOrBlank() || AuthType.PASSWORD != loginRequest.type || loginRequest.user.isNullOrBlank()) {
+        if (loginRequest.type.isNullOrBlank() || AuthType.PASSWORD != loginRequest.type
+                || loginRequest.medium.isNullOrBlank() || loginRequest.address.isNullOrBlank()) {
             return null
         }
-        if (loginRequest.password.isNullOrBlank()) {
+        if (loginRequest.password.isNullOrBlank() || !(loginRequest.medium == "email" || loginRequest.medium == "msisdn")) {
             throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password", null, 403)
         }
 
-        val username = loginRequest.user.trim()
+        val medium = loginRequest.medium.trim()
+        val address = loginRequest.address.trim()
         val password = loginRequest.password.trim()
+
+        //TODO request to the identity server to find matrixid
+        val username = "dummy"
 
         return authenticate(username, password, loginRequest, request)
     }
