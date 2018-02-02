@@ -1,5 +1,6 @@
 package io.github.ma1uta.jeon.server.exception
 
+import io.github.ma1uta.jeon.server.service.UserInteractiveException
 import io.github.ma1uta.matrix.client.model.ErrorMessage
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -26,7 +27,13 @@ class ExceptionHandler : ExceptionMapper<Throwable> {
         logger.error("Exception:", exception)
         return when (exception) {
             is MatrixException -> ErrorMessage(exception.errcode, exception.message, exception.retryAfterMs)
-            else -> ErrorMessage(M_INTERNAL, exception.message, null)
+            is UserInteractiveException -> {
+                val authenticationFlows = exception.authenticationFlows
+                ErrorMessage(authenticationFlows.errcode, exception.message,
+                        authenticationFlows.completed, authenticationFlows.flows,
+                        authenticationFlows.params, authenticationFlows.session)
+            }
+            else -> ErrorMessage(M_INTERNAL, exception.message)
         }
     }
 }

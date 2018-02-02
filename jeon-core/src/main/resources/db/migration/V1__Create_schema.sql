@@ -17,3 +17,9 @@ CREATE TABLE "device" (
   FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
+CREATE TABLE "user_interactive_session" (
+  session_id TEXT PRIMARY KEY,
+  completed  TEXT [],
+  created    TIMESTAMP WITH TIME ZONE NOT NULL,
+  updated    TIMESTAMP WITH TIME ZONE NOT NULL
+);

@@ -2,10 +2,13 @@ package io.github.ma1uta.matrix.client.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.github.ma1uta.matrix.client.model.auth.AuthenticationStage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Map;
 
 /**
  * Any errors which occur at the Matrix API level MUST return a "standard error response".
@@ -14,8 +17,6 @@ import lombok.Setter;
 @Setter
 @JsonPropertyOrder(alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@NoArgsConstructor
-@AllArgsConstructor
 public class ErrorMessage {
 
     /**
@@ -102,4 +103,29 @@ public class ErrorMessage {
     private String errcode;
     private String error;
     private Long retryAfterMs;
+    private String[] completed;
+    private AuthenticationStage[] flows;
+    private Map<String, Map<String, String>> params;
+    private String session;
+
+    public ErrorMessage(String errcode, String error) {
+        this.errcode = errcode;
+        this.error = error;
+    }
+
+    public ErrorMessage(String errcode, String error, Long retryAfterMs) {
+        this.errcode = errcode;
+        this.error = error;
+        this.retryAfterMs = retryAfterMs;
+    }
+
+    public ErrorMessage(String errcode, String error, String[] completed, AuthenticationStage[] flows,
+                        Map<String, Map<String, String>> params, String session) {
+        this.errcode = errcode;
+        this.error = error;
+        this.completed = completed;
+        this.flows = flows;
+        this.params = params;
+        this.session = session;
+    }
 }

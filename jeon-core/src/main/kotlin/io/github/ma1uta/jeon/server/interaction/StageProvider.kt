@@ -1,12 +1,12 @@
 package io.github.ma1uta.jeon.server.interaction
 
-import io.github.ma1uta.matrix.client.model.auth.AuthenticationStage
+import io.github.ma1uta.matrix.client.model.account.AuthenticationData
 
 interface StageProvider {
 
-    fun stage(): AuthenticationStage
+    fun stage(): String
 
     fun params(): MutableMap<String, String>
 
-    fun authenticate(params: MutableMap<String, String>?): Boolean
+    fun authenticate(authenticationData: AuthenticationData): Boolean
 }

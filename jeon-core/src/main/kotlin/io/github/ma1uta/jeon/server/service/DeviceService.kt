@@ -1,5 +1,6 @@
 package io.github.ma1uta.jeon.server.service
 
+import io.github.ma1uta.jeon.server.Query
 import io.github.ma1uta.jeon.server.model.Device
 import io.github.ma1uta.jeon.server.model.User
 import org.springframework.jdbc.core.RowMapper
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service
 import java.sql.ResultSet
 
 @Service
-class DeviceService(val query: io.github.ma1uta.jeon.server.Query, val template: NamedParameterJdbcTemplate) {
+class DeviceService(val query: Query, val template: NamedParameterJdbcTemplate) {
 
     fun findByToken(token: String): Device =
             template.queryForObject(query.device.findByToken, mutableMapOf(Pair("token", token)), DeviceRowMapper())

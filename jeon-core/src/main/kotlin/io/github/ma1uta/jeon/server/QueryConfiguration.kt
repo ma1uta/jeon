@@ -23,6 +23,12 @@ class QueryConfiguration {
                                   env.getProperty("device.findByToken"),
                                   env.getProperty("device.deleteToken"))
 
-        return Query(user, device)
+        val userInteractiveSession = Query.UserInteractiveSession(env.getProperty("userInteractiveSession.create"),
+                                                                  env.getProperty("userInteractiveSession.read"),
+                                                                  env.getProperty("userInteractiveSession.update"),
+                                                                  env.getProperty("userInteractiveSession.delete"))
+
+
+        return Query(user, device, userInteractiveSession)
     }
 }
