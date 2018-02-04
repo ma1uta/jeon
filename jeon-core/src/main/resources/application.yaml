@@ -4,6 +4,15 @@ jeon:
   update-last-seen: true
   versions:
     - r0.3.0
+  reCaptchaKey: 'recaptcha client key'
+  reCaptchaSecretKey: 'recaptha server key'
+  reCaptchUrl: 'https://www.google.com/recaptcha/api/siteverify'
+  flows:
+    - stages:
+      - dummy
+  stage:
+    dummy:
+      enabled: true
 
 spring:
   datasource:
@@ -11,8 +20,8 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
     url: 'jdbc:postgresql://localhost/jeon'
-    username: "jeon"
-    password: "jeon"
+    username: 'jeon'
+    password: 'jeon'
 security:
   basic:
     enabled: false

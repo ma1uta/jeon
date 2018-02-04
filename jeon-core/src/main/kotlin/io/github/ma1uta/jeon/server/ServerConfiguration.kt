@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.web.client.RestTemplate
 import java.security.SecureRandom
 
 @Configuration
@@ -45,4 +46,7 @@ class ServerConfiguration {
             userService.insert(User("dummy", "dummy"))
         }
     }
+
+    @Bean
+    fun restTemplate() = RestTemplate()
 }

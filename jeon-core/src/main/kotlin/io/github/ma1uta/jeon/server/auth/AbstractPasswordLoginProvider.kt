@@ -18,13 +18,19 @@ import javax.servlet.http.HttpServletRequest
 abstract class AbstractPasswordLoginProvider(val passwordEncoder: BCryptPasswordEncoder, val userService: UserService,
                                              val deviceService: DeviceService, val serverProperties: ServerProperties) : LoginProvider {
 
-    fun authenticate(username: String, password: CharSequence, loginRequest: LoginRequest, request: HttpServletRequest): LoginResponse {
+    fun validateUsernameAndPassword(username: String, password: CharSequence): User {
         val user =
                 userService.read(username) ?: throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
 
         if (!passwordEncoder.matches(password, user.password)) {
             throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
         }
+
+        return user
+    }
+
+    fun authenticate(username: String, password: CharSequence, loginRequest: LoginRequest, request: HttpServletRequest): LoginResponse {
+        val user = validateUsernameAndPassword(username, password)
 
         val deviceId =
                 if (loginRequest.deviceId.isNullOrBlank())

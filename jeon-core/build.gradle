@@ -1,6 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.2.21' // Required for Kotlin integration
-    ext.spring_boot_version = '1.5.9.RELEASE'
+    ext.spring_boot_version = '1.5.10.RELEASE'
     repositories {
         jcenter()
     }
@@ -48,12 +48,12 @@ dependencies {
 }
 
 bootRun {
-    main = 'geek.ma1uta.jeon.server.ServerKt'
+    main = 'io.github.ma1uta.jeon.server.ServerKt'
     addResources = true
 }
 
 bootRepackage {
-    mainClass = 'geek.ma1uta.jeon.server.ServerKt'
+    mainClass = 'io.github.ma1uta.jeon.server.ServerKt'
     executable = true
 }
 

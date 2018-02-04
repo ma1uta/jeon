@@ -11,4 +11,10 @@ class ServerProperties {
     var macaroon: String = "macaroon_seed"
 
     var updateLastSeen: Boolean = true
+
+    var reCaptchaKey = ""
+
+    var reCaptchaSecretKey = ""
+
+    var reCaptchaUrl = ""
 }

@@ -52,7 +52,7 @@ class UserInteractiveService(val query: Query, val namedParameterJdbcTemplate: N
 
         completed.add(newCompletedStage)
         val completedFlow = (0..flowProviders!!.size).any {
-            completed.containsAll(flowProviders!![it].stages().map { stageProvider -> stageProvider.stage() })
+            completed.containsAll(flowProviders!![it].stages.map { stageProvider -> stageProvider.stage() })
         }
 
         if (completedFlow) {
@@ -74,9 +74,9 @@ class UserInteractiveService(val query: Query, val namedParameterJdbcTemplate: N
         authenticationFlows.params = mutableMapOf<String, MutableMap<String, String>>()
         for (i in 0..flowProviders!!.size) {
             val authenticationStage = AuthenticationStage()
-            authenticationStage.stages = arrayOfNulls(flowProviders!![i].stages().size)
-            for (j in 0..flowProviders!![i].stages().size) {
-                val stageProvider = flowProviders!![i].stages()[j]
+            authenticationStage.stages = arrayOfNulls(flowProviders!![i].stages.size)
+            for (j in 0..flowProviders!![i].stages.size) {
+                val stageProvider = flowProviders!![i].stages[j]
                 authenticationStage.stages[i] = stageProvider.stage()
                 authenticationFlows.params[stageProvider.stage()] = stageProvider.params()
             }
