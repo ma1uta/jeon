@@ -1,0 +1,61 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.2.21' // Required for Kotlin integration
+        springBootVersion = '1.5.10.RELEASE'
+        dependencyManagementPluginVersion = '0.5.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as String // Required for Kotlin integration
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion" as String
+        // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
+    }
+}
+
+allprojects {
+    apply plugin: 'kotlin'
+}
+
+subprojects {
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'war'
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+//          mavenBom("org.springframework.boot:spring-boot-starter-parent:${springBootVersion}")
+        }
+    }
+
+    configurations {
+        compile.exclude module: "spring-boot-starter-tomcat"
+    }
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as String // Required for Kotlin integration
+        compile 'org.springframework.boot:spring-boot-starter-security'
+        compile 'org.springframework.boot:spring-boot-starter-jersey'
+        compile 'org.springframework.boot:spring-boot-starter-jdbc'
+        compile 'org.springframework.boot:spring-boot-configuration-processor'
+        compile 'org.flywaydb:flyway-core:5.0.6'
+        compile 'org.postgresql:postgresql:42.1.4'
+        compile 'com.zaxxer:HikariCP:2.7.6'
+        compile 'com.github.nitram509:jmacaroons:0.3.1'
+        compile 'javax.servlet:javax.servlet-api'
+
+        providedRuntime 'org.springframework.boot:spring-boot-starter-undertow'
+
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+        optional 'org.springframework.boot:spring-boot-configuration-processor'
+    }
+
+    compileJava.dependsOn(processResources)
+}
+
