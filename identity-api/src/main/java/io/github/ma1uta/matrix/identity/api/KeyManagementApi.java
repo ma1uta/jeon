@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
  * @author ma1uta
  */
 @Path("/_matrix/identity/api/v1/pubkey")
-public interface KeyManagement {
+public interface KeyManagementApi extends IdentityApi {
 
     /**
      * Get the public key for the passed key ID.

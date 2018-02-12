@@ -1,10 +1,10 @@
 package io.github.ma1uta.jeon.server.auth
 
 import io.github.ma1uta.jeon.server.ServerProperties
-import io.github.ma1uta.jeon.server.exception.MatrixException
+import io.github.ma1uta.jeon.exception.MatrixException
 import io.github.ma1uta.jeon.server.service.DeviceService
 import io.github.ma1uta.jeon.server.service.UserService
-import io.github.ma1uta.matrix.client.model.ErrorMessage
+import io.github.ma1uta.matrix.ErrorMessage
 import io.github.ma1uta.matrix.client.model.auth.AuthType
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
@@ -22,7 +22,7 @@ class UsernamePasswordLoginProvider(passwordEncoder: BCryptPasswordEncoder, user
             return null
         }
         if (loginRequest.password.isNullOrBlank()) {
-            throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password", null, 403)
+            throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password", null, 403)
         }
 
         val username = loginRequest.user.trim()

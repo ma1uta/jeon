@@ -5,7 +5,7 @@ import io.github.ma1uta.jeon.server.Query
 import io.github.ma1uta.jeon.server.ServerProperties
 import io.github.ma1uta.jeon.server.interaction.FlowProvider
 import io.github.ma1uta.jeon.server.interaction.StageProvider
-import io.github.ma1uta.matrix.client.model.ErrorMessage
+import io.github.ma1uta.matrix.ErrorMessage
 import io.github.ma1uta.matrix.client.model.auth.AuthenticationFlows
 import io.github.ma1uta.matrix.client.model.auth.AuthenticationStage
 import io.github.ma1uta.matrix.client.model.auth.UserInteractiveData
@@ -46,7 +46,7 @@ class UserInteractiveService(val query: Query, val namedParameterJdbcTemplate: N
                         String::class.java)
 
         if (newCompletedStage == null) {
-            proceedWithUserInteractiveSession(session!!, completed.toTypedArray(), ErrorMessage.Code.M_FORBIDDEN,
+            proceedWithUserInteractiveSession(session!!, completed.toTypedArray(), io.github.ma1uta.matrix.ErrorMessage.Code.M_FORBIDDEN,
                     "Wrong authentication")
         }
 

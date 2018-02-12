@@ -1,6 +1,6 @@
 package io.github.ma1uta.jeon.server.rest.client
 
-import io.github.ma1uta.matrix.client.model.ErrorMessage
+import io.github.ma1uta.matrix.ErrorMessage
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
 import org.junit.Before
@@ -38,8 +38,8 @@ class AuthTest {
         loginRequest.user = "dummy"
         loginRequest.password = "dummy"
         val loginResponse =
-                restTemplate.postForObject("/_matrix/client/r0/login", loginRequest, ErrorMessage::class.java) ?: error("empty response")
-        assert(loginResponse.errcode == ErrorMessage.Code.M_NOT_FOUND)
+                restTemplate.postForObject("/_matrix/client/r0/login", loginRequest, io.github.ma1uta.matrix.ErrorMessage::class.java) ?: error("empty response")
+        assert(loginResponse.errcode == io.github.ma1uta.matrix.ErrorMessage.Code.M_NOT_FOUND)
     }
 
     @Ignore

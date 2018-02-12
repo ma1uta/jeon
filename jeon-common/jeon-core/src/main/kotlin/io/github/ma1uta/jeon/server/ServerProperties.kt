@@ -6,11 +6,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class ServerProperties {
     val versions = ArrayList<String>()
 
-    var name: String = "localhost"
+    var name = "localhost"
 
-    var macaroon: String = "macaroon_seed"
+    var macaroon = "macaroon_seed"
 
-    var updateLastSeen: Boolean = true
+    var updateLastSeen = true
 
     var reCaptchaKey = ""
 

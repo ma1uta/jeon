@@ -1,0 +1,18 @@
+dependencies {
+    compile project(':identity-api')
+    compile project(':jeon-common')
+
+    compile 'net.i2p.crypto:eddsa:0.2.0'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.59'
+    compile 'org.bouncycastle:bcpkix-jdk15on:1.59'
+}
+
+bootRun {
+    main = 'io.github.ma1uta.jidentity.IdentityKt'
+    addResources = true
+}
+
+bootRepackage {
+    mainClass = 'io.github.ma1uta.jidentity.IdentityKt'
+    executable = true
+}

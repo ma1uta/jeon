@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
  * @author ma1uta
  */
 @Path("/_matrix/identity/api/v1")
-public interface Lookup {
+public interface LookupApi extends IdentityApi {
 
     /**
      * Look up the Matrix user ID for a 3pid.

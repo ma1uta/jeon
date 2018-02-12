@@ -1,7 +1,7 @@
 package io.github.ma1uta.jeon.server.interaction.stage
 
 import io.github.ma1uta.jeon.server.auth.UsernamePasswordLoginProvider
-import io.github.ma1uta.jeon.server.exception.MatrixException
+import io.github.ma1uta.jeon.exception.MatrixException
 import io.github.ma1uta.jeon.server.interaction.StageProvider
 import io.github.ma1uta.matrix.client.model.account.AuthenticationData
 import io.github.ma1uta.matrix.client.model.auth.AuthType

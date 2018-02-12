@@ -18,13 +18,7 @@ buildscript {
 
 allprojects {
     apply plugin: 'kotlin'
-}
-
-subprojects {
-    apply plugin: 'kotlin-spring'
-    apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'war'
 
     dependencyManagement {
         imports {
@@ -33,14 +27,25 @@ subprojects {
         }
     }
 
+    dependencies {
+        compile project(':common-api')
+
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as String // Required for Kotlin integration
+        compile 'org.springframework.boot:spring-boot-starter-jersey'
+    }
+}
+
+subprojects {
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'war'
+
     configurations {
         compile.exclude module: "spring-boot-starter-tomcat"
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as String // Required for Kotlin integration
         compile 'org.springframework.boot:spring-boot-starter-security'
-        compile 'org.springframework.boot:spring-boot-starter-jersey'
         compile 'org.springframework.boot:spring-boot-starter-jdbc'
         compile 'org.springframework.boot:spring-boot-configuration-processor'
         compile 'org.flywaydb:flyway-core:5.0.6'

@@ -12,12 +12,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Checking non-published 3pid ownership
+ * Checking non-published 3pid ownership.
  *
  * @author ma1uta.
  */
 @Path("/_matrix/identity/api/v1/3pid")
-public interface Validation {
+public interface ValidationApi extends IdentityApi {
 
     /**
      * Check whether ownership of a 3pid was validated.

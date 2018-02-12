@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
  * The flow for creating an association is session-based.
  */
 @Path("/_matrix/identity/api/v1")
-public interface Associations {
+public interface AssociationsApi extends IdentityApi {
 
     /**
      * The flow for creating an association is session-based.

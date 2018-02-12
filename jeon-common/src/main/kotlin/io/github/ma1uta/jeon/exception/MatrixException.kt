@@ -1,4 +1,4 @@
-package io.github.ma1uta.jeon.server.exception
+package io.github.ma1uta.jeon.exception
 
 const val M_INTERNAL = "M_INTERNAL"
 

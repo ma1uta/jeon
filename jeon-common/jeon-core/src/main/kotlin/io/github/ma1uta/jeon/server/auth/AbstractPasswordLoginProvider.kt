@@ -2,12 +2,12 @@ package io.github.ma1uta.jeon.server.auth
 
 import com.github.nitram509.jmacaroons.MacaroonsBuilder
 import io.github.ma1uta.jeon.server.ServerProperties
-import io.github.ma1uta.jeon.server.exception.MatrixException
+import io.github.ma1uta.jeon.exception.MatrixException
 import io.github.ma1uta.jeon.server.model.Device
 import io.github.ma1uta.jeon.server.model.User
 import io.github.ma1uta.jeon.server.service.DeviceService
 import io.github.ma1uta.jeon.server.service.UserService
-import io.github.ma1uta.matrix.client.model.ErrorMessage
+import io.github.ma1uta.matrix.ErrorMessage
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -20,10 +20,11 @@ abstract class AbstractPasswordLoginProvider(val passwordEncoder: BCryptPassword
 
     fun validateUsernameAndPassword(username: String, password: CharSequence): User {
         val user =
-                userService.read(username) ?: throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
+                userService.read(username) ?: throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_FORBIDDEN,
+                        "Invalid login or password.", null, 403)
 
         if (!passwordEncoder.matches(password, user.password)) {
-            throw MatrixException(ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
+            throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
         }
 
         return user

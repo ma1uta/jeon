@@ -1,7 +1,9 @@
 rootProject.name = 'jeon-parent'
+include 'common-api'
 include 'client-api'
 include 'identity-api'
-include 'jeon-core'
+
 include 'jeon-common'
 include 'jeon-common:jeon-core'
+include 'jeon-common:jidentity'
 

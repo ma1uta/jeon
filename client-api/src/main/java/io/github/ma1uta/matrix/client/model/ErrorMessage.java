@@ -2,10 +2,9 @@ package io.github.ma1uta.matrix.client.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.client.model.auth.AuthenticationStage;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Map;
@@ -17,112 +16,24 @@ import java.util.Map;
 @Setter
 @JsonPropertyOrder(alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorMessage {
+public class ErrorMessage extends ErrorResponse {
 
-    /**
-     * Standard error codes.
-     */
-    public interface Code {
-
-        /**
-         * Forbidden access, e.g. joining a room without permission, failed login.
-         */
-        String M_FORBIDDEN = "M_FORBIDDEN";
-
-        /**
-         * The access token specified was missing.
-         */
-        String M_MISSING_TOKEN = "M_MISSING_TOKEN";
-
-        /**
-         * The access token specified was not recognised.
-         */
-        String M_UNKNOWN_TOKEN = "M_UNKNOWN_TOKEN";
-
-        /**
-         * Request contained valid JSON, but it was malformed in some way, e.g. missing required keys, invalid values for keys.
-         */
-        String M_BAD_JSON = "M_BAD_JSON";
-
-        /**
-         * Request did not contain valid JSON.
-         */
-        String M_NOT_JSON = "M_NOT_JSON";
-
-        /**
-         * No resource was found for this request.
-         */
-        String M_NOT_FOUND = "M_NOT_FOUND";
-
-        /**
-         * Too many requests have been sent in a short period of time. Wait a while then try again.
-         */
-        String M_LIMIT_EXCEEDED = "M_LIMIT_EXCEEDED";
-
-        /**
-         * Encountered when trying to register a user ID which has been taken.
-         */
-        String M_USER_IN_USE = "M_USER_IN_USE";
-
-        /**
-         * Encountered when trying to register a user ID which is not valid.
-         */
-        String M_INVALID_PASSWORD = "M_INVALID_PASSWORD";
-
-        /**
-         * Sent when the room alias given to the createRoom API is already in use.
-         */
-        String M_ROOM_IN_USE = "M_ROOM_IN_USE";
-
-        /**
-         * Sent when the initial state given to the createRoom API is invalid.
-         */
-        String M_INVALID_ROOM_STATE = "M_INVALID_ROOM_STATE";
-
-        /**
-         * Encountered when specifying bad pagination query parameters.
-         */
-        String M_BAD_PAGINATION = "M_BAD_PAGINATION";
-
-        /**
-         * Sent when a threepid given to an API cannot be used because the same threepid is already in use.
-         */
-        String M_THREEPID_IN_USE = "M_THREEPID_IN_USE";
-
-        /**
-         * Sent when a threepid given to an API cannot be used because no record matching the threepid was found.
-         */
-        String M_THREEPID_NOT_FOUND = "M_THREEPID_NOT_FOUND";
-
-        /**
-         * The client's request used a third party server, eg. ID server, that this server does not trust.
-         */
-        String M_SERVER_NOT_TRUSTED = "M_SERVER_NOT_TRUSTED";
-    }
-
-    private String errcode;
-    private String error;
-    private Long retryAfterMs;
     private String[] completed;
     private AuthenticationStage[] flows;
     private Map<String, Map<String, String>> params;
     private String session;
 
     public ErrorMessage(String errcode, String error) {
-        this.errcode = errcode;
-        this.error = error;
+        super(errcode, error);
     }
 
     public ErrorMessage(String errcode, String error, Long retryAfterMs) {
-        this.errcode = errcode;
-        this.error = error;
-        this.retryAfterMs = retryAfterMs;
+        super(errcode, error, retryAfterMs);
     }
 
     public ErrorMessage(String errcode, String error, String[] completed, AuthenticationStage[] flows,
                         Map<String, Map<String, String>> params, String session) {
-        this.errcode = errcode;
-        this.error = error;
+        super(errcode, error);
         this.completed = completed;
         this.flows = flows;
         this.params = params;

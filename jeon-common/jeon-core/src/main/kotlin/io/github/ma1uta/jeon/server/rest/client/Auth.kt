@@ -1,10 +1,10 @@
 package io.github.ma1uta.jeon.server.rest.client
 
-import io.github.ma1uta.jeon.server.exception.MatrixException
+import io.github.ma1uta.jeon.exception.MatrixException
 import io.github.ma1uta.jeon.server.service.LoginService
 import io.github.ma1uta.matrix.client.api.AuthApi
 import io.github.ma1uta.matrix.client.model.EmptyResponse
-import io.github.ma1uta.matrix.client.model.ErrorMessage
+import io.github.ma1uta.matrix.ErrorMessage
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
 import org.springframework.stereotype.Component
@@ -23,7 +23,7 @@ class Auth : AuthApi {
 
     override fun login(loginRequest: LoginRequest?): LoginResponse {
         if (loginRequest == null) {
-            throw MatrixException(ErrorMessage.Code.M_NOT_JSON, "Missing json.")
+            throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_NOT_JSON, "Missing json.")
         }
 
         return loginService.login(loginRequest, request)

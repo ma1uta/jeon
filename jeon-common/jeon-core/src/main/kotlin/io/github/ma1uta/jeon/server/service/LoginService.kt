@@ -2,8 +2,8 @@ package io.github.ma1uta.jeon.server.service
 
 import io.github.ma1uta.jeon.server.auth.LoginProvider
 import io.github.ma1uta.jeon.server.auth.MatrixAuthentication
-import io.github.ma1uta.jeon.server.exception.MatrixException
-import io.github.ma1uta.matrix.client.model.ErrorMessage
+import io.github.ma1uta.jeon.exception.MatrixException
+import io.github.ma1uta.matrix.ErrorMessage
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
 import org.springframework.security.access.prepost.PreAuthorize
@@ -24,7 +24,7 @@ class LoginService(val loginProviders: List<LoginProvider>, val deviceService: D
         }
 
         if (loginResponse == null) {
-            throw MatrixException(ErrorMessage.Code.M_BAD_JSON, "Bad login type.", null, 400)
+            throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_BAD_JSON, "Bad login type.", null, 400)
         }
 
         return loginResponse
