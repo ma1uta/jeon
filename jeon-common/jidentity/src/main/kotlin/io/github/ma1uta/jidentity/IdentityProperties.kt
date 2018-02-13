@@ -9,6 +9,8 @@ class IdentityProperties {
 
     val shortTermKeys = KeyStore()
 
+    var initialShortKeyPool = 20
+
     val selfKeyGenerator = SelfKeyGenerator()
 
     class SelfKeyGenerator {
