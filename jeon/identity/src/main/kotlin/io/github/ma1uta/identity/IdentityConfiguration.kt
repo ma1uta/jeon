@@ -1,6 +1,6 @@
-package io.github.ma1uta.jidentity
+package io.github.ma1uta.identity
 
-import io.github.ma1uta.jidentity.key.KeyGenerateSelfCertificate
+import io.github.ma1uta.identity.key.KeyGenerateSelfCertificate
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

@@ -1,13 +1,7 @@
-description = 'api'
-
 allprojects {
-    apply plugin: 'java'
-    sourceCompatibility = 9
-    targetCompatibility = 9
-
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            inputs.property("moduleName", description)
+    afterEvaluate {
+        compileJava {
+            inputs.property("moduleName", moduleName)
             doFirst {
                 options.compilerArgs = [
                         '--module-path', classpath.asPath,
@@ -15,11 +9,44 @@ allprojects {
                 classpath = files()
             }
         }
+
+        compileTestJava {
+            inputs.property("moduleName", moduleName)
+            doFirst {
+                options.compilerArgs = [
+                        '--module-path', classpath.asPath,
+                        '--add-modules', 'junit',
+                        '--add-reads', "$moduleName=junit",
+                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+                ]
+                classpath = files()
+            }
+        }
+
+        test {
+            inputs.property("moduleName", moduleName)
+            doFirst {
+                jvmArgs = [
+                        '--module-path', classpath.asPath,
+                        '--add-modules', 'ALL-MODULE-PATH',
+                        '--add-reads', "$moduleName=junit",
+                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+                ]
+                classpath = files()
+            }
+        }
     }
+
+    sourceCompatibility = 9
+    targetCompatibility = 9
 
     dependencies {
         compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
         compile 'org.slf4j:slf4j-api:1.7.25'
         compile 'org.projectlombok:lombok:1.16.20'
+        compile 'javax.ws.rs:javax.ws.rs-api:2.1'
     }
 }
+
+description = 'api'
+ext.moduleName = 'io.github.ma1uta.matrix.api'

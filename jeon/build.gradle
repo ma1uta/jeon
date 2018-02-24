@@ -26,6 +26,7 @@ allprojects {
     repositories {
         maven { url 'https://repo.spring.io/libs-snapshot' }
         maven { url 'https://repo.spring.io/libs-milestone' }
+        mavenCentral()
     }
 
     dependencyManagement {
@@ -39,7 +40,7 @@ allprojects {
     dependencies {
         compile project(':api')
 
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as String // Required for Kotlin integration
+        compile "org.jetbrains.kotlin:kotlin-stdlib" // Required for Kotlin integration
         compile 'org.springframework.boot:spring-boot-starter-jersey'
     }
 }

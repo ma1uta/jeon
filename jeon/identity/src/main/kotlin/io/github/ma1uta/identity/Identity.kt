@@ -1,4 +1,4 @@
-package io.github.ma1uta.jidentity
+package io.github.ma1uta.identity
 
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner

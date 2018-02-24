@@ -1,4 +1,4 @@
-package io.github.ma1uta.jidentity.key
+package io.github.ma1uta.identity.key
 
 import java.security.Key
 import java.security.KeyStore

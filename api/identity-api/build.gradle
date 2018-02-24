@@ -1,5 +1,10 @@
-description = 'identity-api'
+plugins {
+    id 'java-library'
+}
 
 dependencies {
-    compile project(':api')
+    api project(':api')
 }
+
+description = 'identity-api'
+ext.moduleName = 'io.github.ma1uta.matrix.identity.api'

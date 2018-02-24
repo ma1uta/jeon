@@ -1,6 +1,6 @@
-package io.github.ma1uta.jidentity.key
+package io.github.ma1uta.identity.key
 
-import io.github.ma1uta.jidentity.IdentityProperties
+import io.github.ma1uta.identity.IdentityProperties
 import org.bouncycastle.asn1.ASN1ObjectIdentifier
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.asn1.x509.BasicConstraints

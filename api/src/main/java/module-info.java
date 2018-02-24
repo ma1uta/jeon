@@ -1,4 +1,4 @@
-module io.github.ma1uta.jeon.common.api {
+module io.github.ma1uta.matrix.api {
     exports io.github.ma1uta.matrix;
 
     requires com.fasterxml.jackson.annotation;

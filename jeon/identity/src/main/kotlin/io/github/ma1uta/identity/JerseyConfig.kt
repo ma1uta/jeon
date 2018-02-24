@@ -1,4 +1,4 @@
-package io.github.ma1uta.jidentity
+package io.github.ma1uta.identity
 
 import io.github.ma1uta.jeon.exception.ExceptionHandler
 import io.github.ma1uta.matrix.identity.api.IdentityApi

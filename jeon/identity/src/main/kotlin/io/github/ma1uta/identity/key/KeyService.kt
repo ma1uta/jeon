@@ -1,6 +1,6 @@
-package io.github.ma1uta.jidentity.key
+package io.github.ma1uta.identity.key
 
-import io.github.ma1uta.jidentity.IdentityProperties
+import io.github.ma1uta.identity.IdentityProperties
 import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.stereotype.Component
 import java.nio.file.Files

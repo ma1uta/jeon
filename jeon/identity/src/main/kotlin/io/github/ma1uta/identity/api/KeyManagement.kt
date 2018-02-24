@@ -1,8 +1,8 @@
-package io.github.ma1uta.jidentity.api
+package io.github.ma1uta.identity.api
 
 import io.github.ma1uta.jeon.exception.MatrixException
-import io.github.ma1uta.jidentity.M_MISSING_KEY
-import io.github.ma1uta.jidentity.key.KeyService
+import io.github.ma1uta.identity.M_MISSING_KEY
+import io.github.ma1uta.identity.key.KeyService
 import io.github.ma1uta.matrix.ErrorResponse
 import io.github.ma1uta.matrix.identity.api.KeyManagementApi
 import io.github.ma1uta.matrix.identity.model.key.KeyValidationResponse
