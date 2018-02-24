@@ -1,0 +1,5 @@
+description = 'client-api'
+
+dependencies {
+    compile project(':api')
+}

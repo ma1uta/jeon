@@ -6,7 +6,7 @@ import io.github.ma1uta.jeon.server.interaction.StageProvider
 import io.github.ma1uta.matrix.client.model.account.AuthenticationData
 import io.github.ma1uta.matrix.client.model.auth.AuthType
 
-class PasswordStageProvider(val usernamePasswordLoginProvider: UsernamePasswordLoginProvider) : StageProvider {
+class PasswordStageProvider(private val usernamePasswordLoginProvider: UsernamePasswordLoginProvider) : StageProvider {
 
     override fun stage() = AuthType.PASSWORD
 

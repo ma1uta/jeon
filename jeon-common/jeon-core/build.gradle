@@ -1,14 +1,14 @@
 dependencies {
-    compile project(':client-api')
+    compile project(':api:client-api')
     compile project(':jeon-common')
 }
 
 bootRun {
     main = 'io.github.ma1uta.jeon.server.ServerKt'
-    addResources = true
+//    addResources = true
 }
 
-bootRepackage {
-    mainClass = 'io.github.ma1uta.jeon.server.ServerKt'
-    executable = true
+bootWar {
+    mainClassName = 'io.github.ma1uta.jeon.server.ServerKt'
+//    executable = true
 }

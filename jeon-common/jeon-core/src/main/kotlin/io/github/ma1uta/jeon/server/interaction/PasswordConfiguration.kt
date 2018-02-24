@@ -5,7 +5,4 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @ConditionalOnProperty(name = ["jeon.auth.password.enable"], havingValue = "true")
-class PasswordConfiguration {
-
-
-}
+class PasswordConfiguration

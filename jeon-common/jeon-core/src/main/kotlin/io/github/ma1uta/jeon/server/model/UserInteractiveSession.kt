@@ -1,6 +1,6 @@
 package io.github.ma1uta.jeon.server.model
 
-data class UserInteractiveSession(val sessionId: String, val completed: Array<String>) {
+data class UserInteractiveSession(private val sessionId: String, val completed: Array<String>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

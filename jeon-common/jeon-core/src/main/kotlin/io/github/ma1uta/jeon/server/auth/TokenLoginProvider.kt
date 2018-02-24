@@ -1,10 +1,10 @@
 package io.github.ma1uta.jeon.server.auth
 
-import io.github.ma1uta.jeon.server.ServerProperties
 import io.github.ma1uta.jeon.exception.MatrixException
+import io.github.ma1uta.jeon.server.ServerProperties
 import io.github.ma1uta.jeon.server.service.DeviceService
 import io.github.ma1uta.jeon.server.service.UserService
-import io.github.ma1uta.matrix.ErrorMessage
+import io.github.ma1uta.matrix.ErrorResponse
 import io.github.ma1uta.matrix.client.model.auth.AuthType
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
@@ -22,7 +22,7 @@ class TokenLoginProvider(passwordEncoder: BCryptPasswordEncoder, userService: Us
             return null
         }
         if (loginRequest.token.isNullOrBlank()) {
-            throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_FORBIDDEN, "Invalid token", null, 403)
+            throw MatrixException(ErrorResponse.Code.M_FORBIDDEN, "Invalid token", null, 403)
         }
 
         //TODO receive username and password by token via identity server

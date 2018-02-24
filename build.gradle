@@ -1,5 +1,4 @@
 allprojects {
-    apply plugin: 'maven'
     // TODO white javadocs
     // apply plugin: 'checkstyle'
 
@@ -15,21 +14,9 @@ configure(allprojects) {
 }
 
 subprojects {
-    apply plugin: 'java'
-    sourceCompatibility = 8
-    targetCompatibility = 8
-
-
     repositories {
         mavenLocal()
         mavenCentral()
-    }
-
-
-    dependencies {
-        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
-        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-        compile(group: 'org.projectlombok', name: 'lombok', version: '1.16.18')
     }
 }
 

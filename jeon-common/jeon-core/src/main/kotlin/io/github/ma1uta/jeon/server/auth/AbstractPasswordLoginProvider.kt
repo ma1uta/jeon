@@ -1,13 +1,13 @@
 package io.github.ma1uta.jeon.server.auth
 
 import com.github.nitram509.jmacaroons.MacaroonsBuilder
-import io.github.ma1uta.jeon.server.ServerProperties
 import io.github.ma1uta.jeon.exception.MatrixException
+import io.github.ma1uta.jeon.server.ServerProperties
 import io.github.ma1uta.jeon.server.model.Device
 import io.github.ma1uta.jeon.server.model.User
 import io.github.ma1uta.jeon.server.service.DeviceService
 import io.github.ma1uta.jeon.server.service.UserService
-import io.github.ma1uta.matrix.ErrorMessage
+import io.github.ma1uta.matrix.ErrorResponse
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -15,16 +15,16 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import javax.servlet.http.HttpServletRequest
 
-abstract class AbstractPasswordLoginProvider(val passwordEncoder: BCryptPasswordEncoder, val userService: UserService,
-                                             val deviceService: DeviceService, val serverProperties: ServerProperties) : LoginProvider {
+abstract class AbstractPasswordLoginProvider(private val passwordEncoder: BCryptPasswordEncoder, private val userService: UserService,
+                                             private val deviceService: DeviceService, private val serverProperties: ServerProperties) : LoginProvider {
 
     fun validateUsernameAndPassword(username: String, password: CharSequence): User {
         val user =
-                userService.read(username) ?: throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_FORBIDDEN,
+                userService.read(username) ?: throw MatrixException(ErrorResponse.Code.M_FORBIDDEN,
                         "Invalid login or password.", null, 403)
 
         if (!passwordEncoder.matches(password, user.password)) {
-            throw MatrixException(io.github.ma1uta.matrix.ErrorMessage.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
+            throw MatrixException(ErrorResponse.Code.M_FORBIDDEN, "Invalid login or password.", null, 403)
         }
 
         return user

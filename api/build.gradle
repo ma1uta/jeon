@@ -1,0 +1,25 @@
+description = 'api'
+
+allprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 9
+    targetCompatibility = 9
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            inputs.property("moduleName", description)
+            doFirst {
+                options.compilerArgs = [
+                        '--module-path', classpath.asPath,
+                ]
+                classpath = files()
+            }
+        }
+    }
+
+    dependencies {
+        compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
+        compile 'org.slf4j:slf4j-api:1.7.25'
+        compile 'org.projectlombok:lombok:1.16.20'
+    }
+}

@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':identity-api')
+    compile project(':api:identity-api')
     compile project(':jeon-common')
 
     compile 'net.i2p.crypto:eddsa:0.2.0'
@@ -9,10 +9,10 @@ dependencies {
 
 bootRun {
     main = 'io.github.ma1uta.jidentity.IdentityKt'
-    addResources = true
+//    addResources = true
 }
 
-bootRepackage {
-    mainClass = 'io.github.ma1uta.jidentity.IdentityKt'
-    executable = true
+bootWar {
+    mainClassName = 'io.github.ma1uta.jidentity.IdentityKt'
+//    executable = true
 }

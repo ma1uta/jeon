@@ -15,18 +15,18 @@ class QueryConfiguration {
 
     @Bean
     fun query(): Query {
-        val user = Query.User(env.getProperty("user.read"),
-                              env.getProperty("user.insert"))
+        val user = Query.User(env.getProperty("user.read")!!,
+                              env.getProperty("user.insert")!!)
 
-        val device = Query.Device(env.getProperty("device.insertOrUpdate"),
-                                  env.getProperty("device.updateLastSeen"),
-                                  env.getProperty("device.findByToken"),
-                                  env.getProperty("device.deleteToken"))
+        val device = Query.Device(env.getProperty("device.insertOrUpdate")!!,
+                                  env.getProperty("device.updateLastSeen")!!,
+                                  env.getProperty("device.findByToken")!!,
+                                  env.getProperty("device.deleteToken")!!)
 
-        val userInteractiveSession = Query.UserInteractiveSession(env.getProperty("userInteractiveSession.create"),
-                                                                  env.getProperty("userInteractiveSession.read"),
-                                                                  env.getProperty("userInteractiveSession.update"),
-                                                                  env.getProperty("userInteractiveSession.delete"))
+        val userInteractiveSession = Query.UserInteractiveSession(env.getProperty("userInteractiveSession.create")!!,
+                                                                  env.getProperty("userInteractiveSession.read")!!,
+                                                                  env.getProperty("userInteractiveSession.update")!!,
+                                                                  env.getProperty("userInteractiveSession.delete")!!)
 
 
         return Query(user, device, userInteractiveSession)

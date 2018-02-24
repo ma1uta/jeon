@@ -7,7 +7,7 @@ import io.github.ma1uta.matrix.client.model.auth.AuthType
 import org.springframework.web.client.RestTemplate
 import java.net.URL
 
-class ReCaptchaStageProvider(val serverProperties: ServerProperties, val restTemplate: RestTemplate) : StageProvider {
+class ReCaptchaStageProvider(private val serverProperties: ServerProperties, private val restTemplate: RestTemplate) : StageProvider {
     override fun stage() = AuthType.RECAPTCHA
 
     override fun params() = mutableMapOf(Pair("public_key", serverProperties.reCaptchaKey))
@@ -21,7 +21,7 @@ class ReCaptchaStageProvider(val serverProperties: ServerProperties, val restTem
         val response = restTemplate.postForEntity(url,
                 mutableMapOf(Pair("secret", serverProperties.reCaptchaSecretKey), Pair("response", authenticationData.response),
                         Pair("remoteip", "")), Map::class.java)
-        val success = response.body["success"]
+        val success = response.body?.get("success") ?: false
 
         return success is Boolean && success
     }

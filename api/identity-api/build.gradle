@@ -1,0 +1,5 @@
+description = 'identity-api'
+
+dependencies {
+    compile project(':api')
+}
