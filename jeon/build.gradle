@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 buildscript {
     ext {
         kotlinVersion = '1.2.21' // Required for Kotlin integration
-        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+        springBootVersion = '2.0.0.RELEASE'
         dependencyManagementPluginVersion = '0.5.3.RELEASE'
     }
     repositories {
@@ -11,10 +11,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}")
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as String // Required for Kotlin integration
-        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion" as String
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" // Required for Kotlin integration
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
         // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
     }
 }
