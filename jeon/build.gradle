@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 buildscript {
     ext {
-        kotlinVersion = '1.2.21' // Required for Kotlin integration
+        kotlinVersion = '1.2.30' // Required for Kotlin integration
         springBootVersion = '2.0.0.RELEASE'
         dependencyManagementPluginVersion = '0.5.3.RELEASE'
     }

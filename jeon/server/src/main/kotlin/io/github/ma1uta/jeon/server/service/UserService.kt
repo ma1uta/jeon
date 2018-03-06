@@ -1,5 +1,6 @@
 package io.github.ma1uta.jeon.server.service
 
+import io.github.ma1uta.jeon.server.Query
 import io.github.ma1uta.jeon.server.model.User
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service
 import java.sql.ResultSet
 
 @Service
-class UserService(val query: io.github.ma1uta.jeon.server.Query, val template: NamedParameterJdbcTemplate, val passwordEncoder: BCryptPasswordEncoder) {
+class UserService(val query: Query, val template: NamedParameterJdbcTemplate, val passwordEncoder: BCryptPasswordEncoder) {
 
     fun read(userId: String): User? {
         return try {

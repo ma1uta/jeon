@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    url: 'jdbc:postgresql://localhost/identity'
+    username: 'jeon'
+    password: 'jeon'
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG

@@ -90,6 +90,16 @@ class KeyService(val properties: IdentityProperties, val keyGenerator: KeyGenera
         return Pair(alias, certificate)
     }
 
+    fun sign(content: String, longTerm: Boolean): String? {
+        val keyStore = if (longTerm) longTermKeyStore else shortTermKeyStore
+        val aliases = keyStore.aliases()
+        if (aliases.hasMoreElements()) {
+            val key = aliases.nextElement()
+            return sign(key, content, longTerm)
+        }
+        return null
+    }
+
     fun sign(key: String, content: String, longTerm: Boolean): String? {
         val (alias, _) = key(key, longTerm) ?: return null
         val sign = Signature.getInstance("Ed25519")
@@ -101,7 +111,7 @@ class KeyService(val properties: IdentityProperties, val keyGenerator: KeyGenera
         if (!longTerm) {
             keyStore.deleteEntry(alias)
             shortTermKeyStore = keyStoreInit(props)
-            if (keyStore.aliases().toList().isEmpty()) {
+            if (shortTermKeyStore.aliases().toList().isEmpty()) {
                 createNew(properties.initialShortKeyPool, false)
             }
         }
