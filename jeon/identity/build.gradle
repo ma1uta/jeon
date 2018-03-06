@@ -5,10 +5,6 @@ dependencies {
     compile 'net.i2p.crypto:eddsa:0.2.0'
     compile 'org.bouncycastle:bcprov-jdk15on:1.59'
     compile 'org.bouncycastle:bcpkix-jdk15on:1.59'
-
-    compile 'org.flywaydb:flyway-core'
-    compile 'org.postgresql:postgresql:42.1.4'
-    compile 'com.zaxxer:HikariCP'
 }
 
 bootRun {
