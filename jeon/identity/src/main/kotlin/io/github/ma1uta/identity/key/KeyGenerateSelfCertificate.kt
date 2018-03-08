@@ -11,14 +11,13 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
 import java.math.BigInteger
 import java.security.Key
 import java.security.KeyPairGenerator
-import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.SecureRandom
 import java.security.Security
 import java.util.*
 
 class KeyGenerateSelfCertificate(private val properties: IdentityProperties) : KeyGenerator {
-    override fun generate(keyStore: KeyStore, parentPrivateKey: Key?, keyId: String, password: CharArray) {
+    override fun generate(keyStoreProvider: KeyStoreProvider, parentPrivateKey: Key?, keyId: String) {
         val pairGenerator = KeyPairGenerator.getInstance("Ed25519")
         val random = SecureRandom(properties.selfKeyGenerator.secureRandomSeed.toByteArray())
 
@@ -45,6 +44,6 @@ class KeyGenerateSelfCertificate(private val properties: IdentityProperties) : K
 
         val certificate = JcaX509CertificateConverter().setProvider(provider).getCertificate(certificateBuilder.build(contentSigner))
 
-        keyStore.setKeyEntry(keyId, keyPair.private, password, arrayOf(certificate))
+        keyStoreProvider.addKey(keyId, keyPair, certificate)
     }
 }

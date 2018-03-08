@@ -9,9 +9,15 @@ class IdentityProperties {
 
     val shortTermKeys = KeyStore()
 
+    val usedShortTermKeys = KeyStore()
+
     var initialShortKeyPool = 20
 
     val selfKeyGenerator = SelfKeyGenerator()
+
+    var useServerKey = false
+
+    var hostname = "localhost"
 
     class SelfKeyGenerator {
 
@@ -34,6 +40,5 @@ class IdentityProperties {
 
         var keyStoreType = "pkcs12"
 
-        var useServerKey = false
     }
 }

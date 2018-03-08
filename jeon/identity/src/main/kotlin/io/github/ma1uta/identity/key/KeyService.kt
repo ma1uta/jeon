@@ -7,52 +7,27 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.Key
 import java.security.KeyStore
-import java.security.PrivateKey
-import java.security.Signature
 import java.security.cert.Certificate
-import java.util.regex.Pattern
 import javax.annotation.PostConstruct
 
 @Component
 class KeyService(val properties: IdentityProperties, val keyGenerator: KeyGenerator, val serverProperties: ServerProperties) {
 
-    val keyPattern: Pattern = Pattern.compile("(\\w+):(\\w+)")
-
-    lateinit var longTermKeyStore: KeyStore
-    lateinit var shortTermKeyStore: KeyStore
+    lateinit var longTermKeys: KeyStoreProvider
+    lateinit var shortTermKeys: KeyStoreProvider
 
     @PostConstruct
     fun init() {
-        longTermKeyStore = keyStoreInit(properties.longTermKeys)
-        shortTermKeyStore = keyStoreInit(properties.shortTermKeys)
-    }
-
-    private fun keyStoreInit(properties: IdentityProperties.KeyStore): KeyStore {
-        val keyStore = KeyStore.getInstance(properties.keyStoreType)
-        Files.newInputStream(Paths.get(properties.keyStore)).use {
-            keyStore.load(it, properties.keyStorePassword.toCharArray())
-        }
-        return keyStore
+        longTermKeys = KeyStoreProvider(properties.longTermKeys)
+        shortTermKeys = ShortTermKeyStoreProvider(properties.usedShortTermKeys, properties.shortTermKeys)
     }
 
     fun revoke(key: String, longTerm: Boolean) {
         if (longTerm) {
-            val newStore = revoke(key, longTermKeyStore, properties.longTermKeys)
-            if (newStore != null) {
-                longTermKeyStore = newStore
-            }
+            longTermKeys.revoke(key)
         } else {
-            val newStore = revoke(key, shortTermKeyStore, properties.shortTermKeys)
-            if (newStore != null) {
-                shortTermKeyStore = newStore
-            }
+            shortTermKeys.revoke(key)
         }
-    }
-
-    private fun revoke(key: String, keyStore: KeyStore, properties: IdentityProperties.KeyStore): KeyStore? {
-        val (alias, _) = key(key, keyStore) ?: return null
-        keyStore.deleteEntry(alias)
-        return keyStoreInit(properties)
     }
 
     fun key(key: String): Pair<String, Certificate>? {
@@ -60,72 +35,30 @@ class KeyService(val properties: IdentityProperties, val keyGenerator: KeyGenera
     }
 
     fun key(key: String, longTerm: Boolean): Pair<String, Certificate>? {
-        return key(key, if (longTerm) longTermKeyStore else shortTermKeyStore)
+        return if (longTerm) longTermKeys.key(key) else shortTermKeys.key(key)
     }
 
     fun valid(publicKey: String, longTerm: Boolean): Boolean {
-        val keyStore = if (longTerm) longTermKeyStore else shortTermKeyStore
-        val aliases = keyStore.aliases()
-        while (aliases.hasMoreElements()) {
-            val certificate = keyStore.getCertificate(aliases.nextElement())
-            if (certificate.publicKey.encoded.toString(Charsets.UTF_8) == publicKey) {
-                return true
-            }
-        }
-        return false
+        return if (longTerm) longTermKeys.valid(publicKey) else shortTermKeys.valid(publicKey)
     }
 
-    private fun key(key: String, keyStore: KeyStore): Pair<String, Certificate>? {
-        val matcher = keyPattern.matcher(key.trim())
-        if (!matcher.matches()) {
-            throw IllegalAccessException("Wrong key: $key")
-        }
-
-        val algorithm = matcher.group(1)
-        val alias = matcher.group(2)
-        val certificate = keyStore.getCertificate(alias) ?: return null
-        if (certificate.publicKey.algorithm != algorithm) {
-            throw IllegalAccessException("Wrong key: $key")
-        }
-        return Pair(alias, certificate)
-    }
-
-    fun sign(content: String, longTerm: Boolean): String? {
-        val keyStore = if (longTerm) longTermKeyStore else shortTermKeyStore
-        val aliases = keyStore.aliases()
-        if (aliases.hasMoreElements()) {
-            val key = aliases.nextElement()
-            return sign(key, content, longTerm)
-        }
-        return null
+    fun sign(content: String, longTerm: Boolean): Pair<String, String>? {
+        val keyStore = if (longTerm) longTermKeys else shortTermKeys
+        val key = keyStore.nextKey() ?: return null
+        return keyStore.sign(key, content)
     }
 
     fun sign(key: String, content: String, longTerm: Boolean): String? {
-        val (alias, _) = key(key, longTerm) ?: return null
-        val sign = Signature.getInstance("Ed25519")
-        val props = if (longTerm) properties.longTermKeys else properties.shortTermKeys
-        val keyStore = if (longTerm) longTermKeyStore else shortTermKeyStore
-        sign.initSign(keyStore.getKey(alias, props.keyPassword.toCharArray()) as PrivateKey)
-        sign.update(content.toByteArray())
-        val signature = sign.sign().toString(Charsets.UTF_8)
-        if (!longTerm) {
-            keyStore.deleteEntry(alias)
-            shortTermKeyStore = keyStoreInit(props)
-            if (shortTermKeyStore.aliases().toList().isEmpty()) {
-                createNew(properties.initialShortKeyPool, false)
-            }
-        }
-        return signature
+        return if (longTerm) longTermKeys.sign(key, content)?.second else shortTermKeys.sign(key, content)?.second
     }
 
     fun createNew(count: Int, longTerm: Boolean = false) {
-        val keyStore = if (longTerm) longTermKeyStore else shortTermKeyStore
-        val props = if (longTerm) properties.longTermKeys else properties.shortTermKeys
+        val keyStore = if (longTerm) longTermKeys else shortTermKeys
 
-        val startFrom = keyStore.aliases().toList().map { it.toLong() }.max() ?: -1
+        val startFrom = keyStore.maxId()
 
         var key: Key? = null
-        if (props.useServerKey) {
+        if (properties.useServerKey) {
             val rootStore = KeyStore.getInstance(serverProperties.ssl.keyStoreType, serverProperties.ssl.keyStoreProvider)
             Files.newInputStream(Paths.get(serverProperties.ssl.keyStore)).use {
                 rootStore.load(it, serverProperties.ssl.keyStorePassword.toCharArray())
@@ -133,16 +66,7 @@ class KeyService(val properties: IdentityProperties, val keyGenerator: KeyGenera
             key = rootStore.getKey(serverProperties.ssl.keyAlias, serverProperties.ssl.keyPassword.toCharArray())
         }
         for (i in (startFrom + 1)..(startFrom + count + 1)) {
-            keyGenerator.generate(keyStore, key, i.toString(), props.keyPassword.toCharArray())
-        }
-
-        Files.newOutputStream(Paths.get(props.keyStore)).use {
-            keyStore.store(it, props.keyStorePassword.toCharArray())
-        }
-        if (longTerm) {
-            longTermKeyStore = keyStoreInit(props)
-        } else {
-            shortTermKeyStore = keyStoreInit(props)
+            keyGenerator.generate(keyStore, key, i.toString())
         }
     }
 }
