@@ -19,6 +19,8 @@ class IdentityProperties {
 
     var hostname = "localhost"
 
+    val email = Email()
+
     class SelfKeyGenerator {
 
         var issuerName = "jidentity"
@@ -39,6 +41,13 @@ class IdentityProperties {
         var keyPassword = "dummy"
 
         var keyStoreType = "pkcs12"
+    }
 
+    class Email {
+        var hostname = "identity@localhost.lan"
+
+        var subject = "Create a session"
+
+        var body = "Token: %s\nClient secret: %s\nSession id: %s\nUrl: %s"
     }
 }

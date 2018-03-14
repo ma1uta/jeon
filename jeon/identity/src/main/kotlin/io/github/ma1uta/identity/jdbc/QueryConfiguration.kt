@@ -18,6 +18,12 @@ class QueryConfiguration {
     fun query(): Query {
         val association = Query.Association(env["association.findByAddressMedium"])
 
-        return Query(association)
+        val session = Query.Session(env["session.insertOrUpdate"],
+                env["session.findBySecretAndEmail"],
+                env["session.findBySecretTokenSid"],
+                env["session.deleteOldest"],
+                env["session.validate"])
+
+        return Query(association, session)
     }
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 public class ValidationResponse {
 
     /**
-     * REsult of the 3pid validation..
+     * Result of the 3pid validation.
      */
     private Boolean validated;
 }

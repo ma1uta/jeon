@@ -7,3 +7,14 @@ CREATE TABLE "association" (
   ts      BIGINT NOT NULL,
   PRIMARY KEY (address, medium)
 );
+
+CREATE TABLE "session" (
+  sid           TEXT PRIMARY KEY,
+  token         TEXT                     NOT NULL,
+  client_secret TEXT                     NOT NULL,
+  email         TEXT                     NOT NULL UNIQUE,
+  send_attempt  INT4,
+  next_link     TEXT,
+  created       TIMESTAMP WITH TIME ZONE NOT NULL,
+  validated     TIMESTAMP WITH TIME ZONE
+);
