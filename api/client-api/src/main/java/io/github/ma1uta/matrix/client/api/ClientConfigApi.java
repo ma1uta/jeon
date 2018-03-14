@@ -1,6 +1,6 @@
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.client.model.EmptyResponse;
+import io.github.ma1uta.matrix.EmptyResponse;
 
 import java.util.Map;
 import javax.ws.rs.PUT;

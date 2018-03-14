@@ -4,7 +4,7 @@ import io.github.ma1uta.jeon.exception.MatrixException
 import io.github.ma1uta.jeon.server.service.LoginService
 import io.github.ma1uta.matrix.ErrorResponse
 import io.github.ma1uta.matrix.client.api.AuthApi
-import io.github.ma1uta.matrix.client.model.EmptyResponse
+import io.github.ma1uta.matrix.EmptyResponse
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse
 import org.springframework.stereotype.Component

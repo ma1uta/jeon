@@ -1,6 +1,6 @@
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.client.model.EmptyResponse;
+import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.client.model.room.CreateRoomRequest;
 import io.github.ma1uta.matrix.client.model.room.InviteRequest;
 import io.github.ma1uta.matrix.client.model.room.JoinRequest;
