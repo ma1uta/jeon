@@ -35,10 +35,12 @@ class LookupService(val template: NamedParameterJdbcTemplate, val query: Query, 
             response.notAfter = associations[0].expired
             response.ts = associations[0].ts
 
-            val content = objectMapper.writeValueAsString(response)
-            val pair = keyService.sign(content, false)
-            if (pair != null) {
-                response.signatures = mutableMapOf(Pair(props.hostname, mutableMapOf(Pair("ed25519:" + pair.first, pair.second))))
+            if (sign) {
+                val content = objectMapper.writeValueAsString(response)
+                val pair = keyService.sign(content, false)
+                if (pair != null) {
+                    response.signatures = mutableMapOf(Pair(props.hostname, mutableMapOf(Pair("ed25519:" + pair.first, pair.second))))
+                }
             }
         }
         return response
