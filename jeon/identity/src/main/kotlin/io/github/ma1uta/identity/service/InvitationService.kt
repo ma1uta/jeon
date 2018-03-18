@@ -13,6 +13,14 @@ import java.util.*
 class InvitationService(val query: Query, val template: NamedParameterJdbcTemplate, val associationService: AssociationService,
                         val keyService: KeyService) {
 
+    /**
+     * Store invitation.
+     *
+     * @param medium 'email' or 'msisdn'.
+     * @param address email or phone number.
+     * @param roomId roomId to invite.
+     * @param sender who send invite.
+     */
     fun create(medium: String, address: String, roomId: String, sender: String): InvitationResponse {
         if ("email" != medium) {
             throw MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong medium.", null, 400)
@@ -26,7 +34,7 @@ class InvitationService(val query: Query, val template: NamedParameterJdbcTempla
             throw MatrixException(ErrorResponse.Code.M_THREEPID_IN_USE, "Medium and address are used.", null, 400)
         }
         val token = UUID.randomUUID().toString()
-        val ephemeralKey = "stub"
+        val ephemeralKey = keyService.nextKey()
         val displayName = address.substring(0, index)
 
         template.update(query.invitation.insert, mutableMapOf(Pair("medium", medium), Pair("address", address), Pair("room_id", roomId),
@@ -39,7 +47,14 @@ class InvitationService(val query: Query, val template: NamedParameterJdbcTempla
         return response
     }
 
+    /**
+     * Send invite to the user's home server.
+     *
+     * @param medium 'email' or 'msisdn'.
+     * @param address email or phone number.
+     * @param mxid matrix id.
+     */
     fun sendInvite(medium: String, address: String, mxid: String) {
-
+        TODO()
     }
 }

@@ -19,6 +19,8 @@ class IdentityProperties {
 
     val email = Email()
 
+    var amountKeysToCreate = 20
+
     /**
      * Time to live in seconds of the association.
      * <p/>
@@ -53,6 +55,6 @@ class IdentityProperties {
 
         var subject = "Create a session"
 
-        var body = "Token: %s\nClient secret: %s\nSession id: %s\nUrl: %s"
+        var body = "Token: {0}\nClient secret: {1}\nSession id: {2}\nUrl: {3}"
     }
 }

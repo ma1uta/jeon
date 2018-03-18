@@ -46,10 +46,7 @@ class AssociationService(val template: NamedParameterJdbcTemplate, val query: Qu
 
             if (sign) {
                 val content = objectMapper.writeValueAsString(response)
-                val pair = keyService.sign(content, false)
-                if (pair != null) {
-                    response.signatures = mutableMapOf(Pair(props.hostname, mutableMapOf(Pair("ed25519:" + pair.first, pair.second))))
-                }
+                response.signatures = keyService.sign(content)
             }
         }
         return response

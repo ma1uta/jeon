@@ -7,8 +7,8 @@ class Query(val association: Association, val session: Session, val invitation: 
                       val expire: String)
 
     class Session(val insertOrUpdate: String,
-                  val findBySecretAndEmail: String,
-                  val findBySecretAndSid: String,
+                  val findBySecretEmail: String,
+                  val findBySecretSid: String,
                   val findBySecretTokenSid: String,
                   val deleteOldest: String,
                   val validate: String)

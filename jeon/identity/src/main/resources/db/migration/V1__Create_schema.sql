@@ -6,12 +6,12 @@ CREATE TABLE "association" (
   created BIGINT NOT NULL,
   expired BIGINT NOT NULL,
   ts      BIGINT NOT NULL,
-  PRIMARY KEY (medium, address, mxid)
+  PRIMARY KEY (medium, address)
 );
 
 -- Expired associations.
 CREATE TABLE "expired_association" (
-  PRIMARY KEY (medium, address, mxid, expired)
+  PRIMARY KEY (medium, address, expired)
 )
   INHERITS ("association");
 

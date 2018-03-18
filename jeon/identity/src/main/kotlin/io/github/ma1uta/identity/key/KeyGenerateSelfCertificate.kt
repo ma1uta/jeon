@@ -14,7 +14,7 @@ import java.security.KeyPairGenerator
 import java.security.PrivateKey
 import java.security.SecureRandom
 import java.security.Security
-import java.util.*
+import java.util.Date
 
 class KeyGenerateSelfCertificate(private val properties: IdentityProperties) : KeyGenerator {
     override fun generate(keyStoreProvider: KeyStoreProvider, parentPrivateKey: Key?, keyId: String) {
