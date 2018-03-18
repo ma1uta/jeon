@@ -26,6 +26,8 @@ class QueryConfiguration {
                 env["session.deleteOldest"],
                 env["session.validate"])
 
-        return Query(association, session)
+        val invitation = Query.Invitation(env["invitation.insert"])
+
+        return Query(association, session, invitation)
     }
 }

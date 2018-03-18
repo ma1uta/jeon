@@ -1,6 +1,6 @@
 package io.github.ma1uta.identity.api
 
-import io.github.ma1uta.identity.lookup.AssociationService
+import io.github.ma1uta.identity.service.AssociationService
 import io.github.ma1uta.jeon.exception.MatrixException
 import io.github.ma1uta.matrix.ErrorResponse
 import io.github.ma1uta.matrix.identity.api.LookupApi

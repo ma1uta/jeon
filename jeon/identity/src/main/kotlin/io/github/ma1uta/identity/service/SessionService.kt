@@ -1,4 +1,4 @@
-package io.github.ma1uta.identity.lookup
+package io.github.ma1uta.identity.service
 
 import io.github.ma1uta.identity.IdentityProperties
 import io.github.ma1uta.identity.jdbc.Query

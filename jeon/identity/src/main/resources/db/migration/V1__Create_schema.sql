@@ -18,3 +18,14 @@ CREATE TABLE "session" (
   created       TIMESTAMP WITH TIME ZONE NOT NULL,
   validated     TIMESTAMP WITH TIME ZONE
 );
+
+CREATE TABLE "invite" (
+  medium       TEXT NOT NULL,
+  address      TEXT NOT NULL,
+  room_id      TEXT NOT NULL,
+  sender       TEXT NOT NULL,
+  token        TEXT NOT NULL,
+  public_key   TEXT NOT NULL,
+  display_name TEXT NOT NULL,
+  PRIMARY KEY (medium, address, room_id)
+);

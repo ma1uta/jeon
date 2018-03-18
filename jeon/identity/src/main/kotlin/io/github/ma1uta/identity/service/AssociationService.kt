@@ -1,4 +1,4 @@
-package io.github.ma1uta.identity.lookup
+package io.github.ma1uta.identity.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.ma1uta.identity.IdentityProperties
@@ -23,7 +23,6 @@ class AssociationService(val template: NamedParameterJdbcTemplate, val query: Qu
                          val objectMapper: ObjectMapper, val props: IdentityProperties) {
 
     fun lookup(address: String, medium: String, sign: Boolean = true): LookupResponse {
-
         val associations = template.query(query.association.findByAddressMedium,
                 mutableMapOf(Pair("address", address), Pair("medium", medium)), AssociationRowMapper())
         val response = LookupResponse()
