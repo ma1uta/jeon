@@ -1,6 +1,7 @@
 package io.github.ma1uta.identity
 
 import org.springframework.boot.context.properties.ConfigurationProperties
+import java.time.Period
 
 @ConfigurationProperties(prefix = "jidentity")
 class IdentityProperties {
@@ -20,6 +21,8 @@ class IdentityProperties {
     var hostname = "localhost"
 
     val email = Email()
+
+    var associationTTL = Period.ofYears(40)
 
     class SelfKeyGenerator {
 

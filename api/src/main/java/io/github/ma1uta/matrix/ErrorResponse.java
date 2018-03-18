@@ -95,6 +95,11 @@ public class ErrorResponse {
          * The client's request used a third party server, eg. ID server, that this server does not trust.
          */
         String M_SERVER_NOT_TRUSTED = "M_SERVER_NOT_TRUSTED";
+
+        /**
+         * The session of the identity server not found or not validated.
+         */
+        String M_SESSION_NOT_VALIDATED = "M_SESSION_NOT_VALIDATED";
     }
 
     private String errcode;
