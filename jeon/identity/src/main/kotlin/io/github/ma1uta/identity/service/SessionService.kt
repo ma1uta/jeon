@@ -111,7 +111,7 @@ class SessionService(val query: Query, val template: NamedParameterJdbcTemplate,
                 "&sid=${URLEncoder.encode(sid, "UTF-8")}"
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "%{identity.session.expire}")
     fun cleanup() {
         template.update(query.session.deleteOldest, mutableMapOf<String, Any>())
     }

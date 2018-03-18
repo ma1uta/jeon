@@ -1,9 +1,8 @@
 package io.github.ma1uta.identity
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import java.time.Period
 
-@ConfigurationProperties(prefix = "jidentity")
+@ConfigurationProperties(prefix = "identity")
 class IdentityProperties {
 
     val longTermKeys = KeyStore()
@@ -11,8 +10,6 @@ class IdentityProperties {
     val shortTermKeys = KeyStore()
 
     val usedShortTermKeys = KeyStore()
-
-    var initialShortKeyPool = 20
 
     val selfKeyGenerator = SelfKeyGenerator()
 
@@ -22,7 +19,12 @@ class IdentityProperties {
 
     val email = Email()
 
-    var associationTTL = Period.ofYears(40)
+    /**
+     * Time to live in seconds of the association.
+     * <p/>
+     * Default value is 10 years (60 seconds * 60 minutes * 24 hours * 30 days * 12 month * 10 years).
+     */
+    var associationTTL: Long = 60 * 60 * 24 * 30 * 12 * 10
 
     class SelfKeyGenerator {
 

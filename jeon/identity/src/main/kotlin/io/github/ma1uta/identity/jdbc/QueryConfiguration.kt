@@ -17,11 +17,12 @@ class QueryConfiguration {
     @Bean
     fun query(): Query {
         val association = Query.Association(env["association.findByAddressMedium"],
-                env["association.insertOrUpdate"])
+                env["association.insertOrIgnore"],
+                env["association.expire"])
 
         val session = Query.Session(env["session.insertOrUpdate"],
-                env["session.findBySecretAndEmail"],
-                env["session.findBySecretAndSid"],
+                env["session.findBySecretEmail"],
+                env["session.findBySecretSid"],
                 env["session.findBySecretTokenSid"],
                 env["session.deleteOldest"],
                 env["session.validate"])

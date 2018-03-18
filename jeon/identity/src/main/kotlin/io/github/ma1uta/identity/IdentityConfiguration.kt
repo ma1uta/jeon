@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
 import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.web.client.RestTemplate
 
 @Configuration
 @EnableConfigurationProperties(value = [IdentityProperties::class])
@@ -26,4 +27,7 @@ class IdentityConfiguration {
     fun mapper() = Jackson2ObjectMapperBuilderCustomizer {
         it.featuresToEnable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
     }
+
+    @Bean
+    fun restTemplate() = RestTemplate()
 }

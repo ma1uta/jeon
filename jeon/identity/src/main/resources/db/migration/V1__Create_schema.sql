@@ -1,13 +1,21 @@
+-- Association between 3pid and mxid.
 CREATE TABLE "association" (
-  address TEXT   NOT NULL,
   medium  TEXT   NOT NULL,
+  address TEXT   NOT NULL,
   mxid    TEXT   NOT NULL,
   created BIGINT NOT NULL,
   expired BIGINT NOT NULL,
   ts      BIGINT NOT NULL,
-  PRIMARY KEY (address, medium)
+  PRIMARY KEY (medium, address, mxid)
 );
 
+-- Expired associations.
+CREATE TABLE "expired_association" (
+  PRIMARY KEY (medium, address, mxid, expired)
+)
+  INHERITS ("association");
+
+-- Validation session.
 CREATE TABLE "session" (
   sid           TEXT PRIMARY KEY,
   token         TEXT                     NOT NULL,
@@ -19,6 +27,7 @@ CREATE TABLE "session" (
   validated     TIMESTAMP WITH TIME ZONE
 );
 
+-- Invite for the room.
 CREATE TABLE "invite" (
   medium       TEXT NOT NULL,
   address      TEXT NOT NULL,

@@ -3,7 +3,8 @@ package io.github.ma1uta.identity.jdbc
 class Query(val association: Association, val session: Session, val invitation: Invitation) {
 
     class Association(val findByAddressMedium: String,
-                      val insertOrUpdate: String)
+                      val insertOrIgnore: String,
+                      val expire: String)
 
     class Session(val insertOrUpdate: String,
                   val findBySecretAndEmail: String,

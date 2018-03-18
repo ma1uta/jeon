@@ -15,7 +15,7 @@ class Lookup(val associationService: AssociationService) : LookupApi {
         if (medium.isNullOrBlank() || address.isNullOrBlank()) {
             throw MatrixException(ErrorResponse.Code.M_BAD_JSON, "Missing medium or address.")
         }
-        return associationService.lookup(address!!, medium!!)
+        return associationService.lookup(medium!!, address!!)
     }
 
     override fun bulkLookup(request: BulkLookupRequest?): BulkLookupResponse {

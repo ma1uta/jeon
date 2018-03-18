@@ -12,6 +12,7 @@ import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse
 import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.sql.ResultSet
 import java.time.LocalDateTime
@@ -22,7 +23,14 @@ const val M_TOO_MANY_ASSOCIATIONS = "M_TOO_MANY_ASSOCIATIONS"
 class AssociationService(val template: NamedParameterJdbcTemplate, val query: Query, val keyService: KeyService,
                          val objectMapper: ObjectMapper, val props: IdentityProperties) {
 
-    fun lookup(address: String, medium: String, sign: Boolean = true): LookupResponse {
+    /**
+     * Lookup association.
+     *
+     * @param medium 'email' or 'msisdn'.
+     * @param address email address or phone number.
+     * @param sign if true then sign result else false.
+     */
+    fun lookup(medium: String, address: String, sign: Boolean = true): LookupResponse {
         val associations = template.query(query.association.findByAddressMedium,
                 mutableMapOf(Pair("address", address), Pair("medium", medium)), AssociationRowMapper())
         val response = LookupResponse()
@@ -47,20 +55,39 @@ class AssociationService(val template: NamedParameterJdbcTemplate, val query: Qu
         return response
     }
 
+    /**
+     * Bulk lookup.
+     *
+     * @param request bulk request.
+     */
     fun lookup(request: BulkLookupRequest): BulkLookupResponse {
         val bulkResponse = BulkLookupResponse()
-        bulkResponse.threepids = request.threepids.map { list -> lookup(list[1], list[0], false) }
+        bulkResponse.threepids = request.threepids.map { list -> lookup(list[0], list[1], false) }
                 .filter { response -> !response.address.isNullOrBlank() && !response.medium.isNullOrBlank() && !response.mxid.isNullOrBlank() }
                 .map { response -> listOf(response.medium, response.address, response.mxid) }
         return bulkResponse
     }
 
+    /**
+     * Create new association.
+     */
     fun create(session: Session, mxid: String) {
-        val expired = LocalDateTime.now().plus(props.associationTTL)
-        template.update(query.association.insertOrUpdate, mutableMapOf(Pair("address", session.address), Pair("medium", session.medium),
-                Pair("mxid", mxid), Pair("expired", expired), Pair("ts", session.validated)))
+        val expired = LocalDateTime.now().plusSeconds(props.associationTTL)
+        template.update(query.association.insertOrIgnore, mutableMapOf(Pair("address", session.address), Pair("medium", session.medium),
+                Pair("mxid", mxid), Pair("expired", expired)))
     }
 
+    /**
+     * Move expired associations to the "expired_association" table.
+     */
+    @Scheduled(cron = "%{identity.association.expire}")
+    fun expire() {
+        template.update(query.association.expire, mutableMapOf<String, String>())
+    }
+
+    /**
+     * Mapper from a ResultSet to the Association.
+     */
     class AssociationRowMapper : RowMapper<Association> {
         override fun mapRow(rs: ResultSet?, rowNum: Int): Association {
             return Association(rs!!.getString("address"),

@@ -21,7 +21,7 @@ class InvitationService(val query: Query, val template: NamedParameterJdbcTempla
         if (index == -1) {
             throw MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong address", null, 400)
         }
-        val lookup = associationService.lookup(address, medium, false)
+        val lookup = associationService.lookup(medium, address, false)
         if (lookup.mxid != null) {
             throw MatrixException(ErrorResponse.Code.M_THREEPID_IN_USE, "Medium and address are used.", null, 400)
         }

@@ -1,3 +1,13 @@
+identity:
+  association:
+    # cron schedule to move expired associations
+    expire: '0 0 0 * * ?'
+  session:
+    # cron schedule to delete expired sessions
+    expire: '0 0 0 * * ?'
+  # 10 years
+  associationTTL: 311040000
+
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
