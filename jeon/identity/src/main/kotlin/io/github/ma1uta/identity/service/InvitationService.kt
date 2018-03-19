@@ -1,6 +1,7 @@
 package io.github.ma1uta.identity.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.ma1uta.identity.IdentityProperties
 import io.github.ma1uta.identity.jdbc.Query
 import io.github.ma1uta.identity.key.KeyService
 import io.github.ma1uta.identity.model.Invitation
@@ -21,7 +22,8 @@ import java.util.*
 
 @Service
 class InvitationService(val query: Query, val template: NamedParameterJdbcTemplate, val associationService: AssociationService,
-                        val keyService: KeyService, val restTemplate: RestTemplate, val objectMapper: ObjectMapper) {
+                        val keyService: KeyService, val restTemplate: RestTemplate, val objectMapper: ObjectMapper,
+                        val props: IdentityProperties) {
 
     /**
      * Store invitation.
@@ -91,7 +93,8 @@ class InvitationService(val query: Query, val template: NamedParameterJdbcTempla
                 invite
             }
             val domain = Id.domain(mxid)
-            restTemplate.getForObject("https://$domain:8448/_matrix/federation/v1/3pid/onbind", EmptyResponse::class.java, request)
+            restTemplate.getForObject("${props.onBindProtocol}://$domain:${props.onBindPort}/${props.onBindUrl}", EmptyResponse::class.java,
+                    request)
         }
     }
 

@@ -21,6 +21,12 @@ class IdentityProperties {
 
     var amountKeysToCreate = 20
 
+    var onBindUrl = "_matrix/federation/v1/3pid/onbind"
+
+    var onBindPort = 8448
+
+    var onBindProtocol = "https"
+
     /**
      * Time to live in seconds of the association.
      * <p/>
@@ -51,9 +57,9 @@ class IdentityProperties {
     }
 
     class Email {
-        var hostname = "identity@localhost.lan"
+        var hostname = "server@identity.local"
 
-        var subject = "Create a session"
+        var subject = "Session has been created"
 
         var body = "Token: {0}\nClient secret: {1}\nSession id: {2}\nUrl: {3}"
     }
