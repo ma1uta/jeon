@@ -27,7 +27,8 @@ class QueryConfiguration {
                 env["session.deleteOldest"],
                 env["session.validate"])
 
-        val invitation = Query.Invitation(env["invitation.insert"])
+        val invitation = Query.Invitation(env["invitation.insert"],
+                env["invitation.findByMediumAddress"])
 
         return Query(association, session, invitation)
     }

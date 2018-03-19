@@ -27,14 +27,14 @@ CREATE TABLE "session" (
   validated     TIMESTAMP WITH TIME ZONE
 );
 
--- Invite for the room.
-CREATE TABLE "invite" (
-  medium       TEXT NOT NULL,
-  address      TEXT NOT NULL,
-  room_id      TEXT NOT NULL,
-  sender       TEXT NOT NULL,
-  token        TEXT NOT NULL,
-  public_key   TEXT NOT NULL,
-  display_name TEXT NOT NULL,
+-- Invitation for the room.
+CREATE TABLE "invitation" (
+  medium       TEXT    NOT NULL,
+  address      TEXT    NOT NULL,
+  room_id      TEXT    NOT NULL,
+  sender       TEXT    NOT NULL,
+  token        TEXT    NOT NULL,
+  public_key   TEXT [] NOT NULL,
+  display_name TEXT    NOT NULL,
   PRIMARY KEY (medium, address, room_id)
 );

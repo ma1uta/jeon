@@ -1,0 +1,10 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    api project(':api')
+}
+
+description = 'server-api'
+ext.moduleName = 'io.github.ma1uta.matrix.server.api'

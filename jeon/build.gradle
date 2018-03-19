@@ -75,9 +75,13 @@ subprojects {
     }
 
     compileJava.dependsOn(processResources)
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     war {
         enabled = true
     }
+
+
 }
 

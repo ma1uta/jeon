@@ -13,5 +13,6 @@ class Query(val association: Association, val session: Session, val invitation: 
                   val deleteOldest: String,
                   val validate: String)
 
-    class Invitation(val insert: String)
+    class Invitation(val insert: String,
+                     val findByMediumAddress: String)
 }

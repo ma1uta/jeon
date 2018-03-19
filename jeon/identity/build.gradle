@@ -1,5 +1,6 @@
 dependencies {
     compile project(':api:identity-api')
+    compile project(':api:server-api')
     compile project(':jeon')
 
     compile 'net.i2p.crypto:eddsa:0.2.0'

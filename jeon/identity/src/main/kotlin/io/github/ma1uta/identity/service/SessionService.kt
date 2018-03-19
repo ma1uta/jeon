@@ -22,7 +22,8 @@ import java.util.UUID
 
 @Service
 class SessionService(val query: Query, val template: NamedParameterJdbcTemplate, val mailSender: JavaMailSender,
-                     val props: IdentityProperties, val associationService: AssociationService) {
+                     val props: IdentityProperties, val associationService: AssociationService,
+                     val invitationService: InvitationService) {
 
     /**
      * Create new session.
@@ -125,7 +126,10 @@ class SessionService(val query: Query, val template: NamedParameterJdbcTemplate,
             sessions.isEmpty() || sessions[0].validated == null -> throw MatrixException(ErrorResponse.Code.M_SESSION_NOT_VALIDATED,
                     "This validation session has not yet been completed")
             sessions.size > 1 -> throw MatrixException(ErrorResponse.Code.M_SESSION_NOT_VALIDATED, "Too many sessions")
-            else -> associationService.create(sessions[0], mxid)
+            else -> {
+                associationService.create(sessions[0], mxid)
+                invitationService.sendInvite(sessions[0].medium, sessions[0].address, mxid)
+            }
         }
         return true
     }
