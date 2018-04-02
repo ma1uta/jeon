@@ -2,7 +2,10 @@ package io.github.ma1uta.matrix.identity.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Checks that an Identity server is available at this API endpopint.
@@ -19,6 +22,8 @@ public interface StatusApi extends IdentityApi {
      *
      * @return Status code {@code 200} if an Identity server is ready to serve requests.
      */
+    @GET
     @Path("/api/v1")
+    @Produces(MediaType.APPLICATION_JSON)
     EmptyResponse v1Status();
 }

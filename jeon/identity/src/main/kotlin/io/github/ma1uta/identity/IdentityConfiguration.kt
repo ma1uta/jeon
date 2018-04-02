@@ -2,6 +2,9 @@ package io.github.ma1uta.identity
 
 import com.fasterxml.jackson.databind.MapperFeature
 import io.github.ma1uta.identity.key.KeyGenerateSelfCertificate
+import io.github.ma1uta.jeon.exception.ExceptionHandler
+import io.github.ma1uta.matrix.identity.api.IdentityApi
+import org.glassfish.jersey.server.ResourceConfig
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
@@ -21,30 +24,38 @@ import javax.net.ssl.SSLEngine
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509ExtendedTrustManager
 
-
 @Configuration
 @EnableConfigurationProperties(value = [IdentityProperties::class])
 @EnableScheduling
-class IdentityConfiguration {
+open class IdentityConfiguration {
+
+    companion object {
+        @Bean
+        fun propertySourcesPlaceholderConfigurer() = PropertySourcesPlaceholderConfigurer().apply { setPlaceholderPrefix("%{") }
+    }
+
+    @Bean
+    open fun jerseyContext() = ResourceConfig()
+
+    @Bean
+    open fun jerseyConfig(clientApis: List<IdentityApi>, exceptionHandler: ExceptionHandler) = JerseyConfig(clientApis, exceptionHandler)
 
     @Bean
     @ConditionalOnMissingBean
-    fun defaultKeyGenerator(properties: IdentityProperties) = KeyGenerateSelfCertificate(properties)
+    open fun defaultKeyGenerator(properties: IdentityProperties) = KeyGenerateSelfCertificate(properties)
+
 
     @Bean
-    fun propertySourcesPlaceholderConfigurer() = PropertySourcesPlaceholderConfigurer().apply { setPlaceholderPrefix("%{") }
-
-    @Bean
-    fun mapper() = Jackson2ObjectMapperBuilderCustomizer {
+    open fun mapper() = Jackson2ObjectMapperBuilderCustomizer {
         it.featuresToEnable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
     }
 
     @Bean
-    fun restTemplate() = RestTemplate()
+    open fun restTemplate() = RestTemplate()
 
     @Bean
     @ConditionalOnProperty(prefix = "identity", name = ["trustall"], havingValue = "true")
-    fun trustAllCertificates() = object : Any() {
+    open fun trustAllCertificates() = object : Any() {
         @PostConstruct
         fun init() {
             val trustAllCerts = arrayOf<TrustManager>(object : X509ExtendedTrustManager() {

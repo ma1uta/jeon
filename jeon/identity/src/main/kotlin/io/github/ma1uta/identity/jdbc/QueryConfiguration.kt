@@ -9,13 +9,13 @@ import org.springframework.core.env.get
 
 @PropertySource("classpath:/query.properties")
 @Configuration
-class QueryConfiguration {
+open class QueryConfiguration {
 
     @Autowired
     lateinit var env: Environment
 
     @Bean
-    fun query(): Query {
+    open fun query(): Query {
         val association = Query.Association(env["association.findByAddressMedium"],
                 env["association.insertOrIgnore"],
                 env["association.expire"])

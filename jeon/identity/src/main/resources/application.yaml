@@ -77,6 +77,23 @@ spring:
     url: 'jdbc:postgresql://localhost/identity'
     username: 'jeon'
     password: 'jeon'
+  mail:
+    username: 'test'
+    password: 'test'
+    host: 'localhost'
+    protocol: 'smtp'
+    port: '593'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+      mail.smtp.ssl.enable: true
+  security:
+    basic:
+      enabled: false
 logging:
   level:
     org.springframework.jdbc.core.JdbcTemplate: DEBUG

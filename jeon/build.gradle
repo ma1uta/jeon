@@ -41,7 +41,12 @@ allprojects {
         compile project(':api')
 
         compile "org.jetbrains.kotlin:kotlin-stdlib" // Required for Kotlin integration
-        compile 'org.springframework.boot:spring-boot-starter-jersey'
+        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        compile "org.springframework.boot:spring-boot-starter-jersey"
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = '1.8'
     }
 }
 
@@ -63,6 +68,7 @@ subprojects {
         compile 'com.zaxxer:HikariCP'
         compile 'com.github.nitram509:jmacaroons:0.3.1'
         compile 'javax.servlet:javax.servlet-api:3.1.0'
+        compile 'com.fasterxml.jackson.module:jackson-module-kotlin'
 
 //        providedRuntime 'org.springframework.boot:spring-boot-starter-undertow'
         compile 'org.springframework.boot:spring-boot-starter-tomcat'
