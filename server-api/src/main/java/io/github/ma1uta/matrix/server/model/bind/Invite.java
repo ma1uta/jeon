@@ -1,16 +1,12 @@
 package io.github.ma1uta.matrix.server.model.bind;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Invitation.
  * <p/>
  * Sends when the association between mxid and pair medium-address is validated.
  */
-@Getter
-@Setter
 public class Invite {
 
     /**
@@ -38,4 +34,52 @@ public class Invite {
      * Signed part.
      */
     private Signed signed;
+
+    public String getMedium() {
+        return medium;
+    }
+
+    public void setMedium(String medium) {
+        this.medium = medium;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getMxid() {
+        return mxid;
+    }
+
+    public void setMxid(String mxid) {
+        this.mxid = mxid;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public Signed getSigned() {
+        return signed;
+    }
+
+    public void setSigned(Signed signed) {
+        this.signed = signed;
+    }
 }

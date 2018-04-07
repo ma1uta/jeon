@@ -40,6 +40,11 @@ public final class Id {
      * Sigil chars.
      */
     public final class Sigil {
+
+        private Sigil() {
+            //singleton
+        }
+
         /**
          * Event.
          */
@@ -60,6 +65,10 @@ public final class Id {
          * Group (community).
          */
         public static final char GROUP = '+';
+    }
+
+    private Id() {
+        // singleton.
     }
 
     /**

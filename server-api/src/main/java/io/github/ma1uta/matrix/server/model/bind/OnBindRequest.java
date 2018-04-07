@@ -1,16 +1,11 @@
 package io.github.ma1uta.matrix.server.model.bind;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 
 /**
  * If the owner of that particular 3pid binds it with a Matrix user ID, the identity server will attempt to make an HTTP
  * POST to the Matrix user's homeserver this request.
  */
-@Getter
-@Setter
 public class OnBindRequest {
 
     /**
@@ -29,4 +24,36 @@ public class OnBindRequest {
      * Invites for this mxid.
      */
     private List<Invite> invites;
+
+    public String getMedium() {
+        return medium;
+    }
+
+    public void setMedium(String medium) {
+        this.medium = medium;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getMxid() {
+        return mxid;
+    }
+
+    public void setMxid(String mxid) {
+        this.mxid = mxid;
+    }
+
+    public List<Invite> getInvites() {
+        return invites;
+    }
+
+    public void setInvites(List<Invite> invites) {
+        this.invites = invites;
+    }
 }
