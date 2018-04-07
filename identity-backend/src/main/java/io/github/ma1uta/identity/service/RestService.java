@@ -14,33 +14,21 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.identity;
+package io.github.ma1uta.identity.service;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.Length;
+/**
+ * Rest client to send requests.
+ */
+public interface RestService {
 
-public class Example {
-
-    private long id;
-
-    @Length(max = 3)
-    private String content;
-
-    public Example() {
-    }
-
-    public Example(long id, String content) {
-        this.id = id;
-        this.content = content;
-    }
-
-    @JsonProperty
-    public long getId() {
-        return id;
-    }
-
-    @JsonProperty
-    public String getContent() {
-        return content;
-    }
+    /**
+     * Send get request.
+     *
+     * @param url     request url.
+     * @param request request data
+     * @param <REQ>   type of the request.
+     * @param <RESP>  type of the response.
+     * @return response.
+     */
+    <REQ, RESP> RESP get(String url, REQ request);
 }

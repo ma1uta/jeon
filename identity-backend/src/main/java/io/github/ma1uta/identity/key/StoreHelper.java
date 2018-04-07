@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
 /**
  * Encapsulation of the keystore actions.
  */
-public class KeyStoreProvider {
+public class StoreHelper {
 
     /**
      * All keys have format: <algorithm>:<alias>.
@@ -55,32 +55,13 @@ public class KeyStoreProvider {
     public static final Pattern KEY_PATTERN = Pattern.compile("(\\w+):(\\w+)");
 
     /**
-     * Keystore configuration.
-     */
-    private final KeyStoreConfiguration keyStoreConfiguration;
-
-    /**
-     * Storage for keys.
-     */
-    private KeyStore keyStore;
-
-    /**
      * Used to sign content.
      */
     private final SecureRandom secureRandom;
 
-    public KeyStoreProvider(KeyStoreConfiguration keyStoreConfiguration, String secureRandomSeed) {
-        this.keyStoreConfiguration = Objects.requireNonNull(keyStoreConfiguration, "Key store configuration shouldn't be empty");
+    public StoreHelper(String secureRandomSeed) {
         Objects.requireNonNull(secureRandomSeed, "Secure random seed must be specified");
         this.secureRandom = new SecureRandom(secureRandomSeed.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public KeyStoreConfiguration getKeyStoreConfiguration() {
-        return keyStoreConfiguration;
-    }
-
-    public KeyStore getKeyStore() {
-        return keyStore;
     }
 
     public SecureRandom getSecureRandom() {
@@ -90,34 +71,42 @@ public class KeyStoreProvider {
     /**
      * Initialize key store provider.
      *
+     * @param configuration key storage configuration.
      * @throws KeyStoreException        if the security provider is missed.
      * @throws CertificateException     if any certificate isn't loaded.
      * @throws NoSuchAlgorithmException if the algorithm is missed.
      * @throws IOException              if cannot read key store.
      */
-    public void init() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
-        this.keyStore = init(getKeyStoreConfiguration());
+    public KeyStore init(KeyStoreConfiguration configuration) throws KeyStoreException, IOException, CertificateException,
+        NoSuchAlgorithmException {
+        KeyStore keyStore = KeyStore.getInstance(configuration.getKeyStoreType());
+        try (InputStream inputStream = Files.newInputStream(Paths.get(configuration.getKeyStore()))) {
+            keyStore.load(inputStream, configuration.getKeyStorePassword().toCharArray());
+        }
+        return keyStore;
     }
 
     /**
      * Retrieve next the unused key.
      *
+     * @param keyStore key storage.
      * @return key or empty.
      * @throws KeyStoreException when the key store isn't loaded.
      */
-    public Optional<String> nextKey() throws KeyStoreException {
-        Enumeration<String> aliases = getKeyStore().aliases();
+    public Optional<String> nextKey(KeyStore keyStore) throws KeyStoreException {
+        Enumeration<String> aliases = keyStore.aliases();
         return aliases.hasMoreElements() ? Optional.of(aliases.nextElement()) : Optional.empty();
     }
 
     /**
      * Retrieve a pair of the alias and the certificate by the key id.
      *
-     * @param key the key id.
+     * @param key      the key id.
+     * @param keyStore key storage.
      * @return the alias and certificate.
      * @throws KeyStoreException when the key store isn't loaded.
      */
-    public Optional<Pair<String, Certificate>> key(String key) throws KeyStoreException {
+    public Optional<Pair<String, Certificate>> key(String key, KeyStore keyStore) throws KeyStoreException {
         Matcher matcher = KEY_PATTERN.matcher(key.trim());
         if (!matcher.matches()) {
             throw new IllegalArgumentException(String.format("Wrong key: %s", key));
@@ -125,80 +114,25 @@ public class KeyStoreProvider {
 
         String algorithm = matcher.group(1);
         String alias = matcher.group(2);
-        Optional<Certificate> certificate = find(alias);
-        if (!certificate.isPresent()) {
+        Certificate certificate = keyStore.getCertificate(alias);
+        if (certificate == null) {
             return Optional.empty();
         }
-        if (!certificate.get().getPublicKey().getAlgorithm().equals(algorithm)) {
+        if (!certificate.getPublicKey().getAlgorithm().equals(algorithm)) {
             throw new IllegalArgumentException(String.format("Wrong key: %s", key));
         }
 
-        return Optional.of(new ImmutablePair<>(alias, certificate.get()));
+        return Optional.of(new ImmutablePair<>(alias, certificate));
     }
 
     /**
      * Verify the public key.
      *
      * @param publicKey the public key.
+     * @param keyStore  key storage.
      * @return {@code true} is valid else {@code false}.
      * @throws KeyStoreException when the key store isn't loaded.
      */
-    public boolean valid(String publicKey) throws KeyStoreException {
-        return valid(publicKey, getKeyStore());
-    }
-
-    /**
-     * Sign the content.
-     *
-     * @param alias   the key alias.
-     * @param content the content to sign.
-     * @return the pair of the key alias and the signature.
-     * @throws UnrecoverableKeyException if the key cannot be recovered.
-     * @throws NoSuchAlgorithmException  if th algorithm is missing.
-     * @throws KeyStoreException         if key store isn't loaded.
-     * @throws InvalidKeyException       if the key is invalid.
-     * @throws SignatureException        if the signature object isn't initialized.
-     */
-    public Optional<Pair<String, String>> sign(String alias, String content) throws UnrecoverableKeyException, NoSuchAlgorithmException,
-        KeyStoreException, InvalidKeyException, SignatureException {
-        if (getKeyStore().getCertificate(alias) == null) {
-            return Optional.empty();
-        }
-        return Optional.of(sign(alias, content, getKeyStore(), getKeyStoreConfiguration()));
-    }
-
-    /**
-     * Find max alias.
-     * <p/>
-     * Used to create new keys.
-     *
-     * @return max alias.
-     * @throws KeyStoreException when key store isn't loaded.
-     */
-    public long maxId() throws KeyStoreException {
-        return maxId(getKeyStore());
-    }
-
-    /**
-     * Add a new key to the key store.
-     *
-     * @param key         alias of the a new key.
-     * @param keyPair     the pair of the new key (public and private).
-     * @param certificate a certificate of the new key.
-     * @throws KeyStoreException        when key store isn't loaded.
-     * @throws CertificateException     when the certificate is invalid.
-     * @throws NoSuchAlgorithmException when missing algorithm.
-     * @throws IOException              when cannot write to the key store.
-     */
-    public void addKey(String key, KeyPair keyPair, Certificate certificate) throws KeyStoreException, CertificateException,
-        NoSuchAlgorithmException, IOException {
-        KeyStore keyStore = getKeyStore();
-        KeyStoreConfiguration configuration = getKeyStoreConfiguration();
-        keyStore.setKeyEntry(key, keyPair.getPrivate(), configuration.getKeyPassword().toCharArray(), new Certificate[] {certificate});
-        store(keyStore, configuration);
-        init();
-    }
-
     protected boolean valid(String publicKey, KeyStore keyStore) throws KeyStoreException {
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
@@ -210,27 +144,60 @@ public class KeyStoreProvider {
         return false;
     }
 
-    protected KeyStore init(KeyStoreConfiguration configuration) throws KeyStoreException, IOException, CertificateException,
-        NoSuchAlgorithmException {
-        KeyStore keyStore = KeyStore.getInstance(configuration.getKeyStoreType());
-        try (InputStream inputStream = Files.newInputStream(Paths.get(configuration.getKeyStore()))) {
-            keyStore.load(inputStream, configuration.getKeyStorePassword().toCharArray());
-        }
-        return keyStore;
+    /**
+     * Add a new key to the key store.
+     *
+     * @param key           alias of the a new key.
+     * @param keyPair       the pair of the new key (public and private).
+     * @param certificate   a certificate of the new key.
+     * @param keyStore      key storage.
+     * @param configuration key storage configuration.
+     * @return key storage with added key.
+     * @throws KeyStoreException        when key store isn't loaded.
+     * @throws CertificateException     when the certificate is invalid.
+     * @throws NoSuchAlgorithmException when missing algorithm.
+     * @throws IOException              when cannot write to the key store.
+     */
+    public KeyStore addKey(String key, KeyPair keyPair, Certificate certificate, KeyStore keyStore,
+                           KeyStoreConfiguration configuration) throws KeyStoreException, CertificateException, NoSuchAlgorithmException,
+        IOException {
+        keyStore.setKeyEntry(key, keyPair.getPrivate(), configuration.getKeyPassword().toCharArray(), new Certificate[] {certificate});
+        store(keyStore, configuration);
+        return init(configuration);
     }
 
-    protected Optional<Certificate> find(String alias) throws KeyStoreException {
-        return Optional.ofNullable(getKeyStore().getCertificate(alias));
-    }
-
-    protected void store(KeyStore keyStore, KeyStoreConfiguration configuration) throws IOException, CertificateException,
+    /**
+     * Store key storage into the file.
+     *
+     * @param keyStore      key storage.
+     * @param configuration key storage configuration.
+     * @throws KeyStoreException        if the keystore has not been initialized (loaded).
+     * @throws IOException              if there was an I/O problem with data
+     * @throws NoSuchAlgorithmException if the appropriate data integrity algorithm could not be found
+     * @throws CertificateException     if any of the certificates included in the keystore data could not be stored
+     */
+    public void store(KeyStore keyStore, KeyStoreConfiguration configuration) throws IOException, CertificateException,
         NoSuchAlgorithmException, KeyStoreException {
         try (OutputStream outputStream = Files.newOutputStream(Paths.get(configuration.getKeyStore()))) {
-            keyStore.store(outputStream, getKeyStoreConfiguration().getKeyStorePassword().toCharArray());
+            keyStore.store(outputStream, configuration.getKeyStorePassword().toCharArray());
         }
     }
 
-    protected Pair<String, String> sign(String alias, String content, KeyStore keyStore, KeyStoreConfiguration configuration) throws
+    /**
+     * Sign the content.
+     *
+     * @param alias         the key alias.
+     * @param content       the content to sign.
+     * @param keyStore      key storage.
+     * @param configuration key storage configuration.
+     * @return the pair of the key alias and the signature.
+     * @throws UnrecoverableKeyException if the key cannot be recovered.
+     * @throws NoSuchAlgorithmException  if th algorithm is missing.
+     * @throws KeyStoreException         if key store isn't loaded.
+     * @throws InvalidKeyException       if the key is invalid.
+     * @throws SignatureException        if the signature object isn't initialized.
+     */
+    public Pair<String, String> sign(String alias, String content, KeyStore keyStore, KeyStoreConfiguration configuration) throws
         NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, InvalidKeyException, SignatureException {
         Signature signature = Signature.getInstance("Ed25519");
         signature.initSign((PrivateKey) keyStore.getKey(alias, configuration.getKeyPassword().toCharArray()), getSecureRandom());
@@ -238,7 +205,16 @@ public class KeyStoreProvider {
         return new ImmutablePair<>(alias, new String(signature.sign(), StandardCharsets.UTF_8));
     }
 
-    protected long maxId(KeyStore keyStore) throws KeyStoreException {
+    /**
+     * Find max alias.
+     * <p/>
+     * Used to create new keys.
+     *
+     * @param keyStore key storage.
+     * @return max alias.
+     * @throws KeyStoreException when key store isn't loaded.
+     */
+    public long maxId(KeyStore keyStore) throws KeyStoreException {
         long max = 0L;
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {

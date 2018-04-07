@@ -53,11 +53,9 @@ import java.util.Date;
  */
 public class SelfCertificateKeyGenerator implements KeyGenerator {
 
-    private final byte[] secureRandomSeed;
     private final SelfKeyGeneratorConfiguration configuration;
 
-    public SelfCertificateKeyGenerator(String secureRandomSeed, SelfKeyGeneratorConfiguration configuration) {
-        this.secureRandomSeed = secureRandomSeed.getBytes(StandardCharsets.UTF_8);
+    public SelfCertificateKeyGenerator(SelfKeyGeneratorConfiguration configuration) {
         this.configuration = configuration;
     }
 
@@ -66,10 +64,10 @@ public class SelfCertificateKeyGenerator implements KeyGenerator {
     }
 
     @Override
-    public void generate(KeyStoreProvider keyStoreProvider, Key parentPrivateKey, String keyId) throws NoSuchAlgorithmException,
+    public void generate(KeyProvider keyProvider, Key parentPrivateKey, String keyId) throws NoSuchAlgorithmException,
         OperatorCreationException, IOException, CertificateException, KeyStoreException {
         KeyPairGenerator pairGenerator = KeyPairGenerator.getInstance("Curve25519");
-        SecureRandom secureRandom = new SecureRandom(this.secureRandomSeed);
+        SecureRandom secureRandom = new SecureRandom(getConfiguration().getSecureRandomSeed().getBytes(StandardCharsets.UTF_8));
 
         LocalDateTime notBefore = LocalDateTime.now();
         LocalDateTime notAfter = notBefore.plus(Duration.ofSeconds(getConfiguration().getCertificateValidTs()));
@@ -95,6 +93,6 @@ public class SelfCertificateKeyGenerator implements KeyGenerator {
         X509Certificate certificate = new JcaX509CertificateConverter().setProvider(provider)
             .getCertificate(certificateBuilder.build(signer));
 
-        keyStoreProvider.addKey(keyId, keyPair, certificate);
+        keyProvider.addKey(keyId, keyPair, certificate);
     }
 }

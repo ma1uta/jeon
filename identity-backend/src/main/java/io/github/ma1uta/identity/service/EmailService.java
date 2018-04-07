@@ -17,18 +17,16 @@
 package io.github.ma1uta.identity.service;
 
 /**
- * Rest client to send requests.
+ * Client to send email.
  */
-public interface RestClient {
+public interface EmailService {
 
     /**
-     * Send get request.
+     * Send email to the one addressee without attachments.
      *
-     * @param url     request url.
-     * @param request request data
-     * @param <REQ>   type of the request.
-     * @param <RESP>  type of the response.
-     * @return response.
+     * @param addressee addressee's email.
+     * @param subject   email subject.
+     * @param message   email message.
      */
-    <REQ, RESP> RESP get(String url, REQ request);
+    void send(String addressee, String subject, String message);
 }

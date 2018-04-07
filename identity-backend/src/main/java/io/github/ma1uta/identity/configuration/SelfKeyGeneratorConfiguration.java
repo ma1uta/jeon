@@ -46,6 +46,11 @@ public class SelfKeyGeneratorConfiguration {
      */
     private long certificateValidTs = DEFAULT_CERTIFICATE_TS;
 
+    /**
+     * Random seed.
+     */
+    private String secureRandomSeed;
+
     public String getIssuerName() {
         return issuerName;
     }
@@ -68,5 +73,13 @@ public class SelfKeyGeneratorConfiguration {
 
     public void setCertificateValidTs(long certificateValidTs) {
         this.certificateValidTs = certificateValidTs;
+    }
+
+    public String getSecureRandomSeed() {
+        return secureRandomSeed;
+    }
+
+    public void setSecureRandomSeed(String secureRandomSeed) {
+        this.secureRandomSeed = secureRandomSeed;
     }
 }

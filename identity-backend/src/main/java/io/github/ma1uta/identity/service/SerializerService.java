@@ -17,16 +17,15 @@
 package io.github.ma1uta.identity.service;
 
 /**
- * Client to send email.
+ * Object serializer to json.
  */
-public interface EmailClient {
+public interface SerializerService {
 
     /**
-     * Send email to the one addressee without attachments.
+     * Serialize object.
      *
-     * @param addressee addressee's email.
-     * @param subject   email subject.
-     * @param message   email message.
+     * @param origin object.
+     * @return json.
      */
-    void send(String addressee, String subject, String message);
+    String serialize(Object origin);
 }
