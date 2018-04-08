@@ -17,27 +17,24 @@
 package io.github.ma1uta.identity.key;
 
 import io.github.ma1uta.identity.configuration.KeyStoreConfiguration;
+import io.github.ma1uta.jeon.exception.MatrixException;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Encapsulation of the keystore actions.
  */
-public class LongTermKeyProvider implements KeyProvider {
+public class LongTermKeyProvider extends AbstractKeyProvider {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LongTermKeyProvider.class);
 
     /**
      * Keystore configuration.
@@ -49,13 +46,9 @@ public class LongTermKeyProvider implements KeyProvider {
      */
     private KeyStore keyStore;
 
-    private final StoreHelper storeHelper;
-
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-
     public LongTermKeyProvider(KeyStoreConfiguration keyStoreConfiguration, String secureRandomSeed) {
+        super(secureRandomSeed);
         this.keyStoreConfiguration = Objects.requireNonNull(keyStoreConfiguration, "Key store configuration shouldn't be empty");
-        this.storeHelper = new StoreHelper(secureRandomSeed);
     }
 
     public KeyStoreConfiguration getKeyStoreConfiguration() {
@@ -66,89 +59,55 @@ public class LongTermKeyProvider implements KeyProvider {
         return keyStore;
     }
 
-    protected StoreHelper getStoreHelper() {
-        return storeHelper;
-    }
-
     @Override
-    public void init() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
-        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
-        try {
-            writeLock.lock();
+    public void init() {
+        writeLock(() -> {
             this.keyStore = getStoreHelper().init(getKeyStoreConfiguration());
-        } finally {
-            writeLock.unlock();
-        }
+            return null;
+        });
     }
 
     @Override
-    public Optional<String> nextKey() throws KeyStoreException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            return getStoreHelper().nextKey(getKeyStore());
-        } finally {
-            readLock.unlock();
-        }
+    public Optional<String> nextKey() {
+        return readLock(() -> getStoreHelper().nextKey(getKeyStore()));
     }
 
     @Override
-    public Optional<Pair<String, Certificate>> key(String key) throws KeyStoreException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            return getStoreHelper().key(key, getKeyStore());
-        } finally {
-            readLock.unlock();
-        }
+    public Optional<Pair<String, Certificate>> key(String key) {
+        return readLock(() -> getStoreHelper().key(key, getKeyStore()));
     }
 
     @Override
-    public boolean valid(String publicKey) throws KeyStoreException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            return getStoreHelper().valid(publicKey, getKeyStore());
-        } finally {
-            readLock.unlock();
-        }
+    public boolean valid(String publicKey) {
+        return readLock(() -> getStoreHelper().valid(publicKey, getKeyStore()));
     }
 
     @Override
-    public Optional<Pair<String, String>> sign(String alias, String content) throws UnrecoverableKeyException, NoSuchAlgorithmException,
-        KeyStoreException, InvalidKeyException, SignatureException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            if (getKeyStore().getCertificate(alias) == null) {
-                return Optional.empty();
+    public Optional<Pair<String, String>> sign(String alias, String content) {
+        return readLock(() -> {
+            try {
+                if (getKeyStore().getCertificate(alias) == null) {
+                    return Optional.empty();
+                }
+            } catch (KeyStoreException e) {
+                String msg = "Key store isn't initialized";
+                LOGGER.error(msg, e);
+                throw new MatrixException(MatrixException.M_INTERNAL, msg);
             }
             return Optional.ofNullable(getStoreHelper().sign(alias, content, getKeyStore(), getKeyStoreConfiguration()));
-        } finally {
-            readLock.unlock();
-        }
+        });
     }
 
     @Override
-    public long maxId() throws KeyStoreException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            return getStoreHelper().maxId(getKeyStore());
-        } finally {
-            readLock.unlock();
-        }
+    public long maxId() {
+        return readLock(() -> getStoreHelper().maxId(getKeyStore()));
     }
 
     @Override
-    public void addKey(String key, KeyPair keyPair, Certificate certificate) throws KeyStoreException, CertificateException,
-        NoSuchAlgorithmException, IOException {
-        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
-        try {
-            writeLock.lock();
+    public void addKey(String key, KeyPair keyPair, Certificate certificate) {
+        writeLock(() -> {
             this.keyStore = getStoreHelper().addKey(key, keyPair, certificate, getKeyStore(), getKeyStoreConfiguration());
-        } finally {
-            writeLock.unlock();
-        }
+            return null;
+        });
     }
 }

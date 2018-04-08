@@ -23,13 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.SignatureException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -41,7 +39,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * <p/>
  * After get next available key, this key moved to another key store.
  */
-public class ShortTermKeyProvider implements KeyProvider {
+public class ShortTermKeyProvider extends AbstractKeyProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShortTermKeyProvider.class);
 
@@ -65,15 +63,13 @@ public class ShortTermKeyProvider implements KeyProvider {
      */
     private KeyStore usedKeyStore;
 
-    private final StoreHelper storeHelper;
-
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public ShortTermKeyProvider(KeyStoreConfiguration usedKeyStoreConfiguration, KeyStoreConfiguration keyStoreConfiguration,
                                 String secureRandomSeed) {
+        super(secureRandomSeed);
         this.keyStoreConfiguration = keyStoreConfiguration;
         this.usedKeyStoreConfiguration = usedKeyStoreConfiguration;
-        this.storeHelper = new StoreHelper(secureRandomSeed);
     }
 
     public KeyStoreConfiguration getUsedKeyStoreConfiguration() {
@@ -92,85 +88,68 @@ public class ShortTermKeyProvider implements KeyProvider {
         return keyStore;
     }
 
-    public StoreHelper getStoreHelper() {
-        return storeHelper;
-    }
-
     @Override
-    public void init() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
-        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
-        try {
-            writeLock.lock();
+    public void init() {
+        writeLock(() -> {
             this.keyStore = getStoreHelper().init(getKeyStoreConfiguration());
             this.usedKeyStore = getStoreHelper().init(getUsedKeyStoreConfiguration());
-        } finally {
-            writeLock.unlock();
-        }
+            return null;
+        });
     }
 
     @Override
-    public boolean valid(String publicKey) throws KeyStoreException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            return getStoreHelper().valid(publicKey, getKeyStore()) || getStoreHelper().valid(publicKey, getUsedKeyStore());
-        } finally {
-            readLock.unlock();
-        }
+    public boolean valid(String publicKey) {
+        return readLock(() -> getStoreHelper().valid(publicKey, getKeyStore()) || getStoreHelper().valid(publicKey, getUsedKeyStore()));
     }
 
     @Override
-    public long maxId() throws KeyStoreException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            return Math.max(getStoreHelper().maxId(getKeyStore()), getStoreHelper().maxId(getUsedKeyStore()));
-        } finally {
-            readLock.unlock();
-        }
+    public long maxId() {
+        return readLock(() -> Math.max(getStoreHelper().maxId(getKeyStore()), getStoreHelper().maxId(getUsedKeyStore())));
     }
 
     @Override
-    public void addKey(String key, KeyPair keyPair, Certificate certificate) throws KeyStoreException, CertificateException,
-        NoSuchAlgorithmException, IOException {
-        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
-        try {
-            writeLock.lock();
+    public void addKey(String key, KeyPair keyPair, Certificate certificate) {
+        writeLock(() -> {
             this.keyStore = getStoreHelper().addKey(key, keyPair, certificate, getKeyStore(), getKeyStoreConfiguration());
-        } finally {
-            writeLock.unlock();
-        }
+            return null;
+        });
     }
 
     @Override
-    public Optional<Pair<String, String>> sign(String alias, String content) throws UnrecoverableKeyException, NoSuchAlgorithmException,
-        KeyStoreException, InvalidKeyException, SignatureException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            if (getKeyStore().getCertificate(alias) != null) {
-                return Optional.ofNullable(getStoreHelper().sign(alias, content, getKeyStore(), getKeyStoreConfiguration()));
-            } else if (getUsedKeyStore().getCertificate(alias) != null) {
-                return Optional.ofNullable(getStoreHelper().sign(alias, content, getUsedKeyStore(), getUsedKeyStoreConfiguration()));
-            } else {
-                return Optional.empty();
+    public Optional<Pair<String, String>> sign(String alias, String content) {
+        return readLock(() -> {
+            try {
+                if (getKeyStore().getCertificate(alias) != null) {
+                    return Optional.ofNullable(getStoreHelper().sign(alias, content, getKeyStore(), getKeyStoreConfiguration()));
+                } else if (getUsedKeyStore().getCertificate(alias) != null) {
+                    return Optional.ofNullable(getStoreHelper().sign(alias, content, getUsedKeyStore(), getUsedKeyStoreConfiguration()));
+                } else {
+                    return Optional.empty();
+                }
+            } catch (KeyStoreException e) {
+                String msg = "Key stores isn't initialized.";
+                LOGGER.error(msg, e);
+                throw new MatrixException(MatrixException.M_INTERNAL, msg);
             }
-        } finally {
-            readLock.unlock();
-        }
+        });
     }
 
     @Override
-    public Optional<String> nextKey() throws KeyStoreException {
-        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
-        try {
-            writeLock.lock();
+    public Optional<String> nextKey() {
+        return writeLock(() -> {
             Optional<String> nextKey = getStoreHelper().nextKey(getKeyStore());
             if (!nextKey.isPresent()) {
                 return Optional.empty();
             }
             String alias = nextKey.get();
-            Certificate certificate = getKeyStore().getCertificate(alias);
+            Certificate certificate;
+            try {
+                certificate = getKeyStore().getCertificate(alias);
+            } catch (KeyStoreException e) {
+                String msg = "Key store isn't initialized";
+                LOGGER.error(msg, e);
+                throw new MatrixException(MatrixException.M_INTERNAL, msg);
+            }
             if (certificate == null) {
                 return Optional.empty();
             }
@@ -178,40 +157,34 @@ public class ShortTermKeyProvider implements KeyProvider {
             PrivateKey privateKey;
             try {
                 privateKey = (PrivateKey) getKeyStore().getKey(alias, getKeyStoreConfiguration().getKeyPassword().toCharArray());
-            } catch (NoSuchAlgorithmException | UnrecoverableKeyException e) {
+            } catch (NoSuchAlgorithmException | UnrecoverableKeyException | KeyStoreException e) {
                 String msg = "Failed get the private key";
                 LOGGER.error(msg, e);
                 throw new MatrixException(MatrixException.M_INTERNAL, msg);
             }
-            getKeyStore().deleteEntry(alias);
-
-            getUsedKeyStore()
-                .setKeyEntry(alias, privateKey, getUsedKeyStoreConfiguration().getKeyPassword().toCharArray(),
-                    new Certificate[] {certificate});
             try {
+                getKeyStore().deleteEntry(alias);
+
+                getUsedKeyStore()
+                    .setKeyEntry(alias, privateKey, getUsedKeyStoreConfiguration().getKeyPassword().toCharArray(),
+                        new Certificate[] {certificate});
                 getStoreHelper().store(getKeyStore(), getKeyStoreConfiguration());
                 getStoreHelper().store(getUsedKeyStore(), getUsedKeyStoreConfiguration());
                 init();
-            } catch (IOException | CertificateException | NoSuchAlgorithmException e) {
+            } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
                 String msg = "Failed store and reinitialize key stories";
                 LOGGER.error(msg, e);
                 throw new MatrixException(MatrixException.M_INTERNAL, msg);
             }
             return Optional.of(alias);
-        } finally {
-            writeLock.unlock();
-        }
+        });
     }
 
     @Override
-    public Optional<Pair<String, Certificate>> key(String key) throws KeyStoreException {
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        try {
-            readLock.lock();
+    public Optional<Pair<String, Certificate>> key(String key) {
+        return readLock(() -> {
             Optional<Pair<String, Certificate>> pair = getStoreHelper().key(key, getKeyStore());
             return pair.isPresent() ? pair : getStoreHelper().key(key, getUsedKeyStore());
-        } finally {
-            readLock.unlock();
-        }
+        });
     }
 }

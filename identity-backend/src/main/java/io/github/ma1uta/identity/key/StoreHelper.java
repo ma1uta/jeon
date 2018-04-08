@@ -17,8 +17,11 @@
 package io.github.ma1uta.identity.key;
 
 import io.github.ma1uta.identity.configuration.KeyStoreConfiguration;
+import io.github.ma1uta.jeon.exception.MatrixException;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +52,8 @@ import java.util.regex.Pattern;
  */
 public class StoreHelper {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StoreHelper.class);
+
     /**
      * All keys have format: <algorithm>:<alias>.
      */
@@ -72,18 +77,19 @@ public class StoreHelper {
      * Initialize key store provider.
      *
      * @param configuration key storage configuration.
-     * @throws KeyStoreException        if the security provider is missed.
-     * @throws CertificateException     if any certificate isn't loaded.
-     * @throws NoSuchAlgorithmException if the algorithm is missed.
-     * @throws IOException              if cannot read key store.
      */
-    public KeyStore init(KeyStoreConfiguration configuration) throws KeyStoreException, IOException, CertificateException,
-        NoSuchAlgorithmException {
-        KeyStore keyStore = KeyStore.getInstance(configuration.getKeyStoreType());
-        try (InputStream inputStream = Files.newInputStream(Paths.get(configuration.getKeyStore()))) {
-            keyStore.load(inputStream, configuration.getKeyStorePassword().toCharArray());
+    public KeyStore init(KeyStoreConfiguration configuration) {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(configuration.getKeyStoreType());
+            try (InputStream inputStream = Files.newInputStream(Paths.get(configuration.getKeyStore()))) {
+                keyStore.load(inputStream, configuration.getKeyStorePassword().toCharArray());
+            }
+            return keyStore;
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
+            String msg = "Key store initialization failed.";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
         }
-        return keyStore;
     }
 
     /**
@@ -91,11 +97,16 @@ public class StoreHelper {
      *
      * @param keyStore key storage.
      * @return key or empty.
-     * @throws KeyStoreException when the key store isn't loaded.
      */
-    public Optional<String> nextKey(KeyStore keyStore) throws KeyStoreException {
-        Enumeration<String> aliases = keyStore.aliases();
-        return aliases.hasMoreElements() ? Optional.of(aliases.nextElement()) : Optional.empty();
+    public Optional<String> nextKey(KeyStore keyStore) {
+        try {
+            Enumeration<String> aliases = keyStore.aliases();
+            return aliases.hasMoreElements() ? Optional.of(aliases.nextElement()) : Optional.empty();
+        } catch (KeyStoreException e) {
+            String msg = "Key store isn't initialized";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
     }
 
     /**
@@ -104,9 +115,8 @@ public class StoreHelper {
      * @param key      the key id.
      * @param keyStore key storage.
      * @return the alias and certificate.
-     * @throws KeyStoreException when the key store isn't loaded.
      */
-    public Optional<Pair<String, Certificate>> key(String key, KeyStore keyStore) throws KeyStoreException {
+    public Optional<Pair<String, Certificate>> key(String key, KeyStore keyStore) {
         Matcher matcher = KEY_PATTERN.matcher(key.trim());
         if (!matcher.matches()) {
             throw new IllegalArgumentException(String.format("Wrong key: %s", key));
@@ -114,7 +124,14 @@ public class StoreHelper {
 
         String algorithm = matcher.group(1);
         String alias = matcher.group(2);
-        Certificate certificate = keyStore.getCertificate(alias);
+        Certificate certificate;
+        try {
+            certificate = keyStore.getCertificate(alias);
+        } catch (KeyStoreException e) {
+            String msg = "Key store isn't initialized";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
         if (certificate == null) {
             return Optional.empty();
         }
@@ -131,17 +148,22 @@ public class StoreHelper {
      * @param publicKey the public key.
      * @param keyStore  key storage.
      * @return {@code true} is valid else {@code false}.
-     * @throws KeyStoreException when the key store isn't loaded.
      */
-    protected boolean valid(String publicKey, KeyStore keyStore) throws KeyStoreException {
-        Enumeration<String> aliases = keyStore.aliases();
-        while (aliases.hasMoreElements()) {
-            Certificate certificate = keyStore.getCertificate(aliases.nextElement());
-            if (new String(certificate.getPublicKey().getEncoded(), StandardCharsets.UTF_8).equals(publicKey)) {
-                return true;
+    public boolean valid(String publicKey, KeyStore keyStore) {
+        try {
+            Enumeration<String> aliases = keyStore.aliases();
+            while (aliases.hasMoreElements()) {
+                Certificate certificate = keyStore.getCertificate(aliases.nextElement());
+                if (new String(certificate.getPublicKey().getEncoded(), StandardCharsets.UTF_8).equals(publicKey)) {
+                    return true;
+                }
             }
+            return false;
+        } catch (KeyStoreException e) {
+            String msg = "Key store isn't initialized";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
         }
-        return false;
     }
 
     /**
@@ -153,16 +175,17 @@ public class StoreHelper {
      * @param keyStore      key storage.
      * @param configuration key storage configuration.
      * @return key storage with added key.
-     * @throws KeyStoreException        when key store isn't loaded.
-     * @throws CertificateException     when the certificate is invalid.
-     * @throws NoSuchAlgorithmException when missing algorithm.
-     * @throws IOException              when cannot write to the key store.
      */
     public KeyStore addKey(String key, KeyPair keyPair, Certificate certificate, KeyStore keyStore,
-                           KeyStoreConfiguration configuration) throws KeyStoreException, CertificateException, NoSuchAlgorithmException,
-        IOException {
-        keyStore.setKeyEntry(key, keyPair.getPrivate(), configuration.getKeyPassword().toCharArray(), new Certificate[] {certificate});
-        store(keyStore, configuration);
+                           KeyStoreConfiguration configuration) {
+        try {
+            keyStore.setKeyEntry(key, keyPair.getPrivate(), configuration.getKeyPassword().toCharArray(), new Certificate[] {certificate});
+            store(keyStore, configuration);
+        } catch (KeyStoreException | CertificateException | IOException | NoSuchAlgorithmException e) {
+            String msg = "Key store isn't initialized or missing algorithm or certificate is invalid or I/O error with key store.";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
         return init(configuration);
     }
 
@@ -191,18 +214,18 @@ public class StoreHelper {
      * @param keyStore      key storage.
      * @param configuration key storage configuration.
      * @return the pair of the key alias and the signature.
-     * @throws UnrecoverableKeyException if the key cannot be recovered.
-     * @throws NoSuchAlgorithmException  if th algorithm is missing.
-     * @throws KeyStoreException         if key store isn't loaded.
-     * @throws InvalidKeyException       if the key is invalid.
-     * @throws SignatureException        if the signature object isn't initialized.
      */
-    public Pair<String, String> sign(String alias, String content, KeyStore keyStore, KeyStoreConfiguration configuration) throws
-        NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, InvalidKeyException, SignatureException {
-        Signature signature = Signature.getInstance("Ed25519");
-        signature.initSign((PrivateKey) keyStore.getKey(alias, configuration.getKeyPassword().toCharArray()), getSecureRandom());
-        signature.update(content.getBytes(StandardCharsets.UTF_8));
-        return new ImmutablePair<>(alias, new String(signature.sign(), StandardCharsets.UTF_8));
+    public Pair<String, String> sign(String alias, String content, KeyStore keyStore, KeyStoreConfiguration configuration) {
+        try {
+            Signature signature = Signature.getInstance("Ed25519");
+            signature.initSign((PrivateKey) keyStore.getKey(alias, configuration.getKeyPassword().toCharArray()), getSecureRandom());
+            signature.update(content.getBytes(StandardCharsets.UTF_8));
+            return new ImmutablePair<>(alias, new String(signature.sign(), StandardCharsets.UTF_8));
+        } catch (UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | InvalidKeyException | SignatureException e) {
+            String msg = "Key store isn't initialized or invalid key, certificate or algorithm";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
     }
 
     /**
@@ -212,11 +235,17 @@ public class StoreHelper {
      *
      * @param keyStore key storage.
      * @return max alias.
-     * @throws KeyStoreException when key store isn't loaded.
      */
-    public long maxId(KeyStore keyStore) throws KeyStoreException {
+    public long maxId(KeyStore keyStore) {
         long max = 0L;
-        Enumeration<String> aliases = keyStore.aliases();
+        Enumeration<String> aliases = null;
+        try {
+            aliases = keyStore.aliases();
+        } catch (KeyStoreException e) {
+            String msg = "Key store isn't initialized";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
         while (aliases.hasMoreElements()) {
             max = Math.max(max, Long.parseLong(aliases.nextElement()));
         }

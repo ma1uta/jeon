@@ -16,15 +16,14 @@
 
 package io.github.ma1uta.identity.service.impl;
 
-import io.github.ma1uta.identity.key.LongTermKeyProvider;
-import io.github.ma1uta.identity.key.KeyGenerator;
 import io.github.ma1uta.identity.configuration.KeyServiceConfiguration;
-import io.github.ma1uta.identity.key.KeyProvider;
 import io.github.ma1uta.identity.configuration.ServerKeyConfiguration;
+import io.github.ma1uta.identity.key.KeyGenerator;
+import io.github.ma1uta.identity.key.KeyProvider;
+import io.github.ma1uta.identity.key.LongTermKeyProvider;
 import io.github.ma1uta.identity.key.ShortTermKeyProvider;
 import io.github.ma1uta.identity.service.KeyService;
 import io.github.ma1uta.jeon.exception.MatrixException;
-import io.github.ma1uta.matrix.ErrorResponse;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.slf4j.Logger;
@@ -34,12 +33,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -110,39 +107,29 @@ public abstract class AbstractKeyService implements KeyService {
     protected void initInternal() {
         this.longTermProvider = new LongTermKeyProvider(getConfiguration().getLongTermConfiguration(),
             getConfiguration().getSecureRandomSeed());
+        this.longTermProvider.init();
         this.shortTermProvider = new ShortTermKeyProvider(getConfiguration().getUsedShortTermConfiguration(),
             getConfiguration().getShortTermConfiguration(), getConfiguration().getSecureRandomSeed());
+        this.shortTermProvider.init();
     }
 
     /**
      * {@link KeyService#key(String)}
      */
     protected Optional<Pair<String, Certificate>> keyInternal(String key) {
-        try {
-            Optional<Pair<String, Certificate>> pair = getLongTermProvider().key(key);
-            if (pair.isPresent()) {
-                return pair;
-            }
-
-            return getShortTermProvider().key(key);
-        } catch (KeyStoreException e) {
-            String msg = "Cannot find key";
-            LOGGER.error(msg, e);
-            throw new MatrixException(ErrorResponse.Code.M_NOT_FOUND, msg, 404);
+        Optional<Pair<String, Certificate>> pair = getLongTermProvider().key(key);
+        if (pair.isPresent()) {
+            return pair;
         }
+
+        return getShortTermProvider().key(key);
     }
 
     /**
      * {@link KeyService#valid(String, boolean)}
      */
     protected boolean validInternal(String publicKey, boolean longTerm) {
-        try {
-            return longTerm ? getLongTermProvider().valid(publicKey) : getShortTermProvider().valid(publicKey);
-        } catch (KeyStoreException e) {
-            String msg = "Cannot find key.";
-            LOGGER.error(msg, e);
-            throw new MatrixException(M_MISSING_KEY, msg);
-        }
+        return longTerm ? getLongTermProvider().valid(publicKey) : getShortTermProvider().valid(publicKey);
     }
 
     /**
@@ -150,7 +137,7 @@ public abstract class AbstractKeyService implements KeyService {
      */
     protected Optional<Map<String, Map<String, String>>> signInternal(String content, boolean longTerm) throws CertificateException,
         UnrecoverableKeyException,
-        NoSuchAlgorithmException, KeyStoreException, OperatorCreationException, IOException, SignatureException, InvalidKeyException {
+        NoSuchAlgorithmException, KeyStoreException, OperatorCreationException, IOException {
         KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
         Optional<Pair<String, String>> pair = provider.sign(nextKey(longTerm), content);
         if (!pair.isPresent()) {
