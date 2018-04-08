@@ -14,7 +14,7 @@
         <dependency>
             <groupId>io.github.ma1uta</groupId>
             <artifactId>common-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${jeon.version}</version>
         </dependency>
 
         <dependency>

@@ -108,7 +108,7 @@ public abstract class AbstractSessionService implements SessionService {
     protected String createInternal(String clientSecret, String email, Long sendAttempt, String nextLink) {
         boolean create = true;
         if (sendAttempt != null) {
-            create = getSessionDao().findBySecretEmail(clientSecret, email, "email").stream()
+            create = getSessionDao().findBySecretEmail(clientSecret, email).stream()
                 .anyMatch(s -> s.getSendAttempt() == null || s.getSendAttempt() < sendAttempt);
         }
 

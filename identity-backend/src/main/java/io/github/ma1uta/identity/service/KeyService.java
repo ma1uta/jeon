@@ -64,9 +64,7 @@ public interface KeyService {
      * @param longTerm true if should use long-term keys else use short-term key.
      * @return map { "hostname" -> { "key": "signature" } }
      */
-    Optional<Map<String, Map<String, String>>> sign(String content, boolean longTerm) throws CertificateException,
-        UnrecoverableKeyException,
-        NoSuchAlgorithmException, KeyStoreException, OperatorCreationException, IOException, SignatureException, InvalidKeyException;
+    Optional<Map<String, Map<String, String>>> sign(String content, boolean longTerm);
 
     /**
      * Retrieve next available key.
@@ -77,14 +75,12 @@ public interface KeyService {
      *
      * @param longTerm true if use long-term key else use short-term key.
      */
-    String nextKey(boolean longTerm) throws KeyStoreException, UnrecoverableKeyException, CertificateException,
-        OperatorCreationException, NoSuchAlgorithmException, IOException;
+    String nextKey(boolean longTerm);
 
     /**
      * Create new keys.
      *
      * @param count amount of the new keys which should be create.
      */
-    void create(int count, boolean longTerm) throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException,
-        UnrecoverableKeyException, OperatorCreationException;
+    void create(int count, boolean longTerm);
 }

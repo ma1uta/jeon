@@ -34,7 +34,7 @@ public class Invitation {
     private String medium;
 
     /**
-     * Invite to ths room.
+     * Invite to this room.
      */
     private String roomId;
 

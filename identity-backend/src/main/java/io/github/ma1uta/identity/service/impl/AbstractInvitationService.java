@@ -147,15 +147,7 @@ public abstract class AbstractInvitationService implements InvitationService {
         }
         String displayName = address.substring(0, index);
 
-        Invitation invitation = new Invitation();
-        invitation.setMedium(medium);
-        invitation.setAddress(address);
-        invitation.setRoomId(roomId);
-        invitation.setSender(sender);
-        invitation.setToken(token);
-        invitation.setPublicKeys(Arrays.asList(ephemeralKey, longTermKey));
-        invitation.setDisplayName(displayName);
-        getInvitationDao().insert(invitation);
+        getInvitationDao().insert(address, medium, roomId, sender, token, Arrays.asList(ephemeralKey, longTermKey), displayName);
 
         InvitationResponse response = new InvitationResponse();
         response.setDisplayName(displayName);

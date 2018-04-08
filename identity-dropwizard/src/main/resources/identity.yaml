@@ -1,2 +1,29 @@
-template: Hello, %s!
-defaultName: Stranger
+secureRandomSeed: 'dummy'
+
+database:
+  driverClass: org.postgresql.Driver
+  user: pg-user
+  password: iAMs00perSecrEET
+  url: jdbc:postgresql://db.example.com/db-prod
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minute
+
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      target: sdterr
+    - tyte: file
+      currentLogFilename: ./logs/identity.log
+      archivedLogFilenamePattern: ./logs/identity-%d.log.gz
+      archivedFileCount: 5
+      timeZone: UTC
+

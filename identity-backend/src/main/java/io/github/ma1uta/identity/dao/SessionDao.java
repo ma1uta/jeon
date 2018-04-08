@@ -42,10 +42,9 @@ public interface SessionDao {
      *
      * @param clientSecret client secret.
      * @param address      email.
-     * @param medium       'email'.
      * @return sessions.
      */
-    List<Session> findBySecretEmail(String clientSecret, String address, String medium);
+    List<Session> findBySecretEmail(String clientSecret, String address);
 
     /**
      * Find sessions by client secret and session id.

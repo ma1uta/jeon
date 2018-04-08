@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.identity;
+package io.github.ma1uta.identity.dropwizard;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.dropwizard.db.DataSourceFactory;
 import io.github.ma1uta.identity.configuration.AssociationConfiguration;
 import io.github.ma1uta.identity.configuration.InvitationServiceConfiguration;
 import io.github.ma1uta.identity.configuration.KeyServiceConfiguration;
@@ -25,25 +26,45 @@ import io.github.ma1uta.identity.configuration.SelfKeyGeneratorConfiguration;
 import io.github.ma1uta.identity.configuration.SessionServiceConfiguration;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 public class IdentityConfiguration extends Configuration {
+
+    @Valid
+    @NotNull
+    private DataSourceFactory database = new DataSourceFactory();
 
     @NotEmpty
     private String secureRandomSeed;
 
-    @NotEmpty
+    @Valid
+    @NotNull
     private SelfKeyGeneratorConfiguration selfKeyGeneratorConfiguration;
 
-    @NotEmpty
+    @Valid
+    @NotNull
     private KeyServiceConfiguration keyServiceConfiguration;
 
-    @NotEmpty
+    @Valid
+    @NotNull
     private AssociationConfiguration associationConfiguration;
 
-    @NotEmpty
+    @Valid
+    @NotNull
     private InvitationServiceConfiguration invitationServiceConfiguration;
 
-    @NotEmpty
+    @Valid
+    @NotNull
     private SessionServiceConfiguration sessionServiceConfiguration;
+
+    public DataSourceFactory getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(DataSourceFactory database) {
+        this.database = database;
+    }
 
     @JsonProperty
     public String getSecureRandomSeed() {

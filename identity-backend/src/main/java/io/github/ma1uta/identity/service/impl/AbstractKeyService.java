@@ -135,9 +135,7 @@ public abstract class AbstractKeyService implements KeyService {
     /**
      * {@link KeyService#sign(String, boolean)}
      */
-    protected Optional<Map<String, Map<String, String>>> signInternal(String content, boolean longTerm) throws CertificateException,
-        UnrecoverableKeyException,
-        NoSuchAlgorithmException, KeyStoreException, OperatorCreationException, IOException {
+    protected Optional<Map<String, Map<String, String>>> signInternal(String content, boolean longTerm) {
         KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
         Optional<Pair<String, String>> pair = provider.sign(nextKey(longTerm), content);
         if (!pair.isPresent()) {
@@ -153,8 +151,7 @@ public abstract class AbstractKeyService implements KeyService {
     /**
      * {@link KeyService#nextKey(boolean)}
      */
-    protected String nextKeyInternal(boolean longTerm) throws KeyStoreException, UnrecoverableKeyException, CertificateException,
-        OperatorCreationException, NoSuchAlgorithmException, IOException {
+    protected String nextKeyInternal(boolean longTerm) {
         KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
         Optional<String> key = provider.nextKey();
         if (!key.isPresent()) {
@@ -170,22 +167,27 @@ public abstract class AbstractKeyService implements KeyService {
     /**
      * {@link KeyService#create(int, boolean)}
      */
-    protected void createInternal(int count, boolean longTerm) throws KeyStoreException, IOException, CertificateException,
-        NoSuchAlgorithmException,
-        UnrecoverableKeyException, OperatorCreationException {
+    protected void createInternal(int count, boolean longTerm) {
         long startFrom = Math.max(getLongTermProvider().maxId(), getShortTermProvider().maxId());
-        Key key = null;
-        if (getConfiguration().isUseServerKey()) {
-            ServerKeyConfiguration serverKeyConfiguration = getConfiguration().getServerKeyConfiguration();
-            KeyStore rootStore = KeyStore.getInstance(serverKeyConfiguration.getKeyStoreType(), serverKeyConfiguration.getProvider());
-            try (InputStream inputStream = Files.newInputStream(Paths.get(serverKeyConfiguration.getKeyStore()))) {
-                rootStore.load(inputStream, serverKeyConfiguration.getKeyStorePassword().toCharArray());
+        try {
+            Key key = null;
+            if (getConfiguration().isUseServerKey()) {
+                ServerKeyConfiguration serverKeyConfiguration = getConfiguration().getServerKeyConfiguration();
+                KeyStore rootStore = KeyStore.getInstance(serverKeyConfiguration.getKeyStoreType(), serverKeyConfiguration.getProvider());
+                try (InputStream inputStream = Files.newInputStream(Paths.get(serverKeyConfiguration.getKeyStore()))) {
+                    rootStore.load(inputStream, serverKeyConfiguration.getKeyStorePassword().toCharArray());
+                }
+                key = rootStore.getKey(serverKeyConfiguration.getKeyAlias(), serverKeyConfiguration.getKeyPassword().toCharArray());
             }
-            key = rootStore.getKey(serverKeyConfiguration.getKeyAlias(), serverKeyConfiguration.getKeyPassword().toCharArray());
-        }
-        KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
-        for (long i = (startFrom + 1); i < (startFrom + count + 1); i++) {
-            getKeyGenerator().generate(provider, key, Long.toString(i));
+            KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
+            for (long i = (startFrom + 1); i < (startFrom + count + 1); i++) {
+                getKeyGenerator().generate(provider, key, Long.toString(i));
+            }
+        } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException
+            | IOException | OperatorCreationException e) {
+            String msg = "Cannot create new keys.";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
         }
     }
 

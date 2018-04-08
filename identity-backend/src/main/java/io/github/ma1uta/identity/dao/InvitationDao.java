@@ -28,9 +28,15 @@ public interface InvitationDao {
     /**
      * Persist a new invitation.
      *
-     * @param invitation invitation.
+     * @param address     email or msisdn.
+     * @param medium      'email' or 'msisdn'.
+     * @param roomId      invite to this room.
+     * @param sender      sender.
+     * @param token       invite token.
+     * @param publicKeys  long-term and short-term keys.
+     * @param displayName new participant's name.
      */
-    void insert(Invitation invitation);
+    void insert(String address, String medium, String roomId, String sender, String token, List<String> publicKeys, String displayName);
 
     /**
      * Find invitation via the address and the medium.
