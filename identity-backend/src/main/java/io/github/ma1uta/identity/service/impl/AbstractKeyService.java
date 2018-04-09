@@ -49,7 +49,8 @@ import java.util.Optional;
  * <p/>
  * There are default implementation for all methods of the {@link KeyService}.
  * <p/>
- * You can create you own class for example with annotation @Transactional (jpa) or another and invoke the same method with suffix "Internal".
+ * You can create you own class for example with annotation @Transactional (jpa) or another and invoke the same method
+ * with suffix "Internal".
  * <pre>
  * {@code
  *     @literal @Service
@@ -102,6 +103,8 @@ public abstract class AbstractKeyService implements KeyService {
     }
 
     /**
+     * Default implementation.
+     * <p/>
      * {@link KeyService#init()}
      */
     protected void initInternal() {
@@ -114,6 +117,8 @@ public abstract class AbstractKeyService implements KeyService {
     }
 
     /**
+     * Default implementation.
+     * <p/>
      * {@link KeyService#key(String)}
      */
     protected Optional<Pair<String, Certificate>> keyInternal(String key) {
@@ -126,6 +131,8 @@ public abstract class AbstractKeyService implements KeyService {
     }
 
     /**
+     * Default implementation.
+     * <p/>
      * {@link KeyService#valid(String, boolean)}
      */
     protected boolean validInternal(String publicKey, boolean longTerm) {
@@ -133,6 +140,8 @@ public abstract class AbstractKeyService implements KeyService {
     }
 
     /**
+     * Default implementation.
+     * <p/>
      * {@link KeyService#sign(String, boolean)}
      */
     protected Optional<Map<String, Map<String, String>>> signInternal(String content, boolean longTerm) {
@@ -149,6 +158,8 @@ public abstract class AbstractKeyService implements KeyService {
     }
 
     /**
+     * Default implementation.
+     * <p/>
      * {@link KeyService#nextKey(boolean)}
      */
     protected String nextKeyInternal(boolean longTerm) {
@@ -165,6 +176,8 @@ public abstract class AbstractKeyService implements KeyService {
     }
 
     /**
+     * Default implemetation.
+     * <p/>
      * {@link KeyService#create(int, boolean)}
      */
     protected void createInternal(int count, boolean longTerm) {

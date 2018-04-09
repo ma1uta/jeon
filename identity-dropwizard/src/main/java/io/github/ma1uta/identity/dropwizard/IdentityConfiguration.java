@@ -24,6 +24,7 @@ import io.github.ma1uta.identity.configuration.InvitationServiceConfiguration;
 import io.github.ma1uta.identity.configuration.KeyServiceConfiguration;
 import io.github.ma1uta.identity.configuration.SelfKeyGeneratorConfiguration;
 import io.github.ma1uta.identity.configuration.SessionServiceConfiguration;
+import io.github.ma1uta.identity.dropwizard.service.MailConfiguration;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
@@ -58,10 +59,16 @@ public class IdentityConfiguration extends Configuration {
     @NotNull
     private SessionServiceConfiguration sessionServiceConfiguration;
 
+    @Valid
+    @NotNull
+    private MailConfiguration mailConfiguration;
+
+    @JsonProperty
     public DataSourceFactory getDatabase() {
         return database;
     }
 
+    @JsonProperty
     public void setDatabase(DataSourceFactory database) {
         this.database = database;
     }
@@ -76,44 +83,64 @@ public class IdentityConfiguration extends Configuration {
         this.secureRandomSeed = secureRandomSeed;
     }
 
+    @JsonProperty
     public SelfKeyGeneratorConfiguration getSelfKeyGeneratorConfiguration() {
         return selfKeyGeneratorConfiguration;
     }
 
+    @JsonProperty
     public void setSelfKeyGeneratorConfiguration(SelfKeyGeneratorConfiguration selfKeyGeneratorConfiguration) {
         this.selfKeyGeneratorConfiguration = selfKeyGeneratorConfiguration;
     }
 
+    @JsonProperty
     public KeyServiceConfiguration getKeyServiceConfiguration() {
         return keyServiceConfiguration;
     }
 
+    @JsonProperty
     public void setKeyServiceConfiguration(KeyServiceConfiguration keyServiceConfiguration) {
         this.keyServiceConfiguration = keyServiceConfiguration;
     }
 
+    @JsonProperty
     public AssociationConfiguration getAssociationConfiguration() {
         return associationConfiguration;
     }
 
+    @JsonProperty
     public void setAssociationConfiguration(AssociationConfiguration associationConfiguration) {
         this.associationConfiguration = associationConfiguration;
     }
 
+    @JsonProperty
     public InvitationServiceConfiguration getInvitationServiceConfiguration() {
         return invitationServiceConfiguration;
     }
 
+    @JsonProperty
     public void setInvitationServiceConfiguration(
         InvitationServiceConfiguration invitationServiceConfiguration) {
         this.invitationServiceConfiguration = invitationServiceConfiguration;
     }
 
+    @JsonProperty
     public SessionServiceConfiguration getSessionServiceConfiguration() {
         return sessionServiceConfiguration;
     }
 
+    @JsonProperty
     public void setSessionServiceConfiguration(SessionServiceConfiguration sessionServiceConfiguration) {
         this.sessionServiceConfiguration = sessionServiceConfiguration;
+    }
+
+    @JsonProperty
+    public MailConfiguration getMailConfiguration() {
+        return mailConfiguration;
+    }
+
+    @JsonProperty
+    public void setMailConfiguration(MailConfiguration mailConfiguration) {
+        this.mailConfiguration = mailConfiguration;
     }
 }

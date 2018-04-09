@@ -31,17 +31,24 @@ import io.github.ma1uta.identity.api.Lookup;
 import io.github.ma1uta.identity.api.Session;
 import io.github.ma1uta.identity.api.Status;
 import io.github.ma1uta.identity.api.Validation;
+import io.github.ma1uta.identity.dropwizard.service.AssociationJdbiService;
+import io.github.ma1uta.identity.dropwizard.service.InvitationJdbiService;
+import io.github.ma1uta.identity.dropwizard.service.JacksonSerializer;
+import io.github.ma1uta.identity.dropwizard.service.MailService;
+import io.github.ma1uta.identity.dropwizard.service.RestJerseyService;
+import io.github.ma1uta.identity.dropwizard.service.SessionJdbiService;
 import io.github.ma1uta.identity.dropwizard.service.SimpleKeyService;
 import io.github.ma1uta.identity.key.SelfCertificateKeyGenerator;
 import io.github.ma1uta.identity.service.AssociationService;
 import io.github.ma1uta.identity.service.InvitationService;
 import io.github.ma1uta.identity.service.KeyService;
+import io.github.ma1uta.identity.service.RestService;
+import io.github.ma1uta.identity.service.SerializerService;
 import io.github.ma1uta.identity.service.SessionService;
-import io.github.ma1uta.identity.service.impl.AbstractAssociationService;
-import io.github.ma1uta.identity.service.impl.AbstractInvitationService;
-import io.github.ma1uta.identity.service.impl.AbstractSessionService;
 import io.github.ma1uta.jeon.exception.ExceptionHandler;
 import org.jdbi.v3.core.Jdbi;
+
+import javax.ws.rs.client.ClientBuilder;
 
 public class IdentityApplication extends Application<IdentityConfiguration> {
 
@@ -58,7 +65,7 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
     @Override
     public void run(IdentityConfiguration configuration, Environment environment) throws Exception {
         initializeDataSource(configuration, environment);
-        initializeServices(configuration);
+        initializeServices(configuration, environment);
         registerResourses(configuration, environment);
     }
 
@@ -81,15 +88,19 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
         this.jdbi = new JdbiFactory().build(environment, configuration.getDatabase(), "postgresql");
     }
 
-    private void initializeServices(IdentityConfiguration configuration) {
+    private void initializeServices(IdentityConfiguration configuration, Environment environment) {
+        SerializerService serializerService = new JacksonSerializer(environment.getObjectMapper());
+        RestService restService = new RestJerseyService(ClientBuilder.newClient());
+
         this.keyService = new SimpleKeyService(new SelfCertificateKeyGenerator(configuration.getSelfKeyGeneratorConfiguration()),
             configuration.getKeyServiceConfiguration());
         this.keyService.init();
-        this.associationService = new AbstractAssociationService(null, this.keyService, configuration.getAssociationConfiguration(), null);
-        this.invitationService = new AbstractInvitationService(this.associationService, this.keyService, null, null,
-            configuration.getInvitationServiceConfiguration(), null);
-        this.sessionService = new AbstractSessionService(null, null, this.associationService, this.invitationService,
-            configuration.getSessionServiceConfiguration());
+        this.associationService = new AssociationJdbiService(this.jdbi, this.keyService, configuration.getAssociationConfiguration(),
+            serializerService);
+        this.invitationService = new InvitationJdbiService(this.associationService, this.keyService, serializerService,
+            configuration.getInvitationServiceConfiguration(), restService, this.jdbi);
+        this.sessionService = new SessionJdbiService(new MailService(configuration.getMailConfiguration()), this.associationService,
+            this.invitationService, configuration.getSessionServiceConfiguration(), this.jdbi);
     }
 
     private void registerResourses(IdentityConfiguration configuration, Environment environment) {

@@ -24,9 +24,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 
+/**
+ * Key provider implementation with the locks.
+ */
 public abstract class AbstractKeyProvider implements KeyProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKeyProvider.class);
+
+    private static final long TIMEOUT = 10 * 1000;
 
     protected final StoreHelper storeHelper;
     protected final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -46,7 +51,7 @@ public abstract class AbstractKeyProvider implements KeyProvider {
             synchronized (readBarrier) {
                 while (readBarrier.get() > 0) {
                     try {
-                        readBarrier.wait(10 * 1000);
+                        readBarrier.wait(TIMEOUT);
                     } catch (InterruptedException e) {
                         String msg = "Cannot acquire lock.";
                         LOGGER.error(msg, e);

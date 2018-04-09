@@ -31,6 +31,7 @@
         <dropwizard.flyway.version>1.3.0-1</dropwizard.flyway.version>
         <postgresql.version>42.2.2</postgresql.version>
         <maven.shade.plugin.version>2.3</maven.shade.plugin.version>
+        <mail.version>1.5.0-b01</mail.version>
     </properties>
 
     <dependencyManagement>
@@ -72,6 +73,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -88,6 +94,10 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-jdbi3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-client</artifactId>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.modules</groupId>

@@ -37,7 +37,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Key store provider for the short-term keys.
  * <p/>
- * After get next available key, this key moved to another key store.
+ * After post next available key, this key moved to another key store.
  */
 public class ShortTermKeyProvider extends AbstractKeyProvider {
 
@@ -158,7 +158,7 @@ public class ShortTermKeyProvider extends AbstractKeyProvider {
             try {
                 privateKey = (PrivateKey) getKeyStore().getKey(alias, getKeyStoreConfiguration().getKeyPassword().toCharArray());
             } catch (NoSuchAlgorithmException | UnrecoverableKeyException | KeyStoreException e) {
-                String msg = "Failed get the private key";
+                String msg = "Failed post the private key";
                 LOGGER.error(msg, e);
                 throw new MatrixException(MatrixException.M_INTERNAL, msg);
             }

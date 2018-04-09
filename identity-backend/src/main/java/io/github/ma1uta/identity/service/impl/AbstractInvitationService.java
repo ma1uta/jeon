@@ -32,30 +32,24 @@ import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 import io.github.ma1uta.matrix.server.model.bind.Invite;
 import io.github.ma1uta.matrix.server.model.bind.OnBindRequest;
 import io.github.ma1uta.matrix.server.model.bind.Signed;
-import org.bouncycastle.operator.OperatorCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Default implementation.
  * <p/>
  * There are default implementation for all methods of the {@link InvitationService}.
  * <p/>
- * You can create you own class for example with annotation @Transactional (jpa) or another and invoke the same method with suffix "Internal".
+ * You can create you own class for example with annotation @Transactional (jpa) or another and invoke the same method
+ * with suffix "Internal".
  * <pre>
  * {@code
  *     @literal @Service
@@ -66,7 +60,8 @@ import java.util.stream.Collectors;
  *         @literal @MyFavouriteAnnotation
  *         public String create(String address, String medium, String roomId, String sender) {
  *             // wrap next link to transaction via annotation or code.
- *             return super.createInternal(address, medium, roomId, sender);
+ *             InvitationDao dao = ...
+ *             return super.createInternal(address, medium, roomId, sender, dao);
  *         }
  *         ...
  *     }
@@ -79,17 +74,14 @@ public abstract class AbstractInvitationService implements InvitationService {
 
     private final AssociationService associationService;
     private final KeyService keyService;
-    private final InvitationDao invitationDao;
     private final SerializerService serializer;
     private final InvitationServiceConfiguration configuration;
     private final RestService restService;
 
-    public AbstractInvitationService(AssociationService associationService, KeyService keyService,
-                                     InvitationDao invitationDao, SerializerService serializer,
+    public AbstractInvitationService(AssociationService associationService, KeyService keyService, SerializerService serializer,
                                      InvitationServiceConfiguration configuration, RestService restService) {
         this.associationService = associationService;
         this.keyService = keyService;
-        this.invitationDao = invitationDao;
         this.serializer = serializer;
         this.configuration = configuration;
         this.restService = restService;
@@ -101,10 +93,6 @@ public abstract class AbstractInvitationService implements InvitationService {
 
     protected KeyService getKeyService() {
         return keyService;
-    }
-
-    protected InvitationDao getInvitationDao() {
-        return invitationDao;
     }
 
     protected SerializerService getSerializer() {
@@ -120,34 +108,31 @@ public abstract class AbstractInvitationService implements InvitationService {
     }
 
     /**
+     * Default implementation.
+     * <p/>
      * {@link InvitationService#create(String, String, String, String)}
      */
-    protected InvitationResponse createInternal(String address, String medium, String roomId, String sender) {
+    protected InvitationResponse createInternal(String address, String medium, String roomId, String sender, InvitationDao dao) {
         if (!"email".equals(medium)) {
-            throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong medium.", 400);
+            throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong medium.", HttpServletResponse.SC_BAD_REQUEST);
         }
         int index = address.indexOf('@');
         if (index == -1) {
-            throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong address", 400);
+            throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong address", HttpServletResponse.SC_BAD_REQUEST);
         }
         LookupResponse lookup = getAssociationService().lookup(medium, address, false);
         if (lookup.getMxid() != null) {
-            throw new MatrixException(ErrorResponse.Code.M_THREEPID_IN_USE, "Medium and address are used.", 400);
+            throw new MatrixException(ErrorResponse.Code.M_THREEPID_IN_USE, "Medium and address are used.",
+                HttpServletResponse.SC_BAD_REQUEST);
         }
         String token = UUID.randomUUID().toString();
         String ephemeralKey;
         String longTermKey;
-        try {
-            ephemeralKey = getKeyService().nextKey(false);
-            longTermKey = getKeyService().nextKey(true);
-        } catch (KeyStoreException | UnrecoverableKeyException | OperatorCreationException | CertificateException | IOException | NoSuchAlgorithmException e) {
-            String msg = "Failed get long-term or short-term keys";
-            LOGGER.error(msg, e);
-            throw new MatrixException(MatrixException.M_INTERNAL, "msg");
-        }
+        ephemeralKey = getKeyService().nextKey(false);
+        longTermKey = getKeyService().nextKey(true);
         String displayName = address.substring(0, index);
 
-        getInvitationDao().insert(address, medium, roomId, sender, token, Arrays.asList(ephemeralKey, longTermKey), displayName);
+        dao.insert(address, medium, roomId, sender, token, Arrays.asList(ephemeralKey, longTermKey), displayName);
 
         InvitationResponse response = new InvitationResponse();
         response.setDisplayName(displayName);
@@ -157,11 +142,13 @@ public abstract class AbstractInvitationService implements InvitationService {
     }
 
     /**
+     * Default implementation.
+     * <p/>
      * {@link InvitationService#sendInvite(String, String, String)}
      */
-    protected void sendInviteInternal(String address, String medium, String mxid) {
+    protected void sendInviteInternal(String address, String medium, String mxid, InvitationDao dao) {
 
-        List<Invitation> invitationList = getInvitationDao().findByAddressMedium(address, medium);
+        List<Invitation> invitationList = dao.findByAddressMedium(address, medium);
 
         if (!invitationList.isEmpty()) {
             OnBindRequest request = new OnBindRequest();
@@ -179,16 +166,8 @@ public abstract class AbstractInvitationService implements InvitationService {
                 Signed signed = new Signed();
                 signed.setMxid(mxid);
                 signed.setToken(item.getToken());
-                try {
-                    Optional<Map<String, Map<String, String>>> signature = getKeyService().sign(getSerializer().serialize(signed), true);
-                    signed.setSignatures(
-                        signature.orElseThrow(() -> new MatrixException(MatrixException.M_INTERNAL, "Cannot find signature")));
-                } catch (CertificateException | UnrecoverableKeyException | NoSuchAlgorithmException | OperatorCreationException
-                    | KeyStoreException | SignatureException | IOException | InvalidKeyException e) {
-                    String msg = "Failed sign invites";
-                    LOGGER.error(msg, e);
-                    throw new MatrixException(MatrixException.M_INTERNAL, msg);
-                }
+                Optional<Map<String, Map<String, String>>> signature = getKeyService().sign(getSerializer().serialize(signed), true);
+                signed.setSignatures(signature.orElseThrow(() -> new MatrixException(MatrixException.M_INTERNAL, "Cannot find signature")));
                 invite.setSigned(signed);
                 return invite;
             }).collect(Collectors.toList()));
@@ -196,7 +175,7 @@ public abstract class AbstractInvitationService implements InvitationService {
             String bindUrl = String
                 .format("%s://%s:%s/%s", getConfiguration().getOnBindProtocol(), domain, getConfiguration().getOnBindPort(),
                     getConfiguration().getOnBindUrl());
-            getRestService().get(bindUrl, request);
+            getRestService().post(bindUrl, request);
         }
     }
 }

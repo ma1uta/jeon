@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.identity.service;
+package io.github.ma1uta.identity.dropwizard.service;
 
-/**
- * Rest client to send requests.
- */
-public interface RestService {
+import io.github.ma1uta.identity.service.RestService;
 
-    /**
-     * Send post request.
-     *
-     * @param url     request url.
-     * @param request request data
-     * @param <Q>     type of the request.
-     * @param <P>     type of the response.
-     * @return response.
-     */
-    <Q, P> P post(String url, Q request);
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+
+public class RestJerseyService implements RestService {
+
+    private final Client client;
+
+    public RestJerseyService(Client client) {
+        this.client = client;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    @Override
+    public <Q, P> P post(String url, Q request) {
+        getClient().target(url).request().post(Entity.json(request));
+        return null;
+    }
 }
