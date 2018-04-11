@@ -31,6 +31,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Implementation of the {@link EmailService} based on the java mail.
+ */
 public class MailService implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailService.class);
@@ -49,10 +52,10 @@ public class MailService implements EmailService {
     public void send(String addressee, String subject, String message) {
         Properties props = new Properties();
         props.putAll(getMailConfiguration().getProps());
-//        props.put("mail.smtp.auth", "true");
-//        props.put("mail.smtp.starttls.enable", "true");
-//        props.put("mail.smtp.host", "smtp.gmail.com");
-//        props.put("mail.smtp.port", "587");
+        //props.put("mail.smtp.auth", "true");
+        //props.put("mail.smtp.starttls.enable", "true");
+        //props.put("mail.smtp.host", "smtp.gmail.com");
+        //props.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override

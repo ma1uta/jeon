@@ -22,12 +22,20 @@ import io.github.ma1uta.identity.model.Session;
 import io.github.ma1uta.identity.service.KeyService;
 import io.github.ma1uta.identity.service.SerializerService;
 import io.github.ma1uta.identity.service.impl.AbstractAssociationService;
+import io.github.ma1uta.jeon.exception.MatrixException;
 import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupRequest;
 import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse;
 import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 import org.jdbi.v3.core.Jdbi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Implementation of the {@link io.github.ma1uta.identity.service.AssociationService} based on jdbi.
+ */
 public class AssociationJdbiService extends AbstractAssociationService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssociationJdbiService.class);
 
     private final Jdbi jdbi;
 
@@ -45,18 +53,36 @@ public class AssociationJdbiService extends AbstractAssociationService {
 
     @Override
     public LookupResponse lookup(String address, String medium, boolean sign) {
-        return getJdbi().withHandle(handle -> {
-            handle.setReadOnly(true);
-            return handle.inTransaction(h -> super.lookupInternal(address, medium, sign, h.attach(AssociationDao.class)));
-        });
+        try {
+            return getJdbi().withHandle(handle -> {
+                handle.setReadOnly(true);
+                try {
+                    return handle.inTransaction(h -> super.lookupInternal(address, medium, sign, h.attach(AssociationDao.class)));
+                } catch (Exception e) {
+                    String msg = "Cannot find mxid";
+                    LOGGER.error(msg, e);
+                    throw new MatrixException(MatrixException.M_INTERNAL, msg);
+                }
+            });
+        } catch (Exception e) {
+            String msg = "Cannot find mxid";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
     }
 
     @Override
     public BulkLookupResponse lookup(BulkLookupRequest request) {
-        return getJdbi().withHandle(handle -> {
-            handle.setReadOnly(true);
-            return handle.inTransaction(h -> super.lookupInternal(request, h.attach(AssociationDao.class)));
-        });
+        try {
+            return getJdbi().withHandle(handle -> {
+                handle.setReadOnly(true);
+                return handle.inTransaction(h -> super.lookupInternal(request, h.attach(AssociationDao.class)));
+            });
+        } catch (Exception e) {
+            String msg = "Cannot find mxid";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
     }
 
     @Override

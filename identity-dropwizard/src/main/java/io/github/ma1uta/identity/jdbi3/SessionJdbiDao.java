@@ -25,6 +25,9 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
 
+/**
+ * Implementation of the {@link SessionDao} based on the jdbi.
+ */
 public interface SessionJdbiDao extends SessionDao {
 
     @SqlUpdate("insert into \"session\"(sid, token, client_secret, medium, address, send_attempt, next_link, created) "

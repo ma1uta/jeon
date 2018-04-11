@@ -23,6 +23,9 @@ import io.github.ma1uta.matrix.identity.api.InvitationApi;
 import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Implementation of the {@link InvitationApi}.
+ */
 public class Invitation implements InvitationApi {
 
     private final InvitationService invitationService;

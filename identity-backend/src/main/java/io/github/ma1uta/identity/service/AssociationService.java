@@ -21,6 +21,9 @@ import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupRequest;
 import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse;
 import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 
+/**
+ * Service to lookup, create and delete associations.
+ */
 public interface AssociationService {
     /**
      * Lookup association.
@@ -28,6 +31,7 @@ public interface AssociationService {
      * @param medium  'email' or 'msisdn'.
      * @param address email address or phone number.
      * @param sign    if true then sign result else false.
+     * @return response with the mxid.
      */
     LookupResponse lookup(String address, String medium, boolean sign);
 
@@ -35,11 +39,15 @@ public interface AssociationService {
      * Bulk lookup.
      *
      * @param request bulk request.
+     * @return response triples of the mxid, address and medium.
      */
     BulkLookupResponse lookup(BulkLookupRequest request);
 
     /**
      * Create new association.
+     *
+     * @param mxid    matrix id.
+     * @param session session id.
      */
     void create(Session session, String mxid);
 

@@ -27,6 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 
+/**
+ * Implementation of the {@link SessionApi}.
+ */
 public class Session implements SessionApi {
 
     @Context

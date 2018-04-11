@@ -25,6 +25,9 @@ import java.security.cert.Certificate;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Very simple implementation of the {@link io.github.ma1uta.identity.service.KeyService} based on the {@link AbstractKeyService}.
+ */
 public class SimpleKeyService extends AbstractKeyService {
 
     public SimpleKeyService(KeyGenerator keyGenerator, KeyServiceConfiguration configuration) {

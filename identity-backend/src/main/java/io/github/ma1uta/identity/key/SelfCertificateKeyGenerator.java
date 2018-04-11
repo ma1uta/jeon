@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.identity.key;
 
-
 import io.github.ma1uta.identity.configuration.SelfKeyGeneratorConfiguration;
+
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.BasicConstraints;
@@ -34,7 +34,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
@@ -65,7 +64,7 @@ public class SelfCertificateKeyGenerator implements KeyGenerator {
 
     @Override
     public void generate(KeyProvider keyProvider, Key parentPrivateKey, String keyId) throws NoSuchAlgorithmException,
-        OperatorCreationException, IOException, CertificateException, KeyStoreException {
+        OperatorCreationException, IOException, CertificateException {
         KeyPairGenerator pairGenerator = KeyPairGenerator.getInstance("Curve25519");
         SecureRandom secureRandom = new SecureRandom(getConfiguration().getSecureRandomSeed().getBytes(StandardCharsets.UTF_8));
 

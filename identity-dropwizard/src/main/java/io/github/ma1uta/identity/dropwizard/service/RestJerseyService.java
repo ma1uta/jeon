@@ -21,6 +21,9 @@ import io.github.ma1uta.identity.service.RestService;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 
+/**
+ * Implementation of the {@link RestService} based on the @{code Jersey Client}.
+ */
 public class RestJerseyService implements RestService {
 
     private final Client client;

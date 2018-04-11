@@ -55,7 +55,7 @@ public class StoreHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(StoreHelper.class);
 
     /**
-     * All keys have format: <algorithm>:<alias>.
+     * All keys have format: [algorithm]:[alias].
      */
     public static final Pattern KEY_PATTERN = Pattern.compile("(\\w+):(\\w+)");
 
@@ -77,6 +77,7 @@ public class StoreHelper {
      * Initialize key store provider.
      *
      * @param configuration key storage configuration.
+     * @return initialized key store.
      */
     public KeyStore init(KeyStoreConfiguration configuration) {
         try {

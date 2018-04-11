@@ -22,6 +22,9 @@ import java.security.KeyPair;
 import java.security.cert.Certificate;
 import java.util.Optional;
 
+/**
+ * Incapsulation of the keystore.
+ */
 public interface KeyProvider {
     /**
      * Initialize key store provider.

@@ -9,6 +9,9 @@ import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse;
 import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Implementation of the {@link LookupApi}.
+ */
 public class Lookup implements LookupApi {
 
     private final AssociationService associationService;

@@ -26,6 +26,9 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * IMplementation of the {@link AssociationDao} based on the jdbi.
+ */
 public interface AssociationJdbiDao extends AssociationDao {
 
     @SqlQuery("select * from only \"association\" where medium = :medium and address = :address")

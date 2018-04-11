@@ -20,7 +20,6 @@ import org.bouncycastle.operator.OperatorCreationException;
 
 import java.io.IOException;
 import java.security.Key;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
@@ -32,10 +31,14 @@ public interface KeyGenerator {
     /**
      * Generate new key pair with certificate to store them in the key store.
      *
-     * @param keyProvider the key store where keys are stored.
+     * @param keyProvider      the key store where keys are stored.
      * @param parentPrivateKey the parent or root private key to create and sign new certificate.
      * @param keyId            the key identifier. First part. Second part always is 'Ed25519'.
+     * @throws NoSuchAlgorithmException  if algorithm 'Ed25519' is missing.
+     * @throws IOException               if there are I/O exception with the key store.
+     * @throws CertificateException      if certificate is invalid.
+     * @throws OperatorCreationException if cannot create issuer object.
      */
     void generate(KeyProvider keyProvider, Key parentPrivateKey, String keyId) throws NoSuchAlgorithmException,
-        OperatorCreationException, IOException, CertificateException, KeyStoreException;
+        OperatorCreationException, IOException, CertificateException;
 }

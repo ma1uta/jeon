@@ -30,6 +30,7 @@ public interface SessionService {
      * @param email        client email.
      * @param nextLink     url to open.
      * @param sendAttempt  attempt
+     * @return session id.
      */
     String create(String clientSecret, String email, Long sendAttempt, String nextLink);
 
@@ -39,6 +40,7 @@ public interface SessionService {
      * @param token        validation token.
      * @param clientSecret client secret.
      * @param sid          session id.
+     * @return url to redirect if exist and session has been created.
      */
     String validate(String token, String clientSecret, String sid);
 
@@ -47,6 +49,7 @@ public interface SessionService {
      *
      * @param sid          session id.
      * @param clientSecret client secret.
+     * @return validated session if exists.
      */
     ValidationResponse getSession(String sid, String clientSecret);
 
@@ -56,6 +59,7 @@ public interface SessionService {
      * @param sid          session id.
      * @param mxid         matrix id.
      * @param clientSecret client secret.
+     * @return {@code true} if publishing has been completed.
      */
     boolean publish(String sid, String clientSecret, String mxid);
 

@@ -21,6 +21,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Mail configuration.
+ */
 public class MailConfiguration {
 
     @NotEmpty

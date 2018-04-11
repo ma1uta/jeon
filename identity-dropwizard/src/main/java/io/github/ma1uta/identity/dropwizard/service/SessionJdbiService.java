@@ -22,10 +22,18 @@ import io.github.ma1uta.identity.service.AssociationService;
 import io.github.ma1uta.identity.service.EmailService;
 import io.github.ma1uta.identity.service.InvitationService;
 import io.github.ma1uta.identity.service.impl.AbstractSessionService;
+import io.github.ma1uta.jeon.exception.MatrixException;
 import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
 import org.jdbi.v3.core.Jdbi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Implementation of the {@link io.github.ma1uta.identity.service.SessionService} based on the jdbi.
+ */
 public class SessionJdbiService extends AbstractSessionService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionJdbiService.class);
 
     private final Jdbi jdbi;
 
@@ -53,10 +61,16 @@ public class SessionJdbiService extends AbstractSessionService {
 
     @Override
     public ValidationResponse getSession(String sid, String clientSecret) {
-        return getJdbi().withHandle(handle -> {
-            handle.setReadOnly(true);
-            return handle.inTransaction(h -> super.getSessionInternal(sid, clientSecret, h.attach(SessionDao.class)));
-        });
+        try {
+            return getJdbi().withHandle(handle -> {
+                handle.setReadOnly(true);
+                return handle.inTransaction(h -> super.getSessionInternal(sid, clientSecret, h.attach(SessionDao.class)));
+            });
+        } catch (Exception e) {
+            String msg = "Cannot get session";
+            LOGGER.error(msg, e);
+            throw new MatrixException(MatrixException.M_INTERNAL, msg);
+        }
     }
 
     @Override

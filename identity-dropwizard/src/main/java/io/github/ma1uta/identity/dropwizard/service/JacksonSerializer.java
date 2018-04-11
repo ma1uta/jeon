@@ -23,6 +23,9 @@ import io.github.ma1uta.jeon.exception.MatrixException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Implementation of the {@link SerializerService} based on the Jackson library.
+ */
 public class JacksonSerializer implements SerializerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JacksonSerializer.class);

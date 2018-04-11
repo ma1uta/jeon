@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.identity.api;
 
-import io.github.ma1uta.identity.service.impl.AbstractKeyService;
 import io.github.ma1uta.identity.service.KeyService;
+import io.github.ma1uta.identity.service.impl.AbstractKeyService;
 import io.github.ma1uta.jeon.exception.MatrixException;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.identity.api.KeyManagementApi;
@@ -28,7 +28,11 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
+import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Implementation of the {@link KeyManagementApi}.
+ */
 public class KeyManagement implements KeyManagementApi {
 
     private final KeyService keyService;
@@ -47,7 +51,7 @@ public class KeyManagement implements KeyManagementApi {
             throw new MatrixException(ErrorResponse.Code.M_NOT_FOUND, "Missing key.");
         }
         Pair<String, Certificate> pair = getKeyService().key(keyId)
-            .orElseThrow(() -> new MatrixException(ErrorResponse.Code.M_NOT_FOUND, "Key not found", 404));
+            .orElseThrow(() -> new MatrixException(ErrorResponse.Code.M_NOT_FOUND, "Key not found", HttpServletResponse.SC_NOT_FOUND));
         PublicKeyResponse response = new PublicKeyResponse();
         response.setPublicKey(new String(pair.getValue().getPublicKey().getEncoded(), StandardCharsets.UTF_8));
         return response;
@@ -58,11 +62,6 @@ public class KeyManagement implements KeyManagementApi {
         return valid(publicKey, true);
     }
 
-    @Override
-    public KeyValidationResponse ephemeralValid(String publicKey) {
-        return valid(publicKey, false);
-    }
-
     protected KeyValidationResponse valid(String publicKey, boolean longTerm) {
         if (StringUtils.isBlank(publicKey)) {
             throw new MatrixException(AbstractKeyService.M_MISSING_KEY, "Missing key.");
@@ -70,5 +69,10 @@ public class KeyManagement implements KeyManagementApi {
         KeyValidationResponse response = new KeyValidationResponse();
         response.setValid(getKeyService().valid(publicKey, false));
         return response;
+    }
+
+    @Override
+    public KeyValidationResponse ephemeralValid(String publicKey) {
+        return valid(publicKey, false);
     }
 }

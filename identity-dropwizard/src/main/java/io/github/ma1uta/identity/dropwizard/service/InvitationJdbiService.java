@@ -26,6 +26,9 @@ import io.github.ma1uta.identity.service.impl.AbstractInvitationService;
 import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
 import org.jdbi.v3.core.Jdbi;
 
+/**
+ * Implementation of the {@link io.github.ma1uta.identity.service.InvitationService} based on the jdbi.
+ */
 public class InvitationJdbiService extends AbstractInvitationService {
 
     private final Jdbi jdbi;

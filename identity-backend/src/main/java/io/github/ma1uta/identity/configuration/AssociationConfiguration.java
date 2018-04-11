@@ -16,14 +16,24 @@
 
 package io.github.ma1uta.identity.configuration;
 
+/**
+ * Configuration of the Association Service.
+ */
 public class AssociationConfiguration {
+
+    /**
+     * Default time to live of the association.
+     * <p/>
+     * 60 seconds * 60 minutes * 24 hours * 30 days * 12 month * 10 years.
+     */
+    public static final long DEFAULT_ASSOCIATION_TTL = 60 * 60 * 24 * 30 * 12 * 10;
 
     /**
      * Time to live in seconds of the association.
      * <p/>
      * Default value is 10 years (60 seconds * 60 minutes * 24 hours * 30 days * 12 month * 10 years).
      */
-    private long associationTTL = 60 * 60 * 24 * 30 * 12 * 10;
+    private long associationTTL = DEFAULT_ASSOCIATION_TTL;
 
     public long getAssociationTTL() {
         return associationTTL;

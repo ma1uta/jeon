@@ -30,6 +30,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Identity configuration.
+ */
 public class IdentityConfiguration extends Configuration {
 
     @Valid

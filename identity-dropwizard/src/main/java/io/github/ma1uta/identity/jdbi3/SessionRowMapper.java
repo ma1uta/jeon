@@ -23,6 +23,9 @@ import org.jdbi.v3.core.statement.StatementContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Extract {@link Session} from the {@link ResultSet}.
+ */
 public class SessionRowMapper implements RowMapper<Session> {
     @Override
     public Session map(ResultSet rs, StatementContext ctx) throws SQLException {

@@ -22,6 +22,11 @@ package io.github.ma1uta.identity.configuration;
 public class KeyServiceConfiguration {
 
     /**
+     * Default amount of new keys.
+     */
+    public static final int DEFAULT_AMOUNT_KEY_TO_CREATE = 20;
+
+    /**
      * Self key generator configuration.
      */
     private SelfKeyGeneratorConfiguration selfKeyGeneratorConfiguration;
@@ -59,7 +64,7 @@ public class KeyServiceConfiguration {
     /**
      * Amount of the key to create at one time.
      */
-    private int amountKeysToCreate = 20;
+    private int amountKeysToCreate = DEFAULT_AMOUNT_KEY_TO_CREATE;
 
     /**
      * Identity server hostname.

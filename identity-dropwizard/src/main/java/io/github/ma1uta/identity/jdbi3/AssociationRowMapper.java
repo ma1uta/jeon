@@ -23,6 +23,9 @@ import org.jdbi.v3.core.statement.StatementContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Extract {@link Association} instance from the {@link ResultSet}.
+ */
 public class AssociationRowMapper implements RowMapper<Association> {
     @Override
     public Association map(ResultSet rs, StatementContext ctx) throws SQLException {

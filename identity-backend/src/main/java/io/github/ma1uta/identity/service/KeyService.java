@@ -17,16 +17,8 @@
 package io.github.ma1uta.identity.service;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.bouncycastle.operator.OperatorCreationException;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,6 +46,7 @@ public interface KeyService {
      *
      * @param publicKey public key.
      * @param longTerm  true if long-term key else short-term key.
+     * @return {@code true} if key valid, else {@code false}.
      */
     boolean valid(String publicKey, boolean longTerm);
 
@@ -74,13 +67,15 @@ public interface KeyService {
      * For short-term keys must use only new keys.
      *
      * @param longTerm true if use long-term key else use short-term key.
+     * @return alias of the next free key.
      */
     String nextKey(boolean longTerm);
 
     /**
      * Create new keys.
      *
-     * @param count amount of the new keys which should be create.
+     * @param count    amount of the new keys which should be create.
+     * @param longTerm determine what kind of key should be created, long-term or short-term.
      */
     void create(int count, boolean longTerm);
 }

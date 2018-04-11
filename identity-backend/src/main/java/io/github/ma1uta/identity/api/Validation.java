@@ -24,6 +24,9 @@ import io.github.ma1uta.matrix.identity.model.validation.PublishResponse;
 import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Implementation of the {@link ValidationApi}.
+ */
 public class Validation implements ValidationApi {
 
     private final SessionService sessionService;

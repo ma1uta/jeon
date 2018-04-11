@@ -22,9 +22,14 @@ import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
+/**
+ * Extract {@link Invitation} from the {@link ResultSet}.
+ */
 public class InvitationRowMapper implements RowMapper<Invitation> {
+    @SuppressWarnings("unchecked") // to suppress check cast publicKeys from Object to Collection.
     @Override
     public Invitation map(ResultSet rs, StatementContext ctx) throws SQLException {
         Invitation invitation = new Invitation();
@@ -33,7 +38,7 @@ public class InvitationRowMapper implements RowMapper<Invitation> {
         invitation.setRoomId(rs.getString("room_id"));
         invitation.setToken(rs.getString("token"));
         invitation.setSender(rs.getString("sender"));
-        invitation.setPublicKeys((List<String>) rs.getArray("public_keys").getArray());
+        invitation.setPublicKeys(new ArrayList<>((Collection<String>) rs.getArray("public_keys").getArray()));
         invitation.setDisplayName(rs.getString("display_name"));
         return invitation;
     }

@@ -50,6 +50,9 @@ import org.jdbi.v3.core.Jdbi;
 
 import javax.ws.rs.client.ClientBuilder;
 
+/**
+ * Identity main class.
+ */
 public class IdentityApplication extends Application<IdentityConfiguration> {
 
     private AssociationService associationService;
@@ -58,6 +61,12 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
     private SessionService sessionService;
     private Jdbi jdbi;
 
+    /**
+     * Entry point.
+     *
+     * @param args console arguments.
+     * @throws Exception if something wrong.
+     */
     public static void main(String[] args) throws Exception {
         new IdentityApplication().run(args);
     }
@@ -89,16 +98,18 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
     }
 
     private void initializeServices(IdentityConfiguration configuration, Environment environment) {
-        SerializerService serializerService = new JacksonSerializer(environment.getObjectMapper());
-        RestService restService = new RestJerseyService(ClientBuilder.newClient());
-
         this.keyService = new SimpleKeyService(new SelfCertificateKeyGenerator(configuration.getSelfKeyGeneratorConfiguration()),
             configuration.getKeyServiceConfiguration());
         this.keyService.init();
+
+        SerializerService serializerService = new JacksonSerializer(environment.getObjectMapper());
         this.associationService = new AssociationJdbiService(this.jdbi, this.keyService, configuration.getAssociationConfiguration(),
             serializerService);
+
+        RestService restService = new RestJerseyService(ClientBuilder.newClient());
         this.invitationService = new InvitationJdbiService(this.associationService, this.keyService, serializerService,
             configuration.getInvitationServiceConfiguration(), restService, this.jdbi);
+
         this.sessionService = new SessionJdbiService(new MailService(configuration.getMailConfiguration()), this.associationService,
             this.invitationService, configuration.getSessionServiceConfiguration(), this.jdbi);
     }

@@ -18,6 +18,9 @@ package io.github.ma1uta.identity.service;
 
 import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
 
+/**
+ * Service to create invitation and sent invites when session verification completed.
+ */
 public interface InvitationService {
     /**
      * Store invitation.
@@ -26,6 +29,7 @@ public interface InvitationService {
      * @param address email or phone number.
      * @param roomId  roomId to invite.
      * @param sender  who send invite.
+     * @return new invitation.
      */
     InvitationResponse create(String address, String medium, String roomId, String sender);
 

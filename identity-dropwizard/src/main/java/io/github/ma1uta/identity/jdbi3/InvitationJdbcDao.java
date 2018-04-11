@@ -26,6 +26,9 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
 
+/**
+ * Implementation of the {@link InvitationDao} based on the jdbi.
+ */
 public interface InvitationJdbcDao extends InvitationDao {
 
     @SqlUpdate("insert into \"invitation\"(medium, address, room_id, sender, token, public_key, display_name) "
