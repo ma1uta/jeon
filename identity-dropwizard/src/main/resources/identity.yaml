@@ -20,8 +20,8 @@ logging:
   level: INFO
   appenders:
     - type: console
-      target: sdterr
-    - tyte: file
+      target: stderr
+    - type: file
       currentLogFilename: ./logs/identity.log
       archivedLogFilenamePattern: ./logs/identity-%d.log.gz
       archivedFileCount: 5

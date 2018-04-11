@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.identity.configuration;
 
-import java.security.Provider;
-
 /**
  * Server root key configuration.
  */
@@ -28,24 +26,11 @@ public class ServerKeyConfiguration extends KeyStoreConfiguration {
      */
     private String keyAlias;
 
-    /**
-     * Server root key provider.
-     */
-    private Provider provider;
-
     public String getKeyAlias() {
         return keyAlias;
     }
 
     public void setKeyAlias(String keyAlias) {
         this.keyAlias = keyAlias;
-    }
-
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
     }
 }

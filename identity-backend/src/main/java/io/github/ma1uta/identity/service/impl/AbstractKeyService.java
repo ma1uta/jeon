@@ -186,7 +186,7 @@ public abstract class AbstractKeyService implements KeyService {
             Key key = null;
             if (getConfiguration().isUseServerKey()) {
                 ServerKeyConfiguration serverKeyConfiguration = getConfiguration().getServerKeyConfiguration();
-                KeyStore rootStore = KeyStore.getInstance(serverKeyConfiguration.getKeyStoreType(), serverKeyConfiguration.getProvider());
+                KeyStore rootStore = KeyStore.getInstance(serverKeyConfiguration.getKeyStoreType());
                 try (InputStream inputStream = Files.newInputStream(Paths.get(serverKeyConfiguration.getKeyStore()))) {
                     rootStore.load(inputStream, serverKeyConfiguration.getKeyStorePassword().toCharArray());
                 }
