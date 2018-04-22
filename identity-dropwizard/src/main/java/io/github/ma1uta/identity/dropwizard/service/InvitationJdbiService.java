@@ -23,8 +23,10 @@ import io.github.ma1uta.identity.service.KeyService;
 import io.github.ma1uta.identity.service.RestService;
 import io.github.ma1uta.identity.service.SerializerService;
 import io.github.ma1uta.identity.service.impl.AbstractInvitationService;
-import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
+import org.apache.commons.lang3.tuple.Triple;
 import org.jdbi.v3.core.Jdbi;
+
+import java.util.List;
 
 /**
  * Implementation of the {@link io.github.ma1uta.identity.service.InvitationService} based on the jdbi.
@@ -33,11 +35,8 @@ public class InvitationJdbiService extends AbstractInvitationService {
 
     private final Jdbi jdbi;
 
-    public InvitationJdbiService(AssociationService associationService,
-                                 KeyService keyService,
-                                 SerializerService serializer,
-                                 InvitationServiceConfiguration configuration,
-                                 RestService restService, Jdbi jdbi) {
+    public InvitationJdbiService(AssociationService associationService, KeyService keyService, SerializerService serializer,
+                                 InvitationServiceConfiguration configuration, RestService restService, Jdbi jdbi) {
         super(associationService, keyService, serializer, configuration, restService);
         this.jdbi = jdbi;
     }
@@ -47,7 +46,7 @@ public class InvitationJdbiService extends AbstractInvitationService {
     }
 
     @Override
-    public InvitationResponse create(String address, String medium, String roomId, String sender) {
+    public Triple<String, String, List<String>> create(String address, String medium, String roomId, String sender) {
         return getJdbi().inTransaction(h -> super.createInternal(address, medium, roomId, sender, h.attach(InvitationDao.class)));
     }
 

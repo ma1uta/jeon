@@ -16,7 +16,9 @@
 
 package io.github.ma1uta.identity.service;
 
-import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
+import org.apache.commons.lang3.tuple.Triple;
+
+import java.util.List;
 
 /**
  * Service to create invitation and sent invites when session verification completed.
@@ -29,9 +31,9 @@ public interface InvitationService {
      * @param address email or phone number.
      * @param roomId  roomId to invite.
      * @param sender  who send invite.
-     * @return new invitation.
+     * @return triple of the invitation (display_name, token, [ephemeral_key, long_term_key]).
      */
-    InvitationResponse create(String address, String medium, String roomId, String sender);
+    Triple<String, String, List<String>> create(String address, String medium, String roomId, String sender);
 
     /**
      * Send invite to the user's home server.

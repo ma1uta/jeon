@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.identity.service;
 
-import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
+import io.github.ma1uta.identity.model.Session;
 
 /**
  * Service to create, verify, publish and cleanup sessions.
@@ -27,12 +27,13 @@ public interface SessionService {
      * Create new session.
      *
      * @param clientSecret client secret.
-     * @param email        client email.
+     * @param medium       address type.
+     * @param address      address.
      * @param nextLink     url to open.
      * @param sendAttempt  attempt
      * @return session id.
      */
-    String create(String clientSecret, String email, Long sendAttempt, String nextLink);
+    String create(String clientSecret, String medium, String address, Long sendAttempt, String nextLink);
 
     /**
      * Validate existing session.
@@ -51,7 +52,7 @@ public interface SessionService {
      * @param clientSecret client secret.
      * @return validated session if exists.
      */
-    ValidationResponse getSession(String sid, String clientSecret);
+    Session getSession(String sid, String clientSecret);
 
     /**
      * Bind mxid and the 3pid.

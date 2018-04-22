@@ -17,6 +17,7 @@
 package io.github.ma1uta.identity.dropwizard;
 
 import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -38,7 +39,10 @@ import io.github.ma1uta.identity.dropwizard.service.MailService;
 import io.github.ma1uta.identity.dropwizard.service.RestJerseyService;
 import io.github.ma1uta.identity.dropwizard.service.SessionJdbiService;
 import io.github.ma1uta.identity.dropwizard.service.SimpleKeyService;
+import io.github.ma1uta.identity.dropwizard.task.PrepareKeyStores;
+import io.github.ma1uta.identity.key.LongTermKeyProvider;
 import io.github.ma1uta.identity.key.SelfCertificateKeyGenerator;
+import io.github.ma1uta.identity.key.ShortTermKeyProvider;
 import io.github.ma1uta.identity.service.AssociationService;
 import io.github.ma1uta.identity.service.InvitationService;
 import io.github.ma1uta.identity.service.KeyService;
@@ -46,8 +50,10 @@ import io.github.ma1uta.identity.service.RestService;
 import io.github.ma1uta.identity.service.SerializerService;
 import io.github.ma1uta.identity.service.SessionService;
 import io.github.ma1uta.jeon.exception.ExceptionHandler;
+import net.i2p.crypto.eddsa.EdDSASecurityProvider;
 import org.jdbi.v3.core.Jdbi;
 
+import java.security.Security;
 import javax.ws.rs.client.ClientBuilder;
 
 /**
@@ -60,6 +66,7 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
     private KeyService keyService;
     private SessionService sessionService;
     private Jdbi jdbi;
+    private SerializerService serializerService;
 
     /**
      * Entry point.
@@ -72,10 +79,14 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
     }
 
     @Override
-    public void run(IdentityConfiguration configuration, Environment environment) throws Exception {
+    public void run(IdentityConfiguration configuration, Environment environment) {
+        Security.addProvider(new EdDSASecurityProvider());
+
         initializeDataSource(configuration, environment);
         initializeServices(configuration, environment);
         registerResourses(configuration, environment);
+
+        environment.admin().addTask(new PrepareKeyStores("preparekeys", this.keyService));
     }
 
     @Override
@@ -98,30 +109,40 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
     }
 
     private void initializeServices(IdentityConfiguration configuration, Environment environment) {
-        this.keyService = new SimpleKeyService(new SelfCertificateKeyGenerator(configuration.getSelfKeyGeneratorConfiguration()),
-            configuration.getKeyServiceConfiguration());
+        SelfCertificateKeyGenerator keyGenerator = new SelfCertificateKeyGenerator(
+            configuration.getSelfKeyGenerator());
+        this.keyService = new SimpleKeyService(
+            new LongTermKeyProvider(configuration.getKey().getLongTerm(), configuration.getSecureRandomSeed(), keyGenerator),
+            new ShortTermKeyProvider(configuration.getKey().getUsedShortTerm(), configuration.getSecureRandomSeed(), keyGenerator),
+            configuration.getKey());
         this.keyService.init();
 
-        SerializerService serializerService = new JacksonSerializer(environment.getObjectMapper());
-        this.associationService = new AssociationJdbiService(this.jdbi, this.keyService, configuration.getAssociationConfiguration(),
-            serializerService);
+        this.serializerService = new JacksonSerializer(environment.getObjectMapper());
+        this.associationService = new AssociationJdbiService(this.jdbi, configuration.getAssociation());
 
         RestService restService = new RestJerseyService(ClientBuilder.newClient());
         this.invitationService = new InvitationJdbiService(this.associationService, this.keyService, serializerService,
-            configuration.getInvitationServiceConfiguration(), restService, this.jdbi);
+            configuration.getInvitation(), restService, this.jdbi);
 
-        this.sessionService = new SessionJdbiService(new MailService(configuration.getMailConfiguration()), this.associationService,
-            this.invitationService, configuration.getSessionServiceConfiguration(), this.jdbi);
+        this.sessionService = new SessionJdbiService(new MailService(configuration.getMail()), this.associationService,
+            this.invitationService, configuration.getSession(), this.jdbi);
     }
 
     private void registerResourses(IdentityConfiguration configuration, Environment environment) {
         environment.jersey().register(new ExceptionHandler());
 
+        environment.jersey().register(new Status());
         environment.jersey().register(new Invitation(this.invitationService));
         environment.jersey().register(new KeyManagement(this.keyService));
-        environment.jersey().register(new Lookup(this.associationService));
+        environment.jersey().register(new Lookup(this.associationService, keyService, serializerService));
         environment.jersey().register(new Session(this.sessionService));
-        environment.jersey().register(new Status());
         environment.jersey().register(new Validation(this.sessionService));
+
+        environment.getObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+        if (configuration.getTracing()) {
+            environment.jersey().property("jersey.config.server.tracing.type", "ALL");
+            environment.jersey().property("jersey.config.server.tracing.threshold", "VERBOSE");
+        }
     }
 }

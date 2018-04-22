@@ -17,29 +17,14 @@
 package io.github.ma1uta.identity.service.impl;
 
 import io.github.ma1uta.identity.configuration.KeyServiceConfiguration;
-import io.github.ma1uta.identity.configuration.ServerKeyConfiguration;
-import io.github.ma1uta.identity.key.KeyGenerator;
 import io.github.ma1uta.identity.key.KeyProvider;
-import io.github.ma1uta.identity.key.LongTermKeyProvider;
-import io.github.ma1uta.identity.key.ShortTermKeyProvider;
 import io.github.ma1uta.identity.service.KeyService;
 import io.github.ma1uta.jeon.exception.MatrixException;
 import org.apache.commons.lang3.tuple.Pair;
-import org.bouncycastle.operator.OperatorCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.Key;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -80,25 +65,21 @@ public abstract class AbstractKeyService implements KeyService {
     /**
      * Long-term keys.
      */
-    private KeyProvider longTermProvider;
+    private final KeyProvider longTermProvider;
 
     /**
      * Short-term keys.
      */
-    private KeyProvider shortTermProvider;
-
-    /**
-     * New keys generator.
-     */
-    private final KeyGenerator keyGenerator;
+    private final KeyProvider shortTermProvider;
 
     /**
      * Service configuration.
      */
     private final KeyServiceConfiguration configuration;
 
-    public AbstractKeyService(KeyGenerator keyGenerator, KeyServiceConfiguration configuration) {
-        this.keyGenerator = keyGenerator;
+    public AbstractKeyService(KeyProvider longTermProvider, KeyProvider shortTermProvider, KeyServiceConfiguration configuration) {
+        this.longTermProvider = longTermProvider;
+        this.shortTermProvider = shortTermProvider;
         this.configuration = configuration;
     }
 
@@ -108,11 +89,7 @@ public abstract class AbstractKeyService implements KeyService {
      * {@link KeyService#init()}
      */
     protected void initInternal() {
-        this.longTermProvider = new LongTermKeyProvider(getConfiguration().getLongTermConfiguration(),
-            getConfiguration().getSecureRandomSeed());
         this.longTermProvider.init();
-        this.shortTermProvider = new ShortTermKeyProvider(getConfiguration().getUsedShortTermConfiguration(),
-            getConfiguration().getShortTermConfiguration(), getConfiguration().getSecureRandomSeed());
         this.shortTermProvider.init();
     }
 
@@ -121,87 +98,84 @@ public abstract class AbstractKeyService implements KeyService {
      * <p/>
      * {@link KeyService#key(String)}
      */
-    protected Optional<Pair<String, Certificate>> keyInternal(String key) {
-        Optional<Pair<String, Certificate>> pair = getLongTermProvider().key(key);
-        if (pair.isPresent()) {
-            return pair;
-        }
-
-        return getShortTermProvider().key(key);
+    protected Optional<Certificate> keyInternal(String key) {
+        return getLongTermProvider().key(key);
     }
 
     /**
      * Default implementation.
      * <p/>
-     * {@link KeyService#valid(String, boolean)}
+     * {@link KeyService#validLongTerm(String)}
      */
-    protected boolean validInternal(String publicKey, boolean longTerm) {
-        return longTerm ? getLongTermProvider().valid(publicKey) : getShortTermProvider().valid(publicKey);
+    protected boolean validLongTermInternal(String publicKey) {
+        return getLongTermProvider().valid(publicKey);
     }
 
     /**
      * Default implementation.
      * <p/>
-     * {@link KeyService#sign(String, boolean)}
+     * {@link KeyService#validShortTerm(String)}
      */
-    protected Optional<Map<String, Map<String, String>>> signInternal(String content, boolean longTerm) {
-        KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
-        Optional<Pair<String, String>> pair = provider.sign(nextKey(longTerm), content);
-        if (!pair.isPresent()) {
-            return Optional.empty();
-        }
-        Map<String, Map<String, String>> result = new HashMap<>();
+    protected boolean validShortTermInternal(String publicKey) {
+        return getShortTermProvider().valid(publicKey);
+    }
+
+    /**
+     * Default implementation.
+     * <p/>
+     * {@link KeyService#sign(String)}
+     */
+    protected Map<String, Map<String, String>> signInternal(String content) {
+        Pair<String, String> pair = getLongTermProvider().sign(content);
         Map<String, String> pairMap = new HashMap<>();
-        pairMap.put("ed25519" + pair.get().getKey(), pair.get().getValue());
+        pairMap.put(pair.getKey(), pair.getValue());
+        Map<String, Map<String, String>> result = new HashMap<>();
         result.put(getConfiguration().getHostname(), pairMap);
-        return Optional.of(result);
+        return result;
     }
 
     /**
      * Default implementation.
      * <p/>
-     * {@link KeyService#nextKey(boolean)}
+     * {@link KeyService#retrieveLongTermKey()}
+     *
+     * @return key alias.
+     * @throws MatrixException if cannot find long-term key or key store isn't initialized.
      */
-    protected String nextKeyInternal(boolean longTerm) {
-        KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
-        Optional<String> key = provider.nextKey();
-        if (!key.isPresent()) {
-            create(getConfiguration().getAmountKeysToCreate(), longTerm);
-            key = provider.nextKey();
-        }
-        if (!key.isPresent()) {
-            throw new MatrixException(MatrixException.M_INTERNAL, "Cannot retrieve keys.");
-        }
-        return key.get();
+    protected String retrieveLongTermKeyInternal() {
+        return getLongTermProvider().retrieveKey()
+            .orElseThrow(() -> new MatrixException(MatrixException.M_INTERNAL, "Cannot find long-term key."));
     }
 
     /**
-     * Default implemetation.
+     * Default implementation.
      * <p/>
-     * {@link KeyService#create(int, boolean)}
+     * {@link KeyService#generateShortTermKey()}
+     *
+     * @return key alias.
+     * @throws MatrixException if key store isn't initialized.
      */
-    protected void createInternal(int count, boolean longTerm) {
-        long startFrom = Math.max(getLongTermProvider().maxId(), getShortTermProvider().maxId());
-        try {
-            Key key = null;
-            if (getConfiguration().isUseServerKey()) {
-                ServerKeyConfiguration serverKeyConfiguration = getConfiguration().getServerKeyConfiguration();
-                KeyStore rootStore = KeyStore.getInstance(serverKeyConfiguration.getKeyStoreType());
-                try (InputStream inputStream = Files.newInputStream(Paths.get(serverKeyConfiguration.getKeyStore()))) {
-                    rootStore.load(inputStream, serverKeyConfiguration.getKeyStorePassword().toCharArray());
-                }
-                key = rootStore.getKey(serverKeyConfiguration.getKeyAlias(), serverKeyConfiguration.getKeyPassword().toCharArray());
-            }
-            KeyProvider provider = longTerm ? getLongTermProvider() : getShortTermProvider();
-            for (long i = (startFrom + 1); i < (startFrom + count + 1); i++) {
-                getKeyGenerator().generate(provider, key, Long.toString(i));
-            }
-        } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException
-            | IOException | OperatorCreationException e) {
-            String msg = "Cannot create new keys.";
-            LOGGER.error(msg, e);
-            throw new MatrixException(MatrixException.M_INTERNAL, msg);
-        }
+    protected String generateShortTermKeyInternal() {
+        return getShortTermProvider().generateNewKey();
+    }
+
+    /**
+     * Default implementation.
+     * <p/>
+     * {@link KeyService#generateLongTermKey()}
+     */
+    protected void generateLongTermKeyInternal() {
+        getLongTermProvider().generateNewKey();
+    }
+
+    /**
+     * Default implementation.
+     * <p/>
+     * {@link KeyService#cleanKeyStores()}
+     */
+    protected void cleanKeyStoresInternal() {
+        // long-term keys clean before regenerating.
+        getShortTermProvider().clean();
     }
 
     protected KeyServiceConfiguration getConfiguration() {
@@ -214,9 +188,5 @@ public abstract class AbstractKeyService implements KeyService {
 
     protected KeyProvider getShortTermProvider() {
         return shortTermProvider;
-    }
-
-    protected KeyGenerator getKeyGenerator() {
-        return keyGenerator;
     }
 }

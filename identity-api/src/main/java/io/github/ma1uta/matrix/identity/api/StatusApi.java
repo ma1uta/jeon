@@ -28,7 +28,8 @@ import javax.ws.rs.core.MediaType;
  *
  * @author ma1uta
  */
-@Path("/_matrix/identity")
+@Path("/_matrix/identity/api/v1")
+@Produces(MediaType.APPLICATION_JSON)
 public interface StatusApi extends IdentityApi {
 
     /**
@@ -39,7 +40,6 @@ public interface StatusApi extends IdentityApi {
      * @return Status code {@code 200} if an Identity server is ready to serve requests.
      */
     @GET
-    @Path("/api/v1")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Path("")
     EmptyResponse v1Status();
 }

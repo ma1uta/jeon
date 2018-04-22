@@ -21,12 +21,7 @@ import io.github.ma1uta.identity.dao.AssociationDao;
 import io.github.ma1uta.identity.model.Association;
 import io.github.ma1uta.identity.model.Session;
 import io.github.ma1uta.identity.service.AssociationService;
-import io.github.ma1uta.identity.service.KeyService;
-import io.github.ma1uta.identity.service.SerializerService;
 import io.github.ma1uta.jeon.exception.MatrixException;
-import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupRequest;
-import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse;
-import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -73,87 +67,49 @@ public abstract class AbstractAssociationService implements AssociationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAssociationService.class);
 
     /**
-     * Key service to sign response.
-     */
-    private final KeyService keyService;
-
-    /**
      * Configuration.
      */
     private final AssociationConfiguration configuration;
 
-    /**
-     * Object serializer.
-     * <p/>
-     * Often is Jackson's ObjectMapper.
-     */
-    private final SerializerService serializer;
-
-    public AbstractAssociationService(KeyService keyService, AssociationConfiguration configuration, SerializerService serializer) {
-        this.keyService = keyService;
+    public AbstractAssociationService(AssociationConfiguration configuration) {
         this.configuration = configuration;
-        this.serializer = serializer;
-    }
-
-    public KeyService getKeyService() {
-        return keyService;
     }
 
     public AssociationConfiguration getConfiguration() {
         return configuration;
     }
 
-    public SerializerService getSerializer() {
-        return serializer;
-    }
-
     /**
      * Default implementation for lookup method.
-     *
-     * {@link AssociationService#lookup(String, String, boolean)}
+     * <p/>
+     * {@link AssociationService#lookup(String, String)}
      */
-    protected LookupResponse lookupInternal(String address, String medium, boolean sign, AssociationDao dao) {
+    protected Optional<Association> lookupInternal(String address, String medium, AssociationDao dao) {
         List<Association> associationList = dao.findByAddressMedium(address, medium);
-        LookupResponse response = new LookupResponse();
         if (associationList.size() > 1) {
             throw new MatrixException(M_TOO_MANY_ASSOCIATIONS, "Too many associations.");
         } else if (associationList.size() == 1) {
-            Association association = associationList.get(0);
-            response.setAddress(association.getAddress());
-            response.setMedium(association.getMedium());
-            response.setMxid(association.getMxid());
-            response.setNotBefore(association.getCreated());
-            response.setNotAfter(association.getExpired());
-            response.setTs(association.getTs());
-
-            if (sign) {
-                Optional<Map<String, Map<String, String>>> signature = getKeyService().sign(getSerializer().serialize(response), true);
-                if (!signature.isPresent()) {
-                    throw new MatrixException(MatrixException.M_INTERNAL, "Cannot find key to sign");
-                }
-                response.setSignatures(signature.get());
-            }
+            return Optional.of(associationList.get(0));
+        } else {
+            return Optional.empty();
         }
-        return response;
     }
 
     /**
      * Default implementation.
-     *
-     * {@link AssociationService#lookup(BulkLookupRequest)}
+     * <p/>
+     * {@link AssociationService#lookup(List)}
      */
-    protected BulkLookupResponse lookupInternal(BulkLookupRequest request, AssociationDao dao) {
-        BulkLookupResponse bulkResponse = new BulkLookupResponse();
-        bulkResponse.setThreepids(request.getThreepids().stream().map(list -> lookupInternal(list.get(0), list.get(1), false, dao))
-            .filter(response -> StringUtils.isNotBlank(response.getAddress()) && StringUtils.isNotBlank(response.getMedium())
-                && StringUtils.isNotBlank(response.getMxid())).map(response -> Arrays.asList(response.getMedium(), response.getAddress(),
-                response.getMxid())).collect(Collectors.toList()));
-        return bulkResponse;
+    protected List<List<String>> lookupInternal(List<List<String>> threepids, AssociationDao dao) {
+        return threepids.stream().map(list -> lookupInternal(list.get(0), list.get(1), dao))
+            .filter(Optional::isPresent).map(Optional::get)
+            .filter(response -> StringUtils.isNoneBlank(response.getAddress(), response.getMedium(), response.getMxid()))
+            .map(response -> Arrays.asList(response.getMedium(), response.getAddress(), response.getMxid())).collect(Collectors.toList());
     }
 
     /**
      * Default implementation.
-     *
+     * <p/>
      * {@link AssociationService#create(Session, String)}
      */
     protected void createInternal(Session session, String mxid, AssociationDao dao) {
@@ -163,7 +119,7 @@ public abstract class AbstractAssociationService implements AssociationService {
 
     /**
      * Default implementation.
-     *
+     * <p/>
      * {@link AssociationService#expire()}
      */
     protected void expireInternal(AssociationDao dao) {

@@ -1,10 +1,36 @@
-secureRandomSeed: 'dummy'
+secureRandomSeed: dummy
+selfKeyGenerator:
+  issuerName: dummy
+  serialNumberLength: 20
+  certificateValidTs: 7776000
+  secureRandomSeed: dummy
+key:
+  longTerm:
+    keyStore: /home/tolya/keystore/longTerm.pkcs12
+    keyStorePassword: dummy1
+    keyPassword: dummy1
+    keyStoreType: pkcs12
+  usedShortTerm:
+    keyStore: /home/tolya/keystore/shortTerm.pkcs12
+    keyStorePassword: dummy1
+    keyPassword: dummy1
+    keyStoreType: pkcs12
+  hostname: localhost
+association:
+  associationTTL: 311040000
+invitation:
+  onBindUrl:
+  onBindProtocol:
+  onBindPort:
+session:
+mail:
+tracing: false
 
 database:
   driverClass: org.postgresql.Driver
-  user: pg-user
-  password: iAMs00perSecrEET
-  url: jdbc:postgresql://db.example.com/db-prod
+  user: identity
+  password: identity
+  url: jdbc:postgresql://localhost/identity
   properties:
     charSet: UTF-8
   maxWaitForConnection: 1s

@@ -16,10 +16,11 @@
 
 package io.github.ma1uta.identity.service;
 
+import io.github.ma1uta.identity.model.Association;
 import io.github.ma1uta.identity.model.Session;
-import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupRequest;
-import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse;
-import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service to lookup, create and delete associations.
@@ -30,18 +31,17 @@ public interface AssociationService {
      *
      * @param medium  'email' or 'msisdn'.
      * @param address email address or phone number.
-     * @param sign    if true then sign result else false.
      * @return response with the mxid.
      */
-    LookupResponse lookup(String address, String medium, boolean sign);
+    Optional<Association> lookup(String address, String medium);
 
     /**
      * Bulk lookup.
      *
-     * @param request bulk request.
+     * @param threepids list of pairs (medium, address).
      * @return response triples of the mxid, address and medium.
      */
-    BulkLookupResponse lookup(BulkLookupRequest request);
+    List<List<String>> lookup(List<List<String>> threepids);
 
     /**
      * Create new association.

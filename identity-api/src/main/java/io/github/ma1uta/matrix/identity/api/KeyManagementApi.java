@@ -40,6 +40,7 @@ import javax.ws.rs.core.MediaType;
  * @author ma1uta
  */
 @Path("/_matrix/identity/api/v1/pubkey")
+@Produces(MediaType.APPLICATION_JSON)
 public interface KeyManagementApi extends IdentityApi {
 
     /**
@@ -51,7 +52,6 @@ public interface KeyManagementApi extends IdentityApi {
      */
     @GET
     @Path("/{keyId}")
-    @Produces(MediaType.APPLICATION_JSON)
     PublicKeyResponse get(@PathParam("keyId") String keyId);
 
     /**
@@ -62,7 +62,6 @@ public interface KeyManagementApi extends IdentityApi {
      */
     @GET
     @Path("/isvalid")
-    @Produces(MediaType.APPLICATION_JSON)
     KeyValidationResponse valid(@QueryParam("public_key") String publicKey);
 
     /**
@@ -73,6 +72,5 @@ public interface KeyManagementApi extends IdentityApi {
      */
     @GET
     @Path("/ephemeral/isvalid")
-    @Produces(MediaType.APPLICATION_JSON)
     KeyValidationResponse ephemeralValid(@QueryParam("public_key") String publicKey);
 }

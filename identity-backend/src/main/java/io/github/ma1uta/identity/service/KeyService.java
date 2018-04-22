@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.identity.service;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.security.cert.Certificate;
 import java.util.Map;
 import java.util.Optional;
@@ -37,45 +35,55 @@ public interface KeyService {
      * Find certificate by key.
      *
      * @param key key id.
-     * @return pair (alias, certificate).
+     * @return certificate of this key.
      */
-    Optional<Pair<String, Certificate>> key(String key);
+    Optional<Certificate> key(String key);
 
     /**
-     * Check if the public key is valid.
+     * Check if the long-term public key is valid.
      *
      * @param publicKey public key.
-     * @param longTerm  true if long-term key else short-term key.
      * @return {@code true} if key valid, else {@code false}.
      */
-    boolean valid(String publicKey, boolean longTerm);
+    boolean validLongTerm(String publicKey);
+
+    /**
+     * Check if the short-term public key is valid.
+     *
+     * @param publicKey public key.
+     * @return {@code true} if key valid, else {@code false}.
+     */
+    boolean validShortTerm(String publicKey);
 
     /**
      * Sign content.
      *
-     * @param content  content.
-     * @param longTerm true if should use long-term keys else use short-term key.
+     * @param content content.
      * @return map { "hostname" -> { "key": "signature" } }
      */
-    Optional<Map<String, Map<String, String>>> sign(String content, boolean longTerm);
+    Map<String, Map<String, String>> sign(String content);
 
     /**
-     * Retrieve next available key.
-     * <p/>
-     * For long-term keys can use the same keys.
-     * <p/>
-     * For short-term keys must use only new keys.
+     * Retrieve long-term key.
      *
-     * @param longTerm true if use long-term key else use short-term key.
      * @return alias of the next free key.
      */
-    String nextKey(boolean longTerm);
+    String retrieveLongTermKey();
 
     /**
-     * Create new keys.
+     * Create new short-term key.
      *
-     * @param count    amount of the new keys which should be create.
-     * @param longTerm determine what kind of key should be created, long-term or short-term.
+     * @return alias of the new short-term key.
      */
-    void create(int count, boolean longTerm);
+    String generateShortTermKey();
+
+    /**
+     * Create new long-term key. Old key will be removed;
+     */
+    void generateLongTermKey();
+
+    /**
+     * Clean both keystores.
+     */
+    void cleanKeyStores();
 }

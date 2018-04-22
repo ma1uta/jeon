@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.identity.configuration;
+package io.github.ma1uta.identity.service;
 
 /**
- * Server root key configuration.
+ * Client to send email.
  */
-public class ServerKeyConfiguration extends KeyStoreConfiguration {
+public interface NotificationService {
 
     /**
-     * Server root key alias.
+     * Send notification to the one addressee without attachments.
+     *
+     * @param medium       address type
+     * @param address      addressee.
+     * @param clientSecret client secret.
+     * @param token        verification token.
+     * @param sid          session id.
      */
-    private String keyAlias;
-
-    public String getKeyAlias() {
-        return keyAlias;
-    }
-
-    public void setKeyAlias(String keyAlias) {
-        this.keyAlias = keyAlias;
-    }
+    void send(String medium, String address, String clientSecret, String token, String sid);
 }

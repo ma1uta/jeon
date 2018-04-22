@@ -22,20 +22,14 @@ import io.github.ma1uta.identity.configuration.SessionServiceConfiguration;
 import io.github.ma1uta.identity.dao.SessionDao;
 import io.github.ma1uta.identity.model.Session;
 import io.github.ma1uta.identity.service.AssociationService;
-import io.github.ma1uta.identity.service.EmailService;
 import io.github.ma1uta.identity.service.InvitationService;
+import io.github.ma1uta.identity.service.NotificationService;
 import io.github.ma1uta.identity.service.SessionService;
 import io.github.ma1uta.jeon.exception.MatrixException;
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.MessageFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,21 +62,22 @@ public abstract class AbstractSessionService implements SessionService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSessionService.class);
 
-    private final EmailService emailService;
+    private final NotificationService notificationService;
     private final AssociationService associationService;
     private final InvitationService invitationService;
     private final SessionServiceConfiguration configuration;
 
-    public AbstractSessionService(EmailService emailService, AssociationService associationService, InvitationService invitationService,
+    public AbstractSessionService(NotificationService notificationService, AssociationService associationService,
+                                  InvitationService invitationService,
                                   SessionServiceConfiguration configuration) {
-        this.emailService = emailService;
+        this.notificationService = notificationService;
         this.associationService = associationService;
         this.invitationService = invitationService;
         this.configuration = configuration;
     }
 
-    protected EmailService getEmailService() {
-        return emailService;
+    protected NotificationService getNotificationService() {
+        return notificationService;
     }
 
     protected SessionServiceConfiguration getConfiguration() {
@@ -102,28 +97,20 @@ public abstract class AbstractSessionService implements SessionService {
      * <p/>
      * {@link SessionService#create}.
      */
-    protected String createInternal(String clientSecret, String email, Long sendAttempt, String nextLink, SessionDao dao) {
+    protected String createInternal(String clientSecret, String address, String medium, Long sendAttempt, String nextLink, SessionDao dao) {
         boolean create = true;
         if (sendAttempt != null) {
-            create = dao.findBySecretEmail(clientSecret, email).stream()
+            create = dao.findBySecretEmail(clientSecret, address, medium).stream()
                 .anyMatch(s -> s.getSendAttempt() == null || s.getSendAttempt() < sendAttempt);
         }
 
         if (create) {
             String sid = UUID.randomUUID().toString();
             String token = UUID.randomUUID().toString();
-            dao.insertOrUpdate(sid, token, clientSecret, email, sendAttempt != null ? Long.toString(sendAttempt) : null, nextLink);
+            dao.insertOrUpdate(sid, token, clientSecret, medium, address, sendAttempt != null ? Long.toString(sendAttempt) : null,
+                nextLink);
 
-            String emailMessage;
-            try {
-                emailMessage = MessageFormat.format(getConfiguration().getEmailMessageTemplate(), token, clientSecret, sid,
-                    validationUrl(getConfiguration().getHomeserver(), token, clientSecret, sid));
-            } catch (UnsupportedEncodingException e) {
-                String msg = "Cannot send verification email";
-                LOGGER.error(msg, e);
-                throw new MatrixException(M_INTERNAL, msg);
-            }
-            getEmailService().send(email, getConfiguration().getEmailSubject(), emailMessage);
+            getNotificationService().send(medium, address, clientSecret, token, sid);
             return sid;
         } else {
             return "";
@@ -153,20 +140,14 @@ public abstract class AbstractSessionService implements SessionService {
      * <p/>
      * {@link SessionService#getSession}
      */
-    protected ValidationResponse getSessionInternal(String sid, String clientSecret, SessionDao dao) {
+    protected Session getSessionInternal(String sid, String clientSecret, SessionDao dao) {
         List<Session> sessionList = dao.findBySecretSid(clientSecret, sid);
         switch (sessionList.size()) {
             case 0:
                 throw new MatrixException(ErrorResponse.Code.M_SESSION_NOT_VALIDATED,
                     "This validation session has not yet been completed.");
             case 1:
-                ValidationResponse response = new ValidationResponse();
-                Session session = sessionList.get(0);
-                response.setAddress(session.getAddress());
-                response.setMedium(session.getMedium());
-                ZoneOffset offset = ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now());
-                response.setValidatedAt(session.getValidated().toEpochSecond(offset));
-                return response;
+                return sessionList.get(0);
             default:
                 throw new MatrixException(ErrorResponse.Code.M_SESSION_NOT_VALIDATED, "Too many sessions.");
         }
@@ -190,18 +171,6 @@ public abstract class AbstractSessionService implements SessionService {
             default:
                 throw new MatrixException(ErrorResponse.Code.M_SESSION_NOT_VALIDATED, "Too many sessions");
         }
-    }
-
-    /**
-     * Url for session validation.
-     *
-     * @param clientSecret client secret.
-     * @param sid          session id.
-     * @param token        session token.
-     */
-    protected String validationUrl(String homeserver, String token, String clientSecret, String sid) throws UnsupportedEncodingException {
-        return String.format("https://%s/_matrix/identity/api/v1/validate/email/submitToken?token=%s&client_secret=%s&sid=%s",
-            homeserver, URLEncoder.encode(token, "UTF-8"), URLEncoder.encode(clientSecret, "UTF-8"), URLEncoder.encode(sid, "UTF-8"));
     }
 
     /**

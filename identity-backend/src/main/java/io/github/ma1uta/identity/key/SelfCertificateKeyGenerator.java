@@ -17,32 +17,39 @@
 package io.github.ma1uta.identity.key;
 
 import io.github.ma1uta.identity.configuration.SelfKeyGeneratorConfiguration;
-
+import net.i2p.crypto.eddsa.EdDSAEngine;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.gnu.GNUObjectIdentifiers;
 import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.bouncycastle.operator.OperatorStreamException;
+import org.bouncycastle.operator.RuntimeOperatorException;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -63,27 +70,55 @@ public class SelfCertificateKeyGenerator implements KeyGenerator {
     }
 
     @Override
-    public void generate(KeyProvider keyProvider, Key parentPrivateKey, String keyId) throws NoSuchAlgorithmException,
+    public Pair<KeyPair, Certificate> generate() throws NoSuchAlgorithmException,
         OperatorCreationException, IOException, CertificateException {
-        KeyPairGenerator pairGenerator = KeyPairGenerator.getInstance("Curve25519");
+        KeyPairGenerator pairGenerator = KeyPairGenerator.getInstance("EdDSA");
         SecureRandom secureRandom = new SecureRandom(getConfiguration().getSecureRandomSeed().getBytes(StandardCharsets.UTF_8));
 
-        LocalDateTime notBefore = LocalDateTime.now();
-        LocalDateTime notAfter = notBefore.plus(Duration.ofSeconds(getConfiguration().getCertificateValidTs()));
+        Instant notBefore = Instant.now();
+        Instant notAfter = notBefore.plus(Duration.ofSeconds(getConfiguration().getCertificateValidTs()));
 
         KeyPair keyPair = pairGenerator.generateKeyPair();
-        PrivateKey rootPrivateKey = parentPrivateKey instanceof PrivateKey ? (PrivateKey) parentPrivateKey : keyPair.getPrivate();
-        ContentSigner signer = new JcaContentSignerBuilder("Ed25519").build(rootPrivateKey);
+        EdDSAEngine engine = new EdDSAEngine();
+        try {
+            engine.initSign(keyPair.getPrivate());
+        } catch (InvalidKeyException e) {
+            throw new OperatorCreationException("cannot create signer: " + e.getMessage(), e);
+        }
+        ContentSigner signer = new ContentSigner() {
+
+            private SignatureOutputStream stream = new SignatureOutputStream(engine);
+
+            @Override
+            public AlgorithmIdentifier getAlgorithmIdentifier() {
+                return new AlgorithmIdentifier(GNUObjectIdentifiers.Ed25519);
+            }
+
+            @Override
+            public OutputStream getOutputStream() {
+                return stream;
+            }
+
+            @Override
+            public byte[] getSignature() {
+                try {
+                    return stream.getSignature();
+                } catch (SignatureException e) {
+                    throw new RuntimeOperatorException("exception obtaining signature: " + e.getMessage(), e);
+                }
+            }
+        };
 
         BouncyCastleProvider provider = new BouncyCastleProvider();
         Security.addProvider(provider);
 
+        String issuer = String.format("CN=%s", getConfiguration().getIssuerName());
         JcaX509v3CertificateBuilder certificateBuilder = new JcaX509v3CertificateBuilder(
-            new X500Name(getConfiguration().getIssuerName()),
+            new X500Name(issuer),
             new BigInteger(getConfiguration().getSerialNumberLength(), secureRandom),
-            Date.from(Instant.from(notBefore)),
-            Date.from(Instant.from(notAfter)),
-            new X500Name(String.format("CN=%s", getConfiguration().getIssuerName())),
+            Date.from(notBefore),
+            Date.from(notAfter),
+            new X500Name(issuer),
             keyPair.getPublic()
         );
 
@@ -92,6 +127,45 @@ public class SelfCertificateKeyGenerator implements KeyGenerator {
         X509Certificate certificate = new JcaX509CertificateConverter().setProvider(provider)
             .getCertificate(certificateBuilder.build(signer));
 
-        keyProvider.addKey(keyId, keyPair, certificate);
+        return new ImmutablePair<>(keyPair, certificate);
+    }
+
+    private static final class SignatureOutputStream extends OutputStream {
+        private Signature sig;
+
+        private SignatureOutputStream(Signature sig) {
+            this.sig = sig;
+        }
+
+        @Override
+        public void write(byte[] bytes, int off, int len) throws IOException {
+            try {
+                sig.update(bytes, off, len);
+            } catch (SignatureException e) {
+                throw new OperatorStreamException("exception in content signer: " + e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public void write(byte[] bytes) throws IOException {
+            try {
+                sig.update(bytes);
+            } catch (SignatureException e) {
+                throw new OperatorStreamException("exception in content signer: " + e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public void write(int bytes) throws IOException {
+            try {
+                sig.update((byte) bytes);
+            } catch (SignatureException e) {
+                throw new OperatorStreamException("exception in content signer: " + e.getMessage(), e);
+            }
+        }
+
+        byte[] getSignature() throws SignatureException {
+            return sig.sign();
+        }
     }
 }

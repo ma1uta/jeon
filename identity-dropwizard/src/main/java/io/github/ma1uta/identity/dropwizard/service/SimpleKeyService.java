@@ -17,9 +17,8 @@
 package io.github.ma1uta.identity.dropwizard.service;
 
 import io.github.ma1uta.identity.configuration.KeyServiceConfiguration;
-import io.github.ma1uta.identity.key.KeyGenerator;
+import io.github.ma1uta.identity.key.KeyProvider;
 import io.github.ma1uta.identity.service.impl.AbstractKeyService;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.security.cert.Certificate;
 import java.util.Map;
@@ -30,8 +29,8 @@ import java.util.Optional;
  */
 public class SimpleKeyService extends AbstractKeyService {
 
-    public SimpleKeyService(KeyGenerator keyGenerator, KeyServiceConfiguration configuration) {
-        super(keyGenerator, configuration);
+    public SimpleKeyService(KeyProvider longTermProvider, KeyProvider shortTermProvider, KeyServiceConfiguration configuration) {
+        super(longTermProvider, shortTermProvider, configuration);
     }
 
     @Override
@@ -40,27 +39,43 @@ public class SimpleKeyService extends AbstractKeyService {
     }
 
     @Override
-    public Optional<Pair<String, Certificate>> key(String key) {
+    public Optional<Certificate> key(String key) {
         return super.keyInternal(key);
     }
 
     @Override
-    public boolean valid(String publicKey, boolean longTerm) {
-        return super.validInternal(publicKey, longTerm);
+    public boolean validLongTerm(String publicKey) {
+        return super.validLongTermInternal(publicKey);
     }
 
     @Override
-    public Optional<Map<String, Map<String, String>>> sign(String content, boolean longTerm) {
-        return super.signInternal(content, longTerm);
+    public boolean validShortTerm(String publicKey) {
+        return super.validShortTermInternal(publicKey);
     }
 
     @Override
-    public String nextKey(boolean longTerm) {
-        return super.nextKeyInternal(longTerm);
+    public Map<String, Map<String, String>> sign(String content) {
+        return super.signInternal(content);
     }
 
     @Override
-    public void create(int count, boolean longTerm) {
-        super.createInternal(count, longTerm);
+    public String retrieveLongTermKey() {
+        return super.retrieveLongTermKeyInternal();
     }
+
+    @Override
+    public String generateShortTermKey() {
+        return super.generateShortTermKeyInternal();
+    }
+
+    @Override
+    public void generateLongTermKey() {
+        super.generateLongTermKeyInternal();
+    }
+
+    @Override
+    public void cleanKeyStores() {
+        super.cleanKeyStoresInternal();
+    }
+
 }

@@ -18,12 +18,12 @@ package io.github.ma1uta.identity.dropwizard.service;
 
 import io.github.ma1uta.identity.configuration.SessionServiceConfiguration;
 import io.github.ma1uta.identity.dao.SessionDao;
+import io.github.ma1uta.identity.model.Session;
 import io.github.ma1uta.identity.service.AssociationService;
-import io.github.ma1uta.identity.service.EmailService;
 import io.github.ma1uta.identity.service.InvitationService;
+import io.github.ma1uta.identity.service.NotificationService;
 import io.github.ma1uta.identity.service.impl.AbstractSessionService;
 import io.github.ma1uta.jeon.exception.MatrixException;
-import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +37,11 @@ public class SessionJdbiService extends AbstractSessionService {
 
     private final Jdbi jdbi;
 
-    public SessionJdbiService(EmailService emailService,
+    public SessionJdbiService(NotificationService notificationService,
                               AssociationService associationService,
                               InvitationService invitationService,
                               SessionServiceConfiguration configuration, Jdbi jdbi) {
-        super(emailService, associationService, invitationService, configuration);
+        super(notificationService, associationService, invitationService, configuration);
         this.jdbi = jdbi;
     }
 
@@ -50,8 +50,9 @@ public class SessionJdbiService extends AbstractSessionService {
     }
 
     @Override
-    public String create(String clientSecret, String email, Long sendAttempt, String nextLink) {
-        return getJdbi().inTransaction(h -> super.createInternal(clientSecret, email, sendAttempt, nextLink, h.attach(SessionDao.class)));
+    public String create(String clientSecret, String medium, String address, Long sendAttempt, String nextLink) {
+        return getJdbi()
+            .inTransaction(h -> super.createInternal(clientSecret, medium, address, sendAttempt, nextLink, h.attach(SessionDao.class)));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class SessionJdbiService extends AbstractSessionService {
     }
 
     @Override
-    public ValidationResponse getSession(String sid, String clientSecret) {
+    public Session getSession(String sid, String clientSecret) {
         try {
             return getJdbi().withHandle(handle -> {
                 handle.setReadOnly(true);

@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author ma1uta
  */
-@Path("/_matrix/identity/v1")
+@Path("/_matrix/identity/api/v1")
 public interface InvitationApi extends IdentityApi {
 
     /**

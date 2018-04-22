@@ -16,25 +16,14 @@
 
 package io.github.ma1uta.identity.dropwizard.service;
 
-import io.github.ma1uta.identity.service.EmailService;
-import io.github.ma1uta.jeon.exception.MatrixException;
+import io.github.ma1uta.identity.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 /**
- * Implementation of the {@link EmailService} based on the java mail.
+ * Implementation of the {@link NotificationService} based on the java mail.
  */
-public class MailService implements EmailService {
+public class MailService implements NotificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailService.class);
 
@@ -48,10 +37,10 @@ public class MailService implements EmailService {
         return mailConfiguration;
     }
 
-    @Override
+    /*@Override
     public void send(String addressee, String subject, String message) {
         Properties props = new Properties();
-        props.putAll(getMailConfiguration().getProps());
+        props.putAll(getMail().getProps());
         //props.put("mail.smtp.auth", "true");
         //props.put("mail.smtp.starttls.enable", "true");
         //props.put("mail.smtp.host", "smtp.gmail.com");
@@ -60,13 +49,13 @@ public class MailService implements EmailService {
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(getMailConfiguration().getUsername(), getMailConfiguration().getPassword());
+                return new PasswordAuthentication(getMail().getUsername(), getMail().getPassword());
             }
         });
         MimeMessage mimeMessage = new MimeMessage(session);
 
         try {
-            mimeMessage.setFrom(getMailConfiguration().getFrom());
+            mimeMessage.setFrom(getMail().getFrom());
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message, "UTF-8");
             mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(addressee));
@@ -78,5 +67,10 @@ public class MailService implements EmailService {
             LOGGER.error(msg, e);
             throw new MatrixException(MatrixException.M_INTERNAL, msg);
         }
+    }*/
+
+    @Override
+    public void send(String medium, String address, String clientSecret, String token, String sid) {
+
     }
 }

@@ -22,17 +22,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
+import java.util.Enumeration;
 import java.util.Optional;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Key store provider for the short-term keys.
@@ -44,31 +39,17 @@ public class ShortTermKeyProvider extends AbstractKeyProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShortTermKeyProvider.class);
 
     /**
-     * Keystore configuration.
-     */
-    private final KeyStoreConfiguration keyStoreConfiguration;
-
-    /**
      * Keystore for used keys configuration.
      */
     private final KeyStoreConfiguration usedKeyStoreConfiguration;
-
-    /**
-     * Storage for keys.
-     */
-    private KeyStore keyStore;
 
     /**
      * Storage for used keys.
      */
     private KeyStore usedKeyStore;
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-
-    public ShortTermKeyProvider(KeyStoreConfiguration usedKeyStoreConfiguration, KeyStoreConfiguration keyStoreConfiguration,
-                                String secureRandomSeed) {
-        super(secureRandomSeed);
-        this.keyStoreConfiguration = keyStoreConfiguration;
+    public ShortTermKeyProvider(KeyStoreConfiguration usedKeyStoreConfiguration, String secureRandomSeed, KeyGenerator keyGenerator) {
+        super(secureRandomSeed, keyGenerator);
         this.usedKeyStoreConfiguration = usedKeyStoreConfiguration;
     }
 
@@ -80,111 +61,74 @@ public class ShortTermKeyProvider extends AbstractKeyProvider {
         return usedKeyStore;
     }
 
-    public KeyStoreConfiguration getKeyStoreConfiguration() {
-        return keyStoreConfiguration;
-    }
-
-    public KeyStore getKeyStore() {
-        return keyStore;
-    }
-
     @Override
     public void init() {
         writeLock(() -> {
-            this.keyStore = getStoreHelper().init(getKeyStoreConfiguration());
             this.usedKeyStore = getStoreHelper().init(getUsedKeyStoreConfiguration());
             return null;
         });
     }
 
     @Override
-    public boolean valid(String publicKey) {
-        return readLock(() -> getStoreHelper().valid(publicKey, getKeyStore()) || getStoreHelper().valid(publicKey, getUsedKeyStore()));
+    public String generateNewKey() {
+        return writeLock(() -> {
+            long maxId = 0;
+            try {
+                Enumeration<String> aliases = getUsedKeyStore().aliases();
+                maxId = maxId(maxId, aliases);
+            } catch (KeyStoreException e) {
+                String msg = "Key store is not initialized.";
+                LOGGER.error(msg, e);
+                throw new MatrixException(MatrixException.M_INTERNAL, msg);
+            }
+            String keyId = "Ed25519:" + Long.toString(maxId);
+            generateKey(keyId);
+            return keyId;
+        });
     }
 
     @Override
-    public long maxId() {
-        return readLock(() -> Math.max(getStoreHelper().maxId(getKeyStore()), getStoreHelper().maxId(getUsedKeyStore())));
+    public Optional<String> retrieveKey() {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean valid(String publicKey) {
+        return readLock(() -> getStoreHelper().valid(publicKey, getUsedKeyStore()));
     }
 
     @Override
     public void addKey(String key, KeyPair keyPair, Certificate certificate) {
         writeLock(() -> {
-            this.keyStore = getStoreHelper().addKey(key, keyPair, certificate, getKeyStore(), getKeyStoreConfiguration());
+            this.usedKeyStore = getStoreHelper().addKey(key, keyPair, certificate, getUsedKeyStore(), getUsedKeyStoreConfiguration());
             return null;
         });
     }
 
     @Override
-    public Optional<Pair<String, String>> sign(String alias, String content) {
-        return readLock(() -> {
+    public Pair<String, String> sign(String content) {
+        return readLock(() -> getStoreHelper().sign(generateNewKey(), content, getUsedKeyStore(), getUsedKeyStoreConfiguration()));
+    }
+
+    @Override
+    public Optional<Certificate> key(String key) {
+        return readLock(() -> getStoreHelper().key(key, getUsedKeyStore()));
+    }
+
+    @Override
+    public void clean() {
+        writeLock(() -> {
             try {
-                if (getKeyStore().getCertificate(alias) != null) {
-                    return Optional.ofNullable(getStoreHelper().sign(alias, content, getKeyStore(), getKeyStoreConfiguration()));
-                } else if (getUsedKeyStore().getCertificate(alias) != null) {
-                    return Optional.ofNullable(getStoreHelper().sign(alias, content, getUsedKeyStore(), getUsedKeyStoreConfiguration()));
-                } else {
-                    return Optional.empty();
+                Enumeration<String> aliases = getUsedKeyStore().aliases();
+                while (aliases.hasMoreElements()) {
+                    getUsedKeyStore().deleteEntry(aliases.nextElement());
                 }
             } catch (KeyStoreException e) {
-                String msg = "Key stores isn't initialized.";
+                String msg = "Failed clean key store, key store isn't initialized";
                 LOGGER.error(msg, e);
                 throw new MatrixException(MatrixException.M_INTERNAL, msg);
             }
-        });
-    }
-
-    @Override
-    public Optional<String> nextKey() {
-        return writeLock(() -> {
-            Optional<String> nextKey = getStoreHelper().nextKey(getKeyStore());
-            if (!nextKey.isPresent()) {
-                return Optional.empty();
-            }
-            String alias = nextKey.get();
-            Certificate certificate;
-            try {
-                certificate = getKeyStore().getCertificate(alias);
-            } catch (KeyStoreException e) {
-                String msg = "Key store isn't initialized";
-                LOGGER.error(msg, e);
-                throw new MatrixException(MatrixException.M_INTERNAL, msg);
-            }
-            if (certificate == null) {
-                return Optional.empty();
-            }
-
-            PrivateKey privateKey;
-            try {
-                privateKey = (PrivateKey) getKeyStore().getKey(alias, getKeyStoreConfiguration().getKeyPassword().toCharArray());
-            } catch (NoSuchAlgorithmException | UnrecoverableKeyException | KeyStoreException e) {
-                String msg = "Failed post the private key";
-                LOGGER.error(msg, e);
-                throw new MatrixException(MatrixException.M_INTERNAL, msg);
-            }
-            try {
-                getKeyStore().deleteEntry(alias);
-
-                getUsedKeyStore()
-                    .setKeyEntry(alias, privateKey, getUsedKeyStoreConfiguration().getKeyPassword().toCharArray(),
-                        new Certificate[] {certificate});
-                getStoreHelper().store(getKeyStore(), getKeyStoreConfiguration());
-                getStoreHelper().store(getUsedKeyStore(), getUsedKeyStoreConfiguration());
-                init();
-            } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
-                String msg = "Failed store and reinitialize key stories";
-                LOGGER.error(msg, e);
-                throw new MatrixException(MatrixException.M_INTERNAL, msg);
-            }
-            return Optional.of(alias);
-        });
-    }
-
-    @Override
-    public Optional<Pair<String, Certificate>> key(String key) {
-        return readLock(() -> {
-            Optional<Pair<String, Certificate>> pair = getStoreHelper().key(key, getKeyStore());
-            return pair.isPresent() ? pair : getStoreHelper().key(key, getUsedKeyStore());
+            return null;
         });
     }
 }

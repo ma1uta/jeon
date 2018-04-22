@@ -22,6 +22,9 @@ import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.identity.api.InvitationApi;
 import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Triple;
+
+import java.util.List;
 
 /**
  * Implementation of the {@link InvitationApi}.
@@ -43,6 +46,11 @@ public class Invitation implements InvitationApi {
         if (StringUtils.isAnyBlank(medium, address, roomId, sender)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Some of the required fields are missing");
         }
-        return getInvitationService().create(address, medium, roomId, sender);
+        Triple<String, String, List<String>> triple = getInvitationService().create(address, medium, roomId, sender);
+        InvitationResponse response = new InvitationResponse();
+        response.setDisplayName(triple.getLeft());
+        response.setToken(triple.getMiddle());
+        response.setPublicKeys(triple.getRight());
+        return response;
     }
 }

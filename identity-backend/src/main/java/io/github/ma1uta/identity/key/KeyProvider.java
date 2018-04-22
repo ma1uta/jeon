@@ -32,19 +32,26 @@ public interface KeyProvider {
     void init();
 
     /**
-     * Retrieve next the unused key.
+     * Create new key.
      *
-     * @return key or empty.
+     * @return current key.
      */
-    Optional<String> nextKey();
+    String generateNewKey();
+
+    /**
+     * Get current key.
+     *
+     * @return current key.
+     */
+    Optional<String> retrieveKey();
 
     /**
      * Retrieve a pair of the alias and the certificate by the key id.
      *
      * @param key the key id.
-     * @return the alias and certificate.
+     * @return the certificate of this key.
      */
-    Optional<Pair<String, Certificate>> key(String key);
+    Optional<Certificate> key(String key);
 
     /**
      * Verify the public key.
@@ -57,20 +64,10 @@ public interface KeyProvider {
     /**
      * Sign the content.
      *
-     * @param alias   the key alias.
      * @param content the content to sign.
-     * @return the pair of the key alias and the signature.
+     * @return the pair of the key id and the signature.
      */
-    Optional<Pair<String, String>> sign(String alias, String content);
-
-    /**
-     * Find max alias.
-     * <p/>
-     * Used to create new keys.
-     *
-     * @return max alias.
-     */
-    long maxId();
+    Pair<String, String> sign(String content);
 
     /**
      * Add a new key to the key store.
@@ -80,4 +77,9 @@ public interface KeyProvider {
      * @param certificate a certificate of the new key.
      */
     void addKey(String key, KeyPair keyPair, Certificate certificate);
+
+    /**
+     * Remove all keys.
+     */
+    void clean();
 }

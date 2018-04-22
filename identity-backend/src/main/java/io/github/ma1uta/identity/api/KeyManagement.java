@@ -24,10 +24,9 @@ import io.github.ma1uta.matrix.identity.api.KeyManagementApi;
 import io.github.ma1uta.matrix.identity.model.key.KeyValidationResponse;
 import io.github.ma1uta.matrix.identity.model.key.PublicKeyResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
+import java.util.Base64;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -50,29 +49,30 @@ public class KeyManagement implements KeyManagementApi {
         if (StringUtils.isBlank(keyId)) {
             throw new MatrixException(ErrorResponse.Code.M_NOT_FOUND, "Missing key.");
         }
-        Pair<String, Certificate> pair = getKeyService().key(keyId)
+        Certificate certificate = getKeyService().key(keyId)
             .orElseThrow(() -> new MatrixException(ErrorResponse.Code.M_NOT_FOUND, "Key not found", HttpServletResponse.SC_NOT_FOUND));
         PublicKeyResponse response = new PublicKeyResponse();
-        response.setPublicKey(new String(pair.getValue().getPublicKey().getEncoded(), StandardCharsets.UTF_8));
+        response.setPublicKey(Base64.getEncoder().withoutPadding().encodeToString(certificate.getPublicKey().getEncoded()));
         return response;
     }
 
     @Override
     public KeyValidationResponse valid(String publicKey) {
-        return valid(publicKey, true);
-    }
-
-    protected KeyValidationResponse valid(String publicKey, boolean longTerm) {
         if (StringUtils.isBlank(publicKey)) {
             throw new MatrixException(AbstractKeyService.M_MISSING_KEY, "Missing key.");
         }
         KeyValidationResponse response = new KeyValidationResponse();
-        response.setValid(getKeyService().valid(publicKey, false));
+        response.setValid(getKeyService().validLongTerm(publicKey));
         return response;
     }
 
     @Override
     public KeyValidationResponse ephemeralValid(String publicKey) {
-        return valid(publicKey, false);
+        if (StringUtils.isBlank(publicKey)) {
+            throw new MatrixException(AbstractKeyService.M_MISSING_KEY, "Missing key.");
+        }
+        KeyValidationResponse response = new KeyValidationResponse();
+        response.setValid(getKeyService().validShortTerm(publicKey));
+        return response;
     }
 }

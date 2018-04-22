@@ -41,6 +41,7 @@ import java.security.SignatureException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Optional;
@@ -99,7 +100,7 @@ public class StoreHelper {
      * @param keyStore key storage.
      * @return key or empty.
      */
-    public Optional<String> nextKey(KeyStore keyStore) {
+    public Optional<String> firstKey(KeyStore keyStore) {
         try {
             Enumeration<String> aliases = keyStore.aliases();
             return aliases.hasMoreElements() ? Optional.of(aliases.nextElement()) : Optional.empty();
@@ -115,19 +116,18 @@ public class StoreHelper {
      *
      * @param key      the key id.
      * @param keyStore key storage.
-     * @return the alias and certificate.
+     * @return the certificate of this key.
      */
-    public Optional<Pair<String, Certificate>> key(String key, KeyStore keyStore) {
+    public Optional<Certificate> key(String key, KeyStore keyStore) {
         Matcher matcher = KEY_PATTERN.matcher(key.trim());
         if (!matcher.matches()) {
             throw new IllegalArgumentException(String.format("Wrong key: %s", key));
         }
 
         String algorithm = matcher.group(1);
-        String alias = matcher.group(2);
         Certificate certificate;
         try {
-            certificate = keyStore.getCertificate(alias);
+            certificate = keyStore.getCertificate(key);
         } catch (KeyStoreException e) {
             String msg = "Key store isn't initialized";
             LOGGER.error(msg, e);
@@ -136,11 +136,11 @@ public class StoreHelper {
         if (certificate == null) {
             return Optional.empty();
         }
-        if (!certificate.getPublicKey().getAlgorithm().equals(algorithm)) {
+        if (!"EdDSA".equals(certificate.getPublicKey().getAlgorithm()) || !"Ed25519".equals(algorithm)) {
             throw new IllegalArgumentException(String.format("Wrong key: %s", key));
         }
 
-        return Optional.of(new ImmutablePair<>(alias, certificate));
+        return Optional.of(certificate);
     }
 
     /**
@@ -155,7 +155,7 @@ public class StoreHelper {
             Enumeration<String> aliases = keyStore.aliases();
             while (aliases.hasMoreElements()) {
                 Certificate certificate = keyStore.getCertificate(aliases.nextElement());
-                if (new String(certificate.getPublicKey().getEncoded(), StandardCharsets.UTF_8).equals(publicKey)) {
+                if (Base64.getEncoder().withoutPadding().encodeToString(certificate.getPublicKey().getEncoded()).equals(publicKey)) {
                     return true;
                 }
             }
@@ -227,29 +227,5 @@ public class StoreHelper {
             LOGGER.error(msg, e);
             throw new MatrixException(MatrixException.M_INTERNAL, msg);
         }
-    }
-
-    /**
-     * Find max alias.
-     * <p/>
-     * Used to create new keys.
-     *
-     * @param keyStore key storage.
-     * @return max alias.
-     */
-    public long maxId(KeyStore keyStore) {
-        long max = 0L;
-        Enumeration<String> aliases = null;
-        try {
-            aliases = keyStore.aliases();
-        } catch (KeyStoreException e) {
-            String msg = "Key store isn't initialized";
-            LOGGER.error(msg, e);
-            throw new MatrixException(MatrixException.M_INTERNAL, msg);
-        }
-        while (aliases.hasMoreElements()) {
-            max = Math.max(max, Long.parseLong(aliases.nextElement()));
-        }
-        return max;
     }
 }

@@ -24,6 +24,9 @@ import io.github.ma1uta.matrix.identity.model.validation.PublishResponse;
 import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 /**
  * Implementation of the {@link ValidationApi}.
  */
@@ -44,7 +47,13 @@ public class Validation implements ValidationApi {
         if (StringUtils.isAnyBlank(sid, clientSecret)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Sid or client secret are missing.");
         }
-        return getSessionService().getSession(sid, clientSecret);
+        ValidationResponse response = new ValidationResponse();
+        io.github.ma1uta.identity.model.Session session = getSessionService().getSession(sid, clientSecret);
+        response.setMedium(session.getMedium());
+        response.setAddress(session.getAddress());
+        ZoneOffset offset = ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now());
+        response.setValidatedAt(session.getValidated().toEpochSecond(offset));
+        return response;
     }
 
     @Override

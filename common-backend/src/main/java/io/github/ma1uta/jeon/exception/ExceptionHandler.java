@@ -19,6 +19,7 @@ package io.github.ma1uta.jeon.exception;
 import io.github.ma1uta.matrix.ErrorResponse;
 
 import java.net.HttpURLConnection;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
@@ -34,8 +35,10 @@ public class ExceptionHandler implements ExceptionMapper<Throwable> {
             MatrixException matrixException = (MatrixException) exception;
             message = new ErrorResponse(matrixException.getErrcode(), matrixException.getMessage(), matrixException.getRetryAfterMs());
             status = matrixException.getStatus();
+        } else if (exception instanceof NotFoundException) {
+            message = new ErrorResponse(ErrorResponse.Code.M_NOT_FOUND, "Not found.");
         } else {
-            message = new ErrorResponse(MatrixException.M_INTERNAL, "Internal error.");
+            message = new ErrorResponse(MatrixException.M_INTERNAL, exception.getMessage());
         }
 
         return Response.status(status).entity(message).build();

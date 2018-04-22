@@ -18,17 +18,16 @@ package io.github.ma1uta.identity.dropwizard.service;
 
 import io.github.ma1uta.identity.configuration.AssociationConfiguration;
 import io.github.ma1uta.identity.dao.AssociationDao;
+import io.github.ma1uta.identity.model.Association;
 import io.github.ma1uta.identity.model.Session;
-import io.github.ma1uta.identity.service.KeyService;
-import io.github.ma1uta.identity.service.SerializerService;
 import io.github.ma1uta.identity.service.impl.AbstractAssociationService;
 import io.github.ma1uta.jeon.exception.MatrixException;
-import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupRequest;
-import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse;
-import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of the {@link io.github.ma1uta.identity.service.AssociationService} based on jdbi.
@@ -39,11 +38,8 @@ public class AssociationJdbiService extends AbstractAssociationService {
 
     private final Jdbi jdbi;
 
-    public AssociationJdbiService(Jdbi jdbi,
-                                  KeyService keyService,
-                                  AssociationConfiguration configuration,
-                                  SerializerService serializer) {
-        super(keyService, configuration, serializer);
+    public AssociationJdbiService(Jdbi jdbi, AssociationConfiguration configuration) {
+        super(configuration);
         this.jdbi = jdbi;
     }
 
@@ -52,12 +48,12 @@ public class AssociationJdbiService extends AbstractAssociationService {
     }
 
     @Override
-    public LookupResponse lookup(String address, String medium, boolean sign) {
+    public Optional<Association> lookup(String address, String medium) {
         try {
             return getJdbi().withHandle(handle -> {
                 handle.setReadOnly(true);
                 try {
-                    return handle.inTransaction(h -> super.lookupInternal(address, medium, sign, h.attach(AssociationDao.class)));
+                    return handle.inTransaction(h -> super.lookupInternal(address, medium, h.attach(AssociationDao.class)));
                 } catch (Exception e) {
                     String msg = "Cannot find mxid";
                     LOGGER.error(msg, e);
@@ -72,11 +68,11 @@ public class AssociationJdbiService extends AbstractAssociationService {
     }
 
     @Override
-    public BulkLookupResponse lookup(BulkLookupRequest request) {
+    public List<List<String>> lookup(List<List<String>> threepids) {
         try {
             return getJdbi().withHandle(handle -> {
                 handle.setReadOnly(true);
-                return handle.inTransaction(h -> super.lookupInternal(request, h.attach(AssociationDao.class)));
+                return handle.inTransaction(h -> super.lookupInternal(threepids, h.attach(AssociationDao.class)));
             });
         } catch (Exception e) {
             String msg = "Cannot find mxid";

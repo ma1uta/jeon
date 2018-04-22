@@ -21,42 +21,4 @@ package io.github.ma1uta.identity.configuration;
  */
 public class SessionServiceConfiguration {
 
-    /**
-     * Homeserver host.
-     */
-    private String homeserver;
-
-    /**
-     * Subject of the email to send the token.
-     */
-    private String emailSubject;
-
-    /**
-     * Message of the email with token, sid and client secret.
-     */
-    private String emailMessageTemplate;
-
-    public String getHomeserver() {
-        return homeserver;
-    }
-
-    public void setHomeserver(String homeserver) {
-        this.homeserver = homeserver;
-    }
-
-    public String getEmailSubject() {
-        return emailSubject;
-    }
-
-    public void setEmailSubject(String emailSubject) {
-        this.emailSubject = emailSubject;
-    }
-
-    public String getEmailMessageTemplate() {
-        return emailMessageTemplate;
-    }
-
-    public void setEmailMessageTemplate(String emailMessageTemplate) {
-        this.emailMessageTemplate = emailMessageTemplate;
-    }
 }

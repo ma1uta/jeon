@@ -18,6 +18,7 @@ package io.github.ma1uta.identity.service.impl;
 
 import io.github.ma1uta.identity.configuration.InvitationServiceConfiguration;
 import io.github.ma1uta.identity.dao.InvitationDao;
+import io.github.ma1uta.identity.model.Association;
 import io.github.ma1uta.identity.model.Invitation;
 import io.github.ma1uta.identity.service.AssociationService;
 import io.github.ma1uta.identity.service.InvitationService;
@@ -27,17 +28,16 @@ import io.github.ma1uta.identity.service.SerializerService;
 import io.github.ma1uta.jeon.exception.MatrixException;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Id;
-import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
-import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 import io.github.ma1uta.matrix.server.model.bind.Invite;
 import io.github.ma1uta.matrix.server.model.bind.OnBindRequest;
 import io.github.ma1uta.matrix.server.model.bind.Signed;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -112,7 +112,8 @@ public abstract class AbstractInvitationService implements InvitationService {
      * <p/>
      * {@link InvitationService#create(String, String, String, String)}
      */
-    protected InvitationResponse createInternal(String address, String medium, String roomId, String sender, InvitationDao dao) {
+    protected Triple<String, String, List<String>> createInternal(String address, String medium, String roomId, String sender,
+                                                                  InvitationDao dao) {
         if (!"email".equals(medium)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong medium.", HttpServletResponse.SC_BAD_REQUEST);
         }
@@ -120,25 +121,21 @@ public abstract class AbstractInvitationService implements InvitationService {
         if (index == -1) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Wrong address", HttpServletResponse.SC_BAD_REQUEST);
         }
-        LookupResponse lookup = getAssociationService().lookup(medium, address, false);
-        if (lookup.getMxid() != null) {
+        Optional<Association> association = getAssociationService().lookup(address, medium);
+        if (association.isPresent() && association.get().getMxid() != null) {
             throw new MatrixException(ErrorResponse.Code.M_THREEPID_IN_USE, "Medium and address are used.",
                 HttpServletResponse.SC_BAD_REQUEST);
         }
         String token = UUID.randomUUID().toString();
         String ephemeralKey;
         String longTermKey;
-        ephemeralKey = getKeyService().nextKey(false);
-        longTermKey = getKeyService().nextKey(true);
+        ephemeralKey = getKeyService().generateShortTermKey();
+        longTermKey = getKeyService().retrieveLongTermKey();
         String displayName = address.substring(0, index);
 
         dao.insert(address, medium, roomId, sender, token, Arrays.asList(ephemeralKey, longTermKey), displayName);
 
-        InvitationResponse response = new InvitationResponse();
-        response.setDisplayName(displayName);
-        response.setToken(token);
-        response.setPublicKeys(Arrays.asList(ephemeralKey, longTermKey));
-        return response;
+        return new ImmutableTriple<>(displayName, token, Arrays.asList(ephemeralKey, longTermKey));
     }
 
     /**
@@ -166,8 +163,7 @@ public abstract class AbstractInvitationService implements InvitationService {
                 Signed signed = new Signed();
                 signed.setMxid(mxid);
                 signed.setToken(item.getToken());
-                Optional<Map<String, Map<String, String>>> signature = getKeyService().sign(getSerializer().serialize(signed), true);
-                signed.setSignatures(signature.orElseThrow(() -> new MatrixException(MatrixException.M_INTERNAL, "Cannot find signature")));
+                signed.setSignatures(getKeyService().sign(getSerializer().serialize(signed)));
                 invite.setSigned(signed);
                 return invite;
             }).collect(Collectors.toList()));

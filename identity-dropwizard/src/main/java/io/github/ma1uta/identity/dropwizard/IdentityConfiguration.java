@@ -44,27 +44,30 @@ public class IdentityConfiguration extends Configuration {
 
     @Valid
     @NotNull
-    private SelfKeyGeneratorConfiguration selfKeyGeneratorConfiguration;
+    private SelfKeyGeneratorConfiguration selfKeyGenerator;
 
     @Valid
     @NotNull
-    private KeyServiceConfiguration keyServiceConfiguration;
+    private KeyServiceConfiguration key;
 
     @Valid
     @NotNull
-    private AssociationConfiguration associationConfiguration;
+    private AssociationConfiguration association;
 
     @Valid
     @NotNull
-    private InvitationServiceConfiguration invitationServiceConfiguration;
+    private InvitationServiceConfiguration invitation;
 
     @Valid
-    @NotNull
-    private SessionServiceConfiguration sessionServiceConfiguration;
+    //@NotNull
+    private SessionServiceConfiguration session;
 
     @Valid
-    @NotNull
-    private MailConfiguration mailConfiguration;
+    //@NotNull
+    private MailConfiguration mail;
+
+    @Valid
+    private Boolean tracing = false;
 
     @JsonProperty
     public DataSourceFactory getDatabase() {
@@ -87,63 +90,73 @@ public class IdentityConfiguration extends Configuration {
     }
 
     @JsonProperty
-    public SelfKeyGeneratorConfiguration getSelfKeyGeneratorConfiguration() {
-        return selfKeyGeneratorConfiguration;
+    public SelfKeyGeneratorConfiguration getSelfKeyGenerator() {
+        return selfKeyGenerator;
     }
 
     @JsonProperty
-    public void setSelfKeyGeneratorConfiguration(SelfKeyGeneratorConfiguration selfKeyGeneratorConfiguration) {
-        this.selfKeyGeneratorConfiguration = selfKeyGeneratorConfiguration;
+    public void setSelfKeyGenerator(SelfKeyGeneratorConfiguration selfKeyGenerator) {
+        this.selfKeyGenerator = selfKeyGenerator;
     }
 
     @JsonProperty
-    public KeyServiceConfiguration getKeyServiceConfiguration() {
-        return keyServiceConfiguration;
+    public KeyServiceConfiguration getKey() {
+        return key;
     }
 
     @JsonProperty
-    public void setKeyServiceConfiguration(KeyServiceConfiguration keyServiceConfiguration) {
-        this.keyServiceConfiguration = keyServiceConfiguration;
+    public void setKey(KeyServiceConfiguration key) {
+        this.key = key;
     }
 
     @JsonProperty
-    public AssociationConfiguration getAssociationConfiguration() {
-        return associationConfiguration;
+    public AssociationConfiguration getAssociation() {
+        return association;
     }
 
     @JsonProperty
-    public void setAssociationConfiguration(AssociationConfiguration associationConfiguration) {
-        this.associationConfiguration = associationConfiguration;
+    public void setAssociation(AssociationConfiguration association) {
+        this.association = association;
     }
 
     @JsonProperty
-    public InvitationServiceConfiguration getInvitationServiceConfiguration() {
-        return invitationServiceConfiguration;
+    public InvitationServiceConfiguration getInvitation() {
+        return invitation;
     }
 
     @JsonProperty
-    public void setInvitationServiceConfiguration(
-        InvitationServiceConfiguration invitationServiceConfiguration) {
-        this.invitationServiceConfiguration = invitationServiceConfiguration;
+    public void setInvitation(
+        InvitationServiceConfiguration invitation) {
+        this.invitation = invitation;
     }
 
     @JsonProperty
-    public SessionServiceConfiguration getSessionServiceConfiguration() {
-        return sessionServiceConfiguration;
+    public SessionServiceConfiguration getSession() {
+        return session;
     }
 
     @JsonProperty
-    public void setSessionServiceConfiguration(SessionServiceConfiguration sessionServiceConfiguration) {
-        this.sessionServiceConfiguration = sessionServiceConfiguration;
+    public void setSession(SessionServiceConfiguration session) {
+        this.session = session;
     }
 
     @JsonProperty
-    public MailConfiguration getMailConfiguration() {
-        return mailConfiguration;
+    public MailConfiguration getMail() {
+        return mail;
     }
 
     @JsonProperty
-    public void setMailConfiguration(MailConfiguration mailConfiguration) {
-        this.mailConfiguration = mailConfiguration;
+    public void setMail(MailConfiguration mail) {
+        this.mail = mail;
+    }
+
+    @JsonProperty
+    public Boolean getTracing() {
+        return tracing;
+    }
+
+    @JsonProperty
+    public void setTracing(Boolean tracing) {
+        this.tracing = tracing;
     }
 }

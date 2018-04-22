@@ -26,6 +26,7 @@ import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.Certificate;
+import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,8 +47,8 @@ public class LongTermKeyProvider extends AbstractKeyProvider {
      */
     private KeyStore keyStore;
 
-    public LongTermKeyProvider(KeyStoreConfiguration keyStoreConfiguration, String secureRandomSeed) {
-        super(secureRandomSeed);
+    public LongTermKeyProvider(KeyStoreConfiguration keyStoreConfiguration, String secureRandomSeed, KeyGenerator keyGenerator) {
+        super(secureRandomSeed, keyGenerator);
         this.keyStoreConfiguration = Objects.requireNonNull(keyStoreConfiguration, "Key store configuration shouldn't be empty");
     }
 
@@ -68,12 +69,40 @@ public class LongTermKeyProvider extends AbstractKeyProvider {
     }
 
     @Override
-    public Optional<String> nextKey() {
-        return readLock(() -> getStoreHelper().nextKey(getKeyStore()));
+    public String generateNewKey() {
+        return writeLock(() -> {
+            long maxId = 0;
+            try {
+                Enumeration<String> aliases = getKeyStore().aliases();
+                maxId = maxId(maxId, aliases);
+            } catch (KeyStoreException e) {
+                String msg = "Key store is not initialized.";
+                LOGGER.error(msg, e);
+                throw new MatrixException(MatrixException.M_INTERNAL, msg);
+            }
+            try {
+                Enumeration<String> aliases1 = getKeyStore().aliases();
+                while (aliases1.hasMoreElements()) {
+                    getKeyStore().deleteEntry(aliases1.nextElement());
+                }
+            } catch (KeyStoreException e) {
+                String msg = "Key store is not initialized.";
+                LOGGER.error(msg, e);
+                throw new MatrixException(MatrixException.M_INTERNAL, msg);
+            }
+            String keyId = "Ed25519:" + Long.toString(maxId + 1);
+            generateKey(keyId);
+            return keyId;
+        });
     }
 
     @Override
-    public Optional<Pair<String, Certificate>> key(String key) {
+    public Optional<String> retrieveKey() {
+        return readLock(() -> getStoreHelper().firstKey(getKeyStore()));
+    }
+
+    @Override
+    public Optional<Certificate> key(String key) {
         return readLock(() -> getStoreHelper().key(key, getKeyStore()));
     }
 
@@ -83,30 +112,33 @@ public class LongTermKeyProvider extends AbstractKeyProvider {
     }
 
     @Override
-    public Optional<Pair<String, String>> sign(String alias, String content) {
-        return readLock(() -> {
-            try {
-                if (getKeyStore().getCertificate(alias) == null) {
-                    return Optional.empty();
-                }
-            } catch (KeyStoreException e) {
-                String msg = "Key store isn't initialized";
-                LOGGER.error(msg, e);
-                throw new MatrixException(MatrixException.M_INTERNAL, msg);
-            }
-            return Optional.ofNullable(getStoreHelper().sign(alias, content, getKeyStore(), getKeyStoreConfiguration()));
-        });
-    }
-
-    @Override
-    public long maxId() {
-        return readLock(() -> getStoreHelper().maxId(getKeyStore()));
+    public Pair<String, String> sign(String content) {
+        return readLock(() -> getStoreHelper()
+            .sign(retrieveKey().orElseThrow(() -> new MatrixException(MatrixException.M_INTERNAL, "Cannot find key")), content,
+                getKeyStore(), getKeyStoreConfiguration()));
     }
 
     @Override
     public void addKey(String key, KeyPair keyPair, Certificate certificate) {
         writeLock(() -> {
             this.keyStore = getStoreHelper().addKey(key, keyPair, certificate, getKeyStore(), getKeyStoreConfiguration());
+            return null;
+        });
+    }
+
+    @Override
+    public void clean() {
+        writeLock(() -> {
+            try {
+                Enumeration<String> aliases = getKeyStore().aliases();
+                while (aliases.hasMoreElements()) {
+                    getKeyStore().deleteEntry(aliases.nextElement());
+                }
+            } catch (KeyStoreException e) {
+                String msg = "Failed clean key store, key store isn't initialized";
+                LOGGER.error(msg, e);
+                throw new MatrixException(MatrixException.M_INTERNAL, msg);
+            }
             return null;
         });
     }

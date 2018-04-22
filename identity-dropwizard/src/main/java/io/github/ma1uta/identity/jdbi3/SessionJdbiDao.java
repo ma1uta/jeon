@@ -36,12 +36,14 @@ public interface SessionJdbiDao extends SessionDao {
         + "set send_attempt = :send_attempt")
     @Override
     void insertOrUpdate(@Bind("id") String sid, @Bind("token") String token, @Bind("client_secret") String clientSecret,
-                        @Bind("address") String address, @Bind("send_attempt") String sendAttempt, @Bind("next_link") String nextLink);
+                        @Bind("medium") String medium, @Bind("address") String address, @Bind("send_attempt") String sendAttempt,
+                        @Bind("next_link") String nextLink);
 
-    @SqlQuery("select * from \"session\" where client_secret = :client_secret and email = :email")
+    @SqlQuery("select * from \"session\" where client_secret = :client_secret and address = :address and medium = :medium")
     @RegisterRowMapper(SessionRowMapper.class)
     @Override
-    List<Session> findBySecretEmail(@Bind("client_secret") String clientSecret, @Bind("email") String address);
+    List<Session> findBySecretEmail(@Bind("client_secret") String clientSecret, @Bind("address") String address,
+                                    @Bind("medium") String medium);
 
     @SqlQuery("select * from \"session\" where client_secret = :client_secret and sid = :sid")
     @RegisterRowMapper(SessionRowMapper.class)

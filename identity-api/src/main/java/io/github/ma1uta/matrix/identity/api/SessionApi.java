@@ -52,6 +52,7 @@ public interface SessionApi extends IdentityApi {
      * @param nextLink     when the validation is completed, the identity service will redirect the user to that URL.
      * @return the sid generated for this session to the caller, in a JSON object containing the sid key.
      */
+    @POST
     @Path("/validate/email/requestToken")
     @Produces(MediaType.APPLICATION_JSON)
     SessionResponse create(@FormParam("client_secret") String clientSecret, @FormParam("email") String email,

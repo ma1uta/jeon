@@ -51,7 +51,7 @@ public class Session implements SessionApi {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Missing client secret or email");
         }
         SessionResponse response = new SessionResponse();
-        response.setSid(getSessionService().create(clientSecret, email, sendAttempt, nextLink));
+        response.setSid(getSessionService().create(clientSecret, "email", email, sendAttempt, nextLink));
         return response;
     }
 
