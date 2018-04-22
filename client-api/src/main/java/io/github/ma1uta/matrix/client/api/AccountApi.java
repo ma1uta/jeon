@@ -1,3 +1,19 @@
+/*
+ * Copyright sablintolya@gmail.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
@@ -10,21 +26,25 @@ import io.github.ma1uta.matrix.client.model.account.ThreePidResponse;
 import io.github.ma1uta.matrix.client.model.account.WhoamiResponse;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Account registration and management.
  * <p/>
- * https://matrix.org/docs/spec/client_server/r0.3.0.html#id146
+ * https://matrix.org/docs/spec/client_server/r0.3.0.html#account-registration-and-management
  *
  * @author ma1uta
  * @version 0.0.1
  */
 @Path("/_matrix/client/r0")
-@JsonRest
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface AccountApi {
 
     /**
@@ -77,34 +97,104 @@ public interface AccountApi {
     @Path("/register")
     LoginResponse register(@QueryParam("kind") String kind, RegisterRequest registerRequest);
 
+    /**
+     * Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not already
+     * associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects, though the
+     * Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.
+     *
+     * @param requestToken request.
+     * @return empty.
+     */
     @POST
     @Path("/register/email/requestToken")
     EmptyResponse requestToken(RequestToken requestToken);
 
+    /**
+     * Changes the password for an account on this homeserver.
+     * <p/>
+     * This API endpoint uses the User-Interactive Authentication API.
+     * <p/>
+     * An access token should be submitted to this endpoint if the client has an active session.
+     * <p/>
+     * The homeserver may change the flows available depending on whether a valid access token is provided.
+     *
+     * @param passwordRequest password.
+     * @return empty.
+     */
     @POST
     @Path("/account/password")
     EmptyResponse password(PasswordRequest passwordRequest);
 
+    /**
+     * Proxies the identity server API validate/email/requestToken, but first checks that the given email address is associated
+     * with an account on this Home Server. This API should be used to request validation tokens when authenticating for
+     * the account/password endpoint. This API's parameters and response are identical to that of the HS API
+     * /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email
+     * address could be found. The server may instead send an email to the given address prompting the user to create an account.
+     * M_THREEPID_IN_USE may not be returned.
+     *
+     * @return empty.
+     */
     @POST
     @Path("/account/password/email/requestToken")
     EmptyResponse passwordRequestToken();
 
+    /**
+     * Deactivate the user's account, removing all ability for the user to login again.
+     * <p/>
+     * This API endpoint uses the User-Interactive Authentication API.
+     * <p/>
+     * An access token should be submitted to this endpoint if the client has an active session.
+     * <p/>
+     * The homeserver may change the flows available depending on whether a valid access token is provided.
+     *
+     * @param deactivateRequest request.
+     * @return empty.
+     */
     @POST
     @Path("/account/deactivate")
     EmptyResponse deactivate(DeactivateRequest deactivateRequest);
 
+    /**
+     * Gets a list of the third party identifiers that the homeserver has associated with the user's account.
+     * <p/>
+     * This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers.
+     * <p/>
+     * Identifiers in this list may be used by the homeserver as, for example, identifiers that it will accept to reset the user's
+     * account password.
+     *
+     * @return all threepids.
+     */
     @GET
     @Path("/account/3pid")
     ThreePidResponse showThreePid();
 
+    /**
+     * Adds contact information to the user's account.
+     *
+     * @param threePidRequest new contact information.
+     * @return empty.
+     */
     @POST
     @Path("/account/3pid")
     EmptyResponse updateThreePid(ThreePidRequest threePidRequest);
 
+    /**
+     * Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not already
+     * associated with an account on this Home Server. This API should be used to request validation tokens when adding an email
+     * address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken endpoint.
+     *
+     * @return empty.
+     */
     @POST
     @Path("/account/3pid/email/requestToken")
     EmptyResponse threePidRequestToken();
 
+    /**
+     * Gets information about the owner of a given access token.
+     *
+     * @return token's owner.
+     */
     @GET
     @Path("/account/whoami")
     WhoamiResponse whiami();
