@@ -20,6 +20,7 @@ package io.github.ma1uta.matrix.client.model.account;
  * Request for deactivate the user's account, removing all ability for the user to login again.
  */
 public class DeactivateRequest {
+
     /**
      * Additional authentication information for the user-interactive authentication API.
      */

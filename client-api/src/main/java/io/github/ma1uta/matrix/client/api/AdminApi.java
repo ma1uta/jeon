@@ -26,6 +26,8 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Gets information about a particular user.
+ * <p/>
+ * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id112">Specification.</a>
  */
 @Path("/_matrix/client/r0/admin")
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,7 +38,7 @@ public interface AdminApi {
      * privileges are not specified in this document.
      *
      * @param userId Required. The user to look up.
-     * @return user info.
+     * @return Status code 200: The lookup was successful.
      */
     @GET
     @Path("/whois/{userId}")

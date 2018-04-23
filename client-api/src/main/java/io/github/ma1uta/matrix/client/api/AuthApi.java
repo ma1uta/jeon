@@ -30,13 +30,15 @@ import javax.ws.rs.core.MediaType;
  * A client can obtain access tokens using the /login API.
  * <p/>
  * Note that this endpoint does not currently use the user-interactive authentication API.
+ * <p/>
+ * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#login">Specification.</a>
  *
  * @author ma1uta
  */
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface AuthApi extends ClientApi {
+public interface AuthApi {
 
     /**
      * Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests.
@@ -47,8 +49,12 @@ public interface AuthApi extends ClientApi {
      * The server may invalidate any access token previously associated with that device.
      *
      * @param loginRequest {@link LoginRequest}
-     * @return {@link LoginResponse}
-     * @see <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#relationship-between-access-tokens-and-devices>
+     * @return <p>Status code 200: The user has been authenticated.</p>
+     * <p>Status code 400: Part of the request was invalid. For example, the login type may not be recognised.</p>
+     * <p>Status code 403: The login attempt failed. For example, the password may have been incorrect.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
+     *
+     * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#relationship-between-access-tokens-and-devices>
      * See Relationship between access tokens and devices.</a>
      */
     @POST
@@ -62,7 +68,7 @@ public interface AuthApi extends ClientApi {
      * <p/>
      * The access token used in the request was successfully invalidated.
      *
-     * @return emtpy response.
+     * @return Status code 200: The access token used in the request was succesfully invalidated.
      */
     @POST
     @Path("/logout")

@@ -22,6 +22,7 @@ import java.util.List;
  * Device info.
  */
 public class DeviceInfo {
+
     /**
      * A user's sessions (i.e. what they did with an access token from one login).
      */

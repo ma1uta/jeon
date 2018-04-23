@@ -20,10 +20,12 @@ package io.github.ma1uta.matrix.client.model.account;
  * Request for changes the password for an account on this homeserver.
  */
 public class PasswordRequest {
+
     /**
      * Required. The new password for the account.
      */
     private String newPassword;
+
     /**
      * Additional authentication information for the user-interactive authentication API.
      */

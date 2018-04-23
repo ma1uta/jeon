@@ -37,7 +37,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Account registration and management.
  * <p/>
- * https://matrix.org/docs/spec/client_server/r0.3.0.html#account-registration-and-management
+ * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#account-registration-and-management">Specification.</a>
  *
  * @author ma1uta
  * @version 0.0.1
@@ -103,7 +103,17 @@ public interface AccountApi {
      * Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.
      *
      * @param requestToken request.
-     * @return empty.
+     * @return <p>Status code 200: An email has been sent to the specified address. Note that this may be an email containing the
+     * validation token or it may be informing the user of an error.</p>
+     * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:
+     * <ul>
+     * <li>M_THREEPID_IN_USE : The email address is already registered to an account on this server.
+     * However, if the home server has the ability to send email, it is recommended that the server instead send an email to
+     * the user with instructions on how to reset their password. This prevents malicious parties from being able to determine
+     * if a given email address has an account on the Home Server in question.</li>
+     * <li>M_SERVER_NOT_TRUSTED : The id_server parameter refers to an ID server that is not trusted by this Home Server.</li>
+     * </ul>
+     * </p>
      */
     @POST
     @Path("/register/email/requestToken")
@@ -119,7 +129,9 @@ public interface AccountApi {
      * The homeserver may change the flows available depending on whether a valid access token is provided.
      *
      * @param passwordRequest password.
-     * @return empty.
+     * @return <p>Status code 200: The password has been changed.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @POST
     @Path("/account/password")
@@ -133,7 +145,7 @@ public interface AccountApi {
      * address could be found. The server may instead send an email to the given address prompting the user to create an account.
      * M_THREEPID_IN_USE may not be returned.
      *
-     * @return empty.
+     * @return Status code 200: An email was sent to the given address.
      */
     @POST
     @Path("/account/password/email/requestToken")
@@ -149,7 +161,9 @@ public interface AccountApi {
      * The homeserver may change the flows available depending on whether a valid access token is provided.
      *
      * @param deactivateRequest request.
-     * @return empty.
+     * @return <p>Status code 200: The account has been deactivated.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @POST
     @Path("/account/deactivate")
@@ -163,7 +177,7 @@ public interface AccountApi {
      * Identifiers in this list may be used by the homeserver as, for example, identifiers that it will accept to reset the user's
      * account password.
      *
-     * @return all threepids.
+     * @return Status code 200: The lookup was successful.
      */
     @GET
     @Path("/account/3pid")
@@ -173,7 +187,8 @@ public interface AccountApi {
      * Adds contact information to the user's account.
      *
      * @param threePidRequest new contact information.
-     * @return empty.
+     * @return <p>Status code 200: The addition was successful.</p>
+     * <p>Status code 403: The credentials could not be verified with the identity server.</p>
      */
     @POST
     @Path("/account/3pid")
@@ -184,7 +199,7 @@ public interface AccountApi {
      * associated with an account on this Home Server. This API should be used to request validation tokens when adding an email
      * address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken endpoint.
      *
-     * @return empty.
+     * @return Status code 200: An email was sent to the given address.
      */
     @POST
     @Path("/account/3pid/email/requestToken")
@@ -193,7 +208,7 @@ public interface AccountApi {
     /**
      * Gets information about the owner of a given access token.
      *
-     * @return token's owner.
+     * @return Status code 200: The token belongs to a known user.
      */
     @GET
     @Path("/account/whoami")

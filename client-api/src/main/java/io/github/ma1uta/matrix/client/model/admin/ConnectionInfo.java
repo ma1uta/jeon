@@ -20,14 +20,17 @@ package io.github.ma1uta.matrix.client.model.admin;
  * Connection info.
  */
 public class ConnectionInfo {
+
     /**
      * Most recently seen IP address of the session.
      */
     private String ip;
+
     /**
      * Unix timestamp that the session was last active.
      */
     private Long lastSeen;
+
     /**
      * User agent string last seen in the session.
      */

@@ -22,10 +22,12 @@ import java.util.Map;
  * Response for gets information about a particular user.
  */
 public class AdminResponse {
+
     /**
      * The Matrix user ID of the user.
      */
     private String userId;
+
     /**
      * Each key is an identitfier for one of the user's devices.
      */

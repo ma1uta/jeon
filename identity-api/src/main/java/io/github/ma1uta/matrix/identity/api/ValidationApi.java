@@ -33,7 +33,7 @@ import javax.ws.rs.core.MediaType;
  * @author ma1uta.
  */
 @Path("/_matrix/identity/api/v1/3pid")
-public interface ValidationApi extends IdentityApi {
+public interface ValidationApi {
 
     /**
      * Check whether ownership of a 3pid was validated.

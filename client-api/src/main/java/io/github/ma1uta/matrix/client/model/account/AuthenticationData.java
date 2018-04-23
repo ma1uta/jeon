@@ -20,46 +20,57 @@ package io.github.ma1uta.matrix.client.model.account;
  * Authentication Data.
  */
 public class AuthenticationData {
+
     /**
      * AuthType.
      */
     private String type;
+
     /**
      * Session.
      */
     private String session;
+
     /**
      * User id.
      */
     private String user;
+
     /**
      * Password.
      */
     private String password;
+
     /**
      * 3Pid address type.
      */
     private String medium;
+
     /**
      * 3Pid address.
      */
     private String address;
+
     /**
      * Capthca response.
      */
     private String response;
+
     /**
      * Auth token.
      */
     private String token;
+
     /**
      * Transaction id.
      */
     private String txnId;
+
     /**
      * OAuth uri.
      */
     private String uri;
+
     /**
      * 3Pids credentials.
      */

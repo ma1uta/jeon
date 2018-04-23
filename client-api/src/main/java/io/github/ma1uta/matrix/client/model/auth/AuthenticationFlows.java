@@ -16,48 +16,41 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import io.github.ma1uta.matrix.ErrorResponse;
+
 import java.util.Map;
 
 /**
  * Authentication flow.
  */
-public class AuthenticationFlows {
-    /**
-     * Error code.
-     */
-    private String errcode;
-    /**
-     * Error message.
-     */
-    private String error;
+public class AuthenticationFlows extends ErrorResponse {
+
     /**
      * Completed stages.
      */
     private String[] completed;
+
     /**
      * Stages.
      */
     private AuthenticationStage[] flows;
+
     /**
      * AuthType.
      */
     private Map<String, Map<String, String>> params;
+
+    /**
+     * Authentication session.
+     */
     private String session;
 
-    public String getErrcode() {
-        return errcode;
+    public AuthenticationFlows(String errcode, String error) {
+        super(errcode, error);
     }
 
-    public void setErrcode(String errcode) {
-        this.errcode = errcode;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
+    public AuthenticationFlows(String errcode, String error, Long retryAfterMs) {
+        super(errcode, error, retryAfterMs);
     }
 
     public String[] getCompleted() {

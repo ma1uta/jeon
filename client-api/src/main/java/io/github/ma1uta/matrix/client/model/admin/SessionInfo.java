@@ -22,6 +22,7 @@ import java.util.List;
  * Session info.
  */
 public class SessionInfo {
+
     /**
      * Information particular connections in the session.
      */

@@ -23,6 +23,9 @@ package io.github.ma1uta.matrix.identity.model.validation;
  */
 public class PublishResponse {
 
+    /**
+     * Publishing result.
+     */
     private Boolean published;
 
     public Boolean getPublished() {

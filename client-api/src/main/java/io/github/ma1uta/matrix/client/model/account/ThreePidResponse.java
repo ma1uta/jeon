@@ -20,6 +20,7 @@ package io.github.ma1uta.matrix.client.model.account;
  * Response for gets a list of the third party identifiers that the homeserver has associated with the user's account.
  */
 public class ThreePidResponse {
+
     /**
      * All 3Pids.
      */

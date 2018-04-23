@@ -20,6 +20,7 @@ package io.github.ma1uta.matrix.client.model.account;
  * Response for gets information about the owner of a given access token.
  */
 public class WhoamiResponse {
+
     /**
      * MXID.
      */

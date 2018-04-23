@@ -20,10 +20,12 @@ package io.github.ma1uta.matrix.client.model.account;
  * Request for adds contact information to the user's account.
  */
 public class ThreePidRequest {
+
     /**
      * Required. The third party credentials to associate with the account.
      */
     private ThreePidCred[] threePidCreds;
+
     /**
      * Whether the homeserver should also bind this third party identifier to the account's Matrix ID with the passed identity server.
      * Default: false.

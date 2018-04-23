@@ -19,8 +19,6 @@ package io.github.ma1uta.matrix;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.Map;
-
 /**
  * Any errors which occur at the Matrix API level MUST return a "standard error response".
  */
@@ -133,27 +131,6 @@ public class ErrorResponse {
      */
     private Long retryAfterMs;
 
-    /**
-     * User-interaction authorizations only.
-     * <p/>
-     * List of the completed stages.
-     */
-    private String[] completed;
-
-    /**
-     * User-interaction authorizations only.
-     * <p/>
-     * Authorizations stage's params.
-     */
-    private Map<String, Map<String, String>> params;
-
-    /**
-     * User-interaction authorization only.
-     * <p/>
-     * The identifier of the user-interaction session.
-     */
-    private String session;
-
     public ErrorResponse(String errcode, String error) {
         this.errcode = errcode;
         this.error = error;
@@ -187,29 +164,5 @@ public class ErrorResponse {
 
     public void setRetryAfterMs(Long retryAfterMs) {
         this.retryAfterMs = retryAfterMs;
-    }
-
-    public String[] getCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(String[] completed) {
-        this.completed = completed;
-    }
-
-    public Map<String, Map<String, String>> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, Map<String, String>> params) {
-        this.params = params;
-    }
-
-    public String getSession() {
-        return session;
-    }
-
-    public void setSession(String session) {
-        this.session = session;
     }
 }

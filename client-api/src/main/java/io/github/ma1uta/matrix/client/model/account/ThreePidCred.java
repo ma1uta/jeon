@@ -20,14 +20,17 @@ package io.github.ma1uta.matrix.client.model.account;
  * 3Pid credentials.
  */
 public class ThreePidCred {
+
     /**
      * Identity server id.
      */
     private String sid;
+
     /**
      * Identity server client secret.
      */
     private String clientSecret;
+
     /**
      * Url of identity server auth with.
      */

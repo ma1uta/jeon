@@ -20,6 +20,7 @@ package io.github.ma1uta.matrix.client.model.auth;
  * Fallback response.
  */
 public class FallbackResponse {
+
     /**
      * Session id.
      */

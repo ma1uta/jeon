@@ -31,7 +31,7 @@ import javax.ws.rs.core.MediaType;
  * @author ma1uta
  */
 @Path("/_matrix/identity/api/v1")
-public interface InvitationApi extends IdentityApi {
+public interface InvitationApi {
 
     /**
      * An identity service can store pending invitations to a user's 3pid, which will be retrieved and can be either notified

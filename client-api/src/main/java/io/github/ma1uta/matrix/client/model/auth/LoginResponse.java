@@ -22,6 +22,7 @@ package io.github.ma1uta.matrix.client.model.auth;
  * @author ma1uta
  */
 public class LoginResponse {
+
     /**
      * The fully-qualified Matrix ID that has been registered.
      */

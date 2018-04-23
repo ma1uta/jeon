@@ -20,18 +20,22 @@ package io.github.ma1uta.matrix.client.model.account;
  * Request for the proxies the identity server API validate/email/requestToken.
  */
 public class RequestToken {
+
     /**
      * The ID server to send the onward request to as a hostname with an appended colon and port number if the port is not the default.
      */
     private String idServer;
+
     /**
      * Required. Client-generated secret string used to protect this session.
      */
     private String clientSecret;
+
     /**
      * Required. The email address.
      */
     private String email;
+
     /**
      * Required. Used to distinguish protocol level retries from requests to re-send the email.
      */

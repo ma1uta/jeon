@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/_matrix/identity/api/v1")
 @Produces(MediaType.APPLICATION_JSON)
-public interface StatusApi extends IdentityApi {
+public interface StatusApi {
 
     /**
      * To discover that an Identity server is available at a specific URL, this endpoint can be queried and will return an empty object.

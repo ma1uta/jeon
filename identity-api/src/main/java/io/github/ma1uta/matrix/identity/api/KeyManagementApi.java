@@ -41,7 +41,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/_matrix/identity/api/v1/pubkey")
 @Produces(MediaType.APPLICATION_JSON)
-public interface KeyManagementApi extends IdentityApi {
+public interface KeyManagementApi {
 
     /**
      * Get the public key for the passed key ID.
