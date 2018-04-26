@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests.
  *
@@ -57,11 +59,13 @@ public class LoginRequest {
      * ID of the client device. If this does not correspond to a known client device, a new device will be created.
      * The server will auto-generate a device_id if this is not specified.
      */
+    @JsonProperty("device_id")
     private String deviceId;
 
     /**
      * A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device.
      */
+    @JsonProperty("initial_device_display_name")
     private String initialDeviceDisplayName;
 
     public String getType() {

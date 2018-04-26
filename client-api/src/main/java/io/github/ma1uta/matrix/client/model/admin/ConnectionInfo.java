@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Connection info.
  */
@@ -29,11 +31,13 @@ public class ConnectionInfo {
     /**
      * Unix timestamp that the session was last active.
      */
+    @JsonProperty("last_seen")
     private Long lastSeen;
 
     /**
      * User agent string last seen in the session.
      */
+    @JsonProperty("user_agent")
     private String userAgent;
 
     public String getIp() {

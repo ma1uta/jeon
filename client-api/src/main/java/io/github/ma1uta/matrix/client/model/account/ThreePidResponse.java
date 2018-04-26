@@ -25,4 +25,12 @@ public class ThreePidResponse {
      * All 3Pids.
      */
     private ThirdPartyIdentifier[] threepids;
+
+    public ThirdPartyIdentifier[] getThreepids() {
+        return threepids;
+    }
+
+    public void setThreepids(ThirdPartyIdentifier[] threepids) {
+        this.threepids = threepids;
+    }
 }

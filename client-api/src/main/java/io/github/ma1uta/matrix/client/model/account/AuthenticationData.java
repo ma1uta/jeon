@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Authentication Data.
  */
@@ -64,6 +66,7 @@ public class AuthenticationData {
     /**
      * Transaction id.
      */
+    @JsonProperty("txn_id")
     private String txnId;
 
     /**
@@ -74,7 +77,7 @@ public class AuthenticationData {
     /**
      * 3Pids credentials.
      */
-    private ThreePidCred[] threePidCreds;
+    private ThreePidCred[] threepidCreds;
 
     public String getType() {
         return type;
@@ -156,11 +159,11 @@ public class AuthenticationData {
         this.uri = uri;
     }
 
-    public ThreePidCred[] getThreePidCreds() {
-        return threePidCreds;
+    public ThreePidCred[] getThreepidCreds() {
+        return threepidCreds;
     }
 
-    public void setThreePidCreds(ThreePidCred[] threePidCreds) {
-        this.threePidCreds = threePidCreds;
+    public void setThreepidCreds(ThreePidCred[] threepidCreds) {
+        this.threepidCreds = threepidCreds;
     }
 }

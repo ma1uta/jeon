@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Request for register for an account on this homeserver.
  */
@@ -31,6 +33,7 @@ public class RegisterRequest {
     /**
      * If true, the server binds the email used for authentication to the Matrix ID with the ID Server.
      */
+    @JsonProperty("bind_email")
     private Boolean bindEmail;
 
     /**
@@ -47,11 +50,13 @@ public class RegisterRequest {
      * ID of the client device. If this does not correspond to a known client device, a new device will be created.
      * The server will auto-generate a device_id if this is not specified.
      */
+    @JsonProperty("device_id")
     private String deviceId;
 
     /**
      * A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device.
      */
+    @JsonProperty("initial_device_display_name")
     private String initialDeviceDisplayName;
 
     public AuthenticationData getAuth() {

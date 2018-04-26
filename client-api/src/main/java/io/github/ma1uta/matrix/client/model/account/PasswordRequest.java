@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Request for changes the password for an account on this homeserver.
  */
@@ -24,6 +26,7 @@ public class PasswordRequest {
     /**
      * Required. The new password for the account.
      */
+    @JsonProperty("new_password")
     private String newPassword;
 
     /**

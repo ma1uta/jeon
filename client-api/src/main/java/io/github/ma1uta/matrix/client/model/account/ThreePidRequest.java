@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Request for adds contact information to the user's account.
  */
@@ -24,6 +26,7 @@ public class ThreePidRequest {
     /**
      * Required. The third party credentials to associate with the account.
      */
+    @JsonProperty("three_pid_creds")
     private ThreePidCred[] threePidCreds;
 
     /**

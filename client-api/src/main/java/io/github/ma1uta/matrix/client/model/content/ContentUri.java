@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The MXC URI for the uploaded content.
  */
@@ -24,5 +26,14 @@ public class ContentUri {
     /**
      * MXC URI.
      */
+    @JsonProperty("content_uri")
     private String contentUri;
+
+    public String getContentUri() {
+        return contentUri;
+    }
+
+    public void setContentUri(String contentUri) {
+        this.contentUri = contentUri;
+    }
 }

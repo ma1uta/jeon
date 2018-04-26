@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 /**
@@ -26,6 +28,7 @@ public class AdminResponse {
     /**
      * The Matrix user ID of the user.
      */
+    @JsonProperty("user_id")
     private String userId;
 
     /**

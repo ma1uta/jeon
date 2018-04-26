@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * 3Pid credentials.
  */
@@ -29,11 +31,13 @@ public class ThreePidCred {
     /**
      * Identity server client secret.
      */
+    @JsonProperty("client_secret")
     private String clientSecret;
 
     /**
      * Url of identity server auth with.
      */
+    @JsonProperty("id_server")
     private String idServer;
 
     public String getSid() {

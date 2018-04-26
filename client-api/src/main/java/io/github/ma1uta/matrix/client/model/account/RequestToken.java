@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Request for the proxies the identity server API validate/email/requestToken.
  */
@@ -24,11 +26,13 @@ public class RequestToken {
     /**
      * The ID server to send the onward request to as a hostname with an appended colon and port number if the port is not the default.
      */
+    @JsonProperty("id_server")
     private String idServer;
 
     /**
      * Required. Client-generated secret string used to protect this session.
      */
+    @JsonProperty("client_secret")
     private String clientSecret;
 
     /**
@@ -39,6 +43,7 @@ public class RequestToken {
     /**
      * Required. Used to distinguish protocol level retries from requests to re-send the email.
      */
+    @JsonProperty("send_attempt")
     private String sendAttempt;
 
     public String getIdServer() {

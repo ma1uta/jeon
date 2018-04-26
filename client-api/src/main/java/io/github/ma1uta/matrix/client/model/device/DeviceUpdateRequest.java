@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.device;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The new display name for this device. If not given, the display name is unchanged.
  */
@@ -24,6 +26,7 @@ public class DeviceUpdateRequest {
     /**
      * The new display name.
      */
+    @JsonProperty("display_name")
     private String displayName;
 
     public String getDisplayName() {

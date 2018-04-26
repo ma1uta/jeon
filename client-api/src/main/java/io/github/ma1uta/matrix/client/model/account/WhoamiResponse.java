@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Response for gets information about the owner of a given access token.
  */
@@ -24,5 +26,14 @@ public class WhoamiResponse {
     /**
      * MXID.
      */
+    @JsonProperty("user_id")
     private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
