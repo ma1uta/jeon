@@ -366,28 +366,575 @@ public class Event {
         public static final String ROOM_PINNED_EVENTS = "m.room.pinned_events";
 
         /**
+         * Message Event.
+         * <p/>
+         * This event is sent by the caller when they wish to establish a call.
          *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>call_id</td>
+         * <td>string</td>
+         * <td>Required. A unique identifer for the call.</td>
+         * </tr>
+         * <tr>
+         * <td>offer</td>
+         * <td>Offer</td>
+         * <td>Required. The session description object</td>
+         * </tr>
+         * <tr>
+         * <td>version</td>
+         * <td>integer</td>
+         * <td>Required. The version of the VoIP specification this message adheres to. This specification is version 0.</td>
+         * </tr>
+         * <tr>
+         * <td>lifetime</td>
+         * <td>integer</td>
+         * <td>Required. The time in milliseconds that the invite is valid for. Once the invite age exceeds this value,
+         * clients should discard it. They should also no longer show the call as awaiting an answer in the UI.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Offer
+         * <table>
+         * <tr>
+         * <td>Offer Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>type</td>
+         * <td>string</td>
+         * <td>Required. The type of session description. Must be 'offer'.
+         * </td>
+         * </tr>
+         * <tr>
+         * <td>sdp</td>
+         * <td>string</td>
+         * <td>Required. The SDP text of the session description.</td>
+         * </tr>
+         * </table>
          */
         public static final String CALL_INVITE = "m.call.invite";
+
+        /**
+         * Message Event
+         * <p/>
+         * This event is sent by callers after sending an invite and by the callee after answering. Its purpose is to give the other
+         * party additional ICE candidates to try using to communicate.
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>call_id</td>
+         * <td>string</td>
+         * <td>Required. The ID of the call this event relates to.</td>
+         * </tr>
+         * <tr>
+         * <td>candidates</td>
+         * <td>[Candidates]</td>
+         * <td>Required. Array of objects describing the candidates.</td>
+         * </tr>
+         * <tr>
+         * <td>version</td>
+         * <td>integer</td>
+         * <td>Required. The version of the VoIP specification this messages adheres to. This specification is version 0.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Candidate
+         * <table>
+         * <tr>
+         * <td>Candidate Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>sdpMid</td>
+         * <td>string</td>
+         * <td>Required. The SDP media type this candidate is intended for.</td>
+         * </tr>
+         * <tr>
+         * <td>sdpMLineIndex</td>
+         * <td>number</td>
+         * <td>Required. The index of the SDP 'm' line this candidate is intended for.</td>
+         * </tr>
+         * <tr>
+         * <td>candidate</td>
+         * <td>string</td>
+         * <td>Required. The SDP 'a' line of the candidate.</td>
+         * </tr>
+         * </table>
+         */
         public static final String CALL_CANDIDATES = "m.call.candidates";
+
+        /**
+         * Message Event
+         * <p/>
+         * This event is sent by the callee when they wish to answer the call.
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>call_id</td>
+         * <td>string</td>
+         * <td>Required. The ID of the call this event relates to.</td>
+         * </tr>
+         * <tr>
+         * <td>answer</td>
+         * <td>Answer</td>
+         * <td>Required. The session description object</td>
+         * </tr>
+         * <tr>
+         * <td>version</td>
+         * <td>integer</td>
+         * <td></td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Answer
+         * <table>
+         * <tr>
+         * <td>Answer Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>type</td>
+         * <td>string</td>
+         * <td>Required. The type of session description. Must be 'answer'.</td>
+         * </tr>
+         * <tr>
+         * <td>sdp</td>
+         * <td>string</td>
+         * <td>Required. The SDP text of the session description.</td>
+         * </tr>
+         * </table>
+         */
         public static final String CALL_ANSWER = "m.call.answer";
+
+        /**
+         * Message Event
+         * <p/>
+         * Sent by either party to signal their termination of the call. This can be sent either once the call has has been
+         * established or before to abort the call.
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>call_id</td>
+         * <td>string</td>
+         * <td>Required. The ID of the call this event relates to.</td>
+         * </tr>
+         * <tr>
+         * <td>version</td>
+         * <td>integer</td>
+         * <td>Required. The version of the VoIP specification this message adheres to. This specification is version 0.</td>
+         * </tr>
+         * </table>
+         */
         public static final String CALL_HANGUP = "m.call.hangup";
 
+        /**
+         * Informs the client of the list of users currently typing.
+         * <p/>
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>user_ids</td>
+         * <td>[string]</td>
+         * <td>Required. The list of user IDs typing in this room, if any.</td>
+         * </tr>
+         * </table>
+         */
         public static final String TYPING = "m.typing";
 
+        /**
+         * Informs the client of new receipts.
+         * <p/>
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>$EVENT_ID</td>
+         * <td>Receipts</td>
+         * <td>The mapping of event ID to a collection of receipts for this event ID. The event ID is the ID of the event being
+         * acknowledged and not an ID for the receipt itself.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Receipts
+         * <table>
+         * <tr>
+         * <td>Receipts Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>m.read</td>
+         * <td>Users</td>
+         * <td>A collection of users who have sent m.read receipts for this event.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Users.
+         * <table>
+         * <tr>
+         * <td>Users Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>$USER_ID</td>
+         * <td>Receipt</td>
+         * <td>The mapping of user ID to receipt. The user ID is the entity who sent this receipt.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Receipt
+         * <table>
+         * <tr>
+         * <td>Receipt Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>ts</td>
+         * <td>number</td>
+         * <td>The timestamp the receipt was sent at.</td>
+         * </tr>
+         * </table>
+         */
         public static final String RECEIPT = "m.receipt";
 
+        /**
+         * Informs the client of a user's presence state change.
+         * <p/>
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>avatar_url</td>
+         * <td>string</td>
+         * <td>The current avatar URL for this user, if any.</td>
+         * </tr>
+         * <tr>
+         * <td>displayname</td>
+         * <td>string</td>
+         * <td>The current display name for this user, if any.</td>
+         * </tr>
+         * <tr>
+         * <td>last_active_ago</td>
+         * <td>number</td>
+         * <td>The last time since this used performed some action, in milliseconds.</td>
+         * </tr>
+         * <tr>
+         * <td>presence</td>
+         * <td>enum</td>
+         * <td>Required. The presence state for this user. One of: ["online", "offline", "unavailable"]</td>
+         * </tr>
+         * <tr>
+         * <td>currently_active</td>
+         * <td>boolean</td>
+         * <td>Whether the user is currently active</td>
+         * </tr>
+         * </table>
+         */
         public static final String PRESENCE = "m.presence";
 
+        /**
+         * State Event: state_key - A zero-length string.
+         * <p/>
+         * This event controls whether a user can see the events that happened in a room from before they joined.
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>history_visibility</td>
+         * <td>enum</td>
+         * <td>Required. Who can see the room history. One of: ["invited", "joined", "shared", "world_readable"]</td>
+         * </tr>
+         * </table>
+         */
         public static final String HISTORY_VESIBILITY = "m.room.history_visibility";
 
+        /**
+         * State Event: state_key - The token, of which a signature must be produced in order to join the room.
+         * <p/>
+         * Acts as an m.room.member invite event, where there isn't a target user_id to invite. This event contains a token and
+         * a public key whose private key must be used to sign the token. Any user who can present that signature may use this
+         * invitation to join the target room.
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>display_name</td>
+         * <td>string</td>
+         * <td>Required. A user-readable string which represents the user who has been invited. This should not contain the user's
+         * third party ID, as otherwise when the invite is accepted it would leak the association between the matrix ID and the
+         * third party ID.</td>
+         * </tr>
+         * <tr>
+         * <td>key_validity_url</td>
+         * <td>string</td>
+         * <td>Required. A URL which can be fetched, with querystring public_key=public_key, to validate whether the key has
+         * been revoked. The URL must return a JSON object containing a boolean property named 'valid'.</td>
+         * </tr>
+         * <tr>
+         * <td>public_key</td>
+         * <td>string</td>
+         * <td>Required. A base64-encoded ed25519 key with which token must be signed (though a signature from any entry in
+         * public_keys is also sufficient). This exists for backwards compatibility.</td>
+         * </tr>
+         * <tr>
+         * <td>public_keys</td>
+         * <td>[PublicKeys]</td>
+         * <td></td>
+         * </tr>
+         * </table>
+         * PublicKeys
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>key_validity_url</td>
+         * <td>string</td>
+         * <td>An optional URL which can be fetched, with querystring public_key=public_key, to validate whether the key has been
+         * revoked. The URL must return a JSON object containing a boolean property named 'valid'. If this URL is absent, the key
+         * must be considered valid indefinitely.</td>
+         * </tr>
+         * <tr>
+         * <td>public_key</td>
+         * <td>string</td>
+         * <td>Required. A base-64 encoded ed25519 key with which token may be signed.</td>
+         * </tr>
+         * </table>
+         */
         public static final String THIRD_PARTY_INVITE = "m.room.third_party_invite";
 
+        /**
+         * State Event: state_key - A zero-length string.
+         * <p/>
+         * This event controls whether guest users are allowed to join rooms. If this event is absent, servers should act as if
+         * it is present and has the guest_access value "forbidden".
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>guest_access</td>
+         * <td>enum</td>
+         * <td>Required. Whether guests can join the room. One of: ["can_join", "forbidden"]</td>
+         * </tr>
+         * </table>
+         */
         public static final String GUEST_ACCESS = "m.room.guest_access";
 
+        /**
+         * Informs the client of tags on a room.
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>tags</td>
+         * <td>{string: Tag}</td>
+         * <td>The tags on the room and their contents.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Tags namespaces are defined in the following way, depending on how the client are expected to interpret them:
+         * <ul>
+         * <li>The namespace m.* is reserved for tags defined in the current specification</li>
+         * <li>The namespace u.* is reserved for user-defined tags, and the client should not try to interpret as anything
+         * other than an utf8 string</li>
+         * <li>A client or app willing to use special tags for advanced functionnality should namespace them similarly to
+         * state keys: tld.name.*</li>
+         * <li>Any tag in the tld.name.* form but not matching the namespace of the current client should be ignored</li>
+         * <li>Any tag not matching the previous rules should be interpreted as an user tag from the u.* namespace</li>
+         * </ul>
+         */
         public static final String TAG = "m.tag";
 
+        /**
+         * A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an event of type m.direct.
+         * The content of this event is an object where the keys are the user IDs and values are lists of room ID strings of the
+         * 'direct' rooms for that user ID.
+         */
         public static final String DIRECT = "m.direct";
+
+        /**
+         * A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>ignored_users</td>
+         * <td>Ignored users</td>
+         * <td>Required. The map of users to ignore</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * Ignored users
+         * <table>
+         * <tr>
+         * <td>Ignored users Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>$USER_ID</td>
+         * <td>Ignored User</td>
+         * <td>An empty object for future enhancement</td>
+         * </tr>
+         * </table>
+         */
+        public static final String IGNORED_USER_LIST = "m.ignored_user_list";
+
+        /**
+         * Message Event
+         * <p/>
+         * This message represents a single sticker image.
+         *
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>body</td>
+         * <td>string</td>
+         * <td>Required. A textual representation or associated description of the sticker image. This could be the alt text of
+         * the original image, or a message to accompany and further describe the sticker.</td>
+         * </tr>
+         * <tr>
+         * <td>info</td>
+         * <td>ImageInfo</td>
+         * <td>Required. Metadata about the image referred to in url including a thumbnail representation.</td>
+         * </tr>
+         * <tr>
+         * <td>url</td>
+         * <td>string</td>
+         * <td>Required. The URL to the sticker image. This must be a valid mxc:// URI.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * ImageInfo
+         * <table>
+         * <tr>
+         * <td>ImageInfo Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>h</td>
+         * <td>integer</td>
+         * <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+         * </tr>
+         * <tr>
+         * <td>w</td>
+         * <td>integer</td>
+         * <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the image, e.g. image/jpeg.</td>
+         * </tr>
+         * <tr>
+         * <td>size</td>
+         * <td>integer</td>
+         * <td>Size of the image in bytes.</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_url</td>
+         * <td>string</td>
+         * <td>The URL to a thumbnail of the image.</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_info</td>
+         * <td>ThumbnailInfo</td>
+         * <td>Metadata about the image referred to in thumbnail_url.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * ThumbnailInfo
+         * <table>
+         * <tr>
+         * <td>ThumbnailInfo Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>h</td>
+         * <td>integer</td>
+         * <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+         * </tr>
+         * <tr>
+         * <td>w</td>
+         * <td>integer</td>
+         * <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the image, e.g. image/jpeg.</td>
+         * </tr>
+         * <tr>
+         * <td>size</td>
+         * <td>integer</td>
+         * <td>Size of the image in bytes.</td>
+         * </tr>
+         * </table>
+         */
+        public static final String STICKER = "m.sticker";
     }
 
     /**
@@ -504,7 +1051,7 @@ public class Event {
          * <td>Required. The URL to the image.</td>
          * </tr>
          * </table>
-         * <p>
+         * <p/>
          * ImageInfo
          * <table>
          * <tr>
@@ -540,7 +1087,7 @@ public class Event {
          * <td>Metadata about the image referred to in thumbnail_url.</td>
          * </tr>
          * </table>
-         * <p>
+         * <p/>
          * ThumbnailInfo
          * <table>
          * <tr>
@@ -575,18 +1122,363 @@ public class Event {
         public static final String IMAGE = "m.image";
 
         /**
-         *
+         * This message represents a generic file.
+         * <p/>
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>body</td>
+         * <td>string</td>
+         * <td>Required. A human-readable description of the file. This is recommended to be the filename of the original upload.</td>
+         * </tr>
+         * <tr>
+         * <td>filename</td>
+         * <td>string</td>
+         * <td>Required. The original filename of the uploaded file.</td>
+         * </tr>
+         * <tr>
+         * <td>info</td>
+         * <td>FileInfo</td>
+         * <td>Information about the file referred to in url.</td>
+         * </tr>
+         * <tr>
+         * <td>msgtype</td>
+         * <td>string</td>
+         * <td>Required. Must be 'm.file'.</td>
+         * </tr>
+         * <tr>
+         * <td>url</td>
+         * <td>string</td>
+         * <td>Required. The URL to the file.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * FileInfo
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>h</td>
+         * <td>integer</td>
+         * <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>w</td>
+         * <td>integer</td>
+         * <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the image, e.g. image/jpeg.</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_url</td>
+         * <td>string</td>
+         * <td>The URL to a thumbnail of the image.</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_info</td>
+         * <td>ThumbnailInfo</td>
+         * <td>Metadata about the image referred to in thumbnail_url.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * ThumbnailInfo
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>h</td>
+         * <td>integer</td>
+         * <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>w</td>
+         * <td>integer</td>
+         * <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the image, e.g. image/jpeg.</td>
+         * </tr>
+         * <tr>
+         * <td>size</td>
+         * <td>integer</td>
+         * <td>Size of the image in bytes.</td>
+         * </tr>
+         * </table>
          */
         public static final String FILE = "m.file";
+
+        /**
+         * This message represents a real-world location.
+         * <p/>
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>body</td>
+         * <td>string</td>
+         * <td>Required. A description of the location e.g. 'Big Ben, London, UK', or some kind of content description for
+         * accessibility e.g. 'location attachment'.</td>
+         * </tr>
+         * <tr>
+         * <td>geo_uri</td>
+         * <td>string</td>
+         * <td>Required. A geo URI representing this location.</td>
+         * </tr>
+         * <tr>
+         * <td>info</td>
+         * <td>LocationInfo</td>
+         * <td>Information about the file referred to in url.</td>
+         * </tr>
+         * <tr>
+         * <td>msgtype</td>
+         * <td>string</td>
+         * <td>Required. Must be 'm.location'.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * LocationInfo
+         * <table>
+         * <tr>
+         * <td>Location Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_url</td>
+         * <td>string</td>
+         * <td>The URL to a thumbnail of the location being represented.</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_info</td>
+         * <td>ThumbnailInfo</td>
+         * <td>Metadata about the image referred to in thumbnail_url.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * ThumbnailInfo
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>h</td>
+         * <td>integer</td>
+         * <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>w</td>
+         * <td>integer</td>
+         * <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the image, e.g. image/jpeg.</td>
+         * </tr>
+         * <tr>
+         * <td>size</td>
+         * <td>integer</td>
+         * <td>Size of the image in bytes.</td>
+         * </tr>
+         * </table>
+         */
         public static final String LOCATION = "m.location";
+
+        /**
+         * This message represents a single video clip.
+         * <p/>
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>body</td>
+         * <td>string</td>
+         * <td>Required. A description of the video e.g. 'Gangnam style', or some kind of content description for accessibility
+         * e.g. 'video attachment'.</td>
+         * </tr>
+         * <tr>
+         * <td>info</td>
+         * <td>VideoInfo</td>
+         * <td> Metadata about the video clip referred to in url.</td>
+         * </tr>
+         * <tr>
+         * <td>msgtype</td>
+         * <td>string</td>
+         * <td>Required. Must be 'm.video'.</td>
+         * </tr>
+         * <tr>
+         * <td>url</td>
+         * <td>string</td>
+         * <td>Required. The URL to the video clip.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * VideoInfo
+         * <table>
+         * <tr>
+         * <td>Video Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>h</td>
+         * <td>integer</td>
+         * <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>w</td>
+         * <td>integer</td>
+         * <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the image, e.g. image/jpeg.</td>
+         * </tr>
+         * <tr>
+         * <td>size</td>
+         * <td>integer</td>
+         * <td>Size of the image in bytes.</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_url</td>
+         * <td>string</td>
+         * <td>The URL to a thumbnail of the location being represented.</td>
+         * </tr>
+         * <tr>
+         * <td>thumbnail_info</td>
+         * <td>ThumbnailInfo</td>
+         * <td>Metadata about the image referred to in thumbnail_url.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * ThumbnailInfo
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>h</td>
+         * <td>integer</td>
+         * <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>w</td>
+         * <td>integer</td>
+         * <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the
+         * image file.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the image, e.g. image/jpeg.</td>
+         * </tr>
+         * <tr>
+         * <td>size</td>
+         * <td>integer</td>
+         * <td>Size of the image in bytes.</td>
+         * </tr>
+         * </table>
+         */
         public static final String VIDEO = "m.video";
+
+        /**
+         * This message represents a single audio clip.
+         * <p/>
+         * <table>
+         * <tr>
+         * <td>Content Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>body</td>
+         * <td>string</td>
+         * <td>Required. A description of the audio e.g. 'Bee Gees - Stayin' Alive', or some kind of content description for
+         * accessibility e.g. 'audio attachment'.</td>
+         * </tr>
+         * <tr>
+         * <td>info</td>
+         * <td>AudioInfo</td>
+         * <td>Metadata about the audio clip referred to in url.</td>
+         * </tr>
+         * <tr>
+         * <td>msgtype</td>
+         * <td>string</td>
+         * <td>Required. Must be 'm.audio'.</td>
+         * </tr>
+         * <tr>
+         * <td>url</td>
+         * <td>string</td>
+         * <td>Required. The URL to the audio clip.</td>
+         * </tr>
+         * </table>
+         * <p/>
+         * AudioInfo
+         * <table>
+         * <tr>
+         * <td>AudioInfo Key</td>
+         * <td>Type</td>
+         * <td>Description</td>
+         * </tr>
+         * <tr>
+         * <td>duration</td>
+         * <td>integer</td>
+         * <td>The duration of the audio in milliseconds.</td>
+         * </tr>
+         * <tr>
+         * <td>mimetype</td>
+         * <td>string</td>
+         * <td>The mimetype of the audio e.g. audio/aac.</td>
+         * </tr>
+         * <tr>
+         * <td>size</td>
+         * <td>integer</td>
+         * <td>The size of the image in bytes.</td>
+         * </tr>
+         * </table>
+         */
         public static final String AUDIO = "m.audio";
     }
 
     /**
      * Membership states.
      */
-    public static class MembershipState {
+    public static final class MembershipState {
 
         private MembershipState() {
             //singleton
@@ -620,15 +1512,33 @@ public class Event {
         public static final String KNOCK = "knock";
     }
 
-    public static class Visibility {
+    /**
+     * History visibility.
+     */
+    public static final class Visibility {
 
         private Visibility() {
             //singleton
         }
 
+        /**
+         * World readable.
+         */
         public static final String WORLD_READABLE = "world_readable";
+
+        /**
+         * Shared.
+         */
         public static final String SHARED = "shared";
+
+        /**
+         * Invited.
+         */
         public static final String INVITED = "invited";
+
+        /**
+         * Joined.
+         */
         public static final String JOINED = "joined";
     }
 
@@ -691,7 +1601,6 @@ public class Event {
      * This contains an array of StrippedState Events. These events provide information on a subset of state events such as the room name.
      */
     private List<StrippedState> inviteRoomState;
-    private Long age;
 
     public String getEventId() {
         return eventId;
@@ -771,13 +1680,5 @@ public class Event {
 
     public void setInviteRoomState(List<StrippedState> inviteRoomState) {
         this.inviteRoomState = inviteRoomState;
-    }
-
-    public Long getAge() {
-        return age;
-    }
-
-    public void setAge(Long age) {
-        this.age = age;
     }
 }

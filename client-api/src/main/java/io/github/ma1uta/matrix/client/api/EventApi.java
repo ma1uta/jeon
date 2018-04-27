@@ -18,7 +18,6 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.client.model.Event;
 import io.github.ma1uta.matrix.client.model.Page;
-import io.github.ma1uta.matrix.client.model.StateEvent;
 import io.github.ma1uta.matrix.client.model.event.JoinedMembersResponse;
 import io.github.ma1uta.matrix.client.model.event.MembersResponse;
 import io.github.ma1uta.matrix.client.model.event.RedactRequest;
@@ -26,11 +25,14 @@ import io.github.ma1uta.matrix.client.model.event.SendEventResponse;
 
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 /**
  * There are several APIs provided to GET events for a room.
@@ -38,6 +40,8 @@ import javax.ws.rs.QueryParam;
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id172">Specification.</a>
  */
 @Path("/_matrix/client/r0/rooms/")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface EventApi {
 
     /**
@@ -102,7 +106,7 @@ public interface EventApi {
      */
     @GET
     @Path("/{roomId}/state")
-    List<StateEvent> eventsForRoom(@PathParam("roomId") String roomId);
+    List<Event> eventsForRoom(@PathParam("roomId") String roomId);
 
     /**
      * Get the list of members for this room.
