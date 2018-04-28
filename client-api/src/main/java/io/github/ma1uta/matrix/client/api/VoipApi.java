@@ -21,9 +21,25 @@ import io.github.ma1uta.matrix.client.model.voip.VoipResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
+/**
+ * The homeserver MAY provide a TURN server which clients can use to contact the remote party. The following HTTP API endpoints will
+ * be used by clients in order to get information about the TURN server.
+ * <p/>
+ * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#get-matrix-client-r0-voip-turnserver">Specification.</a>
+ */
 @Path("/_matrix/client/r0/voip")
 public interface VoipApi {
 
+    /**
+     * This API provides credentials for the client to use when initiating calls.
+     * <p/>
+     * Rate-limited: Yes.
+     * <p/>
+     * Requires auth: Yes.
+     *
+     * @return Status code 200: The TURN server credentials.
+     *     Status code 429: This request was rate-limited.
+     */
     @GET
     @Path("/turnServer")
     VoipResponse turnServer();

@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.tag;
+package io.github.ma1uta.matrix.client.model.receipt;
 
 /**
- * Tag special names.
+ * Receipt types.
  */
-public final class Tag {
+public final class Receipt {
 
-    private Tag() {
+    private Receipt() {
         //singleton
     }
 
     /**
-     * Favourite.
+     * Read receipt type.
      */
-    public static final String FAVOURITE = "m.favourite";
-
-    /**
-     * Low priority.
-     */
-    public static final String LOWPRIOORITY = "m.lowpriority";
+    public static final String READ = "m.read";
 }
