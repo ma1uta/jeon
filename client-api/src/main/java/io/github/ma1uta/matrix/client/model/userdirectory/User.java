@@ -14,20 +14,48 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.profile;
+package io.github.ma1uta.matrix.client.model.userdirectory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * JSON body request for profile api.
+ * JSON body response for user directory api (User).
  */
-public class AvatarUrl {
+public class User {
 
     /**
-     * The new avatar URL for this user.
+     * Required. The user's matrix user ID.
+     */
+    @JsonProperty("user_id")
+    private String userId;
+
+    /**
+     * The display name of the user, if one exists.
+     */
+    @JsonProperty("display_name")
+    private String displayName;
+
+    /**
+     * The avatar url, as an MXC, if one exists.
      */
     @JsonProperty("avatar_url")
     private String avatarUrl;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;

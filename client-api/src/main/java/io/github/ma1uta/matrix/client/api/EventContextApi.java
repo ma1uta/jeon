@@ -21,7 +21,9 @@ import io.github.ma1uta.matrix.client.model.eventcontext.EventContextResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 /**
  * This API returns a number of events that happened just before and after the specified event. This allows clients to get the context
@@ -30,6 +32,7 @@ import javax.ws.rs.QueryParam;
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id114">Specification.</a>
  */
 @Path("/_matrix/client/r0/rooms")
+@Produces(MediaType.APPLICATION_JSON)
 public interface EventContextApi {
 
     /**

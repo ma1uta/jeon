@@ -20,11 +20,14 @@ import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.client.model.tag.Tags;
 
 import java.util.Map;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Users can add tags to rooms. Tags are short strings used to label rooms, e.g. "work", "family". A room may have multiple tags.
@@ -33,6 +36,8 @@ import javax.ws.rs.PathParam;
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#room-tagging">Specification.</a>
  */
 @Path("/_matrix/client/r0/user")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface TagApi {
 
     /**

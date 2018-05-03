@@ -21,6 +21,8 @@ import io.github.ma1uta.matrix.EmptyResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * This module adds in support for receipts. These receipts are a form of acknowledgement of an event. This module defines a single
@@ -34,6 +36,7 @@ import javax.ws.rs.PathParam;
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id288">Specification.</a>
  */
 @Path("/_matrix/client/r0/rooms")
+@Produces(MediaType.APPLICATION_JSON)
 public interface ReceiptApi {
 
     /**

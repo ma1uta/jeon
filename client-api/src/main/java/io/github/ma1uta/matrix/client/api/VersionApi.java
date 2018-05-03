@@ -36,6 +36,7 @@ import javax.ws.rs.core.MediaType;
  * @author ma1uta
  */
 @Path("/_matrix/client/versions")
+@Produces(MediaType.APPLICATION_JSON)
 public interface VersionApi {
 
     /**
@@ -44,6 +45,5 @@ public interface VersionApi {
      * @return Status code 200: The versions supported by the server.
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     VersionsResponse versions();
 }

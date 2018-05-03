@@ -19,9 +19,12 @@ package io.github.ma1uta.matrix.client.api;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.client.model.typing.TypingRequest;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge of every user who is currently
@@ -38,6 +41,8 @@ import javax.ws.rs.PathParam;
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id285">Specification.</a>
  */
 @Path("/_matrix/client/r0/rooms")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface TypingApi {
 
     /**

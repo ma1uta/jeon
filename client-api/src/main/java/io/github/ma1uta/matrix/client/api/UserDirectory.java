@@ -16,34 +16,36 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.client.model.voip.VoipResponse;
+import io.github.ma1uta.matrix.client.model.userdirectory.SearchRequest;
+import io.github.ma1uta.matrix.client.model.userdirectory.SearchResponse;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * The homeserver MAY provide a TURN server which clients can use to contact the remote party. The following HTTP API endpoints will
- * be used by clients in order to get information about the TURN server.
+ * User directory.
  * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#get-matrix-client-r0-voip-turnserver">Specification.</a>
+ * Provides search over all users.
  */
-@Path("/_matrix/client/r0/voip")
+@Path("/_matrix/client/r0/user_directory")
+@Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface VoipApi {
+public interface UserDirectory {
 
     /**
-     * This API provides credentials for the client to use when initiating calls.
+     * This API performs a server-side search over all users registered on the server. It searches user ID and displayname
+     * case-insensitively for users that you share a room with or that are in public rooms.
      * <p/>
      * Rate-limited: Yes.
      * <p/>
      * Requires auth: Yes.
      *
-     * @return Status code 200: The TURN server credentials.
+     * @param request json body request.
+     * @return Status code 200: The results of the search.
      *     Status code 429: This request was rate-limited.
      */
-    @GET
-    @Path("/turnServer")
-    VoipResponse turnServer();
+    @Path("/search")
+    SearchResponse search(SearchRequest request);
 }

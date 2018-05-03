@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.presence;
+package io.github.ma1uta.matrix.client.model.userdirectory;
 
 import java.util.List;
 
 /**
- * JSON body request for presence api.
+ * JSON body response for user directory api (search result).
  */
-public class PresenceList {
+public class SearchResponse {
 
     /**
-     * A list of user IDs to add to the list.
+     * Required. Ordered by rank and then whether or not profile info is available.
      */
-    private List<String> invite;
+    private List<User> results;
 
     /**
-     * A list of user IDs to remove from the list.
+     * Required. Indicates if the result list has been truncated by the limit.
      */
-    private List<String> drop;
+    private Boolean limit;
 
-    public List<String> getInvite() {
-        return invite;
+    public List<User> getResults() {
+        return results;
     }
 
-    public void setInvite(List<String> invite) {
-        this.invite = invite;
+    public void setResults(List<User> results) {
+        this.results = results;
     }
 
-    public List<String> getDrop() {
-        return drop;
+    public Boolean getLimit() {
+        return limit;
     }
 
-    public void setDrop(List<String> drop) {
-        this.drop = drop;
+    public void setLimit(Boolean limit) {
+        this.limit = limit;
     }
 }

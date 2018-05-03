@@ -14,26 +14,39 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.profile;
+package io.github.ma1uta.matrix.client.model.userdirectory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * JSON body request for profile api.
+ * JSON body request for user directory api (search).
  */
-public class AvatarUrl {
+public class SearchRequest {
 
     /**
-     * The new avatar URL for this user.
+     * Required. The term to search for
      */
-    @JsonProperty("avatar_url")
-    private String avatarUrl;
+    @JsonProperty("search_term")
+    private String searchTerm;
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    /**
+     * The maximum number of results to return (Defaults to 10).
+     */
+    private Long limit;
+
+    public String getSearchTerm() {
+        return searchTerm;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
+    }
+
+    public Long getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Long limit) {
+        this.limit = limit;
     }
 }
