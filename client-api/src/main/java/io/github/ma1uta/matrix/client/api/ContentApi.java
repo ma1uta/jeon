@@ -33,7 +33,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * This module allows users to upload content to their homeserver which is retrievable from other homeservers.
- * Its' purpose is to allow users to share attachments in a room. Content locations are represented as Matrix Content (MXC) URIs.
+ * Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs.
  * They look like:
  * <pre>
  * mxc://(server-name)/(media-id)
@@ -42,7 +42,7 @@ import javax.ws.rs.core.MediaType;
  * (media-id) : An opaque ID which identifies the content.
  * </pre>
  * Uploads are POSTed to a resource on the user's local homeserver which returns a token which is used to GET the download.
- * Content is downloaded from the recipient's local homeserver, which must first transfer the content from the origin homeserver
+ * Key is downloaded from the recipient's local homeserver, which must first transfer the content from the origin homeserver
  * using the same API (unless the origin and destination homeservers are the same).
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id307">Specification.</a>
@@ -84,7 +84,7 @@ public interface ContentApi {
     @Path("/upload")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    ContentUri upload(InputStream inputStream, @QueryParam("filename") String filename, @HeaderParam("Content-Type") String contentType);
+    ContentUri upload(InputStream inputStream, @QueryParam("filename") String filename, @HeaderParam("Key-Type") String contentType);
 
     /**
      * Download content from the content repository.
@@ -100,12 +100,12 @@ public interface ContentApi {
      * <th>Description</th>
      * </tr>
      * <tr>
-     * <td>Content-Type</td>
+     * <td>Key-Type</td>
      * <td>string</td>
      * <td>The content type of the file that was previously uploaded.</td>
      * </tr>
      * <tr>
-     * <td>Content-Disposition</td>
+     * <td>Key-Disposition</td>
      * <td>string</td>
      * <td>The name of the file that was previously uploaded, if set.</td>
      * </tr>
@@ -122,7 +122,7 @@ public interface ContentApi {
      *
      * @param serverName Required. The server name from the mxc:// URI (the authoritory component)
      * @param mediaId    Required. The media ID from the mxc:// URI (the path component)
-     * @param filename   Required. The filename to give in the Content- Disposition
+     * @param filename   Required. The filename to give in the Key- Disposition
      * @return Response headers:
      * <table border="1">
      * <tr>
@@ -131,12 +131,12 @@ public interface ContentApi {
      * <th>Description</th>
      * </tr>
      * <tr>
-     * <td>Content-Type</td>
+     * <td>Key-Type</td>
      * <td>string</td>
      * <td>The content type of the file that was previously uploaded.</td>
      * </tr>
      * <tr>
-     * <td>Content-Disposition</td>
+     * <td>Key-Disposition</td>
      * <td>string</td>
      * <td>The name of the file that was previously uploaded, if set.</td>
      * </tr>
@@ -165,7 +165,7 @@ public interface ContentApi {
      * <th>Description</th>
      * </tr>
      * <tr>
-     * <td>Content-Type</td>
+     * <td>Key-Type</td>
      * <td>string</td>
      * <td>The content type of the file that was previously uploaded.</td>
      * </tr>

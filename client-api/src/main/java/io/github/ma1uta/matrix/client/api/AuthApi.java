@@ -51,7 +51,7 @@ public interface AuthApi {
      * @param loginRequest {@link LoginRequest}
      * @return <p>Status code 200: The user has been authenticated.</p>
      * <p>Status code 400: Part of the request was invalid. For example, the login type may not be recognised.</p>
-     * <p>Status code 403: The login attempt failed. For example, the password may have been incorrect.</p>
+     * <p>Status code 401: The login attempt failed. For example, the password may have been incorrect.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
      * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#relationship-between-access-tokens-and-devices>
