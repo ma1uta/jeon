@@ -16,26 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
-
 /**
- * JSON body resposnse with joined rooms.
+ * JSON body request and response for listing room api.
  */
-public class JoinedRoomsResponse {
+public class RoomVisibility {
 
     /**
-     * Required. The ID of each room in which the user has joined membership.
+     * The visibility of the room in the directory. One of: ["private", "public"]
      */
-    @JsonProperty("joined_rooms")
-    private List<String> joinedRooms;
+    private String visibility;
 
-    public List<String> getJoinedRooms() {
-        return joinedRooms;
+    public String getVisibility() {
+        return visibility;
     }
 
-    public void setJoinedRooms(List<String> joinedRooms) {
-        this.joinedRooms = joinedRooms;
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
     }
 }
