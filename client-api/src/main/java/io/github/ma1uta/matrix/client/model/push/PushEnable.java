@@ -16,25 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import java.util.List;
-
 /**
- * JSON body request/response for action push api.
+ * JSON body request/response for enable/disable push api.
  */
-public class PushActions {
+public class PushEnable {
 
     /**
-     * Required. The action(s) to perform for this rule.
-     * <p/>
-     * One of: ["notify", "dont_notify", "coalesce", "set_tweak"].
+     * Required. Whether the push rule is enabled or not.
      */
-    private List<String> actions;
+    private Boolean enabled;
 
-    public List<String> getActions() {
-        return actions;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setActions(List<String> actions) {
-        this.actions = actions;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

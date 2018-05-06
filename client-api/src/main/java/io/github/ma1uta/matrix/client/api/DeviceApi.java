@@ -57,7 +57,7 @@ public interface DeviceApi {
      *
      * @param deviceId Required. The device to retrieve.
      * @return Status code 200: Device information.
-     * Status code 404: The current user has no device with the given ID.
+     *     Status code 404: The current user has no device with the given ID.
      */
     @GET
     @Path("/devices/{deviceId}")
@@ -70,7 +70,7 @@ public interface DeviceApi {
      * @param deviceId            Required. The device to update.
      * @param deviceUpdateRequest The new display name for this device. If not given, the display name is unchanged.
      * @return Status code 200: The device was successfully updated.
-     * Status code 404: The current user has no device with the given ID.
+     *     Status code 404: The current user has no device with the given ID.
      */
     @PUT
     @Path("/devices/{deviceId}")
@@ -86,7 +86,7 @@ public interface DeviceApi {
      * @param deviceId            Required. The device to delete.
      * @param deviceDeleteRequest Additional authentication information for the user-interactive authentication API.
      * @return Status code 200: The device was successfully removed, or had been removed previously.
-     * Status code 401: The homeserver requires additional authentication information.
+     *     Status code 401: The homeserver requires additional authentication information.
      */
     @DELETE
     @Path("/devices/{deviceId}")

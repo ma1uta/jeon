@@ -44,7 +44,7 @@ public class DeviceKeys {
     private List<String> algorithms;
 
     /**
-     * Required. Public identity keys. The names of the properties should be in the format <algorithm>:<device_id>.
+     * Required. Public identity keys. The names of the properties should be in the format &lt;algorithm&gt;:&lt;device_id&gt;.
      * The keys themselves should be encoded as specified by the key algorithm.
      */
     private Map<String, String> keys;

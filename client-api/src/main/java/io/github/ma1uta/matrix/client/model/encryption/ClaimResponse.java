@@ -35,7 +35,7 @@ public class ClaimResponse {
     private Map<String, Object> failures;
 
     /**
-     * One-time keys for the queried devices. A map from user ID, to a map from <algorithm>:<key_id> to the key object.
+     * One-time keys for the queried devices. A map from user ID, to a map from &lt;algorithm&gt;:&lt;key_id&gt; to the key object.
      */
     @JsonProperty("one_time_keys")
     private Map<String, Map<String, Object>> oneTimeKeys;
