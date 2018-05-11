@@ -29,7 +29,7 @@ public class Event {
     /**
      * Event types.
      */
-    public final class EventType {
+    public static final class EventType {
 
         private EventType() {
             //singleton
@@ -1602,6 +1602,11 @@ public class Event {
      */
     private List<StrippedState> inviteRoomState;
 
+    /**
+     * Required. The membership state of the user. One of: ["invite", "join", "knock", "leave", "ban"].
+     */
+    private String membership;
+
     public String getEventId() {
         return eventId;
     }
@@ -1680,5 +1685,13 @@ public class Event {
 
     public void setInviteRoomState(List<StrippedState> inviteRoomState) {
         this.inviteRoomState = inviteRoomState;
+    }
+
+    public String getMembership() {
+        return membership;
+    }
+
+    public void setMembership(String membership) {
+        this.membership = membership;
     }
 }

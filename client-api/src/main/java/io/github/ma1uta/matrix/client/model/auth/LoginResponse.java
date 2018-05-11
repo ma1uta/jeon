@@ -17,13 +17,14 @@
 package io.github.ma1uta.matrix.client.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.ErrorResponse;
 
 /**
  * Response for the login request.
  *
  * @author ma1uta
  */
-public class LoginResponse {
+public class LoginResponse extends ErrorResponse {
 
     /**
      * The fully-qualified Matrix ID that has been registered.

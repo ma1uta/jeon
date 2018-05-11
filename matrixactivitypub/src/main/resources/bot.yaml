@@ -1,0 +1,18 @@
+domain: "plyuk.rocks"
+baseUrl: "https://plyuk.rocks:8448"
+botUserName: "bot"
+password: "bot"
+displayName: "bot"
+
+httpClient:
+  timeout: 20s
+jerseyClient:
+  gzipEnabled: false
+  gzipEnabledForRequests: false
+  chunkedEncodingEnabled: false
+  timeout: 20s
+logging:
+  level: DEBUG
+  appenders:
+    - type: console
+      target: stderr

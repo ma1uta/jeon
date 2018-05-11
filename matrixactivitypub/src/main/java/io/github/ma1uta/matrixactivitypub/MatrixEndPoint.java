@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.auth;
+package io.github.ma1uta.matrixactivitypub;
+
+import io.dropwizard.lifecycle.Managed;
 
 /**
- * Fallback response.
+ * Managed matrix client.
  */
-public class FallbackResponse {
+public class MatrixEndPoint implements Managed {
 
-    /**
-     * Session id.
-     */
-    private String session;
+    private final MatrixBotClient client;
 
-    public String getSession() {
-        return session;
+    public MatrixEndPoint(MatrixBotClient client) {
+        this.client = client;
     }
 
-    public void setSession(String session) {
-        this.session = session;
+    @Override
+    public void start() {
+    }
+
+    @Override
+    public void stop() {
+        client.stop();
     }
 }

@@ -44,7 +44,7 @@
         <checkstyle.version>8.8</checkstyle.version>
         <jacoco.maven.plugin.version>0.8.1</jacoco.maven.plugin.version>
         <slf4j.api.version>1.7.25</slf4j.api.version>
-        <javax.ws.rs.api.version>2.1</javax.ws.rs.api.version>
+        <javax.ws.rs.api.version>2.0.1</javax.ws.rs.api.version>
         <jackson.annotations.version>2.9.4</jackson.annotations.version>
     </properties>
 
@@ -173,8 +173,14 @@
         <module>server-api</module>
 
         <module>common-backend</module>
+
         <module>identity-backend</module>
         <module>identity-dropwizard</module>
-        <!--<module>jeon-server</module>-->
+
+        <module>homeserver-backend</module>
+
+        <module>client-sdk</module>
+
+        <module>matrixactivitypub</module>
     </modules>
 </project>

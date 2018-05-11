@@ -17,11 +17,14 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.ErrorResponse;
+
+import java.util.Map;
 
 /**
  * JSON body response for sync api.
  */
-public class SyncResponse {
+public class SyncResponse extends ErrorResponse {
 
     /**
      * The batch token to supply in the since param of the next /sync request.
@@ -56,6 +59,21 @@ public class SyncResponse {
      */
     @JsonProperty("device_lists")
     private DeviceLists deviceLists;
+
+    /**
+     * Amount of the one-time keys.
+     * <p/>
+     * !!! Don't described in spec.
+     */
+    @JsonProperty("device_one_time_keys_count")
+    private Map<String, Object> deviceOneTimeKeysCount;
+
+    /**
+     * Groups.
+     * <p/>
+     * !!! Don't described in spec.
+     */
+    private Map<String, Object> groups;
 
     public String getNextBatch() {
         return nextBatch;
@@ -103,5 +121,21 @@ public class SyncResponse {
 
     public void setDeviceLists(DeviceLists deviceLists) {
         this.deviceLists = deviceLists;
+    }
+
+    public Map<String, Object> getDeviceOneTimeKeysCount() {
+        return deviceOneTimeKeysCount;
+    }
+
+    public void setDeviceOneTimeKeysCount(Map<String, Object> deviceOneTimeKeysCount) {
+        this.deviceOneTimeKeysCount = deviceOneTimeKeysCount;
+    }
+
+    public Map<String, Object> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Map<String, Object> groups) {
+        this.groups = groups;
     }
 }

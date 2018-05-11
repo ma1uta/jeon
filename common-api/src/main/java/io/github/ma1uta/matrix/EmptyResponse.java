@@ -19,5 +19,5 @@ package io.github.ma1uta.matrix;
 /**
  * Empty response.
  */
-public class EmptyResponse {
+public class EmptyResponse extends ErrorResponse {
 }

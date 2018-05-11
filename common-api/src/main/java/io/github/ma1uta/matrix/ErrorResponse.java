@@ -29,7 +29,7 @@ public class ErrorResponse {
     /**
      * Standard error codes.
      */
-    public final class Code {
+    public static final class Code {
 
         private Code() {
             // singleton
@@ -130,6 +130,9 @@ public class ErrorResponse {
      * Time to retry send a request.
      */
     private Long retryAfterMs;
+
+    public ErrorResponse() {
+    }
 
     public ErrorResponse(String errcode, String error) {
         this.errcode = errcode;

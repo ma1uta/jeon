@@ -44,7 +44,28 @@ public class Unsigned {
     @JsonProperty("transaction_id")
     private String transactionId;
 
+    /**
+     * Optional. The previous content for this state. This will be present only for state events appearing in the timeline.
+     * If this is not a state event, or there is no previous content, this key will be missing.
+     */
+    @JsonProperty("prev_content")
     private Map<String, Object> prevContent;
+
+    /**
+     * Previous sender?
+     * <p/>
+     * !!! Don't described in spec.
+     */
+    @JsonProperty("prev_sender")
+    private String prevSender;
+
+    /**
+     * Previous event state.
+     * <p/>
+     * !!! Don't described in spec.
+     */
+    @JsonProperty("replaces_state")
+    private String replacesState;
 
     public Long getAge() {
         return age;
@@ -76,5 +97,21 @@ public class Unsigned {
 
     public void setPrevContent(Map<String, Object> prevContent) {
         this.prevContent = prevContent;
+    }
+
+    public String getPrevSender() {
+        return prevSender;
+    }
+
+    public void setPrevSender(String prevSender) {
+        this.prevSender = prevSender;
+    }
+
+    public String getReplacesState() {
+        return replacesState;
+    }
+
+    public void setReplacesState(String replacesState) {
+        this.replacesState = replacesState;
     }
 }

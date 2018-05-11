@@ -28,11 +28,26 @@ public class DeviceLists {
      */
     private List<String> changed;
 
+    /**
+     * Left devices?
+     * <p/>
+     * !!! Don't descride in spec.
+     */
+    private List<String> left;
+
     public List<String> getChanged() {
         return changed;
     }
 
     public void setChanged(List<String> changed) {
         this.changed = changed;
+    }
+
+    public List<String> getLeft() {
+        return left;
+    }
+
+    public void setLeft(List<String> left) {
+        this.left = left;
     }
 }
