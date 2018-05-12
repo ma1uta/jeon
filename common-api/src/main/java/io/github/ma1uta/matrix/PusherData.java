@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.push;
+package io.github.ma1uta.matrix;
 
 /**
  * Pusher data.

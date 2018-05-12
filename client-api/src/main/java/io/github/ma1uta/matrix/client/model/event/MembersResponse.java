@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.event;
 
-import io.github.ma1uta.matrix.client.model.Event;
+import io.github.ma1uta.matrix.Event;
 
 import java.util.List;
 

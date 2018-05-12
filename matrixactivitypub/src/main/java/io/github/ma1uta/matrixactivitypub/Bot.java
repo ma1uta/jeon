@@ -40,14 +40,14 @@ public class Bot extends Application<BotConfiguration> {
 
     @Override
     public void run(BotConfiguration botConfiguration, Environment environment) {
-        newBot(botConfiguration, environment);
+        matrixBot(botConfiguration, environment);
     }
 
-    private void newBot(BotConfiguration botConfiguration, Environment environment) {
+    private void matrixBot(BotConfiguration botConfiguration, Environment environment) {
         environment.getObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         Client jersey = new JerseyClientBuilder(environment).using(botConfiguration.getJerseyClient()).build("jersey");
 
-        MatrixBotClient botClient = new MatrixBotClient(jersey, botConfiguration.getBaseUrl(), botConfiguration.getBotUserName(),
+        MatrixBot botClient = new MatrixBot(jersey, botConfiguration.getBaseUrl(), botConfiguration.getBotUserName(),
             botConfiguration.getPassword(), botConfiguration.getDisplayName());
         environment.lifecycle().manage(new MatrixEndPoint(botClient));
 

@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.sdk;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.client.api.AuthApi;
 import io.github.ma1uta.matrix.client.api.EventApi;
 import io.github.ma1uta.matrix.client.api.FilterApi;
@@ -24,7 +25,6 @@ import io.github.ma1uta.matrix.client.api.ProfileApi;
 import io.github.ma1uta.matrix.client.api.ReceiptApi;
 import io.github.ma1uta.matrix.client.api.RoomApi;
 import io.github.ma1uta.matrix.client.api.SyncApi;
-import io.github.ma1uta.matrix.client.model.Event;
 import io.github.ma1uta.matrix.client.model.auth.AuthType;
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;

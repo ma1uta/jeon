@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.push;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.PusherData;
 
 /**
  * Pusher.

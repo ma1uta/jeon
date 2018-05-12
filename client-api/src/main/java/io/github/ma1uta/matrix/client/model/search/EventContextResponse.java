@@ -17,7 +17,7 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.client.model.Event;
+import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.client.model.profile.Profile;
 
 import java.util.List;

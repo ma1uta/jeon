@@ -171,6 +171,7 @@
         <module>client-api</module>
         <module>identity-api</module>
         <module>server-api</module>
+        <module>push-api</module>
 
         <module>common-backend</module>
 

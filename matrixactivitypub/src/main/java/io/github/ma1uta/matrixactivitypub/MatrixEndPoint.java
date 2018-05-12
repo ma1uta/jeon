@@ -23,9 +23,9 @@ import io.dropwizard.lifecycle.Managed;
  */
 public class MatrixEndPoint implements Managed {
 
-    private final MatrixBotClient client;
+    private final MatrixBot client;
 
-    public MatrixEndPoint(MatrixBotClient client) {
+    public MatrixEndPoint(MatrixBot client) {
         this.client = client;
     }
 

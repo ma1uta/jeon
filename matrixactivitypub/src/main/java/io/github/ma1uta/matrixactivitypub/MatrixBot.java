@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrixactivitypub;
 
-import io.github.ma1uta.matrix.client.model.Event;
+import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.RoomEventFilter;
 import io.github.ma1uta.matrix.client.model.filter.RoomFilter;
@@ -35,9 +35,9 @@ import javax.ws.rs.client.Client;
 /**
  * Matrix bot client.
  */
-public class MatrixBotClient implements Runnable {
+public class MatrixBot implements Runnable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MatrixBotClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatrixBot.class);
 
     private static final long TIMEOUT = 10 * 1000;
 
@@ -51,7 +51,7 @@ public class MatrixBotClient implements Runnable {
 
     private AtomicBoolean stop = new AtomicBoolean(false);
 
-    public MatrixBotClient(Client client, String homeserverUrl, String username, String password, String displayName) {
+    public MatrixBot(Client client, String homeserverUrl, String username, String password, String displayName) {
         this.matrixClient = new MatrixClient(homeserverUrl, client);
         this.username = username;
         this.password = password;

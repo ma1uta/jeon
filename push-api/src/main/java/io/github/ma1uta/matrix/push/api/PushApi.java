@@ -1,0 +1,54 @@
+/*
+ * Copyright sablintolya@gmail.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.ma1uta.matrix.push.api;
+
+import io.github.ma1uta.matrix.push.model.RejectedPushKey;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+/**
+ * This describes the format used by "HTTP" pushers to send notifications of events to Push Gateways. If the endpoint returns an HTTP
+ * error code, the homeserver SHOULD retry for a reasonable amount of time using exponential backoff.
+ * <p/>
+ * <a href="https://matrix.org/docs/spec/push_gateway/unstable.html#id3">Specification.</a>
+ */
+@Path("/_matrix/push/r0")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public interface PushApi {
+
+    /**
+     * This endpoint is invoked by HTTP pushers to notify a push gateway about an event or update the number of unread notifications
+     * a user has. In the former case it will contain selected information about the event. In either case it may contain numeric
+     * counts of the number of unread events of different types the user has. The counts may be sent along with a notification about
+     * an event or by themselves.
+     * <p/>
+     * Notifications about a particular event will normally cause the user to be alerted in some way. It is therefore necessary to
+     * perform duplicate suppression for such notifications using the event_id field to avoid retries of this HTTP API causing
+     * duplicate alerts. The operation of updating counts of unread notifications should be idempotent and therefore do not require
+     * duplicate suppression.
+     * <p/>
+     * Notifications are sent to the URL configured when the pusher is created. This means that the HTTP path may be different
+     * depending on the push gateway.
+     * @return Status code 200: A list of rejected push keys.
+     */
+    @Path("/notify")
+    RejectedPushKey pushNotify();
+}

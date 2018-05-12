@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import io.github.ma1uta.matrix.client.model.Event;
+import io.github.ma1uta.matrix.Event;
 
 /**
  * Search result.

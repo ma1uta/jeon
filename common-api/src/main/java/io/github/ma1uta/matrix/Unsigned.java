@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model;
+package io.github.ma1uta.matrix;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
