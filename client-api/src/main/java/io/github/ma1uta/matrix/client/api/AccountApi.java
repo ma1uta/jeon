@@ -212,5 +212,5 @@ public interface AccountApi {
      */
     @GET
     @Path("/account/whoami")
-    WhoamiResponse whiami();
+    WhoamiResponse whoami();
 }

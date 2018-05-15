@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.sdk;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.client.api.AccountApi;
 import io.github.ma1uta.matrix.client.api.AuthApi;
 import io.github.ma1uta.matrix.client.api.EventApi;
 import io.github.ma1uta.matrix.client.api.FilterApi;
@@ -25,6 +26,8 @@ import io.github.ma1uta.matrix.client.api.ProfileApi;
 import io.github.ma1uta.matrix.client.api.ReceiptApi;
 import io.github.ma1uta.matrix.client.api.RoomApi;
 import io.github.ma1uta.matrix.client.api.SyncApi;
+import io.github.ma1uta.matrix.client.model.account.DeactivateRequest;
+import io.github.ma1uta.matrix.client.model.account.RegisterRequest;
 import io.github.ma1uta.matrix.client.model.auth.AuthType;
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;
@@ -33,6 +36,7 @@ import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.FilterResponse;
 import io.github.ma1uta.matrix.client.model.profile.DisplayName;
 import io.github.ma1uta.matrix.client.model.room.JoinRequest;
+import io.github.ma1uta.matrix.client.model.room.JoinedRoomsResponse;
 import io.github.ma1uta.matrix.client.model.room.RoomId;
 import io.github.ma1uta.matrix.client.model.sync.SyncResponse;
 import org.slf4j.Logger;
@@ -44,6 +48,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
@@ -63,6 +68,8 @@ public class MatrixClient implements Closeable {
 
     private final String homeserverUrl;
 
+    private final String domain;
+
     private final Client client;
 
     private String userId;
@@ -73,30 +80,86 @@ public class MatrixClient implements Closeable {
 
     private final AtomicLong txn;
 
-    public MatrixClient(String homeserverUrl, Client client) {
+    private final boolean addUserIdToRequests;
+
+    private final boolean fixedUser;
+
+    public MatrixClient(String homeserverUrl, String domain, Client client, boolean addUserIdToRequests, boolean fixedUser, Long txnId) {
         this.homeserverUrl = homeserverUrl;
+        this.domain = domain;
         this.client = client;
-        this.txn = new AtomicLong(0);
+        this.addUserIdToRequests = addUserIdToRequests;
+        this.fixedUser = fixedUser;
+        this.txn = new AtomicLong(txnId != null ? txnId : 0);
     }
 
     public String getHomeserverUrl() {
         return homeserverUrl;
     }
 
+    public String getDomain() {
+        return domain;
+    }
+
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getAccessToken() {
         return accessToken;
     }
 
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
     public String getDeviceId() {
         return deviceId;
     }
 
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
     public Client getClient() {
         return client;
+    }
+
+    public boolean isAddUserIdToRequests() {
+        return addUserIdToRequests;
+    }
+
+    public boolean isFixedUser() {
+        return fixedUser;
+    }
+
+    public AtomicLong getTxn() {
+        return txn;
+    }
+
+    /**
+     * Register a new user.
+     *
+     * @param request registration request.
+     */
+    public void register(RegisterRequest request) {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("kind", AccountApi.RegisterType.USER);
+        LoginResponse registered = post(AccountApi.class, "register", null, queryParams, request, LoginResponse.class);
+
+        updateCredentials(registered);
+    }
+
+    protected void updateCredentials(LoginResponse registered) {
+        if (!isFixedUser()) {
+            this.accessToken = registered.getAccessToken();
+        }
+        this.userId = registered.getUserId();
+        this.deviceId = registered.getDeviceId();
     }
 
     /**
@@ -123,9 +186,7 @@ public class MatrixClient implements Closeable {
     public void login(LoginRequest loginRequest) {
         LoginResponse loginResponse = post(AuthApi.class, "login", null, null, loginRequest, LoginResponse.class, null);
 
-        this.userId = loginResponse.getUserId();
-        this.accessToken = loginResponse.getAccessToken();
-        this.deviceId = loginResponse.getDeviceId();
+        updateCredentials(loginResponse);
     }
 
     /**
@@ -134,7 +195,9 @@ public class MatrixClient implements Closeable {
     public void logout() {
         LOGGER.debug("Logout");
         post(AuthApi.class, "logout", null, null, "", EmptyResponse.class, null);
-        this.accessToken = null;
+        if (!isFixedUser()) {
+            this.accessToken = null;
+        }
         this.deviceId = null;
     }
 
@@ -184,29 +247,6 @@ public class MatrixClient implements Closeable {
     }
 
     /**
-     * Join to the room.
-     *
-     * @param idOrAlias room id or alias.
-     * @return room id.
-     */
-    public RoomId joinRoomByIdOrAlias(String idOrAlias) {
-        Map<String, String> pathParams = new HashMap<>();
-        pathParams.put("roomIdOrAlias", idOrAlias);
-        return post(RoomApi.class, "joinByIdOrAlias", pathParams, null, new JoinRequest(), RoomId.class);
-    }
-
-    /**
-     * Leave room.
-     *
-     * @param roomId room id.
-     */
-    public void leaveRoom(String roomId) {
-        Map<String, String> pathParams = new HashMap<>();
-        pathParams.put("roomId", roomId);
-        post(RoomApi.class, "leave", pathParams, null, "", EmptyResponse.class);
-    }
-
-    /**
      * Send notice.
      *
      * @param roomId room id.
@@ -240,28 +280,10 @@ public class MatrixClient implements Closeable {
     }
 
     /**
-     * Upload new filter.
-     *
-     * @param filter new filter.
-     * @return filter id.
+     * Deactivate user.
      */
-    public FilterResponse uploadFilter(FilterData filter) {
-        Map<String, String> pathParams = new HashMap<>();
-        pathParams.put("userId", getUserId());
-        return post(FilterApi.class, "uploadFilter", pathParams, null, filter, FilterResponse.class);
-    }
-
-    /**
-     * Get specified filter.
-     *
-     * @param filterId filter id.
-     * @return filter.
-     */
-    public FilterData getFilter(String filterId) {
-        Map<String, String> pathParams = new HashMap<>();
-        pathParams.put("userId", getUserId());
-        pathParams.put("filterId", filterId);
-        return get(FilterApi.class, "getFilter", pathParams, null, FilterData.class);
+    public void deactivate() {
+        post(AccountApi.class, "deactivate", null, null, new DeactivateRequest(), EmptyResponse.class);
     }
 
     protected Invocation.Builder prepare(Class<?> apiClass, String apiMethod, Map<String, String> pathParams,
@@ -270,13 +292,7 @@ public class MatrixClient implements Closeable {
         Map<String, String> encoded = new HashMap<>();
         if (pathParams != null) {
             for (Map.Entry<String, String> entry : pathParams.entrySet()) {
-                try {
-                    encoded.put(entry.getKey(), URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name()));
-                } catch (UnsupportedEncodingException e) {
-                    String msg = "Unsupported encoding";
-                    LOGGER.error(msg, e);
-                    throw new RuntimeException(e);
-                }
+                encoded.put(entry.getKey(), encode(entry.getValue()));
             }
         }
         URI uri = builder.buildFromEncodedMap(encoded);
@@ -288,11 +304,24 @@ public class MatrixClient implements Closeable {
                 path = path.queryParam(entry.getKey(), entry.getValue());
             }
         }
+        if (isAddUserIdToRequests()) {
+            path = path.queryParam("user_id", encode(getUserId()));
+        }
         Invocation.Builder request = path.request(requestType);
         if (getAccessToken() != null) {
             request = request.header("Authorization", "Bearer " + getAccessToken());
         }
         return request;
+    }
+
+    protected String encode(String origin) {
+        try {
+            return URLEncoder.encode(origin, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            String msg = "Unsupported encoding";
+            LOGGER.error(msg, e);
+            throw new RuntimeException(e);
+        }
     }
 
     protected <T, R> R post(Class<?> apiClass, String apiMethod, Map<String, String> pathParams, Map<String, String> queryParams, T payload,
@@ -325,5 +354,91 @@ public class MatrixClient implements Closeable {
     @Override
     public void close() {
         logout();
+    }
+
+    /**
+     * Filter apis.
+     *
+     * @return filter apis.
+     */
+    public Filter filter() {
+        return new Filter();
+    }
+
+    /**
+     * Room apis.
+     *
+     * @return room apis.
+     */
+    public Room room() {
+        return new Room();
+    }
+
+    /**
+     * Filter apis.
+     */
+    public class Filter {
+        /**
+         * Upload new filter.
+         *
+         * @param filter new filter.
+         * @return filter id.
+         */
+        public FilterResponse uploadFilter(FilterData filter) {
+            Map<String, String> pathParams = new HashMap<>();
+            pathParams.put("userId", getUserId());
+            return post(FilterApi.class, "uploadFilter", pathParams, null, filter, FilterResponse.class);
+        }
+
+        /**
+         * Get specified filter.
+         *
+         * @param filterId filter id.
+         * @return filter.
+         */
+        public FilterData getFilter(String filterId) {
+            Map<String, String> pathParams = new HashMap<>();
+            pathParams.put("userId", getUserId());
+            pathParams.put("filterId", filterId);
+            return get(FilterApi.class, "getFilter", pathParams, null, FilterData.class);
+        }
+    }
+
+    /**
+     * Room apis.
+     */
+    public class Room {
+
+        /**
+         * Join to the room.
+         *
+         * @param idOrAlias room id or alias.
+         * @return room id.
+         */
+        public RoomId joinRoomByIdOrAlias(String idOrAlias) {
+            Map<String, String> pathParams = new HashMap<>();
+            pathParams.put("roomIdOrAlias", idOrAlias);
+            return post(RoomApi.class, "joinByIdOrAlias", pathParams, null, new JoinRequest(), RoomId.class);
+        }
+
+        /**
+         * Get joined rooms.
+         *
+         * @return joined room ids.
+         */
+        public List<String> joinedRooms() {
+            return get(RoomApi.class, "joinedRooms", null, null, JoinedRoomsResponse.class).getJoinedRooms();
+        }
+
+        /**
+         * Leave room.
+         *
+         * @param roomId room id.
+         */
+        public void leaveRoom(String roomId) {
+            Map<String, String> pathParams = new HashMap<>();
+            pathParams.put("roomId", roomId);
+            post(RoomApi.class, "leave", pathParams, null, "", EmptyResponse.class);
+        }
     }
 }

@@ -1607,6 +1607,36 @@ public class Event {
      */
     private String membership;
 
+    /**
+     * Time in milliseconds since the event was sent.
+     * <p/>
+     * !!! Not described in spec.
+     */
+    private Long age;
+
+    /**
+     * Redacted event.
+     * <p/>
+     * !!! Not described in spec.
+     */
+    private String redacts;
+
+    /**
+     * User id (?).
+     * <p/>
+     * !!! Not described in spec.
+     */
+    @JsonProperty("user_id")
+    private String userId;
+
+    /**
+     * Event id to replace (?).
+     * <p/>
+     * !!! Not described in spec.
+     */
+    @JsonProperty("replaces_state")
+    private String replacesState;
+
     public String getEventId() {
         return eventId;
     }
@@ -1693,5 +1723,37 @@ public class Event {
 
     public void setMembership(String membership) {
         this.membership = membership;
+    }
+
+    public Long getAge() {
+        return age;
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
+    }
+
+    public String getRedacts() {
+        return redacts;
+    }
+
+    public void setRedacts(String redacts) {
+        this.redacts = redacts;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getReplacesState() {
+        return replacesState;
+    }
+
+    public void setReplacesState(String replacesState) {
+        this.replacesState = replacesState;
     }
 }

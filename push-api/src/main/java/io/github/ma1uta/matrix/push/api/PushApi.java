@@ -19,6 +19,7 @@ package io.github.ma1uta.matrix.push.api;
 import io.github.ma1uta.matrix.push.model.RejectedPushKey;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -49,6 +50,7 @@ public interface PushApi {
      * depending on the push gateway.
      * @return Status code 200: A list of rejected push keys.
      */
+    @POST
     @Path("/notify")
     RejectedPushKey pushNotify();
 }

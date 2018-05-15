@@ -53,21 +53,23 @@
         </dependency>
         <dependency>
             <groupId>io.github.ma1uta</groupId>
+            <artifactId>application-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.ma1uta</groupId>
             <artifactId>client-sdk</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.ma1uta</groupId>
+            <artifactId>common-backend</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-auth</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-assets</artifactId>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -80,14 +82,6 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-migrations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-views-freemarker</artifactId>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -142,6 +136,11 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -263,7 +262,7 @@
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>io.github.ma1uta.matrixactivitypub.Bot</mainClass>
+                            <mainClass>io.github.ma1uta.macpub.BotApplication</mainClass>
                         </transformer>
                     </transformers>
                 </configuration>

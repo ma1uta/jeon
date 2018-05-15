@@ -59,4 +59,9 @@ public final class AuthType {
      * form of User-Interactive Authentication to perform a request.
      */
     public static final String DUMMY = "m.login.dummy";
+
+    /**
+     * Bypassing registration flow for application service's users.
+     */
+    public static final String APPLICATION_SERVICE = "m.login.application_service";
 }

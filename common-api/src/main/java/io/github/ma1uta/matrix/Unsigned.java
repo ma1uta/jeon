@@ -67,6 +67,14 @@ public class Unsigned {
     @JsonProperty("replaces_state")
     private String replacesState;
 
+    /**
+     * Who send redacted event.
+     * <p/>
+     * !!! Not described in spec.
+     */
+    @JsonProperty("redacted_by")
+    private String redactedBy;
+
     public Long getAge() {
         return age;
     }
@@ -113,5 +121,13 @@ public class Unsigned {
 
     public void setReplacesState(String replacesState) {
         this.replacesState = replacesState;
+    }
+
+    public String getRedactedBy() {
+        return redactedBy;
+    }
+
+    public void setRedactedBy(String redactedBy) {
+        this.redactedBy = redactedBy;
     }
 }

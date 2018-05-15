@@ -17,6 +17,8 @@
 package io.github.ma1uta.jeon.exception;
 
 import io.github.ma1uta.matrix.ErrorResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
 import javax.ws.rs.NotFoundException;
@@ -27,8 +29,14 @@ import javax.ws.rs.ext.ExceptionMapper;
  * Common exception handler.
  */
 public class ExceptionHandler implements ExceptionMapper<Throwable> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandler.class);
+
     @Override
     public Response toResponse(Throwable exception) {
+
+        LOGGER.error("Exception:", exception);
+
         ErrorResponse message;
         Integer status = HttpURLConnection.HTTP_INTERNAL_ERROR;
         if (exception instanceof MatrixException) {

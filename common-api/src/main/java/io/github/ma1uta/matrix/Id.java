@@ -19,8 +19,8 @@ package io.github.ma1uta.matrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +34,7 @@ public final class Id {
     /**
      * MXID pattern.
      */
-    private static final Pattern PATTERN = Pattern.compile("^[@!$#+]([a-zA-Z0-9._=\\-/]):(.*)$");
+    private static final Pattern PATTERN = Pattern.compile("^[@!$#+]([a-zA-Z0-9._=\\-/]+):(.*)$");
 
     /**
      * Sigil chars.
@@ -105,8 +105,8 @@ public final class Id {
         LOGGER.trace("localpart: '%s', domain: '%s'", localpart, domain);
 
         try {
-            new URL(domain);
-        } catch (MalformedURLException e) {
+            new URI(domain);
+        } catch (URISyntaxException e) {
             String message = String.format("Invalid domain part: '%s'", domain);
             LOGGER.error(message);
             throw new IllegalArgumentException(message);

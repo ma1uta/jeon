@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrixactivitypub;
+package io.github.ma1uta.macpub;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import io.dropwizard.client.HttpClientConfiguration;
 import io.dropwizard.client.JerseyClientConfiguration;
+import io.dropwizard.db.DataSourceFactory;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
@@ -27,19 +28,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
- * Bot configuration.
+ * BotApplication configuration.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BotConfiguration extends Configuration {
 
     @Valid
     @NotNull
     @JsonProperty("jerseyClient")
     private JerseyClientConfiguration jerseyClient = new JerseyClientConfiguration();
-
-    @Valid
-    @NotNull
-    @JsonProperty("httpClient")
-    private HttpClientConfiguration httpClient = new HttpClientConfiguration();
 
     @NotEmpty
     private String domain;
@@ -51,10 +48,27 @@ public class BotConfiguration extends Configuration {
     @NotEmpty
     private String botUserName;
 
-    @NotEmpty
-    private String password;
-
     private String displayName;
+
+    @NotEmpty
+    @JsonProperty("hs_token")
+    private String hsToken;
+
+    @NotEmpty
+    @JsonProperty("as_token")
+    private String asToken;
+
+    @NotEmpty
+    private String url;
+
+    @Valid
+    @NotNull
+    @JsonProperty("database")
+    private DataSourceFactory database = new DataSourceFactory();
+
+    public DataSourceFactory getDataSourceFactory() {
+        return database;
+    }
 
     public JerseyClientConfiguration getJerseyClient() {
         return jerseyClient;
@@ -62,14 +76,6 @@ public class BotConfiguration extends Configuration {
 
     public void setJerseyClient(JerseyClientConfiguration jerseyClient) {
         this.jerseyClient = jerseyClient;
-    }
-
-    public HttpClientConfiguration getHttpClient() {
-        return httpClient;
-    }
-
-    public void setHttpClient(HttpClientConfiguration httpClient) {
-        this.httpClient = httpClient;
     }
 
     public String getDomain() {
@@ -96,19 +102,35 @@ public class BotConfiguration extends Configuration {
         this.botUserName = botUserName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getHsToken() {
+        return hsToken;
+    }
+
+    public void setHsToken(String hsToken) {
+        this.hsToken = hsToken;
+    }
+
+    public String getAsToken() {
+        return asToken;
+    }
+
+    public void setAsToken(String asToken) {
+        this.asToken = asToken;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

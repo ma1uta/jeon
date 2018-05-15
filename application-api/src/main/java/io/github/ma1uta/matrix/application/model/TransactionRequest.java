@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrixactivitypub;
+package io.github.ma1uta.matrix.application.model;
 
-import io.dropwizard.lifecycle.Managed;
+import io.github.ma1uta.matrix.Event;
+
+import java.util.List;
 
 /**
- * Managed matrix client.
+ * JSON body request for application api.
  */
-public class MatrixEndPoint implements Managed {
+public class TransactionRequest {
 
-    private final MatrixBot client;
+    /**
+     * Required. A list of events
+     */
+    private List<Event> events;
 
-    public MatrixEndPoint(MatrixBot client) {
-        this.client = client;
+    public List<Event> getEvents() {
+        return events;
     }
 
-    @Override
-    public void start() {
-    }
-
-    @Override
-    public void stop() {
-        client.stop();
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
