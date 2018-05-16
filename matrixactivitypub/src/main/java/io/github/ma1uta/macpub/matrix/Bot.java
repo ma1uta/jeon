@@ -18,6 +18,7 @@ package io.github.ma1uta.macpub.matrix;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.client.model.account.RegisterRequest;
 import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.RoomEventFilter;
@@ -82,7 +83,7 @@ public class Bot implements Runnable {
         BotConfig data = getData();
         if (data.getFilterId() == null) {
             RegisterRequest registerRequest = new RegisterRequest();
-            registerRequest.setUsername(data.getUserId());
+            registerRequest.setUsername(Id.localpart(data.getUserId()));
             registerRequest.setInitialDeviceDisplayName(data.getDisplayName());
             registerRequest.setDeviceId(data.getDeviceId());
             matrixClient.register(registerRequest);

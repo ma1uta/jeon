@@ -19,7 +19,6 @@ package io.github.ma1uta.macpub.matrix;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.lifecycle.Managed;
-import io.github.ma1uta.matrix.Id;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -102,7 +101,7 @@ public class BotService implements Managed {
     public void startNewBot(String username) {
         BotConfig data = new BotConfig();
         data.setDisplayName(getDisplayName());
-        data.setUserId(Id.localpart(username));
+        data.setUserId(username);
         data.setDeviceId(UUID.randomUUID().toString());
 
         submit(data);

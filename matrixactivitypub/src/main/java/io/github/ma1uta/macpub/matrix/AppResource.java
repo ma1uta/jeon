@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Context;
 
 /**
  * Application REST service.
@@ -48,9 +47,6 @@ public class AppResource implements ApplicationApi {
         this.hsToken = hsToken;
         this.url = url;
     }
-
-    @Context
-    private HttpServletRequest request;
 
     public BotDao getDao() {
         return dao;
@@ -74,8 +70,9 @@ public class AppResource implements ApplicationApi {
 
     @Override
     @UnitOfWork
-    public EmptyResponse transaction(String txnId, TransactionRequest request) {
-        validateAsToken();
+    public EmptyResponse transaction(String txnId, TransactionRequest request, HttpServletRequest servletRequest,
+                                     HttpServletResponse servletResponse) {
+        validateAsToken(servletRequest);
 
         if (!getTransactionDao().exist(txnId)) {
             request.getEvents().forEach(event -> {
@@ -93,14 +90,14 @@ public class AppResource implements ApplicationApi {
     }
 
     @Override
-    public EmptyResponse rooms(String roomAlias) {
+    public EmptyResponse rooms(String roomAlias, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         throw new MatrixException(getUrl().toUpperCase() + "_NOT_FOUND", "", HttpServletResponse.SC_NOT_FOUND);
     }
 
     @Override
     @UnitOfWork
-    public EmptyResponse users(String userId) {
-        validateAsToken();
+    public EmptyResponse users(String userId, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        validateAsToken(servletRequest);
         if (getDao().user(userId)) {
             throw new MatrixException(ErrorResponse.Code.M_USER_IN_USE, "User has been already registred", HttpServletResponse.SC_CONFLICT);
         } else {
@@ -109,8 +106,8 @@ public class AppResource implements ApplicationApi {
         }
     }
 
-    protected void validateAsToken() {
-        String asToken = request.getParameter("access_token");
+    protected void validateAsToken(HttpServletRequest servletRequest) {
+        String asToken = servletRequest.getParameter("access_token");
         if (StringUtils.isBlank(asToken)) {
             throw new MatrixException(getUrl().toUpperCase() + "_UNAUTHORIZED", "", HttpServletResponse.SC_UNAUTHORIZED);
         }

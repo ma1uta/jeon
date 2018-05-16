@@ -1637,6 +1637,14 @@ public class Event {
     @JsonProperty("replaces_state")
     private String replacesState;
 
+    /**
+     * Redacted reason.
+     * <p/>
+     * !!! Not described in spec.
+     */
+    @JsonProperty("redacted_because")
+    private String redactedBecause;
+
     public String getEventId() {
         return eventId;
     }
@@ -1755,5 +1763,13 @@ public class Event {
 
     public void setReplacesState(String replacesState) {
         this.replacesState = replacesState;
+    }
+
+    public String getRedactedBecause() {
+        return redactedBecause;
+    }
+
+    public void setRedactedBecause(String redactedBecause) {
+        this.redactedBecause = redactedBecause;
     }
 }
