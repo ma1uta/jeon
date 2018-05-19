@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.macpub.matrix;
 
-import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.lifecycle.Managed;
 
 import java.util.UUID;
@@ -29,7 +27,7 @@ import javax.ws.rs.client.Client;
 /**
  * Bot service.
  */
-public class BotService implements Managed {
+public class BotPool implements Managed {
 
     private static final int TIMEOUT = 10;
 
@@ -45,15 +43,11 @@ public class BotService implements Managed {
 
     private final String appToken;
 
-    private final BotDao dao;
+    private final Service<BotDao> service;
 
-    private final UnitOfWorkAwareProxyFactory proxyFactory;
-
-    public BotService(String homeserverUrl, String domain, String displayName, Client client, String appToken, BotDao dao,
-                      UnitOfWorkAwareProxyFactory proxyFactory) {
+    public BotPool(String homeserverUrl, String domain, String displayName, Client client, String appToken, Service<BotDao> service) {
         this.domain = domain;
-        this.dao = dao;
-        this.proxyFactory = proxyFactory;
+        this.service = service;
         this.pool = Executors.newCachedThreadPool();
         this.homeserverUrl = homeserverUrl;
         this.displayName = displayName;
@@ -85,12 +79,8 @@ public class BotService implements Managed {
         return appToken;
     }
 
-    public BotDao getDao() {
-        return dao;
-    }
-
-    public UnitOfWorkAwareProxyFactory getProxyFactory() {
-        return proxyFactory;
+    public Service<BotDao> getService() {
+        return service;
     }
 
     /**
@@ -108,15 +98,14 @@ public class BotService implements Managed {
     }
 
     protected void submit(BotConfig data) {
-        getPool().submit(getProxyFactory()
-            .create(Bot.class, new Class<?>[] {Client.class, String.class, String.class, String.class, BotConfig.class, BotDao.class},
-                new Object[] {getClient(), getHomeserverUrl(), getDomain(), getAppToken(), data, getDao()}));
+        getPool().submit(new Bot(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), data, getService()));
     }
 
     @Override
-    @UnitOfWork
-    public void start() throws Exception {
-        getDao().findAll().forEach(this::submit);
+    public void start() {
+        getService().invoke((dao) -> {
+            dao.findAll().forEach(this::submit);
+        });
     }
 
     @Override

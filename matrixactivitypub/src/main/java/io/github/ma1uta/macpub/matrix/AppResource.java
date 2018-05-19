@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.macpub.matrix;
 
-import io.dropwizard.hibernate.UnitOfWork;
 import io.github.ma1uta.jeon.exception.MatrixException;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
@@ -33,23 +32,22 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AppResource implements ApplicationApi {
 
-    private final BotDao dao;
     private final TransactionDao transactionDao;
-    private final BotService botService;
+    private final BotPool botPool;
+    private final Service<BotDao> botService;
+    private final Service<TransactionDao> transactionService;
     private final String hsToken;
     private final String url;
 
-    public AppResource(BotDao dao, TransactionDao transactionDao, BotService botService, String hsToken,
-                       String url) {
-        this.dao = dao;
+    public AppResource(TransactionDao transactionDao, BotPool botPool, String hsToken,
+                       String url, Service<BotDao> botService,
+                       Service<TransactionDao> transactionService) {
         this.transactionDao = transactionDao;
-        this.botService = botService;
+        this.botPool = botPool;
         this.hsToken = hsToken;
         this.url = url;
-    }
-
-    public BotDao getDao() {
-        return dao;
+        this.botService = botService;
+        this.transactionService = transactionService;
     }
 
     public String getHsToken() {
@@ -60,30 +58,42 @@ public class AppResource implements ApplicationApi {
         return url;
     }
 
-    public BotService getBotService() {
-        return botService;
+    public BotPool getBotPool() {
+        return botPool;
     }
 
     public TransactionDao getTransactionDao() {
         return transactionDao;
     }
 
+    public Service<BotDao> getBotService() {
+        return botService;
+    }
+
+    public Service<TransactionDao> getTransactionService() {
+        return transactionService;
+    }
+
     @Override
-    @UnitOfWork
     public EmptyResponse transaction(String txnId, TransactionRequest request, HttpServletRequest servletRequest,
                                      HttpServletResponse servletResponse) {
         validateAsToken(servletRequest);
 
-        if (!getTransactionDao().exist(txnId)) {
+        Boolean exist = getTransactionService().invoke((dao) -> {
+            return dao.exist(txnId);
+        });
+        if (!exist) {
             request.getEvents().forEach(event -> {
                 String roomId = event.getRoomId();
                 //TODO
-                //getBotService().startNewBot(event.getRoomId(), "");
+                //getBotPool().startNewBot(event.getRoomId(), "");
             });
-            Transaction transaction = new Transaction();
-            transaction.setId(txnId);
-            transaction.setProcessed(LocalDateTime.now());
-            getTransactionDao().save(transaction);
+            getTransactionService().invoke((dao) -> {
+                Transaction transaction = new Transaction();
+                transaction.setId(txnId);
+                transaction.setProcessed(LocalDateTime.now());
+                getTransactionDao().save(transaction);
+            });
         }
 
         return new EmptyResponse();
@@ -95,13 +105,14 @@ public class AppResource implements ApplicationApi {
     }
 
     @Override
-    @UnitOfWork
     public EmptyResponse users(String userId, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         validateAsToken(servletRequest);
-        if (getDao().user(userId)) {
+        if (getBotService().invoke((dao) -> {
+            return dao.user(userId);
+        })) {
             throw new MatrixException(ErrorResponse.Code.M_USER_IN_USE, "User has been already registred", HttpServletResponse.SC_CONFLICT);
         } else {
-            getBotService().startNewBot(userId);
+            getBotPool().startNewBot(userId);
             return new EmptyResponse();
         }
     }

@@ -32,7 +32,8 @@ import io.github.ma1uta.jeon.exception.ExceptionHandler;
 import io.github.ma1uta.macpub.matrix.AppResource;
 import io.github.ma1uta.macpub.matrix.BotConfig;
 import io.github.ma1uta.macpub.matrix.BotDao;
-import io.github.ma1uta.macpub.matrix.BotService;
+import io.github.ma1uta.macpub.matrix.BotPool;
+import io.github.ma1uta.macpub.matrix.Service;
 import io.github.ma1uta.macpub.matrix.Transaction;
 import io.github.ma1uta.macpub.matrix.TransactionDao;
 
@@ -76,6 +77,7 @@ public class BotApplication extends Application<BotConfiguration> {
         bootstrap.addBundle(matrixHibernate);
     }
 
+    @SuppressWarnings("unchecked")
     private void matrixBot(BotConfiguration botConfiguration, Environment environment) {
         environment.getObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         Client jersey = new JerseyClientBuilder(environment).using(botConfiguration.getJerseyClient()).build("jersey");
@@ -84,15 +86,15 @@ public class BotApplication extends Application<BotConfiguration> {
         BotDao botDao = new BotDao(matrixHibernate.getSessionFactory());
         TransactionDao transactionDao = new TransactionDao(matrixHibernate.getSessionFactory());
 
-        BotService botService = proxyFactory.create(BotService.class,
-            new Class<?>[] {String.class, String.class, String.class, Client.class, String.class, BotDao.class,
-                UnitOfWorkAwareProxyFactory.class},
-            new Object[] {botConfiguration.getBaseUrl(), botConfiguration.getDomain(), botConfiguration.getDisplayName(), jersey,
-                botConfiguration.getAsToken(), botDao, proxyFactory});
+        Service<BotDao> botService = proxyFactory.create(Service.class, Object.class, botDao);
+        Service<TransactionDao> transactionService = proxyFactory.create(Service.class, Object.class, transactionDao);
+        BotPool botPool = new BotPool(botConfiguration.getBaseUrl(), botConfiguration.getDomain(), botConfiguration.getDisplayName(),
+            jersey, botConfiguration.getAsToken(), botService);
 
-        environment.lifecycle().manage(botService);
+        environment.lifecycle().manage(botPool);
         environment.jersey()
-            .register(new AppResource(botDao, transactionDao, botService, botConfiguration.getHsToken(), botConfiguration.getUrl()));
+            .register(new AppResource(transactionDao, botPool, botConfiguration.getHsToken(), botConfiguration.getUrl(), botService,
+                transactionService));
         environment.jersey().register(new ExceptionHandler());
     }
 }

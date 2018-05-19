@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.macpub.matrix;
 
-import io.dropwizard.hibernate.UnitOfWork;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.client.model.account.RegisterRequest;
@@ -50,15 +49,15 @@ public class Bot implements Runnable {
 
     private BotConfig data;
 
-    private final BotDao dao;
+    private final Service<BotDao> service;
 
-    public Bot(Client client, String homeserverUrl, String domain, String asToken, BotConfig data, BotDao dao) {
+    public Bot(Client client, String homeserverUrl, String domain, String asToken, BotConfig data, Service<BotDao> service) {
+        this.service = service;
         this.matrixClient = new MatrixClient(homeserverUrl, domain, client, true, true, data.getTxnId());
         this.matrixClient.setAccessToken(asToken);
         this.matrixClient.setUserId(data.getUserId());
         this.matrixClient.setDeviceId(data.getDeviceId());
         this.data = data;
-        this.dao = dao;
     }
 
     public BotConfig getData() {
@@ -69,8 +68,8 @@ public class Bot implements Runnable {
         this.data = data;
     }
 
-    public BotDao getDao() {
-        return dao;
+    public Service<BotDao> getService() {
+        return service;
     }
 
     /**
@@ -78,25 +77,26 @@ public class Bot implements Runnable {
      * <p/>
      * After registration setup a filter to receive only message events.
      */
-    @UnitOfWork
     public void register() {
         BotConfig data = getData();
         if (data.getFilterId() == null) {
-            RegisterRequest registerRequest = new RegisterRequest();
-            registerRequest.setUsername(Id.localpart(data.getUserId()));
-            registerRequest.setInitialDeviceDisplayName(data.getDisplayName());
-            registerRequest.setDeviceId(data.getDeviceId());
-            matrixClient.register(registerRequest);
+            getService().invoke((dao) -> {
+                RegisterRequest registerRequest = new RegisterRequest();
+                registerRequest.setUsername(Id.localpart(data.getUserId()));
+                registerRequest.setInitialDeviceDisplayName(data.getDisplayName());
+                registerRequest.setDeviceId(data.getDeviceId());
+                matrixClient.register(registerRequest);
 
-            RoomEventFilter roomEventFilter = new RoomEventFilter();
-            roomEventFilter.setTypes(Collections.singletonList(Event.EventType.ROOM_MESSAGE));
-            RoomFilter roomFilter = new RoomFilter();
-            roomFilter.setTimeline(roomEventFilter);
-            FilterData filter = new FilterData();
-            filter.setRoom(roomFilter);
-            data.setFilterId(matrixClient.filter().uploadFilter(filter).getFilterId());
+                RoomEventFilter roomEventFilter = new RoomEventFilter();
+                roomEventFilter.setTypes(Collections.singletonList(Event.EventType.ROOM_MESSAGE));
+                RoomFilter roomFilter = new RoomFilter();
+                roomFilter.setTimeline(roomEventFilter);
+                FilterData filter = new FilterData();
+                filter.setRoom(roomFilter);
+                data.setFilterId(matrixClient.filter().uploadFilter(filter).getFilterId());
 
-            storeData();
+                storeData(dao);
+            });
         }
     }
 
@@ -149,10 +149,11 @@ public class Bot implements Runnable {
     /**
      * Delete bot.
      */
-    @UnitOfWork
     public void delete() {
-        matrixClient.deactivate();
-        getDao().delete(getData());
+        getService().invoke((dao) -> {
+            matrixClient.deactivate();
+            dao.delete(getData());
+        });
     }
 
     /**
@@ -160,16 +161,17 @@ public class Bot implements Runnable {
      *
      * @param roomId room id.
      */
-    @UnitOfWork
     public void joinRoom(String roomId) {
-        RoomId response = matrixClient.room().joinRoomByIdOrAlias(roomId);
-        if (StringUtils.isAllBlank(response.getErrcode(), response.getError())) {
-            getData().setRoomId(roomId);
-            storeData();
-        } else {
-            throw new RuntimeException(
-                String.format("Failed join to room, errcode: ''%s'', error: ''%s''", response.getErrcode(), response.getError()));
-        }
+        getService().invoke((dao) -> {
+            RoomId response = matrixClient.room().joinRoomByIdOrAlias(roomId);
+            if (StringUtils.isAllBlank(response.getErrcode(), response.getError())) {
+                getData().setRoomId(roomId);
+                storeData(dao);
+            } else {
+                throw new RuntimeException(
+                    String.format("Failed join to room, errcode: ''%s'', error: ''%s''", response.getErrcode(), response.getError()));
+            }
+        });
     }
 
     /**
@@ -178,7 +180,6 @@ public class Bot implements Runnable {
      * @param joinedRoom room's data.
      * @param nextBatch  next batch.
      */
-    @UnitOfWork
     public void mainLoop(JoinedRoom joinedRoom, String nextBatch) {
         String lastEvent = null;
         long lastOriginTs = 0;
@@ -189,7 +190,9 @@ public class Bot implements Runnable {
                 if (Event.MessageType.TEXT.equals(content.get("msgtype"))) {
                     String action = (String) content.get("body");
                     try {
-                        process(action);
+                        getService().invoke((dao) -> {
+                            process(action, dao);
+                        });
                     } catch (Exception e) {
                         LOGGER.error(String.format("Cannot perform action ''%s''", action));
                     }
@@ -204,11 +207,13 @@ public class Bot implements Runnable {
         if (lastEvent != null) {
             matrixClient.sendReceipt(getData().getRoomId(), lastEvent);
         }
-        getData().setNextBatch(nextBatch);
-        storeData();
+        getService().invoke((dao) -> {
+            getData().setNextBatch(nextBatch);
+            storeData(dao);
+        });
     }
 
-    private void process(String content) {
+    private void process(String content, BotDao dao) {
         String[] arguments = content.split("\\s");
         if (arguments[0].startsWith("!")) {
             switch (arguments[0]) {
@@ -226,11 +231,12 @@ public class Bot implements Runnable {
                     error("unknown command");
             }
         }
+        storeData(dao);
     }
 
-    private void storeData() {
+    private void storeData(BotDao dao) {
         getData().setTxnId(matrixClient.getTxn().get());
-        setData(getDao().save(getData()));
+        setData(dao.save(getData()));
     }
 
     private void error(String message) {
@@ -240,7 +246,6 @@ public class Bot implements Runnable {
     private void newName(String newName) {
         matrixClient.setDisplayName(newName);
         getData().setDisplayName(newName);
-        storeData();
     }
 
     private void pong() {
