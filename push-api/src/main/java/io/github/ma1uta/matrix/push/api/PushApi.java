@@ -16,12 +16,16 @@
 
 package io.github.ma1uta.matrix.push.api;
 
+import io.github.ma1uta.matrix.push.model.Notification;
 import io.github.ma1uta.matrix.push.model.RejectedPushKey;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -48,9 +52,14 @@ public interface PushApi {
      * <p/>
      * Notifications are sent to the URL configured when the pusher is created. This means that the HTTP path may be different
      * depending on the push gateway.
+     *
+     * @param notification    notification.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: A list of rejected push keys.
      */
     @POST
     @Path("/notify")
-    RejectedPushKey pushNotify();
+    RejectedPushKey pushNotify(Notification notification, @Context HttpServletRequest servletRequest,
+                               @Context HttpServletResponse servletResponse);
 }
