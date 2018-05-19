@@ -18,9 +18,12 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.client.model.version.VersionsResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -42,8 +45,10 @@ public interface VersionApi {
     /**
      * Gets the versions of the specification supported by the server.
      *
+     * @param servletRequest  servlet request
+     * @param servletResponse servlet response
      * @return Status code 200: The versions supported by the server.
      */
     @GET
-    VersionsResponse versions();
+    VersionsResponse versions(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 }

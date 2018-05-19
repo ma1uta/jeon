@@ -16,13 +16,18 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.admin.AdminResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * Gets information about a particular user.
@@ -37,10 +42,15 @@ public interface AdminApi {
      * This API may be restricted to only be called by the user being looked up, or by a server admin. Server-local administrator
      * privileges are not specified in this document.
      *
-     * @param userId Required. The user to look up.
+     * @param userId          Required. The user to look up.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The lookup was successful.
      */
     @GET
+    @Secured
     @Path("/whois/{userId}")
-    AdminResponse whois(@PathParam("userId") String userId);
+    AdminResponse whois(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                        @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

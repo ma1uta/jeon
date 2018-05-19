@@ -16,12 +16,18 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.voip.VoipResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * The homeserver MAY provide a TURN server which clients can use to contact the remote party. The following HTTP API endpoints will
@@ -40,10 +46,16 @@ public interface VoipApi {
      * <p/>
      * Requires auth: Yes.
      *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The TURN server credentials.
      *     Status code 429: This request was rate-limited.
      */
     @GET
+    @RateLimit
+    @Secured
     @Path("/turnServer")
-    VoipResponse turnServer();
+    VoipResponse turnServer(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                            @Context SecurityContext securityContext);
 }

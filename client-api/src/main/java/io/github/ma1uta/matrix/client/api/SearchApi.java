@@ -16,15 +16,21 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.search.SearchRequest;
 import io.github.ma1uta.matrix.client.model.search.SearchResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * The search API allows clients to perform full text search across events in all rooms that the user has been in, including those
@@ -45,14 +51,21 @@ public interface SearchApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param nextBatch     The point to return events from. If given, this should be a next_batch result from a previous call
-     *                      to this endpoint.
-     * @param searchRequest JSON body request.
+     * @param nextBatch       The point to return events from. If given, this should be a next_batch result from a previous call
+     *                        to this endpoint.
+     * @param searchRequest   JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: Results of the search.
      *     Status code 400: Part of the request was invalid.
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/search")
-    SearchResponse search(@QueryParam("next_batch") String nextBatch, SearchRequest searchRequest);
+    SearchResponse search(@QueryParam("next_batch") String nextBatch, SearchRequest searchRequest,
+                          @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                          @Context SecurityContext securityContext);
 }

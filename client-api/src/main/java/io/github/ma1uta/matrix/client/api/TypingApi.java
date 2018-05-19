@@ -17,14 +17,20 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.typing.TypingRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge of every user who is currently
@@ -53,13 +59,20 @@ public interface TypingApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId  Required. The user who has started to type.
-     * @param userId  Required. The room in which the user is typing.
-     * @param request json body request.
+     * @param roomId          Required. The user who has started to type.
+     * @param userId          Required. The room in which the user is typing.
+     * @param request         json body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The new typing state was set.
      *     Status code 429: This request was rate-limited.
      */
     @PUT
+    @RateLimit
+    @Secured
     @Path("/{roomId}/typing/{userId}")
-    EmptyResponse typing(@PathParam("roomId") String roomId, @PathParam("userId") String userId, TypingRequest request);
+    EmptyResponse typing(@PathParam("roomId") String roomId, @PathParam("userId") String userId, TypingRequest request,
+                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                         @Context SecurityContext securityContext);
 }

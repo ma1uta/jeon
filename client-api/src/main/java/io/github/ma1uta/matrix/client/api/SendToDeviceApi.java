@@ -17,14 +17,19 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.sendtodevice.SendToDeviceRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * This module provides a means by which clients can exchange signalling messages without them being stored permanently as part of
@@ -50,9 +55,15 @@ public interface SendToDeviceApi {
      * @param txnId               Required. The transaction ID for this event. Clients should generate an ID unique across requests with the
      *                            same access token; it will be used by the server to ensure idempotency of requests.
      * @param sendToDeviceRequest request body.
+     * @param servletRequest      servlet requet.
+     * @param servletResponse     servlet response.
+     * @param securityContext     security context.
      * @return Status code 200: The message was successfully sent.
      */
     @PUT
+    @Secured
     @Path("/{eventType}/{txnId}")
-    EmptyResponse send(@PathParam("eventType") String eventType, @PathParam("txnId") String txnId, SendToDeviceRequest sendToDeviceRequest);
+    EmptyResponse send(@PathParam("eventType") String eventType, @PathParam("txnId") String txnId, SendToDeviceRequest sendToDeviceRequest,
+                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                       @Context SecurityContext securityContext);
 }

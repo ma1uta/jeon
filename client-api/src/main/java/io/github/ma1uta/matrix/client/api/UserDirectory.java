@@ -16,13 +16,20 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.userdirectory.SearchRequest;
 import io.github.ma1uta.matrix.client.model.userdirectory.SearchResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * User directory.
@@ -42,10 +49,17 @@ public interface UserDirectory {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param request json body request.
+     * @param request         json body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The results of the search.
      *     Status code 429: This request was rate-limited.
      */
+    @POST
+    @RateLimit
+    @Secured
     @Path("/search")
-    SearchResponse search(SearchRequest request);
+    SearchResponse search(SearchRequest request, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                          @Context SecurityContext securityContext);
 }

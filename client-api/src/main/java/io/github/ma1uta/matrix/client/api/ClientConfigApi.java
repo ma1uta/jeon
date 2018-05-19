@@ -17,14 +17,19 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.Secured;
 
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * Client Behaviour.
@@ -41,30 +46,41 @@ public interface ClientConfigApi {
      * synced to clients in the top-level account_data.
      * <b>Requires auth</b>: Yes.
      *
-     * @param userId      Required. The id of the user to set account_data for. The access token must be authorized to make
-     *                    requests for this user id.
-     * @param type        Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
-     * @param accountData account data.
+     * @param userId          Required. The id of the user to set account_data for. The access token must be authorized to make
+     *                        requests for this user id.
+     * @param type            Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
+     * @param accountData     account data.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The account_data was successfully added.
      */
     @PUT
+    @Secured
     @Path("/{userId}/account_data/{type}")
-    EmptyResponse addConfig(@PathParam("userId") String userId, @PathParam("type") String type, Map<String, String> accountData);
+    EmptyResponse addConfig(@PathParam("userId") String userId, @PathParam("type") String type, Map<String, String> accountData,
+                            @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                            @Context SecurityContext securityContext);
 
     /**
      * Set some account_data for the client on a given room. This config is only visible to the user that set the account_data.
      * The config will be synced to clients in the per-room account_data.
      * <b>Requires auth</b>: Yes.
      *
-     * @param userId      Required. The id of the user to set account_data for. The access token must be authorized to make requests for
-     *                    this user id.
-     * @param type        Required. The id of the room to set account_data on.
-     * @param roomId      Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
-     * @param accountData account data.
+     * @param userId          Required. The id of the user to set account_data for. The access token must be authorized to make requests for
+     *                        this user id.
+     * @param type            Required. The id of the room to set account_data on.
+     * @param roomId          Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
+     * @param accountData     account data.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The account_data was successfully added.
      */
     @PUT
+    @Secured
     @Path("/{userId}/rooms/{roomId}/account_data/{type}")
     EmptyResponse addConfig(@PathParam("userId") String userId, @PathParam("type") String type, @PathParam("roomId") String roomId,
-                            Map<String, String> accountData);
+                            Map<String, String> accountData, @Context HttpServletRequest servletRequest,
+                            @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

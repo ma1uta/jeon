@@ -63,7 +63,7 @@ public class SyncResponse extends ErrorResponse {
     /**
      * Amount of the one-time keys.
      * <p/>
-     * !!! Don't described in spec.
+     * !!! Not described in spec.
      */
     @JsonProperty("device_one_time_keys_count")
     private Map<String, Object> deviceOneTimeKeysCount;

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.encryption.ChangesResponse;
 import io.github.ma1uta.matrix.client.model.encryption.ClaimRequest;
 import io.github.ma1uta.matrix.client.model.encryption.ClaimResponse;
@@ -24,12 +25,16 @@ import io.github.ma1uta.matrix.client.model.encryption.QueryResponse;
 import io.github.ma1uta.matrix.client.model.encryption.UploadRequest;
 import io.github.ma1uta.matrix.client.model.encryption.UploadResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * Matrix optionally supports end-to-end encryption, allowing rooms to be created whose conversation contents is not decryptable or
@@ -47,36 +52,51 @@ public interface EncryptionApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param uploadRequest JSON body parameters
+     * @param uploadRequest   JSON body parameters.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The provided keys were sucessfully uploaded.
      */
     @POST
+    @Secured
     @Path("/upload")
-    UploadResponse upload(UploadRequest uploadRequest);
+    UploadResponse upload(UploadRequest uploadRequest, @Context HttpServletRequest servletRequest,
+                          @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Returns the current devices and identity keys for the given users.
      * <p/>
      * Requires auth: Yes.
      *
-     * @param queryRequest JSON body parameters
-     * @return Status code 200: The device information
+     * @param queryRequest    JSON body parameters.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
+     * @return Status code 200: The device information.
      */
     @POST
+    @Secured
     @Path("/query")
-    QueryResponse query(QueryRequest queryRequest);
+    QueryResponse query(QueryRequest queryRequest, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                        @Context SecurityContext securityContext);
 
     /**
      * Claims one-time keys for use in pre-key messages.
      * <p/>
      * Requires auth: Yes.
      *
-     * @param claimRequest JSON body parameters
-     * @return Status code 200: The claimed keys
+     * @param claimRequest    JSON body parameters.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
+     * @return Status code 200: The claimed keys.
      */
     @POST
+    @Secured
     @Path("/claim")
-    ClaimResponse claim(ClaimRequest claimRequest);
+    ClaimResponse claim(ClaimRequest claimRequest, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                        @Context SecurityContext securityContext);
 
     /**
      * Gets a list of users who have updated their device identity keys since a previous sync token.
@@ -88,14 +108,20 @@ public interface EncryptionApi {
      * </ul>
      * Requires auth: Yes.
      *
-     * @param from Required. The desired start point of the list. Should be the next_batch field from a response to an earlier
-     *             call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted existing
-     *             devices with identity keys since then, will be excluded from the results.
-     * @param to   Required. The desired end point of the list. Should be the next_batch field from a recent call to /sync - typically
-     *             the most recent such call. This may be used by the server as a hint to check its caches are up to date.
+     * @param from            Required. The desired start point of the list. Should be the next_batch field from a response to an earlier
+     *                        call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted existing
+     *                        devices with identity keys since then, will be excluded from the results.
+     * @param to              Required. The desired end point of the list. Should be the next_batch field from a recent call to /sync -
+     *                        typically the most recent such call. This may be used by the server as a hint to check its caches are up to
+     *                        date.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The list of users who updated their devices.
      */
     @GET
+    @Secured
     @Path("/changes")
-    ChangesResponse changes(String from, String to);
+    ChangesResponse changes(String from, String to, @Context HttpServletRequest servletRequest,
+                            @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

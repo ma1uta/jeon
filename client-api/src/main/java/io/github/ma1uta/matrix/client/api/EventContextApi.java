@@ -16,14 +16,19 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.eventcontext.EventContextResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * This API returns a number of events that happened just before and after the specified event. This allows clients to get the context
@@ -41,13 +46,18 @@ public interface EventContextApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId  Required. The room to get events from.
-     * @param eventId Required. The event to get context around.
-     * @param limit   The maximum number of events to return. Default: 10.
+     * @param roomId          Required. The room to get events from.
+     * @param eventId         Required. The event to get context around.
+     * @param limit           The maximum number of events to return. Default: 10.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The events and state surrounding the requested event.
      */
     @GET
+    @Secured
     @Path("/{roomId}/context/{eventId}")
     EventContextResponse context(@PathParam("roomId") String roomId, @PathParam("eventId") String eventId,
-                                 @QueryParam("limit") Integer limit);
+                                 @QueryParam("limit") Integer limit, @Context HttpServletRequest servletRequest,
+                                 @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

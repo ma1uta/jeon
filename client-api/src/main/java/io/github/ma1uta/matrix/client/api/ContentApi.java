@@ -16,11 +16,15 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.content.ContentUri;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -29,7 +33,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * This module allows users to upload content to their homeserver which is retrievable from other homeservers.
@@ -54,6 +60,7 @@ public interface ContentApi {
      * The desired resizing method.
      */
     final class Method {
+
         private Method() {
             //singleton
         }
@@ -62,6 +69,7 @@ public interface ContentApi {
          * Crop.
          */
         public static final String CROP = "crop";
+
         /**
          * Scale.
          */
@@ -73,25 +81,34 @@ public interface ContentApi {
      * <b>Rate-limited</b>: Yes.
      * <b>Requires auth</b>: Yes.
      *
-     * @param inputStream The file content.
-     * @param filename    The name of the file being uploaded.
-     * @param contentType The content type of the file being uploaded.
+     * @param inputStream     The file content.
+     * @param filename        The name of the file being uploaded.
+     * @param contentType     The content type of the file being uploaded.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return <b>Required</b>. The MXC URI to the uploaded content.
      *     Status code 200: The MXC URI for the uploaded content.
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/upload")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    ContentUri upload(InputStream inputStream, @QueryParam("filename") String filename, @HeaderParam("Key-Type") String contentType);
+    ContentUri upload(InputStream inputStream, @QueryParam("filename") String filename, @HeaderParam("Content-Type") String contentType,
+                      @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                      @Context SecurityContext securityContext);
 
     /**
      * Download content from the content repository.
      * <b>Rate-limited</b>: Yes.
      *
-     * @param serverName Required. The server name from the mxc:// URI (the authoritory component)
-     * @param mediaId    Required. The media ID from the mxc:// URI (the path component)
+     * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
+     * @param mediaId         Required. The media ID from the mxc:// URI (the path component).
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Response headers:
      * <table border="1">
      * <tr>
@@ -114,15 +131,19 @@ public interface ContentApi {
      *     Status code 429: This request was rate-limited.
      */
     @GET
+    @RateLimit
     @Path("/download/{serverName}/{mediaId}")
-    OutputStream download(@PathParam("serverName") String serverName, @PathParam("mediaId") String mediaId);
+    OutputStream download(@PathParam("serverName") String serverName, @PathParam("mediaId") String mediaId,
+                          @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Download content from the content repository as a given filename.
      *
-     * @param serverName Required. The server name from the mxc:// URI (the authoritory component)
-     * @param mediaId    Required. The media ID from the mxc:// URI (the path component)
-     * @param filename   Required. The filename to give in the Key- Disposition
+     * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
+     * @param mediaId         Required. The media ID from the mxc:// URI (the path component).
+     * @param filename        Required. The filename to give in the Content-Disposition.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Response headers:
      * <table border="1">
      * <tr>
@@ -145,18 +166,22 @@ public interface ContentApi {
      *     Status code 429: This request was rate-limited.
      */
     @GET
+    @RateLimit
     @Path("/download/{serverName}/{mediaId}/{fileName}")
     OutputStream download(@PathParam("serverName") String serverName, @PathParam("mediaId") String mediaId,
-                          @PathParam("fileName") String filename);
+                          @PathParam("fileName") String filename, @Context HttpServletRequest servletRequest,
+                          @Context HttpServletResponse servletResponse);
 
     /**
      * Download a thumbnail of the content from the content repository.
      *
-     * @param serverName Required. The server name from the mxc:// URI (the authoritory component).
-     * @param mediaId    Required. The media ID from the mxc:// URI (the path component)
-     * @param width      The desired width of the thumbnail. The actual thumbnail may not match the size specified.
-     * @param height     The desired height of the thumbnail. The actual thumbnail may not match the size specified.
-     * @param method     The desired resizing method. One of: ["crop", "scale"]
+     * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
+     * @param mediaId         Required. The media ID from the mxc:// URI (the path component)
+     * @param width           The desired width of the thumbnail. The actual thumbnail may not match the size specified.
+     * @param height          The desired height of the thumbnail. The actual thumbnail may not match the size specified.
+     * @param method          The desired resizing method. One of: ["crop", "scale"].
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Response headers:
      * <table border="1">
      * <tr>
@@ -174,16 +199,21 @@ public interface ContentApi {
      *     Status code 429: This request was rate-limited.
      */
     @GET
+    @RateLimit
     @Path("/thumbnail/{serverName}/{mediaId}")
     OutputStream thumbnail(@PathParam("serverName") String serverName, @PathParam("mediaId") String mediaId,
-                           @QueryParam("width") Long width, @QueryParam("height") Long height, @QueryParam("method") String method);
+                           @QueryParam("width") Long width, @QueryParam("height") Long height, @QueryParam("method") String method,
+                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Get information about a URL for a client.
      *
-     * @param url Required. The URL to get a preview of.
-     * @param ts  The preferred point in time to return a preview for. The server may return a newer version if it does not have the
-     *            requested version available.
+     * @param url             Required. The URL to get a preview of.
+     * @param ts              The preferred point in time to return a preview for. The server may return a newer version if it does not
+     *                        have the requested version available.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Response headers:
      * <table border="1">
      * <tr>
@@ -206,7 +236,10 @@ public interface ContentApi {
      *     Status code 429: This request was rate-limited.
      */
     @GET
+    @RateLimit
+    @Secured
     @Path("/preview_url")
     @Produces(MediaType.APPLICATION_JSON)
-    Map<String, String> previewUrl(@QueryParam("url") String url, @QueryParam("ts") String ts);
+    Map<String, String> previewUrl(@QueryParam("url") String url, @QueryParam("ts") String ts, @Context HttpServletRequest servletRequest,
+                                   @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

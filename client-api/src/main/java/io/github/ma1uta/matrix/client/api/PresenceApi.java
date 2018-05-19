@@ -18,10 +18,14 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.presence.PresenceList;
 import io.github.ma1uta.matrix.client.model.presence.PresenceStatus;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,7 +33,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * Each user has the concept of presence information. This encodes:
@@ -71,25 +77,35 @@ public interface PresenceApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param userId         Required. The user whose presence state to update.
-     * @param presenceStatus JSON body request.
+     * @param userId          Required. The user whose presence state to update.
+     * @param presenceStatus  JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The new presence state was set.
      *     Status code 429: This request was rate-limited.
      */
     @PUT
+    @RateLimit
+    @Secured
     @Path("/{userId}/status")
-    EmptyResponse setPresenceStatus(@PathParam("userId") String userId, PresenceStatus presenceStatus);
+    EmptyResponse setPresenceStatus(@PathParam("userId") String userId, PresenceStatus presenceStatus,
+                                    @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                                    @Context SecurityContext securityContext);
 
     /**
      * Get the given user's presence state.
      *
-     * @param userId Required. The user whose presence state to get.
+     * @param userId          Required. The user whose presence state to get.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: The presence state for this user.
      *     Status code 404: There is no presence state for this user. This user may not exist or isn't exposing presence information to you.
      */
     @GET
     @Path("/{userId}/status")
-    PresenceStatus getPresenceStatus(@PathParam("userId") String userId);
+    PresenceStatus getPresenceStatus(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                                     @Context HttpServletResponse servletResponse);
 
     /**
      * Adds or removes users from this presence list.
@@ -98,22 +114,31 @@ public interface PresenceApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param userId       Required. The user whose presence list is being modified.
-     * @param presenceList JSON body request.
+     * @param userId          Required. The user whose presence list is being modified.
+     * @param presenceList    JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The list was updated.
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/list/{userId}")
-    EmptyResponse setPresenceList(@PathParam("userId") String userId, PresenceList presenceList);
+    EmptyResponse setPresenceList(@PathParam("userId") String userId, PresenceList presenceList, @Context HttpServletRequest servletRequest,
+                                  @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Retrieve a list of presence events for every user on this list.
      *
-     * @param userId Required. The user whose presence list should be retrieved.
+     * @param userId          Required. The user whose presence list should be retrieved.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: A list of presence events for this list.
      */
     @GET
     @Path("/list/{userId}")
-    List<Event> getPresenceList(@PathParam("userId") String userId);
+    List<Event> getPresenceList(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                                @Context HttpServletResponse servletResponse);
 }

@@ -17,6 +17,8 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.room.CreateRoomRequest;
 import io.github.ma1uta.matrix.client.model.room.InviteRequest;
 import io.github.ma1uta.matrix.client.model.room.JoinRequest;
@@ -27,6 +29,8 @@ import io.github.ma1uta.matrix.client.model.room.PublicRoomsResponse;
 import io.github.ma1uta.matrix.client.model.room.RoomId;
 import io.github.ma1uta.matrix.client.model.room.RoomVisibility;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -36,7 +40,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * Rooms apis.
@@ -63,6 +69,9 @@ public interface RoomApi {
      * Requires auth: Yes.
      *
      * @param createRoomRequest JSON body parameters.
+     * @param servletRequest    servlet request.
+     * @param servletResponse   servlet response.
+     * @param securityContext   security context.
      * @return Status code 200: Information about the newly created room.
      *     Status code 400: The request is invalid. A meaningful errcode and description error text will be returned.
      *     Example reasons for rejection include:
@@ -74,22 +83,29 @@ public interface RoomApi {
      * </ul>
      */
     @POST
+    @Secured
     @Path("/createRoom")
-    RoomId create(CreateRoomRequest createRoomRequest);
+    RoomId create(CreateRoomRequest createRoomRequest, @Context HttpServletRequest servletRequest,
+                  @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Create a new mapping from room alias to room ID.
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomAlias Required. The room alias to set.
-     * @param roomId    json body request.
+     * @param roomAlias       Required. The room alias to set.
+     * @param roomId          json body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The mapping was created.
      *     Status code 409: A room alias with that name already exists.
      */
     @PUT
+    @Secured
     @Path("/directory/room/{roomAlias}")
-    EmptyResponse newAlias(@PathParam("roomAlias") String roomAlias, RoomId roomId);
+    EmptyResponse newAlias(@PathParam("roomAlias") String roomAlias, RoomId roomId, @Context HttpServletRequest servletRequest,
+                           @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Requests that the server resolve a room alias to a room ID.
@@ -97,13 +113,16 @@ public interface RoomApi {
      * The server will use the federation API to resolve the alias if the domain part of the alias does not correspond to the server's
      * own domain.
      *
-     * @param roomAlias Required. The room alias.
+     * @param roomAlias       Required. The room alias.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: The room ID and other information for this alias.
      *     Status code 404: There is no mapped room ID for this room alias.
      */
     @GET
     @Path("/directory/room/{roomAlias}")
-    RoomId resolve(@PathParam("roomAlias") String roomAlias);
+    RoomId resolve(@PathParam("roomAlias") String roomAlias, @Context HttpServletRequest servletRequest,
+                   @Context HttpServletResponse servletResponse);
 
     /**
      * Remove a mapping of room alias to room ID.
@@ -113,23 +132,33 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomAlias Required. The room alias to remove.
+     * @param roomAlias       Required. The room alias to remove.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The mapping was deleted.
      */
     @DELETE
+    @Secured
     @Path("/directory/room/{roomAlias}")
-    EmptyResponse delete(@PathParam("roomAlias") String roomAlias);
+    EmptyResponse delete(@PathParam("roomAlias") String roomAlias, @Context HttpServletRequest servletRequest,
+                         @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * This API returns a list of the user's current rooms.
      * <p/>
      * Requires auth: Yes.
      *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: A list of the rooms the user is in.
      */
     @GET
+    @Secured
     @Path("/joined_rooms")
-    JoinedRoomsResponse joinedRooms();
+    JoinedRoomsResponse joinedRooms(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                                    @Context SecurityContext securityContext);
 
     /**
      * Note that there are two forms of this API, which are documented separately. This version of the API requires that the inviter
@@ -146,8 +175,11 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId        Required. The room identifier (not alias) to which to invite the user.
-     * @param inviteRequest JSON body request.
+     * @param roomId          Required. The room identifier (not alias) to which to invite the user.
+     * @param inviteRequest   JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The user has been invited to join the room.
      *     Status code 403: You do not have permission to invite the user to the room. A meaningful errcode and description error text
      *     will be returned. Example reasons for rejections are:
@@ -160,8 +192,11 @@ public interface RoomApi {
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/rooms/{roomId}/invite")
-    EmptyResponse invite(@PathParam("roomId") String roomId, InviteRequest inviteRequest);
+    EmptyResponse invite(@PathParam("roomId") String roomId, InviteRequest inviteRequest, @Context HttpServletRequest servletRequest,
+                         @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Note that this API requires a room ID, not alias. /join/{roomIdOrAlias} exists if you have a room alias.
@@ -179,8 +214,11 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId      Required. The room identifier (not alias) to join.
-     * @param joinRequest JSON body request.
+     * @param roomId          Required. The room identifier (not alias) to join.
+     * @param joinRequest     JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The room has been joined. The joined room ID must be returned in the room_id field.
      *     Status code 403: You do not have permission to join the room. A meaningful errcode and description error text will be returned.
      *     Example reasons for rejection are:
@@ -191,8 +229,11 @@ public interface RoomApi {
      *     Status code 429:This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/rooms/{roomId}/join")
-    RoomId join(@PathParam("roomId") String roomId, JoinRequest joinRequest);
+    RoomId join(@PathParam("roomId") String roomId, JoinRequest joinRequest, @Context HttpServletRequest servletRequest,
+                @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Note that this API takes either a room ID or alias, unlike /room/{roomId}/join.
@@ -210,8 +251,11 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomIdOrAlias Required. The room identifier or alias to join.
-     * @param joinRequest   JSON body request.
+     * @param roomIdOrAlias   Required. The room identifier or alias to join.
+     * @param joinRequest     JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The room has been joined. The joined room ID must be returned in the room_id field.
      *     Status code 403:
      *     You do not have permission to join the room. A meaningful errcode and description error text will be returned.
@@ -223,8 +267,12 @@ public interface RoomApi {
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/join/{roomIdOrAlias}")
-    RoomId joinByIdOrAlias(@PathParam("roomIdOrAlias") String roomIdOrAlias, JoinRequest joinRequest);
+    RoomId joinByIdOrAlias(@PathParam("roomIdOrAlias") String roomIdOrAlias, JoinRequest joinRequest,
+                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                           @Context SecurityContext securityContext);
 
     /**
      * This API stops a user participating in a particular room.
@@ -240,13 +288,19 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId Required. The room identifier to leave.
+     * @param roomId          Required. The room identifier to leave.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The room has been left.
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/rooms/{roomId}/leave")
-    EmptyResponse leave(@PathParam("roomId") String roomId);
+    EmptyResponse leave(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+                        @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * This API stops a user remembering about a particular room.
@@ -261,13 +315,19 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId Required. The room identifier to forget.
+     * @param roomId          Required. The room identifier to forget.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The room has been forgotten.
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/rooms/{roomId}/forget")
-    EmptyResponse forget(@PathParam("roomId") String roomId);
+    EmptyResponse forget(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+                         @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Kick a user from the room.
@@ -276,8 +336,11 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId      Required. The room identifier (not alias) from which the user should be kicked.
-     * @param kickRequest JSON body request.
+     * @param roomId          Required. The room identifier (not alias) from which the user should be kicked.
+     * @param kickRequest     JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The user has been kicked from the room.
      *     Status code 403: You do not have permission to kick the user from the room. A meaningful errcode and description error
      *     text will be returned. Example reasons for rejections are:
@@ -288,8 +351,10 @@ public interface RoomApi {
      * </ul>
      */
     @POST
+    @Secured
     @Path("/rooms/{roomId}/kick")
-    EmptyResponse kick(@PathParam("roomId") String roomId, KickRequest kickRequest);
+    EmptyResponse kick(@PathParam("roomId") String roomId, KickRequest kickRequest, @Context HttpServletRequest servletRequest,
+                       @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Ban a user in the room. If the user is currently in the room, also kick them.
@@ -300,8 +365,11 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId     Required. The room identifier (not alias) from which the user should be banned.
-     * @param banRequest JSON body request.
+     * @param roomId          Required. The room identifier (not alias) from which the user should be banned.
+     * @param banRequest      JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The user has been kicked and banned from the room.
      *     Status code 403: You do not have permission to ban the user from the room. A meaningful errcode and description error
      *     text will be returned. Example reasons for rejections are:
@@ -311,8 +379,10 @@ public interface RoomApi {
      * </ul>
      */
     @POST
+    @Secured
     @Path("/rooms/{roomId}/ban")
-    EmptyResponse ban(@PathParam("roomId") String roomId, KickRequest banRequest);
+    EmptyResponse ban(@PathParam("roomId") String roomId, KickRequest banRequest, @Context HttpServletRequest servletRequest,
+                      @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Unban a user from the room. This allows them to be invited to the room, and join if they would otherwise be allowed to join
@@ -322,8 +392,11 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId       Required. The room identifier (not alias) from which the user should be unbanned.
-     * @param unbanRequest JSON body request.
+     * @param roomId          Required. The room identifier (not alias) from which the user should be unbanned.
+     * @param unbanRequest    JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The user has been unbanned from the room.
      *     Status code 403: You do not have permission to unban the user from the room. A meaningful errcode and description error
      *     text will be returned. Example reasons for rejections are:
@@ -332,19 +405,24 @@ public interface RoomApi {
      * </ul>
      */
     @POST
+    @Secured
     @Path("/rooms/{roomId}/unban")
-    EmptyResponse unban(String roomId, KickRequest unbanRequest);
+    EmptyResponse unban(String roomId, KickRequest unbanRequest, @Context HttpServletRequest servletRequest,
+                        @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Gets the visibility of a given room on the server's public room directory.
      *
-     * @param roomId Required. The room ID.
+     * @param roomId          Required. The room ID.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: The visibility of the room in the directory
      *     Status code 404: The room is not known to the server
      */
     @GET
     @Path("/directory/list/room/{roomId}")
-    RoomVisibility getVisibility(@PathParam("roomId") String roomId);
+    RoomVisibility getVisibility(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+                                 @Context HttpServletResponse servletResponse);
 
     /**
      * Sets the visibility of a given room in the server's public room directory.
@@ -354,30 +432,38 @@ public interface RoomApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId     Required. The room ID.
-     * @param visibility json body request.
+     * @param roomId          Required. The room ID.
+     * @param visibility      json body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The visibility was updated, or no change was needed.
      *     Status code 404: The room is not known to the server
      */
     @PUT
+    @Secured
     @Path("/directory/list/room/{roomId}")
-    EmptyResponse setVisibility(@PathParam("roomId") String roomId, RoomVisibility visibility);
+    EmptyResponse setVisibility(@PathParam("roomId") String roomId, RoomVisibility visibility, @Context HttpServletRequest servletRequest,
+                                @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Lists the public rooms on the server.
      * <p/>
      * This API returns paginated responses. The rooms are ordered by the number of joined members, with the largest rooms first.
      *
-     * @param limit  Limit the number of results returned.
-     * @param since  A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms.
-     *               The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.
-     * @param server The server to fetch the public room lists from. Defaults to the local server.
+     * @param limit           Limit the number of results returned.
+     * @param since           A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms.
+     *                        The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.
+     * @param server          The server to fetch the public room lists from. Defaults to the local server.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: A list of the rooms on the server.
      */
     @GET
     @Path("/publicRooms")
     PublicRoomsResponse showPublicRooms(@QueryParam("limit") Long limit, @QueryParam("since") String since,
-                                        @QueryParam("server") String server);
+                                        @QueryParam("server") String server, @Context HttpServletRequest servletRequest,
+                                        @Context HttpServletResponse servletResponse);
 
     /**
      * Lists the public rooms on the server, with optional filter.
@@ -388,9 +474,15 @@ public interface RoomApi {
      *
      * @param server             The server to fetch the public room lists from. Defaults to the local server.
      * @param publicRoomsRequest JSON body request.
+     * @param servletRequest     servlet request.
+     * @param servletResponse    servlet response.
+     * @param securityContext    security context.
      * @return Status code 200: A list of the rooms on the server.
      */
     @POST
+    @Secured
     @Path("/publicRooms")
-    PublicRoomsResponse searchPublicRooms(@QueryParam("server") String server, PublicRoomsRequest publicRoomsRequest);
+    PublicRoomsResponse searchPublicRooms(@QueryParam("server") String server, PublicRoomsRequest publicRoomsRequest,
+                                          @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                                          @Context SecurityContext securityContext);
 }

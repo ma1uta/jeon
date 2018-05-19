@@ -1600,6 +1600,7 @@ public class Event {
     /**
      * This contains an array of StrippedState Events. These events provide information on a subset of state events such as the room name.
      */
+    @JsonProperty("invite_room_state")
     private List<StrippedState> inviteRoomState;
 
     /**

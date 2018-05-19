@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.eventcontext;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class EventContextResponse {
     /**
      * A list of room events that happened just before the requested event, in reverse-chronological order.
      */
+    @JsonProperty("events_before")
     private List<Event> eventsBefore;
 
     /**
@@ -48,6 +50,7 @@ public class EventContextResponse {
     /**
      * A list of room events that happened just after the requested event, in chronological order.
      */
+    @JsonProperty("events_after")
     private List<Event> eventsAfter;
 
     /**

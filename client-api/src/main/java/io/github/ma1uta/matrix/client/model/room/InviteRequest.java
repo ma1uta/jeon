@@ -29,11 +29,51 @@ public class InviteRequest {
     @JsonProperty("user_id")
     private String userId;
 
+    /**
+     * Required. The hostname+port of the identity server which should be used for third party identifier lookups.
+     */
+    @JsonProperty("id_server")
+    private String idServer;
+
+    /**
+     * Required. The kind of address being passed in the address field, for example email.
+     */
+    private String medium;
+
+    /**
+     * Required. The invitee's third party identifier.
+     */
+    private String address;
+
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getIdServer() {
+        return idServer;
+    }
+
+    public void setIdServer(String idServer) {
+        this.idServer = idServer;
+    }
+
+    public String getMedium() {
+        return medium;
+    }
+
+    public void setMedium(String medium) {
+        this.medium = medium;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

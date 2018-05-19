@@ -17,17 +17,23 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.profile.AvatarUrl;
 import io.github.ma1uta.matrix.client.model.profile.DisplayName;
 import io.github.ma1uta.matrix.client.model.profile.Profile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * Profiles.
@@ -47,26 +53,35 @@ public interface ProfileApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param userId      Required. The user whose display name to set.
-     * @param displayName JSON body request.
+     * @param userId          Required. The user whose display name to set.
+     * @param displayName     JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The display name was set.
      *     Status code 429: This request was rate-limited.
      */
     @PUT
+    @RateLimit
+    @Secured
     @Path("/{userId}/displayname")
-    EmptyResponse setDisplayName(@PathParam("userId") String userId, DisplayName displayName);
+    EmptyResponse setDisplayName(@PathParam("userId") String userId, DisplayName displayName, @Context HttpServletRequest servletRequest,
+                                 @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Get the user's display name. This API may be used to fetch the user's own displayname or to query the name of other users; either
      * locally or on remote homeservers.
      *
-     * @param userId Required. The user whose display name to get.
+     * @param userId          Required. The user whose display name to get.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: The display name for this user.
      *     Status code 404: There is no display name for this user or this user does not exist.
      */
     @GET
     @Path("/{userId}/displayname")
-    DisplayName showDisplayName(@PathParam("userId") String userId);
+    DisplayName showDisplayName(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                                @Context HttpServletResponse servletResponse);
 
     /**
      * This API sets the given user's avatar URL. You must have permission to set this user's avatar URL, e.g. you need to have
@@ -76,36 +91,48 @@ public interface ProfileApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param userId    Required. The user whose avatar URL to set.
-     * @param avatarUrl JSON body request.
+     * @param userId          Required. The user whose avatar URL to set.
+     * @param avatarUrl       JSON body request.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The avatar URL was set.
      *     Status code 429: This request was rate-limited.
      */
     @PUT
+    @RateLimit
+    @Secured
     @Path("/{userId}/avatar_url")
-    EmptyResponse setAvatarUrl(@PathParam("userId") String userId, AvatarUrl avatarUrl);
+    EmptyResponse setAvatarUrl(@PathParam("userId") String userId, AvatarUrl avatarUrl, @Context HttpServletRequest servletRequest,
+                               @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Get the user's avatar URL. This API may be used to fetch the user's own avatar URL or to query the URL of other users;
      * either locally or on remote homeservers.
      *
-     * @param userId Required. The user whose avatar URL to get.
+     * @param userId          Required. The user whose avatar URL to get.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: The avatar URL for this user.
      *     Status code 404: There is no avatar URL for this user or this user does not exist.
      */
     @GET
     @Path("/{userId}/avatar_url")
-    AvatarUrl showAvatarUrl(@PathParam("userId") String userId);
+    AvatarUrl showAvatarUrl(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                            @Context HttpServletResponse servletResponse);
 
     /**
      * Get the combined profile information for this user. This API may be used to fetch the user's own profile information or
      * other users; either locally or on remote homeservers. This API may return keys which are not limited to displayname or avatar_url.
      *
-     * @param userId Required. The user whose profile information to get.
+     * @param userId          Required. The user whose profile information to get.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code 200: The avatar URL for this user.
      *     Status code 404: There is no profile information for this user or this user does not exist.
      */
     @GET
     @Path("/{userId}")
-    Profile profile(@PathParam("userId") String userId);
+    Profile profile(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                    @Context HttpServletResponse servletResponse);
 }

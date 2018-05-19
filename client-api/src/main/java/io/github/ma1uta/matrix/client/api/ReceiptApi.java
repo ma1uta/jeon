@@ -17,12 +17,18 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * This module adds in support for receipts. These receipts are a form of acknowledgement of an event. This module defines a single
@@ -46,14 +52,20 @@ public interface ReceiptApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param roomId      Required. The room in which to send the event.
-     * @param receiptType Required. The type of receipt to send. One of: ["m.read"]
-     * @param eventId     Required. The event ID to acknowledge up to.
+     * @param roomId          Required. The room in which to send the event.
+     * @param receiptType     Required. The type of receipt to send. One of: ["m.read"]
+     * @param eventId         Required. The event ID to acknowledge up to.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The receipt was sent.
      *     Status code 429: This request was rate-limited.
      */
     @POST
+    @RateLimit
+    @Secured
     @Path("/{roomId}/receipt/{receiptType}/{eventId}")
     EmptyResponse receipt(@PathParam("roomId") String roomId, @PathParam("receiptType") String receiptType,
-                          @PathParam("eventId") String eventId);
+                          @PathParam("eventId") String eventId, @Context HttpServletRequest servletRequest,
+                          @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

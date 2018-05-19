@@ -16,11 +16,14 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -47,12 +50,15 @@ public interface FallbackAuthApi {
      * handle a given login type, it can direct the user to a web browser with the URL of a fallback page which will allow the
      * user to complete that login step out-of-band in their web browser.
      *
-     * @param auth    is the type name of the stage it is attempting.
-     * @param session the ID of the session given by the homeserver.
+     * @param auth            is the type name of the stage it is attempting.
+     * @param session         the ID of the session given by the homeserver.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return an HTML page which can perform this authentication stage. This page must use the following JavaScript when the
      *     authentication has been completed.
      */
     @GET
     @Path("/client/r0/auth/{auth}/fallback/web")
-    String auth(@PathParam("auth") String auth, @QueryParam("session") String session);
+    String auth(@PathParam("auth") String auth, @QueryParam("session") String session, @Context HttpServletRequest servletRequest,
+                @Context HttpServletResponse servletResponse);
 }

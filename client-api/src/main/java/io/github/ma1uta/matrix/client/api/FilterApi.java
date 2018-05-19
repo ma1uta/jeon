@@ -16,16 +16,21 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.FilterResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * Filters can be created on the server and can be passed as as a parameter to APIs which return events. These filters alter the
@@ -44,26 +49,37 @@ public interface FilterApi {
      * <p/>
      * Requires auth: Yes.
      *
-     * @param userId     Required. The id of the user uploading the filter. The access token must be authorized to make requests for
-     *                   this user id.
-     * @param filterData JSON body parameters.
+     * @param userId          Required. The id of the user uploading the filter. The access token must be authorized to make requests for
+     *                        this user id.
+     * @param filterData      JSON body parameters.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: The filter was created.
      */
     @POST
+    @Secured
     @Path("/{userId}/filter")
-    FilterResponse uploadFilter(@PathParam("userId") String userId, FilterData filterData);
+    FilterResponse uploadFilter(@PathParam("userId") String userId, FilterData filterData, @Context HttpServletRequest servletRequest,
+                                @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Download a filter.
      * <p/>
      * Requires auth: Yes.
      *
-     * @param userId   Required. The user ID to download a filter for.
-     * @param filterId Required. The filter ID to download.
+     * @param userId          Required. The user ID to download a filter for.
+     * @param filterId        Required. The filter ID to download.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: "The filter defintion"
      *     Status code 404: Unknown filter.
      */
     @GET
+    @Secured
     @Path("/{userId}/filter/{filterId}")
-    FilterData getFilter(@PathParam("userId") String userId, @PathParam("filterId") String filterId);
+    FilterData getFilter(@PathParam("userId") String userId, @PathParam("filterId") String filterId,
+                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                         @Context SecurityContext securityContext);
 }
