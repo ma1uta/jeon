@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.AccountApi.API_URL;
+
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
@@ -28,6 +30,11 @@ import io.github.ma1uta.matrix.client.model.account.ThreePidRequest;
 import io.github.ma1uta.matrix.client.model.account.ThreePidResponse;
 import io.github.ma1uta.matrix.client.model.account.WhoamiResponse;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,10 +56,16 @@ import javax.ws.rs.core.SecurityContext;
  * @author ma1uta
  * @version 0.0.1
  */
-@Path("/_matrix/client/r0")
+@Api(value = API_URL, description = "Account registration and management")
+@Path(API_URL)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountApi {
+
+    /**
+     * Account api url.
+     */
+    String API_URL = "/_matrix/client/r0";
 
     /**
      * The kind of account to register.
@@ -75,7 +88,6 @@ public interface AccountApi {
 
     /**
      * Register for an account on this homeserver.
-     * <p/>
      *
      * @param kind            The kind of account to register. Defaults to user. One of: ["guest", "user"].
      * @param registerRequest JSON body parameters.
@@ -102,11 +114,21 @@ public interface AccountApi {
      * <p>Status code 429: This request was rate-limited.</p>
      * @see <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id147">Register for an account on this homeserver.</a>
      */
+    @ApiOperation(value = "Register for an account on this homeserver.", response = LoginResponse.class)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "The account has been registered"),
+        @ApiResponse(code = 400, message = "Part of the request was invalid."),
+        @ApiResponse(code = 401, message = "The homeserver requires additional authentication information."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @POST
     @RateLimit
     @Path("/register")
-    LoginResponse register(@QueryParam("kind") String kind, RegisterRequest registerRequest, @Context HttpServletRequest servletRequest,
-                           @Context HttpServletResponse servletResponse);
+    LoginResponse register(
+        @ApiParam(value = "The kind of account to register.", defaultValue = "user", allowableValues = "['guest', 'user']")
+        @QueryParam("kind") String kind,
+        @ApiParam(value = "JSON body request") RegisterRequest registerRequest,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not already
@@ -128,10 +150,19 @@ public interface AccountApi {
      * </ul>
      * </p>
      */
+    @ApiOperation(value = "Request token.",
+        notes = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not"
+            + " already associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects, though"
+            + " the Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.",
+        response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "An email has been sent to the specified address."),
+        @ApiResponse(code = 400, message = "Part of the request was invalid.")
+    })
     @POST
     @Path("/register/email/requestToken")
-    EmptyResponse requestToken(RequestToken requestToken, @Context HttpServletRequest servletRequest,
-                               @Context HttpServletResponse servletResponse);
+    EmptyResponse requestToken(@ApiParam(value = "request") RequestToken requestToken,
+                               @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Changes the password for an account on this homeserver.
@@ -150,12 +181,23 @@ public interface AccountApi {
      * <p>Status code 401: The homeserver requires additional authentication information.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
+    @ApiOperation(value = "Changes the password for an account on this homeserver.",
+        notes = "This API endpoint uses the User-Interactive Authentication API. An access token should be submitted to this"
+            + " endpoint if the client has an active session. The homeserver may change the flows available depending on"
+            + " whether a valid access token is provided.",
+        response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The password has been changed."),
+        @ApiResponse(code = 401, message = "The homeserver requires additional authentication information."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @POST
     @RateLimit
     @Secured
     @Path("/account/password")
-    EmptyResponse password(PasswordRequest passwordRequest, @Context HttpServletRequest servletRequest,
-                           @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    EmptyResponse password(@ApiParam(value = "password") PasswordRequest passwordRequest,
+                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                           @Context SecurityContext securityContext);
 
     /**
      * Proxies the identity server API validate/email/requestToken, but first checks that the given email address is associated
