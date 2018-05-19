@@ -18,9 +18,12 @@ package io.github.ma1uta.matrix.identity.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -37,9 +40,11 @@ public interface StatusApi {
      * <p/>
      * This is primarly used for auto-discovery and health check purposes by entities acting as a client for the Identity server.
      *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Status code {@code 200} if an Identity server is ready to serve requests.
      */
     @GET
     @Path("")
-    EmptyResponse v1Status();
+    EmptyResponse v1Status(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 }

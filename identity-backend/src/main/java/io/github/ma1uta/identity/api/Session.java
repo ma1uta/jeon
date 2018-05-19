@@ -24,16 +24,13 @@ import io.github.ma1uta.matrix.identity.model.associations.SessionResponse;
 import io.github.ma1uta.matrix.identity.model.associations.ValidationResponse;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Context;
 
 /**
  * Implementation of the {@link SessionApi}.
  */
 public class Session implements SessionApi {
-
-    @Context
-    private HttpServletResponse response;
 
     public Session(SessionService sessionService) {
         this.sessionService = sessionService;
@@ -46,7 +43,8 @@ public class Session implements SessionApi {
     }
 
     @Override
-    public SessionResponse create(String clientSecret, String email, Long sendAttempt, String nextLink) {
+    public SessionResponse create(String clientSecret, String email, Long sendAttempt, String nextLink, HttpServletRequest servletRequest,
+                                  HttpServletResponse servletResponse) {
         if (StringUtils.isAnyBlank(clientSecret, email)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Missing client secret or email");
         }
@@ -56,23 +54,25 @@ public class Session implements SessionApi {
     }
 
     @Override
-    public ValidationResponse getValidate(String sid, String clientSecret, String token) {
-        return validate(sid, clientSecret, token);
+    public ValidationResponse getValidate(String sid, String clientSecret, String token, HttpServletRequest servletRequest,
+                                          HttpServletResponse servletResponse) {
+        return validate(sid, clientSecret, token, servletResponse);
     }
 
     @Override
-    public ValidationResponse postValidate(String sid, String clientSecret, String token) {
-        return validate(sid, clientSecret, token);
+    public ValidationResponse postValidate(String sid, String clientSecret, String token, HttpServletRequest servletRequest,
+                                           HttpServletResponse servletResponse) {
+        return validate(sid, clientSecret, token, servletResponse);
     }
 
-    protected ValidationResponse validate(String sid, String clientSecret, String token) {
+    protected ValidationResponse validate(String sid, String clientSecret, String token, HttpServletResponse servletResponse) {
         if (StringUtils.isAnyBlank(sid, clientSecret, token)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Missing client secret, sid or token");
         }
         String nextLink = getSessionService().validate(token, clientSecret, sid);
         if (nextLink != null) {
-            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            response.setHeader("Location", nextLink);
+            servletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            servletResponse.setHeader("Location", nextLink);
         }
         ValidationResponse response = new ValidationResponse();
         response.setValidated(true);

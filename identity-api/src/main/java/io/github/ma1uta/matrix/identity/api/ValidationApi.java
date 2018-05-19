@@ -19,12 +19,15 @@ package io.github.ma1uta.matrix.identity.api;
 import io.github.ma1uta.matrix.identity.model.validation.PublishResponse;
 import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -38,25 +41,31 @@ public interface ValidationApi {
     /**
      * Check whether ownership of a 3pid was validated.
      *
-     * @param sid          session id.
-     * @param clientSecret client secret from the requestToken call.
+     * @param sid             session id.
+     * @param clientSecret    client secret from the requestToken call.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return validation data.
      */
     @GET
     @Path("/getValidated3pid")
     @Produces(MediaType.APPLICATION_JSON)
-    ValidationResponse validate(@QueryParam("sid") String sid, @QueryParam("client_secret") String clientSecret);
+    ValidationResponse validate(@QueryParam("sid") String sid, @QueryParam("client_secret") String clientSecret,
+                                @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Publishing a validated association.
      *
-     * @param sid          session id.
-     * @param clientSecret client secret from the requestToken call.
-     * @param mxid         matrix id.
+     * @param sid             session id.
+     * @param clientSecret    client secret from the requestToken call.
+     * @param mxid            matrix id.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return publish result.
      */
     @POST
     @Path("/bind")
     @Produces(MediaType.APPLICATION_JSON)
-    PublishResponse publish(@FormParam("sid") String sid, @FormParam("client_secret") String clientSecret, @FormParam("mxid") String mxid);
+    PublishResponse publish(@FormParam("sid") String sid, @FormParam("client_secret") String clientSecret, @FormParam("mxid") String mxid,
+                            @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 }

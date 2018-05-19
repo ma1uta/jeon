@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.security.cert.Certificate;
 import java.util.Base64;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -45,7 +46,7 @@ public class KeyManagement implements KeyManagementApi {
     }
 
     @Override
-    public PublicKeyResponse get(String keyId) {
+    public PublicKeyResponse get(String keyId, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         if (StringUtils.isBlank(keyId)) {
             throw new MatrixException(ErrorResponse.Code.M_NOT_FOUND, "Missing key.");
         }
@@ -57,7 +58,7 @@ public class KeyManagement implements KeyManagementApi {
     }
 
     @Override
-    public KeyValidationResponse valid(String publicKey) {
+    public KeyValidationResponse valid(String publicKey, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         if (StringUtils.isBlank(publicKey)) {
             throw new MatrixException(AbstractKeyService.M_MISSING_KEY, "Missing key.");
         }
@@ -67,7 +68,7 @@ public class KeyManagement implements KeyManagementApi {
     }
 
     @Override
-    public KeyValidationResponse ephemeralValid(String publicKey) {
+    public KeyValidationResponse ephemeralValid(String publicKey, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         if (StringUtils.isBlank(publicKey)) {
             throw new MatrixException(AbstractKeyService.M_MISSING_KEY, "Missing key.");
         }

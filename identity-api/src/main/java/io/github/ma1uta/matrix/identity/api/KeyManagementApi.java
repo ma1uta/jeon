@@ -19,11 +19,14 @@ package io.github.ma1uta.matrix.identity.api;
 import io.github.ma1uta.matrix.identity.model.key.KeyValidationResponse;
 import io.github.ma1uta.matrix.identity.model.key.PublicKeyResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -46,31 +49,40 @@ public interface KeyManagementApi {
     /**
      * Get the public key for the passed key ID.
      *
-     * @param keyId Required. The ID of the key. This should take the form algorithm:identifier where algorithm
-     *              identifies the signing algorithm, and the identifier is an opaque string.
+     * @param keyId           Required. The ID of the key. This should take the form algorithm:identifier where algorithm
+     *                        identifies the signing algorithm, and the identifier is an opaque string.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return The public key exists.
      */
     @GET
     @Path("/{keyId}")
-    PublicKeyResponse get(@PathParam("keyId") String keyId);
+    PublicKeyResponse get(@PathParam("keyId") String keyId, @Context HttpServletRequest servletRequest,
+                          @Context HttpServletResponse servletResponse);
 
     /**
      * Check whether a long-term public key is valid.
      *
-     * @param publicKey Required. The unpadded base64-encoded public key to check.
+     * @param publicKey       Required. The unpadded base64-encoded public key to check.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Whether the public key is recognised and is currently valid.
      */
     @GET
     @Path("/isvalid")
-    KeyValidationResponse valid(@QueryParam("public_key") String publicKey);
+    KeyValidationResponse valid(@QueryParam("public_key") String publicKey, @Context HttpServletRequest servletRequest,
+                                @Context HttpServletResponse servletResponse);
 
     /**
      * Check whether a short-term public key is valid.
      *
-     * @param publicKey Required. The unpadded base64-encoded public key to check.
+     * @param publicKey       Required. The unpadded base64-encoded public key to check.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
      * @return Whether the public key is recognised and is currently valid.
      */
     @GET
     @Path("/ephemeral/isvalid")
-    KeyValidationResponse ephemeralValid(@QueryParam("public_key") String publicKey);
+    KeyValidationResponse ephemeralValid(@QueryParam("public_key") String publicKey, @Context HttpServletRequest servletRequest,
+                                         @Context HttpServletResponse servletResponse);
 }

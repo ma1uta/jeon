@@ -29,6 +29,8 @@ import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Implementation of the {@link LookupApi}.
@@ -61,7 +63,7 @@ public class Lookup implements LookupApi {
     }
 
     @Override
-    public LookupResponse lookup(String medium, String address) {
+    public LookupResponse lookup(String medium, String address, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         if (StringUtils.isAnyBlank(medium, address)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Missing medium or address.");
         }
@@ -80,7 +82,8 @@ public class Lookup implements LookupApi {
     }
 
     @Override
-    public BulkLookupResponse bulkLookup(BulkLookupRequest request) {
+    public BulkLookupResponse bulkLookup(BulkLookupRequest request, HttpServletRequest servletRequest,
+                                         HttpServletResponse servletResponse) {
         if (request == null) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Missing medium or address.");
         }

@@ -26,6 +26,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Implementation of the {@link ValidationApi}.
@@ -43,7 +45,8 @@ public class Validation implements ValidationApi {
     }
 
     @Override
-    public ValidationResponse validate(String sid, String clientSecret) {
+    public ValidationResponse validate(String sid, String clientSecret, HttpServletRequest servletRequest,
+                                       HttpServletResponse servletResponse) {
         if (StringUtils.isAnyBlank(sid, clientSecret)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Sid or client secret are missing.");
         }
@@ -57,7 +60,8 @@ public class Validation implements ValidationApi {
     }
 
     @Override
-    public PublishResponse publish(String sid, String clientSecret, String mxid) {
+    public PublishResponse publish(String sid, String clientSecret, String mxid, HttpServletRequest servletRequest,
+                                   HttpServletResponse servletResponse) {
         if (StringUtils.isAnyBlank(sid, clientSecret, mxid)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Sid, client secret or mxid are missing.");
         }

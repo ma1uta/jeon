@@ -25,6 +25,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Implementation of the {@link InvitationApi}.
@@ -42,7 +44,8 @@ public class Invitation implements InvitationApi {
     }
 
     @Override
-    public InvitationResponse invite(String medium, String address, String roomId, String sender) {
+    public InvitationResponse invite(String medium, String address, String roomId, String sender, HttpServletRequest servletRequest,
+                                     HttpServletResponse servletResponse) {
         if (StringUtils.isAnyBlank(medium, address, roomId, sender)) {
             throw new MatrixException(ErrorResponse.Code.M_BAD_JSON, "Some of the required fields are missing");
         }
