@@ -16,12 +16,19 @@
 
 package io.github.ma1uta.matrix.server.api;
 
+import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.Page;
+import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
+import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
 import io.github.ma1uta.matrix.server.model.federation.Transaction;
 
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -76,6 +83,19 @@ public interface FederationApi {
     @Path("/state/{roomId}")
     Transaction state(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
                       @Context HttpServletResponse servletResponse);
+
+    /**
+     * !!! Not described in spec.
+     *
+     * @param roomId          room identifier.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200:
+     */
+    @GET
+    @Path("/state_ids/{roomId}")
+    Transaction stateIds(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+                         @Context HttpServletResponse servletResponse);
 
     /**
      * To fetch a particular event.
@@ -134,13 +154,241 @@ public interface FederationApi {
      * made, and its query arguments have a meaning specific to that kind of query. The response is a JSON-encoded object whose meaning
      * also depends on the kind of query.
      *
-     * @param queryType       query type
+     * @param queryType       query type.
+     * @param query           query data.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return Status code 200: Query result.
      */
     @GET
     @Path("/query/{queryType}")
-    Response query(@PathParam("queryType") String queryType, @Context HttpServletRequest servletRequest,
+    Response query(@PathParam("queryType") String queryType, Map<String, Object> query, @Context HttpServletRequest servletRequest,
                    @Context HttpServletResponse servletResponse);
+
+    /**
+     * To make a join request.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
+     * @param userId          user mxid.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: Partial Event.
+     */
+    @GET
+    @Path("/make_join/{context}/{userId}")
+    Event makeJoin(@PathParam("context") String context, @PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                   @Context HttpServletResponse servletResponse);
+
+    /**
+     * To send a join request.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
+     * @param eventId         event identifier.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: (?).
+     */
+    @PUT
+    @Path("/send_join/{context}/{eventId}")
+    Response sendJoin(@PathParam("context") String context, @PathParam("eventId") String eventId,
+                      @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+
+    /**
+     * To make a leave request.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
+     * @param userId          user mxid.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: (?).
+     */
+    @GET
+    @Path("/make_leave/{context}/{userId}")
+    Response makeLeave(@PathParam("context") String context, @PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                       @Context HttpServletResponse servletResponse);
+
+    /**
+     * To send a leave request.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param roomId          room id.
+     * @param txid            transaction id (?).
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: (?).
+     */
+    @PUT
+    @Path("/send_leave/{roomId}/{txid}")
+    Response sendLeave(@PathParam("roomId") String roomId, @PathParam("txid") String txid, @Context HttpServletRequest servletRequest,
+                       @Context HttpServletResponse servletResponse);
+
+    /**
+     * (?).
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
+     * @param eventId         event id.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: (?).
+     */
+    @GET
+    @Path("/event_auth/{context}/{eventId}")
+    Response eventAuth(@PathParam("context") String context, @PathParam("eventId") String eventId,
+                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+
+    /**
+     * Send invite.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
+     * @param eventId         event id.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: pdu of the invite event.
+     */
+    @PUT
+    @Path("/invite/{context}/{eventId}")
+    Response invite(@PathParam("context") String context, @PathParam("eventId") String eventId, @Context HttpServletRequest servletRequest,
+                    @Context HttpServletResponse servletResponse);
+
+    /**
+     * To get 3pid invites of the specified room.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param roomId          room identifier.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: membership event.
+     */
+    @PUT
+    @Path("/exchange_third_party_invite/{roomId}")
+    Response exchangeThirdPartyInvite(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+                                      @Context HttpServletResponse servletResponse);
+
+    /**
+     * Query a user keys (?).
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param query           query.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: user keys (?).
+     */
+    @POST
+    @Path("/user/keys/query")
+    Response userKeysQuery(Map<String, Map<String, List<String>>> query, @Context HttpServletRequest servletRequest,
+                           @Context HttpServletResponse servletResponse);
+
+    /**
+     * To get user's devices.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param userId          user identifier.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: user devices.
+     */
+    @GET
+    @Path("/user/devices/{userId}")
+    Response userDevices(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+                         @Context HttpServletResponse servletResponse);
+
+    /**
+     * To claim user ont-time-key.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: user's one-time key.
+     */
+    @POST
+    @Path("/user/keys/claim")
+    Response userKeysClaim(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+
+    /**
+     * To query auth chains.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
+     * @param eventId         event identifier.
+     * @param request         request data (?).
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: processed auth chains (?).
+     */
+    @POST
+    @Path("/query_auth/{context}/{eventId}")
+    Response queryAuth(@PathParam("context") String context, @PathParam("eventId") String eventId, Map<String, Object> request,
+                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+
+    /**
+     * To get missing events (?).
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param roomId          room identifier.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: missing events.
+     */
+    @POST
+    @Path("/get_missing_events/{roomId}")
+    Response getMissingEvents(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+                              @Context HttpServletResponse servletResponse);
+
+    /**
+     * Exchange a bearer token for information about a user.
+     * <p/>
+     * The response format should be compatible with:
+     * <a href="http://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse">UserInfoResponse</a>
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: user info.
+     *     Status code 401: missing access_token.
+     */
+    @GET
+    @Path("/openid/userinfo")
+    OpenIdResponse openId(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+
+    /**
+     * Fetch the public room list for this server.
+     * <p/>
+     * This API returns information in the same format as /publicRooms on the
+     * client API, but will only ever include local public rooms and hence is
+     * intended for consumption by other home servers.
+     * <p/>
+     * !!! Not described in spec.
+     *
+     * @param limit                limit retrieved rooms.
+     * @param since                since token.
+     * @param includeAllNetworks   include or not rooms from other servers.
+     * @param thirdPartyInstanceId 3pid server id.
+     * @param servletRequest       servlet request.
+     * @param servletResponse      servlet response.
+     * @return Status code 200: public rooms.
+     */
+    @GET
+    @Path("/publicRooms")
+    Page<PublicRoomResponse> publicRooms(@QueryParam("limit") Integer limit, @QueryParam("since") String since,
+                                         @QueryParam("include_all_networks") Boolean includeAllNetworks,
+                                         @QueryParam("third_party_instance_id") String thirdPartyInstanceId,
+                                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 }

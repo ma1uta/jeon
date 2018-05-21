@@ -189,5 +189,6 @@
         <module>client-sdk</module>
 
         <module>matrixactivitypub</module>
+        <module>acpub</module>
     </modules>
 </project>
