@@ -18,6 +18,8 @@ package io.github.ma1uta.macpub.matrix;
 
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +33,13 @@ import javax.persistence.NamedQuery;
 @NamedQueries( {@NamedQuery(name = "matrix.bot.findAll", query = "select d from BotConfig d"),
     @NamedQuery(name = "matrix.bot.findByUserId", query = "select d from BotConfig d where d.userId = :userId")})
 public class BotConfig {
+
+    /**
+     * Default timeout.
+     * <p/>
+     * 10 second in milliseconds.
+     */
+    public static final long TIMEOUT = 10L * 1000L;
 
     /**
      * Bot's unique id.
@@ -73,6 +82,28 @@ public class BotConfig {
      * Transaction id.
      */
     private Long txnId = 0L;
+
+    /**
+     * Bot's owner.
+     */
+    private String owner;
+
+    /**
+     * State.
+     */
+    @Enumerated(EnumType.STRING)
+    private BotState state = BotState.NEW;
+
+    /**
+     * Who can invoke commands.
+     */
+    @Enumerated(EnumType.STRING)
+    private AccessPolicy policy = AccessPolicy.ALL;
+
+    /**
+     * Timeout for long-polling waiting.
+     */
+    private Long timeout = TIMEOUT;
 
     public Long getId() {
         return id;
@@ -136,6 +167,38 @@ public class BotConfig {
 
     public void setTxnId(Long txnId) {
         this.txnId = txnId;
+    }
+
+    public BotState getState() {
+        return state;
+    }
+
+    public void setState(BotState state) {
+        this.state = state;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public AccessPolicy getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(AccessPolicy policy) {
+        this.policy = policy;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
     }
 
     @Override

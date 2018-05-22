@@ -18,6 +18,7 @@ package io.github.ma1uta.macpub.matrix;
 
 import io.dropwizard.lifecycle.Managed;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,9 +46,13 @@ public class BotPool implements Managed {
 
     private final Service<BotDao> service;
 
-    public BotPool(String homeserverUrl, String domain, String displayName, Client client, String appToken, Service<BotDao> service) {
+    private final List<Class<? extends Command>> commandClasses;
+
+    public BotPool(String homeserverUrl, String domain, String displayName, Client client, String appToken, Service<BotDao> service,
+                   List<Class<? extends Command>> commandClasses) {
         this.domain = domain;
         this.service = service;
+        this.commandClasses = commandClasses;
         this.pool = Executors.newCachedThreadPool();
         this.homeserverUrl = homeserverUrl;
         this.displayName = displayName;
@@ -83,6 +88,10 @@ public class BotPool implements Managed {
         return service;
     }
 
+    public List<Class<? extends Command>> getCommandClasses() {
+        return commandClasses;
+    }
+
     /**
      * Run new bot.
      *
@@ -98,7 +107,7 @@ public class BotPool implements Managed {
     }
 
     protected void submit(BotConfig data) {
-        getPool().submit(new Bot(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), data, getService()));
+        getPool().submit(new Bot(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), data, getService(), getCommandClasses()));
     }
 
     @Override

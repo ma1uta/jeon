@@ -2,6 +2,11 @@ domain: "plyuk.rocks"
 baseUrl: "https://plyuk.rocks:8448"
 botUserName: "@bot:plyuk.rocks"
 displayName: "bot"
+commands:
+  - io.github.ma1uta.macpub.matrix.command.Leave
+  - io.github.ma1uta.macpub.matrix.command.NewName
+  - io.github.ma1uta.macpub.matrix.command.Pong
+  - io.github.ma1uta.macpub.matrix.command.SetAccessPolicy
 
 jerseyClient:
   gzipEnabled: false

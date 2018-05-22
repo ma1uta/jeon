@@ -89,7 +89,7 @@ public class BotApplication extends Application<BotConfiguration> {
         Service<BotDao> botService = proxyFactory.create(Service.class, Object.class, botDao);
         Service<TransactionDao> transactionService = proxyFactory.create(Service.class, Object.class, transactionDao);
         BotPool botPool = new BotPool(botConfiguration.getBaseUrl(), botConfiguration.getDomain(), botConfiguration.getDisplayName(),
-            jersey, botConfiguration.getAsToken(), botService);
+            jersey, botConfiguration.getAsToken(), botService, botConfiguration.getCommands());
 
         environment.lifecycle().manage(botPool);
         environment.jersey()

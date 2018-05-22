@@ -21,9 +21,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
+import io.github.ma1uta.macpub.matrix.Command;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -65,6 +68,8 @@ public class BotConfiguration extends Configuration {
     @NotNull
     @JsonProperty("database")
     private DataSourceFactory database = new DataSourceFactory();
+
+    private List<Class<? extends Command>> commands = new ArrayList<>();
 
     public DataSourceFactory getDataSourceFactory() {
         return database;
@@ -132,5 +137,13 @@ public class BotConfiguration extends Configuration {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public List<Class<? extends Command>> getCommands() {
+        return commands;
+    }
+
+    public void setCommands(List<Class<? extends Command>> commands) {
+        this.commands = commands;
     }
 }
