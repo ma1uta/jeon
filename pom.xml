@@ -188,7 +188,7 @@
 
         <module>client-sdk</module>
 
-        <module>matrixactivitypub</module>
+        <module>mxtoot</module>
         <module>acpub</module>
     </modules>
 </project>

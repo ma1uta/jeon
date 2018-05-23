@@ -1,0 +1,70 @@
+domain: "plyuk.rocks"
+baseUrl: "https://plyuk.rocks:8448"
+botUserName: "@bot:plyuk.rocks"
+displayName: "bot"
+commands:
+  - io.github.ma1uta.matrix.bot.command.Leave
+  - io.github.ma1uta.matrix.bot.command.NewName
+  - io.github.ma1uta.matrix.bot.command.Pong
+  - io.github.ma1uta.matrix.bot.command.SetAccessPolicy
+  - io.github.ma1uta.mxtoot.matrix.command.RegisterMastodonClient
+  - io.github.ma1uta.mxtoot.matrix.command.AuthorizeMastodonClient
+  - io.github.ma1uta.mxtoot.matrix.command.RunMastodonTimeline
+  - io.github.ma1uta.mxtoot.matrix.command.Toot
+  - io.github.ma1uta.mxtoot.matrix.command.Reply
+
+jerseyClient:
+  gzipEnabled: false
+  gzipEnabledForRequests: false
+  chunkedEncodingEnabled: false
+  timeout: 20s
+logging:
+  level: DEBUG
+  appenders:
+    - type: console
+      target: stderr
+database:
+  driverClass: org.postgresql.Driver
+  user: macpub
+  password: macpub
+  url: jdbc:postgresql://localhost/macpub
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  maxWaitForConnection: 1s
+  validationQuery: "/* MyApplication Health Check */ SELECT 1"
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  properties:
+    hibernate.hbm2ddl.auto: "update"
+
+server:
+  applicationConnectors:
+    - type: https
+      port: 8443
+      keyStorePath: /etc/matrix-synapse/as.pkcs12
+      keyStorePassword: See4deex
+      validateCerts: true
+      excludedCipherSuites:
+        - SSL_RSA_WITH_DES_CBC_SHA
+        - SSL_DHE_RSA_WITH_DES_CBC_SHA
+        - SSL_DHE_DSS_WITH_DES_CBC_SHA
+        - SSL_RSA_EXPORT_WITH_RC4_40_MD5
+        - SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+        - SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+        - SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+
+### Registration part ###
+
+id: "macpub"
+url: "https://plyuk.rocks:8443"
+as_token: "EapiSh7h"
+hs_token: "tah6Zoox"
+sender_localpart: "@macpub"
+namespaces:
+  users:
+    - exclusive: true
+      regex: "@macpub_.*"
+  rooms: []
+  aliases: []
