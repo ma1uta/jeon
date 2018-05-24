@@ -137,18 +137,22 @@ public interface EventApi {
 
     /**
      * Get the list of members for this room.
+     * <p/>
+     * Requires auth: Yes.
      *
      * @param roomId          Required. The room to get the member events for.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
+     * @param securityContext security context.
      * @return Status code 200: A list of members of the room. If you are joined to the room then this will be the current
      *     members of the room. If you have left the room then this will be the members of the room when you left.
      *     Status code 403: You aren't a member of the room and weren't previously a member of the room.
      */
     @GET
+    @Secured
     @Path("/{roomId}/members")
     MembersResponse members(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
-                            @Context HttpServletResponse servletResponse);
+                            @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * This API returns a map of MXIDs to member info objects for members of the room. The current user must be in the room for
