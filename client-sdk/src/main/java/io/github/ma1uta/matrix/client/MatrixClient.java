@@ -265,7 +265,7 @@ public class MatrixClient implements Closeable {
         return put(EventApi.class, "sendEvent", pathParams, null, payload, SendEventResponse.class);
     }
 
-     /**
+    /**
      * Send notice.
      *
      * @param roomId room id.

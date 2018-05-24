@@ -24,6 +24,7 @@ import io.github.ma1uta.matrix.application.model.TransactionRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -82,13 +83,18 @@ public class AppResource implements ApplicationApi {
         if (!getTransactionService().invoke(dao -> {
             return dao.exist(txnId);
         })) {
-            request.getEvents().forEach(event -> getMxTootBotPool().send(event));
-            getTransactionService().invoke((dao) -> {
-                MxTootTransaction transaction = new MxTootTransaction();
-                transaction.setId(txnId);
-                transaction.setProcessed(LocalDateTime.now());
-                getMxTootTransactionDao().save(transaction);
-            });
+            Optional<Boolean> result = request.getEvents().stream().map(event -> getMxTootBotPool().send(event))
+                .filter(Boolean::booleanValue).findAny();
+            if (result.isPresent() && result.get()) {
+                getTransactionService().invoke((dao) -> {
+                    MxTootTransaction transaction = new MxTootTransaction();
+                    transaction.setId(txnId);
+                    transaction.setProcessed(LocalDateTime.now());
+                    getMxTootTransactionDao().save(transaction);
+                });
+            } else {
+                throw new MatrixException(ErrorResponse.Code.M_NOT_FOUND, "Bot not found", HttpServletResponse.SC_NOT_FOUND);
+            }
         }
 
         return new EmptyResponse();

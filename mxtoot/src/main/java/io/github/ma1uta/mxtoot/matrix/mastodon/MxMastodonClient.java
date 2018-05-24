@@ -20,9 +20,12 @@ import com.sys1yagi.mastodon4j.MastodonClient;
 import com.sys1yagi.mastodon4j.api.Handler;
 import com.sys1yagi.mastodon4j.api.Shutdownable;
 import com.sys1yagi.mastodon4j.api.entity.Account;
+import com.sys1yagi.mastodon4j.api.entity.Attachment;
 import com.sys1yagi.mastodon4j.api.entity.Notification;
 import com.sys1yagi.mastodon4j.api.entity.Status;
+import com.sys1yagi.mastodon4j.api.entity.Tag;
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
+import com.sys1yagi.mastodon4j.api.method.Statuses;
 import com.sys1yagi.mastodon4j.api.method.Streaming;
 import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.ShutdownListener;
@@ -32,6 +35,11 @@ import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Mastodon client.
@@ -69,6 +77,10 @@ public class MxMastodonClient implements Handler, ShutdownListener {
      * @return {@code true} if has started streaming, else {@code false}.
      */
     public boolean streaming() {
+        if (isRunnings()) {
+            return true;
+        }
+
         try {
             this.shutdownable = new Streaming(getMastodonClient()).user(this);
             this.runnings = true;
@@ -98,24 +110,72 @@ public class MxMastodonClient implements Handler, ShutdownListener {
     public void onStatus(Status status) {
         getHolder().runInTransaction((holder, dao) -> {
 
-            StringBuilder sb = new StringBuilder();
-            Account account = status.getAccount();
-            sb.append("<a href=\"").append(status.getUrl()).append("\">").append(status.getId()).append("</a><br/>");
-            if (account != null) {
-                sb.append("<a href=\"").append(account.getUrl()).append("\">").append(account.getDisplayName()).append("</a>");
-            }
-            if (status.getInReplyToId() != null) {
-                sb.append(" in reply to ").append(status.getInReplyToId());
-            }
-            sb.append(" wrote:<br/>").append(status.getContent());
+            StringBuilder sb = writeStatus(status).append("</hr>");
 
-            MxTootConfig config = holder.getConfig();
             MatrixClient matrixClient = holder.getMatrixClient();
+            MxTootConfig config = holder.getConfig();
             matrixClient.sendFormattedNotice(config.getRoomId(), sb.toString());
 
             config.setTxnId(matrixClient.getTxn().get());
             getHolder().setConfig(dao.save(config));
         });
+    }
+
+    protected StringBuilder writeStatus(Status status) {
+        StringBuilder sb = new StringBuilder();
+
+        Account account = status.getAccount();
+        if (account != null) {
+            sb.append("<a href=\"").append(account.getUrl()).append("\">").append(account.getDisplayName()).append("</a>");
+        }
+
+        LocalDateTime created = LocalDateTime.parse(status.getCreatedAt(), DateTimeFormatter.ISO_DATE_TIME);
+        String formattedDateTime = created.format(DateTimeFormatter.ofPattern("MMM dd, yyyy, hh:mm", Locale.ENGLISH));
+        sb.append(" at <a href=\"").append(status.getUrl()).append("\">").append(formattedDateTime).append("</a>");
+
+        MxTootConfig config = holder.getConfig();
+        MatrixClient matrixClient = holder.getMatrixClient();
+
+        if (status.getInReplyToId() != null) {
+            Status repliedStatus;
+            try {
+                repliedStatus = new Statuses(holder.getData().getMastodonClient()).getStatus(status.getInReplyToId()).execute();
+            } catch (Mastodon4jRequestException e) {
+                String msg = "Cannot get status: " + status.getInReplyToId();
+                LOGGER.error("", e);
+                matrixClient.sendFormattedNotice(config.getRoomId(), msg);
+                return null;
+            }
+            sb.append(" in reply to <a href=\"").append(repliedStatus.getUrl()).append("\"></a>");
+        }
+
+        Status reblog = status.getReblog();
+        if (reblog == null) {
+            sb.append(" wrote:<br/>").append(status.getContent());
+
+            List<Tag> tags = status.getTags();
+            if (!tags.isEmpty()) {
+                sb.append("<br/>");
+                for (Tag tag : tags) {
+                    sb.append("<a href=\"").append(tag.getUrl()).append("\">").append(tag.getName()).append("</a> ");
+                }
+            }
+
+            List<Attachment> mediaAttachments = status.getMediaAttachments();
+            if (!mediaAttachments.isEmpty()) {
+                sb.append("<br/>");
+                for (Attachment mediaAttachment : mediaAttachments) {
+                    sb.append("<a href=\"").append(mediaAttachment.getUrl()).append("\"><img src=\"")
+                        .append(mediaAttachment.getPreviewUrl()).append("\"/>");
+                }
+            }
+
+            sb.append("</hr>");
+        } else {
+            sb.append(" boosted:<br/>").append(writeStatus(reblog));
+        }
+
+        return sb;
     }
 
     @Override

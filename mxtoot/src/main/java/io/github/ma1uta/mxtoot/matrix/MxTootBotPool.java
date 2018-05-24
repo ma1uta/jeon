@@ -17,6 +17,7 @@
 package io.github.ma1uta.mxtoot.matrix;
 
 import io.dropwizard.lifecycle.Managed;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.bot.AbstractBotPool;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.matrix.bot.RunState;
@@ -42,9 +43,10 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
     protected MxTootConfig createConfig(String username) {
         MxTootConfig config = new MxTootConfig();
         config.setUserId(username);
-        int nameIndex = username.indexOf("_");
+        String localpart = Id.localpart(username);
+        int nameIndex = localpart.indexOf("_");
         if (nameIndex > -1) {
-            config.setMastodonUsername(username.substring(nameIndex));
+            config.setMastodonUsername(localpart.substring(nameIndex));
         }
         config.setDisplayName(getDisplayName());
         config.setDeviceId(UUID.randomUUID().toString());

@@ -21,6 +21,7 @@ import io.github.ma1uta.matrix.Event;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -127,10 +128,11 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
      * Send an one event to the bot.
      *
      * @param event event.
+     * @return {@code true} if event was processed, else {@code false}.
      */
-    public void send(Event event) {
+    public boolean send(Event event) {
         if (RunState.APPLICATION_SERVICE.equals(getRunState())) {
-            getBotMap().entrySet().stream()
+            Optional<Bot<C, D, S, E>> bot = getBotMap().entrySet().stream()
                 .filter(entry -> {
                     C config = entry.getValue().getHolder().getConfig();
                     if (event.getRoomId().equals(config.getRoomId())) {
@@ -140,7 +142,16 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
                     return Event.MembershipState.INVITE.equals(membership)
                         && Event.EventType.ROOM_MEMBER.equals(event.getType())
                         && config.getUserId().equals(event.getStateKey());
-                }).map(Map.Entry::getValue).findFirst().ifPresent(bot -> bot.send(event));
+                }).map(Map.Entry::getValue).findFirst();
+
+            if (bot.isPresent()) {
+                bot.get().send(event);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 

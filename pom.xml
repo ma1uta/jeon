@@ -111,7 +111,7 @@
                                 <goal>check</goal>
                             </goals>
                             <configuration>
-                                <failOnViolation>false</failOnViolation>
+                                <failOnViolation>true</failOnViolation>
                             </configuration>
                         </execution>
                     </executions>
@@ -181,14 +181,34 @@
 
         <module>common-backend</module>
 
-        <module>identity-backend</module>
-        <module>identity-dropwizard</module>
-
         <module>homeserver-backend</module>
 
         <module>client-sdk</module>
 
-        <module>mxtoot</module>
-        <module>acpub</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>identity-server</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <modules>
+                <module>identity-backend</module>
+                <module>identity-dropwizard</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>mxtoot</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <modules>
+                <module>mxtoot</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

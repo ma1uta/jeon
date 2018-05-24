@@ -34,10 +34,6 @@ import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 /**
  * Register a new toot client.
  */
@@ -78,15 +74,11 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
 
             String authUrl = apps.getOAuthUrl(appRegistration.getClientId(), new Scope(Scope.Name.ALL), "urn:ietf:wg:oauth:2.0:oob");
 
-            matrixClient.sendFormattedNotice(config.getRoomId(), URLEncoder.encode(authUrl, StandardCharsets.UTF_8.name()));
+            matrixClient.sendFormattedNotice(config.getRoomId(), authUrl.replaceAll("\\s", "+"));
             matrixClient
                 .sendFormattedNotice(config.getRoomId(), "Please open url, login, get auth code and invoke command: !auth <auth code>");
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot start registration of the mastodon client: ";
-            LOGGER.error(msg, e);
-            matrixClient.sendFormattedNotice(config.getRoomId(), msg + e.getMessage());
-        } catch (UnsupportedEncodingException e) {
-            String msg = "Unsupported encoding: ";
             LOGGER.error(msg, e);
             matrixClient.sendFormattedNotice(config.getRoomId(), msg + e.getMessage());
         }
