@@ -24,6 +24,7 @@ import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.RoomEventFilter;
 import io.github.ma1uta.matrix.client.model.filter.RoomFilter;
 import io.github.ma1uta.matrix.client.model.room.RoomId;
+import io.github.ma1uta.matrix.client.model.sync.InviteState;
 import io.github.ma1uta.matrix.client.model.sync.InvitedRoom;
 import io.github.ma1uta.matrix.client.model.sync.JoinedRoom;
 import io.github.ma1uta.matrix.client.model.sync.LeftRoom;
@@ -207,25 +208,19 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
      * @return next loop state.
      */
     protected LoopState registeredState() {
-        return loop(sync -> {
-            Rooms rooms = sync.getRooms();
+        return loop(sync -> registeredState(
+            sync.getRooms().getInvite().entrySet().stream().map(Map.Entry::getValue).map(InvitedRoom::getInviteState)
+                .map(InviteState::getEvents)
+                .flatMap(List::stream).collect(Collectors.toList())));
+    }
 
-            if (rooms.getInvite().size() > 1) {
-                LOGGER.error("Too many rooms to join");
-                getHolder().runInTransaction((holder, dao) -> {
-                    holder.getConfig().setState(BotState.DELETED);
-                    saveData(holder, dao);
-                });
-                return LoopState.NEXT_STATE;
-            }
+    protected LoopState registeredState(List<Event> events) {
+        if (!events.isEmpty()) {
+            events.forEach(event -> joinRoom(events));
+            return LoopState.NEXT_STATE;
+        }
 
-            if (!rooms.getInvite().isEmpty()) {
-                rooms.getInvite().forEach(this::joinRoom);
-                return LoopState.NEXT_STATE;
-            }
-
-            return LoopState.RUN;
-        });
+        return LoopState.RUN;
     }
 
     /**
@@ -240,54 +235,59 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
             C config = getHolder().getConfig();
             JoinedRoom joinedRoom = rooms.getJoin().get(config.getRoomId());
 
-            if (joinedRoom != null) {
-                processJoinedRoom(joinedRoom);
-            }
-
             MatrixClient matrixClient = getHolder().getMatrixClient();
             for (Map.Entry<String, LeftRoom> roomEntry : rooms.getLeave().entrySet()) {
                 matrixClient.room().leaveRoom(roomEntry.getKey());
             }
 
-            if (matrixClient.room().joinedRooms().isEmpty()) {
-                getHolder().runInTransaction((holder, dao) -> {
-                    holder.getConfig().setState(BotState.DELETED);
-                    saveData(holder, dao);
-                });
-                return LoopState.NEXT_STATE;
+            if (joinedRoom == null) {
+                return LoopState.RUN;
+            } else {
+                return joinedState(joinedRoom.getTimeline().getEvents());
             }
-
-            return LoopState.RUN;
         });
+    }
+
+    protected LoopState joinedState(List<Event> events) {
+        processJoinedRoom(events);
+
+        if (getHolder().getMatrixClient().room().joinedRooms().isEmpty()) {
+            getHolder().runInTransaction((holder, dao) -> {
+                holder.getConfig().setState(BotState.DELETED);
+                saveData(holder, dao);
+            });
+            return LoopState.NEXT_STATE;
+        }
+
+        return LoopState.RUN;
     }
 
     /**
      * Join to room.
      *
-     * @param roomId room id.
-     * @param room   room to join.
+     * @param events invited events.
      */
-    public void joinRoom(String roomId, InvitedRoom room) {
+    public void joinRoom(List<Event> events) {
         getHolder().runInTransaction((holder, dao) -> {
-            RoomId response = holder.getMatrixClient().room().joinRoomByIdOrAlias(roomId);
-            C config = holder.getConfig();
-            if ((response.getErrcode() == null || response.getErrcode().trim().isEmpty())
-                && (response.getError() == null || response.getError().trim().isEmpty())) {
-                config.setRoomId(roomId);
-                config.setState(BotState.JOINED);
+            events.stream().filter(e -> {
+                Object membership = e.getContent().get("membership");
+                return Event.MembershipState.INVITE.equals(membership)
+                    && Event.EventType.ROOM_MEMBER.equals(e.getType());
+            }).findFirst().ifPresent(e -> {
+                RoomId response = holder.getMatrixClient().room().joinRoomByIdOrAlias(e.getRoomId());
 
-                room.getInviteState().getEvents().stream().filter(e -> {
-                    Object membership = e.getContent().get("membership");
-                    return membership instanceof String
-                        && Event.MembershipState.INVITE.equals(membership)
-                        && Event.EventType.ROOM_MEMBER.equals(e.getType());
-                }).map(Event::getSender).findFirst().ifPresent(config::setOwner);
-
-                saveData(holder, dao);
-            } else {
-                throw new RuntimeException(
-                    String.format("Failed join to room, errcode: ''%s'', error: ''%s''", response.getErrcode(), response.getError()));
-            }
+                if ((response.getErrcode() == null || response.getErrcode().trim().isEmpty())
+                    && (response.getError() == null || response.getError().trim().isEmpty())) {
+                    C config = holder.getConfig();
+                    config.setRoomId(e.getRoomId());
+                    config.setState(BotState.JOINED);
+                    config.setOwner(e.getSender());
+                    saveData(holder, dao);
+                } else {
+                    throw new RuntimeException(
+                        String.format("Failed join to room, errcode: ''%s'', error: ''%s''", response.getErrcode(), response.getError()));
+                }
+            });
         });
     }
 
@@ -307,29 +307,14 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
     /**
      * Process commands.
      *
-     * @param joinedRoom room's data.
+     * @param events events.
      */
-    public void processJoinedRoom(JoinedRoom joinedRoom) {
+    public void processJoinedRoom(List<Event> events) {
         String lastEvent = null;
         long lastOriginTs = 0;
         MatrixClient matrixClient = getHolder().getMatrixClient();
-        for (Event event : joinedRoom.getTimeline().getEvents()) {
-            Map<String, Object> content = event.getContent();
-            if (Event.EventType.ROOM_MESSAGE.equals(event.getType())
-                && !matrixClient.getUserId().equals(event.getSender())
-                && Event.MessageType.TEXT.equals(content.get("msgtype"))
-                && permit(event)) {
-                String action = (String) content.get("body");
-                try {
-                    getHolder().runInTransaction((holder, dao) -> {
-                        processAction(event, action);
-                        getHolder().getConfig().setTxnId(matrixClient.getTxn().get());
-                        saveData(holder, dao);
-                    });
-                } catch (Exception e) {
-                    LOGGER.error(String.format("Cannot perform action '%s'", action), e);
-                }
-            }
+        for (Event event : events) {
+            processEvent(event);
 
             if (event.getOriginServerTs() != null && event.getOriginServerTs() > lastOriginTs) {
                 lastOriginTs = event.getOriginServerTs();
@@ -338,6 +323,60 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
         }
         if (lastEvent != null) {
             matrixClient.sendReceipt(getHolder().getConfig().getRoomId(), lastEvent);
+        }
+    }
+
+    /**
+     * Send event.
+     *
+     * @param event event.
+     */
+    public void send(Event event) {
+        LoopState state = LoopState.RUN;
+        switch (getHolder().getConfig().getState()) {
+            case NEW:
+                state = newState();
+                break;
+            case REGISTERED:
+                state = registeredState(Collections.singletonList(event));
+                break;
+            case JOINED:
+                state = joinedState(Collections.singletonList(event));
+                break;
+            case DELETED:
+                state = deletedState();
+                break;
+            default:
+                LOGGER.error("Unknown state: " + getHolder().getConfig().getState());
+        }
+
+        if (LoopState.EXIT.equals(state)) {
+            getHolder().getShutdownListeners().forEach(ShutdownListener::shutdown);
+        }
+    }
+
+    /**
+     * Process an one event.
+     *
+     * @param event event.
+     */
+    protected void processEvent(Event event) {
+        MatrixClient matrixClient = getHolder().getMatrixClient();
+        Map<String, Object> content = event.getContent();
+        if (Event.EventType.ROOM_MESSAGE.equals(event.getType())
+            && !matrixClient.getUserId().equals(event.getSender())
+            && Event.MessageType.TEXT.equals(content.get("msgtype"))
+            && permit(event)) {
+            String action = (String) content.get("body");
+            try {
+                getHolder().runInTransaction((holder, dao) -> {
+                    processAction(event, action);
+                    getHolder().getConfig().setTxnId(matrixClient.getTxn().get());
+                    saveData(holder, dao);
+                });
+            } catch (Exception e) {
+                LOGGER.error(String.format("Cannot perform action '%s'", action), e);
+            }
         }
     }
 
@@ -369,7 +408,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
             if (command != null) {
                 command.invoke(getHolder(), event, Arrays.stream(arguments).skip(1).collect(Collectors.joining(" ")));
             } else {
-                matrixClient.sendNotice(config.getRoomId(), getHelp());
+                matrixClient.sendFormattedNotice(config.getRoomId(), getHelp());
             }
         }
     }

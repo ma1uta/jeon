@@ -79,15 +79,10 @@ public class AppResource implements ApplicationApi {
                                      HttpServletResponse servletResponse) {
         validateAsToken(servletRequest);
 
-        Boolean exist = getTransactionService().invoke((dao) -> {
+        if (!getTransactionService().invoke(dao -> {
             return dao.exist(txnId);
-        });
-        if (!exist) {
-            request.getEvents().forEach(event -> {
-                String roomId = event.getRoomId();
-                //TODO
-                //getBotPool().startNewBot(event.getRoomId(), "");
-            });
+        })) {
+            request.getEvents().forEach(event -> getMxTootBotPool().send(event));
             getTransactionService().invoke((dao) -> {
                 MxTootTransaction transaction = new MxTootTransaction();
                 transaction.setId(txnId);

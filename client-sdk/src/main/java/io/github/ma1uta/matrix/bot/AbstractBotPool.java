@@ -16,7 +16,11 @@
 
 package io.github.ma1uta.matrix.bot;
 
+import io.github.ma1uta.matrix.Event;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -50,12 +54,17 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
 
     private final List<Class<? extends Command<C, D, S, E>>> commandClasses;
 
+    private Map<String, Bot<C, D, S, E>> botMap = new HashMap<>();
+
+    private final RunState runState;
+
     public AbstractBotPool(String homeserverUrl, String domain, String displayName, Client client, String appToken,
-                           S service,
-                           List<Class<? extends Command<C, D, S, E>>> commandClasses) {
+                           S service, List<Class<? extends Command<C, D, S, E>>> commandClasses,
+                           RunState runState) {
         this.domain = domain;
         this.service = service;
         this.commandClasses = commandClasses;
+        this.runState = runState;
         this.pool = Executors.newCachedThreadPool();
         this.homeserverUrl = homeserverUrl;
         this.displayName = displayName;
@@ -95,6 +104,14 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         return commandClasses;
     }
 
+    public Map<String, Bot<C, D, S, E>> getBotMap() {
+        return botMap;
+    }
+
+    public RunState getRunState() {
+        return runState;
+    }
+
     protected abstract C createConfig(String username);
 
     /**
@@ -106,8 +123,36 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         submit(createConfig(username));
     }
 
-    protected void submit(C data) {
-        getPool().submit(new Bot<>(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), data, getService(), getCommandClasses()));
+    /**
+     * Send an one event to the bot.
+     *
+     * @param event event.
+     */
+    public void send(Event event) {
+        if (RunState.APPLICATION_SERVICE.equals(getRunState())) {
+            getBotMap().entrySet().stream()
+                .filter(entry -> {
+                    C config = entry.getValue().getHolder().getConfig();
+                    if (event.getRoomId().equals(config.getRoomId())) {
+                        return true;
+                    }
+                    Object membership = event.getContent().get("membership");
+                    return Event.MembershipState.INVITE.equals(membership)
+                        && Event.EventType.ROOM_MEMBER.equals(event.getType())
+                        && config.getUserId().equals(event.getStateKey());
+                }).map(Map.Entry::getValue).findFirst().ifPresent(bot -> bot.send(event));
+        }
+    }
+
+    protected void submit(C config) {
+        Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), config, getService(),
+            getCommandClasses());
+        String userId = bot.getHolder().getConfig().getUserId();
+        getBotMap().put(userId, bot);
+        bot.getHolder().addShutdownListener(() -> getBotMap().remove(userId));
+        if (RunState.STANDALONE.equals(getRunState())) {
+            getPool().submit(bot);
+        }
     }
 
     /**

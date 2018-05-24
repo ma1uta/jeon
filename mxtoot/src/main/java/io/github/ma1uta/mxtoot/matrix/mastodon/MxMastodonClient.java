@@ -100,18 +100,18 @@ public class MxMastodonClient implements Handler, ShutdownListener {
 
             StringBuilder sb = new StringBuilder();
             Account account = status.getAccount();
-            sb.append(" > [").append(status.getId()).append("](").append(status.getUrl()).append(")\n");
+            sb.append("<a href=\"").append(status.getUrl()).append("\">").append(status.getId()).append("</a><br/>");
             if (account != null) {
-                sb.append(" > ").append(account.getDisplayName()).append(" (").append(account.getUrl()).append(")");
+                sb.append("<a href=\"").append(account.getUrl()).append("\">").append(account.getDisplayName()).append("</a>");
             }
             if (status.getInReplyToId() != null) {
-                sb.append(" > In reply to ").append(status.getInReplyToId()).append(":\n");
+                sb.append(" in reply to ").append(status.getInReplyToId());
             }
-            sb.append(" wrote:\n").append(" > ").append(status.getContent()).append("\n");
+            sb.append(" wrote:<br/>").append(status.getContent());
 
             MxTootConfig config = holder.getConfig();
             MatrixClient matrixClient = holder.getMatrixClient();
-            matrixClient.sendNotice(config.getRoomId(), sb.toString());
+            matrixClient.sendFormattedNotice(config.getRoomId(), sb.toString());
 
             config.setTxnId(matrixClient.getTxn().get());
             getHolder().setConfig(dao.save(config));

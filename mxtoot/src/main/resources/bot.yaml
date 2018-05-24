@@ -12,6 +12,8 @@ commands:
   - io.github.ma1uta.mxtoot.matrix.command.RunMastodonTimeline
   - io.github.ma1uta.mxtoot.matrix.command.Toot
   - io.github.ma1uta.mxtoot.matrix.command.Reply
+runState: STANDALONE
+strictMode: true
 
 jerseyClient:
   gzipEnabled: false

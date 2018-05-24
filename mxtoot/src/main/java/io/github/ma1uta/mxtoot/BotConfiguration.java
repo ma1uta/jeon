@@ -22,6 +22,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import io.github.ma1uta.matrix.bot.Command;
+import io.github.ma1uta.matrix.bot.RunState;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
@@ -73,7 +74,14 @@ public class BotConfiguration extends Configuration {
     @JsonProperty("database")
     private DataSourceFactory database = new DataSourceFactory();
 
-    private List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commands = new ArrayList<>();
+    @NotNull
+    private RunState runState;
+
+    @NotNull
+    private boolean strictMode = true;
+
+    private List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commands =
+        new ArrayList<>();
 
     public DataSourceFactory getDataSourceFactory() {
         return database;
@@ -149,5 +157,21 @@ public class BotConfiguration extends Configuration {
 
     public void setCommands(List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commands) {
         this.commands = commands;
+    }
+
+    public RunState getRunState() {
+        return runState;
+    }
+
+    public void setRunState(RunState runState) {
+        this.runState = runState;
+    }
+
+    public boolean isStrictMode() {
+        return strictMode;
+    }
+
+    public void setStrictMode(boolean strictMode) {
+        this.strictMode = strictMode;
     }
 }

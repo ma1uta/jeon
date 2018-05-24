@@ -17,6 +17,7 @@
 package io.github.ma1uta.mxtoot;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import io.dropwizard.Application;
 import io.dropwizard.client.JerseyClientBuilder;
@@ -81,6 +82,8 @@ public class BotApplication extends Application<BotConfiguration> {
     @SuppressWarnings("unchecked")
     private void matrixBot(BotConfiguration botConfiguration, Environment environment) {
         environment.getObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        environment.getObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, botConfiguration.isStrictMode());
+
         Client jersey = new JerseyClientBuilder(environment).using(botConfiguration.getJerseyClient()).build("jersey");
 
         UnitOfWorkAwareProxyFactory proxyFactory = new UnitOfWorkAwareProxyFactory(matrixHibernate);
@@ -91,7 +94,8 @@ public class BotApplication extends Application<BotConfiguration> {
         MxTootService<MxTootTransactionDao> transactionService = proxyFactory.create(MxTootService.class, Object.class,
             mxTootTransactionDao);
         MxTootBotPool mxTootBotPool = new MxTootBotPool(botConfiguration.getBaseUrl(), botConfiguration.getDomain(),
-            botConfiguration.getDisplayName(), jersey, botConfiguration.getAsToken(), botService, botConfiguration.getCommands());
+            botConfiguration.getDisplayName(), jersey, botConfiguration.getAsToken(), botService, botConfiguration.getCommands(),
+            botConfiguration.getRunState());
 
         environment.lifecycle().manage(mxTootBotPool);
         environment.jersey()

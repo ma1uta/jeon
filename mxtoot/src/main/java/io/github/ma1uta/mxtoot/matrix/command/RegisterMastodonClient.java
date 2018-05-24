@@ -61,7 +61,7 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
         MatrixClient matrixClient = holder.getMatrixClient();
 
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
@@ -78,17 +78,17 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
 
             String authUrl = apps.getOAuthUrl(appRegistration.getClientId(), new Scope(Scope.Name.ALL), "urn:ietf:wg:oauth:2.0:oob");
 
-            matrixClient.sendNotice(config.getRoomId(), URLEncoder.encode(authUrl, StandardCharsets.UTF_8.name()));
+            matrixClient.sendFormattedNotice(config.getRoomId(), URLEncoder.encode(authUrl, StandardCharsets.UTF_8.name()));
             matrixClient
-                .sendNotice(config.getRoomId(), "Please open url, login, get auth code and invoke command: !auth <auth code>");
+                .sendFormattedNotice(config.getRoomId(), "Please open url, login, get auth code and invoke command: !auth <auth code>");
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot start registration of the mastodon client: ";
             LOGGER.error(msg, e);
-            matrixClient.sendNotice(config.getRoomId(), msg + e.getMessage());
+            matrixClient.sendFormattedNotice(config.getRoomId(), msg + e.getMessage());
         } catch (UnsupportedEncodingException e) {
             String msg = "Unsupported encoding: ";
             LOGGER.error(msg, e);
-            matrixClient.sendNotice(config.getRoomId(), msg + e.getMessage());
+            matrixClient.sendFormattedNotice(config.getRoomId(), msg + e.getMessage());
         }
     }
 

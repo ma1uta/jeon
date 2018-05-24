@@ -19,6 +19,7 @@ package io.github.ma1uta.mxtoot.matrix;
 import io.dropwizard.lifecycle.Managed;
 import io.github.ma1uta.matrix.bot.AbstractBotPool;
 import io.github.ma1uta.matrix.bot.Command;
+import io.github.ma1uta.matrix.bot.RunState;
 import io.github.ma1uta.mxtoot.matrix.mastodon.MxMastodonClient;
 
 import java.util.List;
@@ -32,8 +33,9 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
 
     public MxTootBotPool(String homeserverUrl, String domain, String displayName, Client client, String appToken,
                          MxTootService<MxTootDao> service,
-                         List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commandClasses) {
-        super(homeserverUrl, domain, displayName, client, appToken, service, commandClasses);
+                         List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commandClasses,
+                         RunState runState) {
+        super(homeserverUrl, domain, displayName, client, appToken, service, commandClasses, runState);
     }
 
     @Override

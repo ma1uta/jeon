@@ -44,19 +44,19 @@ public class Reply implements Command<MxTootConfig, MxTootDao, MxTootService<MxT
         MatrixClient matrixClient = holder.getMatrixClient();
 
         if (holder.getData() == null) {
-            matrixClient.sendNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
+            matrixClient.sendFormattedNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
             return;
         }
 
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
         String trimmed = arguments.trim();
         int spaceIndex = trimmed.indexOf(" ");
         if (spaceIndex == -1) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
@@ -64,16 +64,16 @@ public class Reply implements Command<MxTootConfig, MxTootDao, MxTootService<MxT
         try {
             statusId = Long.parseLong(trimmed.substring(0, spaceIndex));
         } catch (NumberFormatException e) {
-            matrixClient.sendNotice(config.getRoomId(), "Status id is not a number.\nUsage: " + usage());
+            matrixClient.sendFormattedNotice(config.getRoomId(), "Status id is not a number.\nUsage: " + usage());
             return;
         }
         String message = trimmed.substring(spaceIndex);
 
         try {
             Status status = new Statuses(holder.getData().getMastodonClient()).postStatus(message, statusId, null, false, null).execute();
-            matrixClient.sendNotice(config.getRoomId(), "Tooted: " + status.getUrl());
+            matrixClient.sendFormattedNotice(config.getRoomId(), "Tooted: " + status.getUrl());
         } catch (Mastodon4jRequestException e) {
-            matrixClient.sendNotice(config.getRoomId(), "Cannot toot");
+            matrixClient.sendFormattedNotice(config.getRoomId(), "Cannot toot");
         }
     }
 
