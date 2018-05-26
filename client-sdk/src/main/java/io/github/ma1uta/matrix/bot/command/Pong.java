@@ -40,7 +40,7 @@ public class Pong<C extends BotConfig, D extends BotDao<C>, S extends Service<D>
 
     @Override
     public void invoke(BotHolder<C, D, S, E> holder, Event event, String arguments) {
-        holder.getMatrixClient().sendFormattedNotice(holder.getConfig().getRoomId(), "pong");
+        holder.getMatrixClient().sendNotice(holder.getConfig().getRoomId(), "pong");
     }
 
     @Override

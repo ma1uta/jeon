@@ -39,6 +39,7 @@ import io.github.ma1uta.matrix.client.MatrixClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +128,12 @@ public class MxMastodonClient implements Handler, ShutdownListener {
         }
 
         try {
-            this.shutdownable = new Streaming(getMastodonClient(), true).user(this);
+            this.shutdownable = new Streaming(getMastodonClient(), true,
+                response -> {
+                    MatrixClient matrixClient = getHolder().getMatrixClient();
+                    MxTootConfig config = getHolder().getConfig();
+                    matrixClient.sendNotice(config.getRoomId(), "Failed start streaming: " + response.message());
+                }).user(this);
             this.running = true;
             return true;
         } catch (RuntimeException e) {
@@ -157,7 +163,8 @@ public class MxMastodonClient implements Handler, ShutdownListener {
 
             MatrixClient matrixClient = holder.getMatrixClient();
             MxTootConfig config = holder.getConfig();
-            matrixClient.sendFormattedNotice(config.getRoomId(), writeStatus(status));
+            String message = writeStatus(status);
+            matrixClient.sendFormattedNotice(config.getRoomId(), Jsoup.parse(message).text(), message);
 
             config.setTxnId(matrixClient.getTxn().get());
             getHolder().setConfig(dao.save(config));

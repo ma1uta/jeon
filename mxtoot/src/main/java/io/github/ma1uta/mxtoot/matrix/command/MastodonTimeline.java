@@ -48,7 +48,7 @@ public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxToot
 
         MatrixClient matrixClient = holder.getMatrixClient();
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + help());
+            matrixClient.sendNotice(config.getRoomId(), "Usage: " + help());
         } else {
             TimelineState clientState = TimelineState.valueOf(arguments.trim().toUpperCase());
             config.setTimelineState(clientState);
@@ -66,14 +66,14 @@ public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxToot
                 case ON:
                 case AUTO:
                     if (!holder.getData().streaming()) {
-                        matrixClient.sendFormattedNotice(config.getRoomId(), "Cannot streaming");
+                        matrixClient.sendNotice(config.getRoomId(), "Cannot streaming");
                     }
                     break;
                 case OFF:
                     holder.getData().shutdown();
                     break;
                 default:
-                    matrixClient.sendFormattedNotice(config.getRoomId(), "Unknown status " + clientState);
+                    matrixClient.sendNotice(config.getRoomId(), "Unknown status " + clientState);
             }
         }
     }

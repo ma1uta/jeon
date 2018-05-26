@@ -48,7 +48,7 @@ public class Join<C extends BotConfig, D extends BotDao<C>, S extends Service<D>
             return;
         }
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
         } else {
             RoomId result = matrixClient.room().joinRoomByIdOrAlias(arguments);
             if ((result.getError() == null || result.getError().trim().isEmpty())

@@ -268,11 +268,12 @@ public class MatrixClient implements Closeable {
     /**
      * Send notice.
      *
-     * @param roomId room id.
-     * @param text   message.
+     * @param roomId        room id.
+     * @param text          message.
+     * @param formattedText formatted message.
      * @return sent event id.
      */
-    public SendEventResponse sendFormattedNotice(String roomId, String text) {
+    public SendEventResponse sendFormattedNotice(String roomId, String text, String formattedText) {
         Map<String, String> pathParams = new HashMap<>();
         pathParams.put("roomId", roomId);
         pathParams.put("eventType", Event.EventType.ROOM_MESSAGE);
@@ -281,7 +282,7 @@ public class MatrixClient implements Closeable {
         Map<String, String> payload = new HashMap<>();
         payload.put("msgtype", Event.MessageType.NOTICE);
         payload.put("body", text);
-        payload.put("formatted_body", text);
+        payload.put("formatted_body", formattedText);
         payload.put("format", "org.matrix.custom.html");
         return put(EventApi.class, "sendEvent", pathParams, null, payload, SendEventResponse.class);
     }

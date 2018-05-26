@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
+import java.util.function.Consumer;
 
 /**
  * Rewrited version of the {@link com.sys1yagi.mastodon4j.api.method.Streaming} to add the feature to retry connection.
@@ -41,10 +42,12 @@ public class Streaming {
 
     private final MastodonClient client;
     private final boolean retryable;
+    private final Consumer<Response> errorHandler;
 
-    public Streaming(MastodonClient client, boolean retryable) {
+    public Streaming(MastodonClient client, boolean retryable, Consumer<Response> errorHandler) {
         this.client = client;
         this.retryable = retryable;
+        this.errorHandler = errorHandler;
     }
 
     /**
@@ -59,6 +62,7 @@ public class Streaming {
             while (true) {
                 Response response = client.get("streaming/user", null);
                 if (!response.isSuccessful()) {
+                    errorHandler.accept(response);
                     throw new RuntimeException(new Mastodon4jRequestException(response));
                 }
 

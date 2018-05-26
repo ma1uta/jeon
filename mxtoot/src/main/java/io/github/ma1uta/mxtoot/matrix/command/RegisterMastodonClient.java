@@ -57,7 +57,7 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
         MatrixClient matrixClient = holder.getMatrixClient();
 
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
@@ -74,13 +74,12 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
 
             String authUrl = apps.getOAuthUrl(appRegistration.getClientId(), new Scope(Scope.Name.ALL), "urn:ietf:wg:oauth:2.0:oob");
 
-            matrixClient.sendFormattedNotice(config.getRoomId(), authUrl.replaceAll("\\s", "+"));
-            matrixClient
-                .sendFormattedNotice(config.getRoomId(), "Please open url, login, get auth code and invoke command: !auth <auth code>");
+            matrixClient.sendNotice(config.getRoomId(), authUrl.replaceAll("\\s", "+"));
+            matrixClient.sendNotice(config.getRoomId(), "Please open url, login, get auth code and invoke command: !auth <auth code>");
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot start registration of the mastodon client: ";
             LOGGER.error(msg, e);
-            matrixClient.sendFormattedNotice(config.getRoomId(), msg + e.getMessage());
+            matrixClient.sendNotice(config.getRoomId(), msg + e.getMessage());
         }
     }
 

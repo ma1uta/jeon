@@ -57,12 +57,12 @@ public class AuthorizeMastodonClient implements Command<MxTootConfig, MxTootDao,
 
         if (config.getMastodonClientId() == null || config.getMastodonClientId().trim().isEmpty()
             || config.getMastodonClientSecret() == null || config.getMastodonClientSecret().trim().isEmpty()) {
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Start registration by invoking !reg command");
+            matrixClient.sendNotice(config.getRoomId(), "Start registration by invoking !reg command");
             return;
         }
 
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
@@ -78,7 +78,7 @@ public class AuthorizeMastodonClient implements Command<MxTootConfig, MxTootDao,
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot get access token: ";
             LOGGER.error(msg, e);
-            matrixClient.sendFormattedNotice(config.getRoomId(), msg + e.getMessage());
+            matrixClient.sendNotice(config.getRoomId(), msg + e.getMessage());
         }
     }
 

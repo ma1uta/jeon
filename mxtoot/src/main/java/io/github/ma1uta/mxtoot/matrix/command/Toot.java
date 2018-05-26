@@ -49,18 +49,18 @@ public class Toot implements Command<MxTootConfig, MxTootDao, MxTootService<MxTo
         MatrixClient matrixClient = holder.getMatrixClient();
 
         if (holder.getData() == null) {
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
+            matrixClient.sendNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
             return;
         }
 
         try {
             Status status = new Statuses(holder.getData().getMastodonClient()).postStatus(arguments, null, null, false, null).execute();
 
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Tooted: " + status.getUri());
+            matrixClient.sendNotice(config.getRoomId(), "Tooted: " + status.getUri());
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot toot";
             LOGGER.error(msg, e);
-            matrixClient.sendFormattedNotice(config.getRoomId(), msg);
+            matrixClient.sendNotice(config.getRoomId(), msg);
         }
     }
 
