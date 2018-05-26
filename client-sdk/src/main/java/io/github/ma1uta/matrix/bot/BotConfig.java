@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.bot;
 
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -47,36 +48,43 @@ public class BotConfig {
     /**
      * Bot's name.
      */
+    @Column(name = "user_id")
     private String userId;
 
     /**
      * Bot's device id.
      */
+    @Column(name = "device_id")
     private String deviceId;
 
     /**
      * Bot's display name.
      */
+    @Column(name = "display_name")
     private String displayName;
 
     /**
      * Bot's filter to query only m.room.message events.
      */
+    @Column(name = "filter_id")
     private String filterId;
 
     /**
      * Bot's room.
      */
+    @Column(name = "room_id")
     private String roomId;
 
     /**
      * Bot's batch to prevent process old events.
      */
+    @Column(name = "next_batch")
     private String nextBatch;
 
     /**
      * Transaction id.
      */
+    @Column(name = "txn_id")
     private Long txnId = 0L;
 
     /**

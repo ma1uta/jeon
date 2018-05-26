@@ -98,10 +98,6 @@
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-views-mustache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-metrics-graphite</artifactId>
         </dependency>
         <dependency>
@@ -153,6 +149,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.samskivert</groupId>
+            <artifactId>jmustache</artifactId>
+            <version>1.14</version>
         </dependency>
     </dependencies>
 

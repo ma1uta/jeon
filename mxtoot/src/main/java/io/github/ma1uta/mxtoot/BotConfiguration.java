@@ -23,10 +23,10 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.matrix.bot.RunState;
+import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
-import io.github.ma1uta.mxtoot.matrix.mastodon.MxMastodonClient;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
@@ -51,10 +51,7 @@ public class BotConfiguration extends Configuration {
 
     @NotEmpty
     @URL
-    private String baseUrl;
-
-    @NotEmpty
-    private String botUserName;
+    private String homeserverUrl;
 
     private String displayName;
 
@@ -66,9 +63,6 @@ public class BotConfiguration extends Configuration {
     @JsonProperty("as_token")
     private String asToken;
 
-    @NotEmpty
-    private String url;
-
     @Valid
     @NotNull
     @JsonProperty("database")
@@ -76,6 +70,28 @@ public class BotConfiguration extends Configuration {
 
     @NotNull
     private RunState runState;
+
+    @NotEmpty
+    @NotNull
+    private String postFormat;
+
+    @NotEmpty
+    @NotNull
+    private String replyFormat;
+
+    @NotEmpty
+    @NotNull
+    private String boostFormat;
+
+    @NotEmpty
+    @NotNull
+    private String dateTimeFormat;
+
+    @NotEmpty
+    @NotNull
+    private String dateTimeLocale;
+
+    private Boolean fetchMissingStatuses;
 
     @NotNull
     private boolean strictMode = true;
@@ -103,20 +119,12 @@ public class BotConfiguration extends Configuration {
         this.domain = domain;
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
+    public String getHomeserverUrl() {
+        return homeserverUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
-    public String getBotUserName() {
-        return botUserName;
-    }
-
-    public void setBotUserName(String botUserName) {
-        this.botUserName = botUserName;
+    public void setHomeserverUrl(String homeserverUrl) {
+        this.homeserverUrl = homeserverUrl;
     }
 
     public String getDisplayName() {
@@ -143,14 +151,6 @@ public class BotConfiguration extends Configuration {
         this.asToken = asToken;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> getCommands() {
         return commands;
     }
@@ -173,5 +173,61 @@ public class BotConfiguration extends Configuration {
 
     public void setStrictMode(boolean strictMode) {
         this.strictMode = strictMode;
+    }
+
+    public DataSourceFactory getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(DataSourceFactory database) {
+        this.database = database;
+    }
+
+    public String getPostFormat() {
+        return postFormat;
+    }
+
+    public void setPostFormat(String postFormat) {
+        this.postFormat = postFormat;
+    }
+
+    public String getReplyFormat() {
+        return replyFormat;
+    }
+
+    public void setReplyFormat(String replyFormat) {
+        this.replyFormat = replyFormat;
+    }
+
+    public String getBoostFormat() {
+        return boostFormat;
+    }
+
+    public void setBoostFormat(String boostFormat) {
+        this.boostFormat = boostFormat;
+    }
+
+    public String getDateTimeFormat() {
+        return dateTimeFormat;
+    }
+
+    public void setDateTimeFormat(String dateTimeFormat) {
+        this.dateTimeFormat = dateTimeFormat;
+    }
+
+    public String getDateTimeLocale() {
+        return dateTimeLocale;
+    }
+
+    public void setDateTimeLocale(String dateTimeLocale) {
+        this.dateTimeLocale = dateTimeLocale;
+    }
+
+    public Boolean getFetchMissingStatuses() {
+        return fetchMissingStatuses;
+    }
+
+    public void setFetchMissingStatuses(Boolean fetchMissingStatuses) {
+        this.fetchMissingStatuses = fetchMissingStatuses;
     }
 }

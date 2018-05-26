@@ -20,8 +20,8 @@ import io.dropwizard.lifecycle.Managed;
 import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.bot.AbstractBotPool;
 import io.github.ma1uta.matrix.bot.Command;
-import io.github.ma1uta.matrix.bot.RunState;
-import io.github.ma1uta.mxtoot.matrix.mastodon.MxMastodonClient;
+import io.github.ma1uta.mxtoot.BotConfiguration;
+import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,24 +32,34 @@ import javax.ws.rs.client.Client;
  */
 public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> implements Managed {
 
-    public MxTootBotPool(String homeserverUrl, String domain, String displayName, Client client, String appToken,
-                         MxTootService<MxTootDao> service,
-                         List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commandClasses,
-                         RunState runState) {
-        super(homeserverUrl, domain, displayName, client, appToken, service, commandClasses, runState);
+    private final BotConfiguration botConfiguration;
+
+    public MxTootBotPool(BotConfiguration botConfiguration, MxTootService<MxTootDao> service, Client client,
+                         List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> cmds) {
+        super(botConfiguration.getHomeserverUrl(), botConfiguration.getDomain(), botConfiguration.getDisplayName(), client,
+            botConfiguration.getAsToken(), service, cmds, botConfiguration.getRunState());
+        this.botConfiguration = botConfiguration;
     }
 
     @Override
     protected MxTootConfig createConfig(String username) {
         MxTootConfig config = new MxTootConfig();
         config.setUserId(username);
+        config.setDisplayName(getDisplayName());
+        config.setDeviceId(UUID.randomUUID().toString());
+
         String localpart = Id.localpart(username);
         int nameIndex = localpart.indexOf("_");
         if (nameIndex > -1) {
-            config.setMastodonUsername(localpart.substring(nameIndex));
+            config.setMastodonClient(localpart.substring(nameIndex));
         }
-        config.setDisplayName(getDisplayName());
-        config.setDeviceId(UUID.randomUUID().toString());
+        config.setPostFormat(botConfiguration.getPostFormat());
+        config.setReplyFormat(botConfiguration.getReplyFormat());
+        config.setBoostFormat(botConfiguration.getBoostFormat());
+        config.setDateTimeFormat(botConfiguration.getDateTimeFormat());
+        config.setDateTimeLocale(botConfiguration.getDateTimeLocale());
+        config.setFetchMissingStatuses(botConfiguration.getFetchMissingStatuses());
+
         return config;
     }
 

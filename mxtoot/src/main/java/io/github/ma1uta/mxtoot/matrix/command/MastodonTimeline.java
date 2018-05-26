@@ -22,17 +22,17 @@ import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.matrix.client.MatrixClient;
-import io.github.ma1uta.mxtoot.matrix.MastodonClientState;
+import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
-import io.github.ma1uta.mxtoot.matrix.mastodon.MxMastodonClient;
+import io.github.ma1uta.mxtoot.matrix.TimelineState;
 import okhttp3.OkHttpClient;
 
 /**
  * Run mastodon timeline.
  */
-public class RunMastodonTimeline implements Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> {
+public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> {
     @Override
     public String name() {
         return "timeline";
@@ -50,8 +50,8 @@ public class RunMastodonTimeline implements Command<MxTootConfig, MxTootDao, MxT
         if (arguments == null || arguments.trim().isEmpty()) {
             matrixClient.sendFormattedNotice(config.getRoomId(), "Usage: " + help());
         } else {
-            MastodonClientState clientState = MastodonClientState.valueOf(arguments.trim().toUpperCase());
-            config.setMastodonClientState(clientState);
+            TimelineState clientState = TimelineState.valueOf(arguments.trim().toUpperCase());
+            config.setTimelineState(clientState);
 
             if (holder.getData() == null) {
                 MastodonClient client = new MastodonClient.Builder(config.getMastodonServer(), new OkHttpClient.Builder(), new Gson())

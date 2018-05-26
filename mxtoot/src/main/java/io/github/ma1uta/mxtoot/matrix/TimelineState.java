@@ -19,7 +19,7 @@ package io.github.ma1uta.mxtoot.matrix;
 /**
  * States of the mastodon client.
  */
-public enum MastodonClientState {
+public enum TimelineState {
     /**
      * Run timeline.
      */

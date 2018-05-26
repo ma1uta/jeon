@@ -23,10 +23,10 @@ import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.matrix.client.MatrixClient;
+import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
-import io.github.ma1uta.mxtoot.matrix.mastodon.MxMastodonClient;
 
 /**
  * Reply.

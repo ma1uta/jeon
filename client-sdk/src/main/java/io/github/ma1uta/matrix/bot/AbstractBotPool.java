@@ -156,6 +156,9 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
     }
 
     protected void submit(C config) {
+        getService().invoke(dao -> {
+            dao.save(config);
+        });
         Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), config, getService(),
             getCommandClasses());
         String userId = bot.getHolder().getConfig().getUserId();
@@ -163,6 +166,8 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         bot.getHolder().addShutdownListener(() -> getBotMap().remove(userId));
         if (RunState.STANDALONE.equals(getRunState())) {
             getPool().submit(bot);
+        } else if (BotState.NEW.equals(config.getState())) {
+            bot.send(null);
         }
     }
 

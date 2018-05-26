@@ -26,10 +26,10 @@ import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.matrix.client.MatrixClient;
+import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
-import io.github.ma1uta.mxtoot.matrix.mastodon.MxMastodonClient;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
 
         try {
             AppRegistration appRegistration = apps
-                .createApp(config.getMastodonUsername(), "urn:ietf:wg:oauth:2.0:oob", new Scope(Scope.Name.ALL)).execute();
+                .createApp(config.getMastodonClient(), "urn:ietf:wg:oauth:2.0:oob", new Scope(Scope.Name.ALL)).execute();
 
             config.setMastodonClientId(appRegistration.getClientId());
             config.setMastodonClientSecret(appRegistration.getClientSecret());

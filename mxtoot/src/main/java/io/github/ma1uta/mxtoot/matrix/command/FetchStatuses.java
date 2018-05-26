@@ -16,9 +16,6 @@
 
 package io.github.ma1uta.mxtoot.matrix.command;
 
-import com.sys1yagi.mastodon4j.api.entity.Status;
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
-import com.sys1yagi.mastodon4j.api.method.Statuses;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.Command;
@@ -31,46 +28,42 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Toot message.
+ * Enable or disable fetch statuses.
  */
-public class Toot implements Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> {
+public class FetchStatuses implements Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Toot.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FetchStatuses.class);
 
     @Override
     public String name() {
-        return "toot";
+        return "fetch_statuses";
     }
 
     @Override
     public void invoke(BotHolder<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> holder, Event event,
                        String arguments) {
         MxTootConfig config = holder.getConfig();
-        MatrixClient matrixClient = holder.getMatrixClient();
-
-        if (holder.getData() == null) {
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
+        if (config.getOwner() != null && !config.getOwner().equals(event.getSender())) {
             return;
         }
 
-        try {
-            Status status = new Statuses(holder.getData().getMastodonClient()).postStatus(arguments, null, null, false, null).execute();
+        MatrixClient matrixClient = holder.getMatrixClient();
 
-            matrixClient.sendFormattedNotice(config.getRoomId(), "Tooted: " + status.getUri());
-        } catch (Mastodon4jRequestException e) {
-            String msg = "Cannot toot";
-            LOGGER.error(msg, e);
-            matrixClient.sendFormattedNotice(config.getRoomId(), msg);
+        if (arguments == null || arguments.isEmpty()) {
+            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            return;
         }
+
+        config.setFetchMissingStatuses(Boolean.parseBoolean(arguments.trim()));
     }
 
     @Override
     public String help() {
-        return "toot message";
+        return "should mastodon client fetch statuses by id (for example replies).";
     }
 
     @Override
     public String usage() {
-        return "!toot <message>";
+        return "!fetch_statuses [true|false]";
     }
 }

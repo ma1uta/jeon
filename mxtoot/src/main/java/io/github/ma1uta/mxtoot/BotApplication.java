@@ -93,15 +93,13 @@ public class BotApplication extends Application<BotConfiguration> {
         MxTootService<MxTootDao> botService = proxyFactory.create(MxTootService.class, Object.class, mxTootDao);
         MxTootService<MxTootTransactionDao> transactionService = proxyFactory.create(MxTootService.class, Object.class,
             mxTootTransactionDao);
-        MxTootBotPool mxTootBotPool = new MxTootBotPool(botConfiguration.getBaseUrl(), botConfiguration.getDomain(),
-            botConfiguration.getDisplayName(), jersey, botConfiguration.getAsToken(), botService, botConfiguration.getCommands(),
-            botConfiguration.getRunState());
+        MxTootBotPool mxTootBotPool = new MxTootBotPool(botConfiguration, botService, jersey, botConfiguration.getCommands());
 
         environment.lifecycle().manage(mxTootBotPool);
         environment.jersey()
             .register(
-                new AppResource(mxTootTransactionDao, mxTootBotPool, botConfiguration.getHsToken(), botConfiguration.getUrl(), botService,
-                    transactionService));
+                new AppResource(mxTootTransactionDao, mxTootBotPool, botConfiguration.getHsToken(), botConfiguration.getHomeserverUrl(),
+                    botService, transactionService));
         environment.jersey().register(new ExceptionHandler());
     }
 }

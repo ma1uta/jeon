@@ -408,7 +408,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
             if (command != null) {
                 command.invoke(getHolder(), event, Arrays.stream(arguments).skip(1).collect(Collectors.joining(" ")));
             } else {
-                matrixClient.sendFormattedNotice(config.getRoomId(), getHelp());
+                matrixClient.sendNotice(config.getRoomId(), getHelp());
             }
         }
     }

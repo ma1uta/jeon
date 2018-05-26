@@ -18,6 +18,7 @@ package io.github.ma1uta.mxtoot.matrix;
 
 import io.github.ma1uta.matrix.bot.BotConfig;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,32 +36,74 @@ public class MxTootConfig extends BotConfig {
     /**
      * Mastodon server.
      */
+    @Column(name = "mstdn_server")
     private String mastodonServer;
 
     /**
      * Mastodon username.
      */
-    private String mastodonUsername;
+    @Column(name = "mstdn_client")
+    private String mastodonClient;
 
     /**
      * Mastodon client id.
      */
+    @Column(name = "mstdn_client_id")
     private String mastodonClientId;
 
     /**
      * Mastodon client secret.
      */
+    @Column(name = "mstdn_client_secret")
     private String mastodonClientSecret;
 
     /**
      * Mastodon access token.
      */
+    @Column(name = "mstdn_access_token")
     private String mastodonAccessToken;
 
     /**
      * Mastodon client state.
      */
-    private MastodonClientState mastodonClientState;
+    @Column(name = "mstdn_timeline")
+    private TimelineState timelineState;
+
+    /**
+     * Format of the regular posts.
+     */
+    @Column(name = "mstdn_post_format")
+    private String postFormat;
+
+    /**
+     * Format of the reply.
+     */
+    @Column(name = "mstdn_reply_format")
+    private String replyFormat;
+
+    /**
+     * Format of the boost message.
+     */
+    @Column(name = "mstdn_boost_format")
+    private String boostFormat;
+
+    /**
+     * Datetime's format.
+     */
+    @Column(name = "mstdn_datetime_format")
+    private String dateTimeFormat;
+
+    /**
+     * Locale of the date time.
+     */
+    @Column(name = "mstdn_datetime_locale")
+    private String dateTimeLocale;
+
+    /**
+     * Fetch status by id.
+     */
+    @Column(name = "fetch_statuses")
+    private Boolean fetchMissingStatuses;
 
     public String getMastodonServer() {
         return mastodonServer;
@@ -70,12 +113,12 @@ public class MxTootConfig extends BotConfig {
         this.mastodonServer = mastodonServer;
     }
 
-    public String getMastodonUsername() {
-        return mastodonUsername;
+    public String getMastodonClient() {
+        return mastodonClient;
     }
 
-    public void setMastodonUsername(String mastodonUsername) {
-        this.mastodonUsername = mastodonUsername;
+    public void setMastodonClient(String mastodonClient) {
+        this.mastodonClient = mastodonClient;
     }
 
     public String getMastodonClientId() {
@@ -102,11 +145,69 @@ public class MxTootConfig extends BotConfig {
         this.mastodonAccessToken = mastodonAccessToken;
     }
 
-    public MastodonClientState getMastodonClientState() {
-        return mastodonClientState;
+    public TimelineState getTimelineState() {
+        return timelineState;
     }
 
-    public void setMastodonClientState(MastodonClientState mastodonClientState) {
-        this.mastodonClientState = mastodonClientState;
+    public void setTimelineState(TimelineState timelineState) {
+        this.timelineState = timelineState;
+    }
+
+    public String getPostFormat() {
+        return postFormat;
+    }
+
+    public void setPostFormat(String postFormat) {
+        this.postFormat = postFormat;
+    }
+
+    public String getReplyFormat() {
+        return replyFormat;
+    }
+
+    public void setReplyFormat(String replyFormat) {
+        this.replyFormat = replyFormat;
+    }
+
+    public String getBoostFormat() {
+        return boostFormat;
+    }
+
+    public void setBoostFormat(String boostFormat) {
+        this.boostFormat = boostFormat;
+    }
+
+    public String getDateTimeFormat() {
+        return dateTimeFormat;
+    }
+
+    public void setDateTimeFormat(String dateTimeFormat) {
+        this.dateTimeFormat = dateTimeFormat;
+    }
+
+    public Boolean getFetchMissingStatuses() {
+        return fetchMissingStatuses;
+    }
+
+    public void setFetchMissingStatuses(Boolean fetchMissingStatuses) {
+        this.fetchMissingStatuses = fetchMissingStatuses;
+    }
+
+    public String getDateTimeLocale() {
+        return dateTimeLocale;
+    }
+
+    public void setDateTimeLocale(String dateTimeLocale) {
+        this.dateTimeLocale = dateTimeLocale;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }
