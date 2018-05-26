@@ -27,11 +27,16 @@ import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Reply.
  */
 public class Reply implements Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Reply.class);
+
     @Override
     public String name() {
         return "reply";
@@ -64,6 +69,7 @@ public class Reply implements Command<MxTootConfig, MxTootDao, MxTootService<MxT
         try {
             statusId = Long.parseLong(trimmed.substring(0, spaceIndex));
         } catch (NumberFormatException e) {
+            LOGGER.error("Wrong status id", e);
             matrixClient.sendNotice(config.getRoomId(), "Status id is not a number.\nUsage: " + usage());
             return;
         }
@@ -73,7 +79,8 @@ public class Reply implements Command<MxTootConfig, MxTootDao, MxTootService<MxT
             Status status = new Statuses(holder.getData().getMastodonClient()).postStatus(message, statusId, null, false, null).execute();
             matrixClient.sendNotice(config.getRoomId(), "Tooted: " + status.getUrl());
         } catch (Mastodon4jRequestException e) {
-            matrixClient.sendNotice(config.getRoomId(), "Cannot toot");
+            LOGGER.error("Cannot toot", e);
+            matrixClient.sendNotice(config.getRoomId(), "Cannot toot: " + e.getMessage());
         }
     }
 

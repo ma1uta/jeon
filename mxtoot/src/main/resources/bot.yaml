@@ -17,15 +17,15 @@ commands:
 runState: APPLICATION_SERVICE
 strictMode: true
 postFormat: >
-    <hr/><a href="{{url}}">{{url}}</a>:<br/>
+    <hr/>[{{id}}]: <a href="{{url}}">{{url}}</a>:<br/>
     {{account.acct}} at {{created_at}} wrote:<br/>
     {{content}}
 replyFormat: >
-    <hr/><a href="{{url}}">{{url}}</a>:<br/>
+    <hr/>[{{id}}]: <a href="{{url}}">{{url}}</a>:<br/>
     {{account.acct}} at {{created_at}} in reply to <a href="{{in_reply_to.url}}">{{in_reply_to.url}}</a> wrote:<br/>
     {{content}}
 boostFormat: >
-    <hr/><a href="{{url}}">{{url}}</a>:<br/>
+    <hr/>[{{id}}]: <a href="{{url}}">{{url}}</a>:<br/>
     {{account.acct}} boosted <a href="{{reblog.url}}">{{reblog.url}}</a>:<br/>
     {{reblog.account.acct}} at {{reblog.created_at}} wrote:<br/>
     {{content}}
