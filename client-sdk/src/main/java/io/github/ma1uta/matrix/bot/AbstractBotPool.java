@@ -167,7 +167,7 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         if (RunState.STANDALONE.equals(getRunState())) {
             getPool().submit(bot);
         } else if (BotState.NEW.equals(config.getState())) {
-            bot.send(null);
+            bot.newState();
         }
     }
 

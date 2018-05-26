@@ -17,6 +17,7 @@
 package io.github.ma1uta.mxtoot.mastodon;
 
 import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.MustacheException;
 import com.samskivert.mustache.Template;
 import com.sys1yagi.mastodon4j.MastodonClient;
 import com.sys1yagi.mastodon4j.api.Handler;
@@ -173,17 +174,17 @@ public class MxMastodonClient implements Handler, ShutdownListener {
         Template template;
         if (status.getReblog() != null) {
             if (getBoostTemplate() == null) {
-                setBoostTemplate(Mustache.compiler().compile(config.getBoostFormat()));
+                setBoostTemplate(compileTemplate(config.getBoostFormat()));
             }
             template = getBoostTemplate();
         } else if (status.getInReplyToId() != null) {
             if (getReplyTemplate() == null) {
-                setReplyTemplate(Mustache.compiler().compile(config.getReplyFormat()));
+                setReplyTemplate(compileTemplate(config.getReplyFormat()));
             }
             template = getReplyTemplate();
         } else {
             if (getPostTemplate() == null) {
-                setPostTemplate(Mustache.compiler().compile(config.getPostFormat()));
+                setPostTemplate(compileTemplate(config.getPostFormat()));
             }
             template = getPostTemplate();
         }
@@ -209,7 +210,17 @@ public class MxMastodonClient implements Handler, ShutdownListener {
             }
         }
 
-        return template.execute(statusMap);
+        try {
+            return template.execute(statusMap);
+        } catch (MustacheException e) {
+            String msg = "Cannot create a post";
+            LOGGER.error(msg, e);
+            return msg;
+        }
+    }
+
+    protected Template compileTemplate(String template) {
+        return Mustache.compiler().defaultValue("").escapeHTML(false).compile(template);
     }
 
     protected Map<String, Object> statusToMap(Status status, boolean parseReblog) {
