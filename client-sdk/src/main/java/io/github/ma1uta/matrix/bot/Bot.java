@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.ws.rs.client.Client;
@@ -57,6 +58,8 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
     private final Map<String, Command<C, D, S, E>> commands;
 
     private String help;
+
+    private BiConsumer<BotHolder<C, D, S, E>, D> initAction;
 
     private final BotHolder<C, D, S, E> holder;
 
@@ -94,9 +97,19 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
         return help;
     }
 
+    public BiConsumer<BotHolder<C, D, S, E>, D> getInitAction() {
+        return initAction;
+    }
+
+    public void setInitAction(BiConsumer<BotHolder<C, D, S, E>, D> initAction) {
+        this.initAction = initAction;
+    }
+
     @Override
     public void run() {
         try {
+            init();
+
             LoopState state = LoopState.RUN;
             while (!LoopState.EXIT.equals(state)) {
                 switch (getHolder().getConfig().getState()) {
@@ -123,6 +136,17 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
         }
 
         getHolder().getShutdownListeners().forEach(ShutdownListener::shutdown);
+    }
+
+    /**
+     * Run startup action.
+     */
+    public void init() {
+        if (getInitAction() != null) {
+            getHolder().runInTransaction((holder, dao) -> {
+                getInitAction().accept(holder, dao);
+            });
+        }
     }
 
     /**

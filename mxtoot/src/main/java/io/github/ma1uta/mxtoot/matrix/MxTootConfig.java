@@ -20,6 +20,8 @@ import io.github.ma1uta.matrix.bot.BotConfig;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -67,6 +69,7 @@ public class MxTootConfig extends BotConfig {
      * Mastodon client state.
      */
     @Column(name = "mstdn_timeline")
+    @Enumerated(EnumType.STRING)
     private TimelineState timelineState;
 
     /**

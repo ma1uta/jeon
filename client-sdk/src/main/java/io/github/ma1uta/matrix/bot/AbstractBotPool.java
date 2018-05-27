@@ -17,6 +17,8 @@
 package io.github.ma1uta.matrix.bot;
 
 import io.github.ma1uta.matrix.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,8 @@ import javax.ws.rs.client.Client;
  * @param <E> extra data.
  */
 public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, S extends Service<D>, E> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBotPool.class);
 
     private static final int TIMEOUT = 10;
 
@@ -115,6 +119,8 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
 
     protected abstract C createConfig(String username);
 
+    protected abstract void initializeBot(Bot<C, D, S, E> bot);
+
     /**
      * Run new bot.
      *
@@ -161,13 +167,22 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         });
         Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), config, getService(),
             getCommandClasses());
+        initializeBot(bot);
         String userId = bot.getHolder().getConfig().getUserId();
         getBotMap().put(userId, bot);
         bot.getHolder().addShutdownListener(() -> getBotMap().remove(userId));
-        if (RunState.STANDALONE.equals(getRunState())) {
-            getPool().submit(bot);
-        } else if (BotState.NEW.equals(config.getState())) {
-            bot.newState();
+        switch (getRunState()) {
+            case STANDALONE:
+                getPool().submit(bot);
+                break;
+            case APPLICATION_SERVICE:
+                if (BotState.NEW.equals(config.getState())) {
+                    bot.newState();
+                }
+                bot.init();
+                break;
+            default:
+                LOGGER.warn("Unknown run state: " + getRunState());
         }
     }
 

@@ -49,8 +49,11 @@ public class Toot implements Command<MxTootConfig, MxTootDao, MxTootService<MxTo
         MatrixClient matrixClient = holder.getMatrixClient();
 
         if (holder.getData() == null) {
-            matrixClient.sendNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
-            return;
+            if (config.getMastodonAccessToken() == null || config.getMastodonAccessToken().trim().isEmpty()) {
+                matrixClient.sendNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
+                return;
+            }
+            MastodonTimeline.initMastodonClient(holder);
         }
 
         try {

@@ -53,14 +53,7 @@ public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxToot
             TimelineState clientState = TimelineState.valueOf(arguments.trim().toUpperCase());
             config.setTimelineState(clientState);
 
-            if (holder.getData() == null) {
-                MastodonClient client = new MastodonClient.Builder(config.getMastodonServer(), new OkHttpClient.Builder(), new Gson())
-                    .useStreamingApi().accessToken(config.getMastodonAccessToken()).build();
-
-                MxMastodonClient mastodonClient = new MxMastodonClient(client, holder);
-                holder.setData(mastodonClient);
-                holder.addShutdownListener(mastodonClient);
-            }
+            initMastodonClient(holder);
 
             switch (clientState) {
                 case ON:
@@ -75,6 +68,23 @@ public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxToot
                 default:
                     matrixClient.sendNotice(config.getRoomId(), "Unknown status " + clientState);
             }
+        }
+    }
+
+    /**
+     * Initialize Mastodon client.
+     *
+     * @param holder bot's holder.
+     */
+    public static void initMastodonClient(BotHolder<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> holder) {
+        MxTootConfig config = holder.getConfig();
+        if (holder.getData() == null) {
+            MastodonClient client = new MastodonClient.Builder(config.getMastodonServer(), new OkHttpClient.Builder(), new Gson())
+                .useStreamingApi().accessToken(config.getMastodonAccessToken()).build();
+
+            MxMastodonClient mastodonClient = new MxMastodonClient(client, holder);
+            holder.setData(mastodonClient);
+            holder.addShutdownListener(mastodonClient);
         }
     }
 

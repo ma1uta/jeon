@@ -19,9 +19,13 @@ package io.github.ma1uta.mxtoot.matrix;
 import io.dropwizard.lifecycle.Managed;
 import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.bot.AbstractBotPool;
+import io.github.ma1uta.matrix.bot.Bot;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.mxtoot.BotConfiguration;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
+import io.github.ma1uta.mxtoot.matrix.command.MastodonTimeline;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +35,8 @@ import javax.ws.rs.client.Client;
  * Bot service.
  */
 public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> implements Managed {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MxTootBotPool.class);
 
     private final BotConfiguration botConfiguration;
 
@@ -50,8 +56,10 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
 
         String localpart = Id.localpart(username);
         int nameIndex = localpart.indexOf("_");
-        if (nameIndex > -1) {
-            config.setMastodonClient(localpart.substring(nameIndex));
+        if (nameIndex > -1 && nameIndex < localpart.length()) {
+            config.setMastodonClient(localpart.substring(nameIndex + 1));
+        } else {
+            config.setMastodonClient(UUID.randomUUID().toString());
         }
         config.setPostFormat(botConfiguration.getPostFormat());
         config.setReplyFormat(botConfiguration.getReplyFormat());
@@ -61,6 +69,19 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
         config.setFetchMissingStatuses(botConfiguration.getFetchMissingStatuses());
 
         return config;
+    }
+
+    @Override
+    protected void initializeBot(Bot<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> bot) {
+        bot.setInitAction((holder, dao) -> {
+            if (TimelineState.AUTO.equals(holder.getConfig().getTimelineState())) {
+                MastodonTimeline.initMastodonClient(holder);
+                if (!holder.getData().streaming()) {
+                    LOGGER.error("Cannot streaming: " + holder.getConfig().getId());
+                    holder.getMatrixClient().sendNotice(holder.getConfig().getRoomId(), "Cannot streaming.");
+                }
+            }
+        });
     }
 
     @Override
