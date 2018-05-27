@@ -17,7 +17,7 @@
 package io.github.ma1uta.mxtoot.matrix;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.github.ma1uta.matrix.bot.Service;
+import io.github.ma1uta.matrix.bot.PersistentService;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -28,9 +28,9 @@ import java.util.function.Function;
  *
  * @param <D> dao class.
  */
-public class MxTootService<D> extends Service<D> {
+public class MxTootPersistentService<D> extends PersistentService<D> {
 
-    public MxTootService(D dao) {
+    public MxTootPersistentService(D dao) {
         super(dao);
     }
 

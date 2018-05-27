@@ -37,7 +37,7 @@ import javax.ws.rs.client.Client;
  * @param <S> bot service.
  * @param <E> extra data.
  */
-public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, S extends Service<D>, E> {
+public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, S extends PersistentService<D>, E> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBotPool.class);
 
@@ -170,7 +170,10 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         initializeBot(bot);
         String userId = bot.getHolder().getConfig().getUserId();
         getBotMap().put(userId, bot);
-        bot.getHolder().addShutdownListener(() -> getBotMap().remove(userId));
+        bot.getHolder().addShutdownListener(() -> {
+            getBotMap().remove(userId);
+            return null;
+        });
         switch (getRunState()) {
             case STANDALONE:
                 getPool().submit(bot);

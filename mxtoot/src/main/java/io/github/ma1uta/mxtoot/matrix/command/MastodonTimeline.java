@@ -25,21 +25,21 @@ import io.github.ma1uta.matrix.client.MatrixClient;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
-import io.github.ma1uta.mxtoot.matrix.MxTootService;
+import io.github.ma1uta.mxtoot.matrix.MxTootPersistentService;
 import io.github.ma1uta.mxtoot.matrix.TimelineState;
 import okhttp3.OkHttpClient;
 
 /**
  * Run mastodon timeline.
  */
-public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> {
+public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> {
     @Override
     public String name() {
         return "timeline";
     }
 
     @Override
-    public void invoke(BotHolder<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> holder, Event event,
+    public void invoke(BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder, Event event,
                        String arguments) {
         MxTootConfig config = holder.getConfig();
         if (config.getOwner() != null && !config.getOwner().equals(event.getSender())) {
@@ -76,7 +76,7 @@ public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxToot
      *
      * @param holder bot's holder.
      */
-    public static void initMastodonClient(BotHolder<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> holder) {
+    public static void initMastodonClient(BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder) {
         MxTootConfig config = holder.getConfig();
         if (holder.getData() == null) {
             MastodonClient client = new MastodonClient.Builder(config.getMastodonServer(), new OkHttpClient.Builder(), new Gson())

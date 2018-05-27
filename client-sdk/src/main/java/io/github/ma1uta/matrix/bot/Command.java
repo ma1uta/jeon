@@ -26,7 +26,7 @@ import io.github.ma1uta.matrix.Event;
  * @param <S> bot's service.
  * @param <E> extra data.
  */
-public interface Command<C extends BotConfig, D extends BotDao<C>, S extends Service<D>, E> {
+public interface Command<C extends BotConfig, D extends BotDao<C>, S extends PersistentService<D>, E> {
 
     /**
      * Command name.

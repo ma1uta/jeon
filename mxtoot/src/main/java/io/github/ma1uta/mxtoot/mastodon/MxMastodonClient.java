@@ -34,11 +34,10 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
 import com.sys1yagi.mastodon4j.api.method.Accounts;
 import com.sys1yagi.mastodon4j.api.method.Statuses;
 import io.github.ma1uta.matrix.bot.BotHolder;
-import io.github.ma1uta.matrix.bot.ShutdownListener;
 import io.github.ma1uta.matrix.client.MatrixClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
-import io.github.ma1uta.mxtoot.matrix.MxTootService;
+import io.github.ma1uta.mxtoot.matrix.MxTootPersistentService;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,17 +48,18 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
  * Mastodon client.
  */
-public class MxMastodonClient implements Handler, ShutdownListener {
+public class MxMastodonClient implements Handler, Supplier<Void> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MxMastodonClient.class);
 
     private final MastodonClient mastodonClient;
-    private final BotHolder<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> holder;
+    private final BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder;
     private Shutdownable shutdownable;
     private boolean running;
     private DateTimeFormatter dateTimeFormatter;
@@ -68,7 +68,7 @@ public class MxMastodonClient implements Handler, ShutdownListener {
     private Template boostTemplate;
 
     public MxMastodonClient(MastodonClient mastodonClient,
-                            BotHolder<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> holder) {
+                            BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder) {
         this.mastodonClient = mastodonClient;
         this.holder = holder;
     }
@@ -113,7 +113,7 @@ public class MxMastodonClient implements Handler, ShutdownListener {
         this.replyTemplate = replyTemplate;
     }
 
-    public BotHolder<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> getHolder() {
+    public BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> getHolder() {
         return holder;
     }
 
@@ -144,12 +144,15 @@ public class MxMastodonClient implements Handler, ShutdownListener {
 
     /**
      * Stop streaming.
+     *
+     * @return nothing.
      */
-    public void shutdown() {
+    public Void get() {
         if (this.shutdownable != null) {
             this.shutdownable.shutdown();
         }
         this.running = false;
+        return null;
     }
 
     @Override

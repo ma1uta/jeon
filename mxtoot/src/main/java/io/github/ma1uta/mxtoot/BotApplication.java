@@ -34,7 +34,7 @@ import io.github.ma1uta.mxtoot.matrix.AppResource;
 import io.github.ma1uta.mxtoot.matrix.MxTootBotPool;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
-import io.github.ma1uta.mxtoot.matrix.MxTootService;
+import io.github.ma1uta.mxtoot.matrix.MxTootPersistentService;
 import io.github.ma1uta.mxtoot.matrix.MxTootTransaction;
 import io.github.ma1uta.mxtoot.matrix.MxTootTransactionDao;
 
@@ -90,8 +90,8 @@ public class BotApplication extends Application<BotConfiguration> {
         MxTootDao mxTootDao = new MxTootDao(matrixHibernate.getSessionFactory());
         MxTootTransactionDao mxTootTransactionDao = new MxTootTransactionDao(matrixHibernate.getSessionFactory());
 
-        MxTootService<MxTootDao> botService = proxyFactory.create(MxTootService.class, Object.class, mxTootDao);
-        MxTootService<MxTootTransactionDao> transactionService = proxyFactory.create(MxTootService.class, Object.class,
+        MxTootPersistentService<MxTootDao> botService = proxyFactory.create(MxTootPersistentService.class, Object.class, mxTootDao);
+        MxTootPersistentService<MxTootTransactionDao> transactionService = proxyFactory.create(MxTootPersistentService.class, Object.class,
             mxTootTransactionDao);
         MxTootBotPool mxTootBotPool = new MxTootBotPool(botConfiguration, botService, jersey, botConfiguration.getCommands());
 

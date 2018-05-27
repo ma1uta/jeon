@@ -21,7 +21,7 @@ import io.github.ma1uta.matrix.bot.BotConfig;
 import io.github.ma1uta.matrix.bot.BotDao;
 import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.Command;
-import io.github.ma1uta.matrix.bot.Service;
+import io.github.ma1uta.matrix.bot.PersistentService;
 
 /**
  * Leave current room.
@@ -31,7 +31,7 @@ import io.github.ma1uta.matrix.bot.Service;
  * @param <S> bot service.
  * @param <E> extra data.
  */
-public class Leave<C extends BotConfig, D extends BotDao<C>, S extends Service<D>, E> implements Command<C, D, S, E> {
+public class Leave<C extends BotConfig, D extends BotDao<C>, S extends PersistentService<D>, E> implements Command<C, D, S, E> {
     @Override
     public String name() {
         return "leave";

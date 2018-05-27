@@ -35,14 +35,14 @@ public class AppResource implements ApplicationApi {
 
     private final MxTootTransactionDao mxTootTransactionDao;
     private final MxTootBotPool mxTootBotPool;
-    private final MxTootService<MxTootDao> botService;
-    private final MxTootService<MxTootTransactionDao> transactionService;
+    private final MxTootPersistentService<MxTootDao> botService;
+    private final MxTootPersistentService<MxTootTransactionDao> transactionService;
     private final String hsToken;
     private final String url;
 
     public AppResource(MxTootTransactionDao mxTootTransactionDao, MxTootBotPool mxTootBotPool, String hsToken,
-                       String url, MxTootService<MxTootDao> botService,
-                       MxTootService<MxTootTransactionDao> transactionService) {
+                       String url, MxTootPersistentService<MxTootDao> botService,
+                       MxTootPersistentService<MxTootTransactionDao> transactionService) {
         this.mxTootTransactionDao = mxTootTransactionDao;
         this.mxTootBotPool = mxTootBotPool;
         this.hsToken = hsToken;
@@ -67,11 +67,11 @@ public class AppResource implements ApplicationApi {
         return mxTootTransactionDao;
     }
 
-    public MxTootService<MxTootDao> getBotService() {
+    public MxTootPersistentService<MxTootDao> getBotService() {
         return botService;
     }
 
-    public MxTootService<MxTootTransactionDao> getTransactionService() {
+    public MxTootPersistentService<MxTootTransactionDao> getTransactionService() {
         return transactionService;
     }
 

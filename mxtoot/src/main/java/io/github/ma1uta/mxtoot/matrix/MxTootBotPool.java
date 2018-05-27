@@ -34,14 +34,16 @@ import javax.ws.rs.client.Client;
 /**
  * Bot service.
  */
-public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> implements Managed {
+public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> implements
+    Managed {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MxTootBotPool.class);
 
     private final BotConfiguration botConfiguration;
 
-    public MxTootBotPool(BotConfiguration botConfiguration, MxTootService<MxTootDao> service, Client client,
-                         List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> cmds) {
+    public MxTootBotPool(BotConfiguration botConfiguration, MxTootPersistentService<MxTootDao> service, Client client,
+                         List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>,
+                             MxMastodonClient>>> cmds) {
         super(botConfiguration.getHomeserverUrl(), botConfiguration.getDomain(), botConfiguration.getDisplayName(), client,
             botConfiguration.getAsToken(), service, cmds, botConfiguration.getRunState());
         this.botConfiguration = botConfiguration;
@@ -72,7 +74,7 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
     }
 
     @Override
-    protected void initializeBot(Bot<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient> bot) {
+    protected void initializeBot(Bot<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> bot) {
         bot.setInitAction((holder, dao) -> {
             if (TimelineState.AUTO.equals(holder.getConfig().getTimelineState())) {
                 MastodonTimeline.initMastodonClient(holder);

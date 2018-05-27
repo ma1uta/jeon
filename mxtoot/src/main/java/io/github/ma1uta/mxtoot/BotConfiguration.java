@@ -26,7 +26,7 @@ import io.github.ma1uta.matrix.bot.RunState;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
-import io.github.ma1uta.mxtoot.matrix.MxTootService;
+import io.github.ma1uta.mxtoot.matrix.MxTootPersistentService;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
@@ -96,7 +96,7 @@ public class BotConfiguration extends Configuration {
     @NotNull
     private boolean strictMode = true;
 
-    private List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commands =
+    private List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient>>> commands =
         new ArrayList<>();
 
     public DataSourceFactory getDataSourceFactory() {
@@ -151,11 +151,11 @@ public class BotConfiguration extends Configuration {
         this.asToken = asToken;
     }
 
-    public List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> getCommands() {
+    public List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient>>> getCommands() {
         return commands;
     }
 
-    public void setCommands(List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootService<MxTootDao>, MxMastodonClient>>> commands) {
+    public void setCommands(List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient>>> commands) {
         this.commands = commands;
     }
 

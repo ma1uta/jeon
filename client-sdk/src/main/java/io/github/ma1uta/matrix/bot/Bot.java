@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.ws.rs.client.Client;
 
@@ -51,7 +52,7 @@ import javax.ws.rs.client.Client;
  * @param <S> service.
  * @param <E> extra data.
  */
-public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>, E> implements Runnable {
+public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentService<D>, E> implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
 
@@ -135,7 +136,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
             throw e;
         }
 
-        getHolder().getShutdownListeners().forEach(ShutdownListener::shutdown);
+        getHolder().getShutdownListeners().forEach(Supplier::get);
     }
 
     /**
@@ -375,7 +376,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends Service<D>,
         }
 
         if (LoopState.EXIT.equals(state)) {
-            getHolder().getShutdownListeners().forEach(ShutdownListener::shutdown);
+            getHolder().getShutdownListeners().forEach(Supplier::get);
         }
     }
 

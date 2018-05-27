@@ -22,16 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
- * Handler to store matrix client, bot configuration and some extra data.
+ * Holder of the matrix client, bot configuration and some extra data.
  *
  * @param <C> bot configuration.
  * @param <D> bot dao.
  * @param <S> bot service.
  * @param <E> extra data.
  */
-public class BotHolder<C extends BotConfig, D extends BotDao<C>, S extends Service<D>, E> {
+public class BotHolder<C extends BotConfig, D extends BotDao<C>, S extends PersistentService<D>, E> {
 
     private final Object monitor = new Object();
 
@@ -43,7 +44,7 @@ public class BotHolder<C extends BotConfig, D extends BotDao<C>, S extends Servi
 
     private E data;
 
-    private List<ShutdownListener> shutdownListeners = new ArrayList<>();
+    private List<Supplier<Void>> shutdownListeners = new ArrayList<>();
 
     public BotHolder(MatrixClient matrixClient, S service) {
         this.matrixClient = matrixClient;
@@ -74,7 +75,7 @@ public class BotHolder<C extends BotConfig, D extends BotDao<C>, S extends Servi
         return service;
     }
 
-    public List<ShutdownListener> getShutdownListeners() {
+    public List<Supplier<Void>> getShutdownListeners() {
         return shutdownListeners;
     }
 
@@ -111,7 +112,7 @@ public class BotHolder<C extends BotConfig, D extends BotDao<C>, S extends Servi
      *
      * @param listener shutdown listener.
      */
-    public void addShutdownListener(ShutdownListener listener) {
+    public void addShutdownListener(Supplier<Void> listener) {
         getShutdownListeners().add(listener);
     }
 }

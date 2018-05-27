@@ -25,11 +25,11 @@ import java.util.function.Function;
  *
  * @param <D> Dao type.
  */
-public class Service<D> {
+public class PersistentService<D> {
 
     private final D dao;
 
-    public Service(D dao) {
+    public PersistentService(D dao) {
         this.dao = dao;
     }
 
