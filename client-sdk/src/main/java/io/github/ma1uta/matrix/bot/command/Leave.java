@@ -52,6 +52,6 @@ public class Leave<C extends BotConfig, D extends BotDao<C>, S extends Persisten
 
     @Override
     public String usage() {
-        return "!leave";
+        return "leave";
     }
 }

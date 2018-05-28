@@ -69,6 +69,6 @@ public class Toot extends AbstractStatusCommand {
 
     @Override
     public String usage() {
-        return "!toot <message>";
+        return "toot <message>";
     }
 }

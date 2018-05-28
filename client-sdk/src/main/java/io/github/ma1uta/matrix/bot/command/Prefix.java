@@ -23,21 +23,20 @@ import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.matrix.bot.PersistentService;
 import io.github.ma1uta.matrix.client.MatrixClient;
-import io.github.ma1uta.matrix.client.model.room.RoomId;
 
 /**
- * Join new room.
+ * Set new prefix or show current.
  *
  * @param <C> bot configuration.
  * @param <D> bot dao.
  * @param <S> bot service.
  * @param <E> extra data.
  */
-public class Join<C extends BotConfig, D extends BotDao<C>, S extends PersistentService<D>, E> implements Command<C, D, S, E> {
+public class Prefix<C extends BotConfig, D extends BotDao<C>, S extends PersistentService<D>, E> implements Command<C, D, S, E> {
 
     @Override
     public String name() {
-        return "join";
+        return "prefix";
     }
 
     @Override
@@ -48,27 +47,20 @@ public class Join<C extends BotConfig, D extends BotDao<C>, S extends Persistent
             return;
         }
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.event().sendNotice(config.getRoomId(), "Usage: " + usage());
+            String prefix = config.getPrefix();
+            matrixClient.event().sendNotice(config.getRoomId(), prefix == null ? "!" : prefix);
         } else {
-            RoomId result = matrixClient.room().joinRoomByIdOrAlias(arguments);
-            if ((result.getError() == null || result.getError().trim().isEmpty())
-                && (result.getErrcode() == null || result.getErrcode().trim().isEmpty())) {
-                matrixClient.room().leaveRoom(config.getRoomId());
-                config.setRoomId(result.getRoomId());
-            } else {
-                matrixClient.event()
-                    .sendNotice(config.getRoomId(), String.format("Cannot join [%s]: %s", result.getErrcode(), result.getError()));
-            }
+            config.setPrefix(arguments);
         }
     }
 
     @Override
     public String help() {
-        return "join new room (invoked only by owner).";
+        return "set new prefix or show current (invoked only by owner).";
     }
 
     @Override
     public String usage() {
-        return "join <room id or alias>";
+        return "prefix [<prefix>]";
     }
 }

@@ -89,6 +89,6 @@ public class AuthorizeMastodonClient implements Command<MxTootConfig, MxTootDao,
 
     @Override
     public String usage() {
-        return "!auth <auth code>";
+        return "auth <auth code>";
     }
 }

@@ -62,6 +62,6 @@ public class SetAccessPolicy<C extends BotConfig, D extends BotDao<C>, S extends
 
     @Override
     public String usage() {
-        return "!policy [all|owner]";
+        return "policy [all|owner]";
     }
 }

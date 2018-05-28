@@ -83,6 +83,6 @@ public class Boost extends AbstractStatusCommand {
 
     @Override
     public String usage() {
-        return "!boost <status_id>";
+        return "boost <status_id>";
     }
 }

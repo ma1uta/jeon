@@ -50,6 +50,6 @@ public class Pong<C extends BotConfig, D extends BotDao<C>, S extends Persistent
 
     @Override
     public String usage() {
-        return "!ping";
+        return "ping";
     }
 }

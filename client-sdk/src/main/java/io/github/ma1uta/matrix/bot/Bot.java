@@ -72,12 +72,13 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         this.holder = new BotHolder<>(matrixClient, service);
         this.holder.setConfig(config);
         this.commands = new HashMap<>(commandsClasses.size());
-        StringBuilder sb = new StringBuilder("!help - show help.\n");
+        String prefix = config.getPrefix() == null ? "!" : config.getPrefix();
+        StringBuilder sb = new StringBuilder(prefix + "help - show help.\n");
         commandsClasses.forEach(cl -> {
             try {
                 Command<C, D, S, E> command = cl.newInstance();
                 this.commands.put(command.name(), command);
-                sb.append(command.usage()).append(" - ").append(command.help()).append("\n");
+                sb.append(prefix).append(command.usage()).append(" - ").append(command.help()).append("\n");
             } catch (InstantiationException | IllegalAccessException e) {
                 LOGGER.error("Cannot create new instance of the command: " + cl.getCanonicalName(), e);
             }
@@ -387,19 +388,19 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
     protected void processEvent(Event event) {
         MatrixClient matrixClient = getHolder().getMatrixClient();
         Map<String, Object> content = event.getContent();
+        String body = (String) content.get("body");
         if (Event.EventType.ROOM_MESSAGE.equals(event.getType())
             && !matrixClient.getUserId().equals(event.getSender())
             && Event.MessageType.TEXT.equals(content.get("msgtype"))
-            && permit(event)) {
-            String action = (String) content.get("body");
+            && permit(event) && body.startsWith(getPrefix())) {
             try {
                 getHolder().runInTransaction((holder, dao) -> {
-                    processAction(event, action);
+                    processAction(event, body);
                     getHolder().getConfig().setTxnId(matrixClient.getTxn().get());
                     saveData(holder, dao);
                 });
             } catch (Exception e) {
-                LOGGER.error(String.format("Cannot perform action '%s'", action), e);
+                LOGGER.error(String.format("Cannot perform action '%s'", body), e);
             }
         }
     }
@@ -418,6 +419,17 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
     }
 
     /**
+     * Get bot's command prefix.
+     *
+     * @return command prefix.
+     */
+    protected String getPrefix() {
+        C config = getHolder().getConfig();
+        String prefix = config.getPrefix();
+        return prefix == null ? "!" : prefix.replaceAll("\\{\\{display_name}}", config.getDisplayName());
+    }
+
+    /**
      * Process action.
      *
      * @param event   event.
@@ -425,15 +437,13 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      */
     protected void processAction(Event event, String content) {
         String[] arguments = content.trim().split("\\s");
-        if (arguments[0].startsWith("!")) {
-            Command<C, D, S, E> command = getCommands().get(arguments[0].substring(1));
-            MatrixClient matrixClient = getHolder().getMatrixClient();
-            C config = getHolder().getConfig();
-            if (command != null) {
-                command.invoke(getHolder(), event, Arrays.stream(arguments).skip(1).collect(Collectors.joining(" ")));
-            } else {
-                matrixClient.event().sendNotice(config.getRoomId(), getHelp());
-            }
+        Command<C, D, S, E> command = getCommands().get(arguments[0].substring(getPrefix().length()));
+        MatrixClient matrixClient = getHolder().getMatrixClient();
+        C config = getHolder().getConfig();
+        if (command != null) {
+            command.invoke(getHolder(), event, Arrays.stream(arguments).skip(1).collect(Collectors.joining(" ")));
+        } else {
+            matrixClient.event().sendNotice(config.getRoomId(), getHelp());
         }
     }
 }

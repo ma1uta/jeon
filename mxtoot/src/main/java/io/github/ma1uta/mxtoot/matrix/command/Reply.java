@@ -89,6 +89,6 @@ public class Reply extends AbstractStatusCommand {
 
     @Override
     public String usage() {
-        return "!reply <status_id> <message>";
+        return "reply <status_id> <message>";
     }
 }

@@ -75,7 +75,7 @@ public class Format implements Command<MxTootConfig, MxTootDao, MxTootPersistent
 
     @Override
     public String usage() {
-        return "!format [post|reply|boost|datetime|locale] [<template or datetime format or locale>]";
+        return "format [post|reply|boost|datetime|locale] [<template or datetime format or locale>]";
     }
 
     protected void showTemplate(String templateName, MxTootConfig config, MatrixClient matrixClient) {

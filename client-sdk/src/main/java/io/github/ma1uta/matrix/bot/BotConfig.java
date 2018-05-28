@@ -109,6 +109,11 @@ public class BotConfig {
      */
     private Long timeout = TIMEOUT;
 
+    /**
+     * Command prefix.
+     */
+    private String prefix = "/";
+
     public Long getId() {
         return id;
     }
@@ -203,6 +208,14 @@ public class BotConfig {
 
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     @Override

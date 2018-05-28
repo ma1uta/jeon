@@ -74,6 +74,6 @@ public class Timeline extends AbstractStatusCommand {
 
     @Override
     public String usage() {
-        return "!timeline [on|off|auto]";
+        return "timeline [on|off|auto]";
     }
 }

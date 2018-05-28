@@ -64,6 +64,6 @@ public class FetchStatuses implements Command<MxTootConfig, MxTootDao, MxTootPer
 
     @Override
     public String usage() {
-        return "!fetch_statuses [true|false]";
+        return "fetch_statuses [true|false]";
     }
 }

@@ -91,6 +91,6 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
 
     @Override
     public String usage() {
-        return "!reg <mastodon server>";
+        return "reg <mastodon server>";
     }
 }

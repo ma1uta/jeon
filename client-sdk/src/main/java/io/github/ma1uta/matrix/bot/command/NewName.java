@@ -57,6 +57,6 @@ public class NewName<C extends BotConfig, D extends BotDao<C>, S extends Persist
 
     @Override
     public String usage() {
-        return "!name <new name>";
+        return "name <new name>";
     }
 }
