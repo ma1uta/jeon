@@ -25,7 +25,7 @@ import com.sys1yagi.mastodon4j.api.method.Apps;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
 import io.github.ma1uta.matrix.bot.Command;
-import io.github.ma1uta.matrix.client.MatrixClient;
+import io.github.ma1uta.matrix.client.EventMethods;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
@@ -54,10 +54,10 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
             return;
         }
 
-        MatrixClient matrixClient = holder.getMatrixClient();
+        EventMethods eventMethods = holder.getMatrixClient().event();
 
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            eventMethods.sendNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
@@ -74,12 +74,13 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
 
             String authUrl = apps.getOAuthUrl(appRegistration.getClientId(), new Scope(Scope.Name.ALL), "urn:ietf:wg:oauth:2.0:oob");
 
-            matrixClient.sendNotice(config.getRoomId(), authUrl.replaceAll("\\s", "+"));
-            matrixClient.sendNotice(config.getRoomId(), "Please open url, login, get auth code and invoke command: !auth <auth code>");
+            eventMethods.sendNotice(config.getRoomId(), authUrl.replaceAll("\\s", "+"));
+            eventMethods
+                .sendNotice(config.getRoomId(), "Please open url, login, get auth code and invoke command: !auth <auth code>");
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot start registration of the mastodon client: ";
             LOGGER.error(msg, e);
-            matrixClient.sendNotice(config.getRoomId(), msg + e.getMessage());
+            eventMethods.sendNotice(config.getRoomId(), msg + e.getMessage());
         }
     }
 

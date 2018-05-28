@@ -50,7 +50,7 @@ public class FetchStatuses implements Command<MxTootConfig, MxTootDao, MxTootPer
         MatrixClient matrixClient = holder.getMatrixClient();
 
         if (arguments == null || arguments.isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.event().sendNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 

@@ -16,48 +16,38 @@
 
 package io.github.ma1uta.mxtoot.matrix.command;
 
-import com.google.gson.Gson;
-import com.sys1yagi.mastodon4j.MastodonClient;
-import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken;
+import com.sys1yagi.mastodon4j.api.entity.Status;
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
-import com.sys1yagi.mastodon4j.api.method.Apps;
+import com.sys1yagi.mastodon4j.api.method.Statuses;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
-import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.matrix.client.EventMethods;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootPersistentService;
-import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Finish registration of the mastodon client.
+ * Boost.
  */
-public class AuthorizeMastodonClient implements Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> {
+public class Boost extends AbstractStatusCommand {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizeMastodonClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Boost.class);
 
     @Override
     public String name() {
-        return "auth";
+        return "reply";
     }
 
     @Override
     public void invoke(BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder, Event event,
                        String arguments) {
         MxTootConfig config = holder.getConfig();
-        if (config.getOwner() != null && !config.getOwner().equals(event.getSender())) {
-            return;
-        }
-
         EventMethods eventMethods = holder.getMatrixClient().event();
 
-        if (config.getMastodonClientId() == null || config.getMastodonClientId().trim().isEmpty()
-            || config.getMastodonClientSecret() == null || config.getMastodonClientSecret().trim().isEmpty()) {
-            eventMethods.sendNotice(config.getRoomId(), "Start registration by invoking !reg command");
+        if (!initMastodonClient(holder)) {
             return;
         }
 
@@ -66,29 +56,33 @@ public class AuthorizeMastodonClient implements Command<MxTootConfig, MxTootDao,
             return;
         }
 
-        MastodonClient client = new MastodonClient.Builder(config.getMastodonServer(), new OkHttpClient.Builder(), new Gson()).build();
+        String trimmed = arguments.trim();
 
-        Apps apps = new Apps(client);
+        Long statusId;
         try {
-            AccessToken accessToken = apps.getAccessToken(config.getMastodonClientId(), config.getMastodonClientSecret(), arguments.trim())
-                .execute();
-            config.setMastodonAccessToken(accessToken.getAccessToken());
-            config.setMastodonClientSecret(null);
-            config.setMastodonClientId(null);
+            statusId = Long.parseLong(trimmed);
+        } catch (NumberFormatException e) {
+            LOGGER.error("Wrong status id", e);
+            eventMethods.sendNotice(config.getRoomId(), "Status id is not a number.\nUsage: " + usage());
+            return;
+        }
+
+        try {
+            Status status = new Statuses(holder.getData().getMastodonClient()).postReblog(statusId).execute();
+            eventMethods.sendNotice(config.getRoomId(), "Boosted: " + status.getUrl());
         } catch (Mastodon4jRequestException e) {
-            String msg = "Cannot get access token: ";
-            LOGGER.error(msg, e);
-            eventMethods.sendNotice(config.getRoomId(), msg + e.getMessage());
+            LOGGER.error("Cannot toot", e);
+            eventMethods.sendNotice(config.getRoomId(), "Cannot boost: " + e.getMessage());
         }
     }
 
     @Override
     public String help() {
-        return "authorize mastodon client (can invoke only owner)";
+        return "boost a status";
     }
 
     @Override
     public String usage() {
-        return "!auth <auth code>";
+        return "!boost <status_id>";
     }
 }

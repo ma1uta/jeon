@@ -21,8 +21,7 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
 import com.sys1yagi.mastodon4j.api.method.Statuses;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
-import io.github.ma1uta.matrix.bot.Command;
-import io.github.ma1uta.matrix.client.MatrixClient;
+import io.github.ma1uta.matrix.client.EventMethods;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
@@ -33,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Reply.
  */
-public class Reply implements Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> {
+public class Reply extends AbstractStatusCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Reply.class);
 
@@ -46,26 +45,21 @@ public class Reply implements Command<MxTootConfig, MxTootDao, MxTootPersistentS
     public void invoke(BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder, Event event,
                        String arguments) {
         MxTootConfig config = holder.getConfig();
-        MatrixClient matrixClient = holder.getMatrixClient();
+        EventMethods eventMethods = holder.getMatrixClient().event();
 
-        if (holder.getData() == null) {
-            if (config.getMastodonAccessToken() == null || config.getMastodonAccessToken().trim().isEmpty()) {
-                matrixClient.sendNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
-                return;
-            } else {
-                MastodonTimeline.initMastodonClient(holder);
-            }
+        if (!initMastodonClient(holder)) {
+            return;
         }
 
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            eventMethods.sendNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
         String trimmed = arguments.trim();
         int spaceIndex = trimmed.indexOf(" ");
         if (spaceIndex == -1) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            eventMethods.sendNotice(config.getRoomId(), "Usage: " + usage());
             return;
         }
 
@@ -74,17 +68,17 @@ public class Reply implements Command<MxTootConfig, MxTootDao, MxTootPersistentS
             statusId = Long.parseLong(trimmed.substring(0, spaceIndex));
         } catch (NumberFormatException e) {
             LOGGER.error("Wrong status id", e);
-            matrixClient.sendNotice(config.getRoomId(), "Status id is not a number.\nUsage: " + usage());
+            eventMethods.sendNotice(config.getRoomId(), "Status id is not a number.\nUsage: " + usage());
             return;
         }
         String message = trimmed.substring(spaceIndex);
 
         try {
             Status status = new Statuses(holder.getData().getMastodonClient()).postStatus(message, statusId, null, false, null).execute();
-            matrixClient.sendNotice(config.getRoomId(), "Tooted: " + status.getUrl());
+            eventMethods.sendNotice(config.getRoomId(), "Tooted: " + status.getUrl());
         } catch (Mastodon4jRequestException e) {
             LOGGER.error("Cannot toot", e);
-            matrixClient.sendNotice(config.getRoomId(), "Cannot toot: " + e.getMessage());
+            eventMethods.sendNotice(config.getRoomId(), "Cannot toot: " + e.getMessage());
         }
     }
 

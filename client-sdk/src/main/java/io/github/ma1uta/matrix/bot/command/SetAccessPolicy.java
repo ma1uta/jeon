@@ -52,7 +52,7 @@ public class SetAccessPolicy<C extends BotConfig, D extends BotDao<C>, S extends
                 // wrong option.
             }
         }
-        holder.getMatrixClient().sendNotice(config.getRoomId(), "usage: !policy [all|owner]");
+        holder.getMatrixClient().event().sendNotice(config.getRoomId(), "usage: !policy [all|owner]");
     }
 
     @Override

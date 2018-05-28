@@ -47,8 +47,6 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
 
     private final String homeserverUrl;
 
-    private final String domain;
-
     private final String displayName;
 
     private final Client client;
@@ -63,10 +61,9 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
 
     private final RunState runState;
 
-    public AbstractBotPool(String homeserverUrl, String domain, String displayName, Client client, String appToken,
+    public AbstractBotPool(String homeserverUrl, String displayName, Client client, String appToken,
                            S service, List<Class<? extends Command<C, D, S, E>>> commandClasses,
                            RunState runState) {
-        this.domain = domain;
         this.service = service;
         this.commandClasses = commandClasses;
         this.runState = runState;
@@ -83,10 +80,6 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
 
     public String getHomeserverUrl() {
         return homeserverUrl;
-    }
-
-    public String getDomain() {
-        return domain;
     }
 
     public String getDisplayName() {
@@ -165,8 +158,7 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         getService().invoke(dao -> {
             dao.save(config);
         });
-        Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getDomain(), getAppToken(), config, getService(),
-            getCommandClasses());
+        Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getAppToken(), config, getService(), getCommandClasses());
         initializeBot(bot);
         String userId = bot.getHolder().getConfig().getUserId();
         getBotMap().put(userId, bot);

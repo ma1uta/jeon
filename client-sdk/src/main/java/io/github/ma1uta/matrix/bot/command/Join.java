@@ -48,7 +48,7 @@ public class Join<C extends BotConfig, D extends BotDao<C>, S extends Persistent
             return;
         }
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.event().sendNotice(config.getRoomId(), "Usage: " + usage());
         } else {
             RoomId result = matrixClient.room().joinRoomByIdOrAlias(arguments);
             if ((result.getError() == null || result.getError().trim().isEmpty())
@@ -56,7 +56,8 @@ public class Join<C extends BotConfig, D extends BotDao<C>, S extends Persistent
                 matrixClient.room().leaveRoom(config.getRoomId());
                 config.setRoomId(result.getRoomId());
             } else {
-                matrixClient.sendNotice(config.getRoomId(), String.format("Cannot join [%s]: %s", result.getErrcode(), result.getError()));
+                matrixClient.event()
+                    .sendNotice(config.getRoomId(), String.format("Cannot join [%s]: %s", result.getErrcode(), result.getError()));
             }
         }
     }

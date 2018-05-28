@@ -132,7 +132,7 @@ public class MxMastodonClient implements Handler, Supplier<Void> {
                 response -> {
                     MatrixClient matrixClient = getHolder().getMatrixClient();
                     MxTootConfig config = getHolder().getConfig();
-                    matrixClient.sendNotice(config.getRoomId(), "Failed start streaming: " + response.message());
+                    matrixClient.event().sendNotice(config.getRoomId(), "Failed start streaming: " + response.message());
                 }).user(this);
             this.running = true;
             return true;
@@ -167,7 +167,7 @@ public class MxMastodonClient implements Handler, Supplier<Void> {
             MatrixClient matrixClient = holder.getMatrixClient();
             MxTootConfig config = holder.getConfig();
             String message = writeStatus(status);
-            matrixClient.sendFormattedNotice(config.getRoomId(), Jsoup.parse(message).text(), message);
+            matrixClient.event().sendFormattedNotice(config.getRoomId(), Jsoup.parse(message).text(), message);
 
             config.setTxnId(matrixClient.getTxn().get());
             getHolder().setConfig(dao.save(config));

@@ -21,8 +21,7 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
 import com.sys1yagi.mastodon4j.api.method.Statuses;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
-import io.github.ma1uta.matrix.bot.Command;
-import io.github.ma1uta.matrix.client.MatrixClient;
+import io.github.ma1uta.matrix.client.EventMethods;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
@@ -33,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Toot message.
  */
-public class Toot implements Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> {
+public class Toot extends AbstractStatusCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Toot.class);
 
@@ -46,24 +45,20 @@ public class Toot implements Command<MxTootConfig, MxTootDao, MxTootPersistentSe
     public void invoke(BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder, Event event,
                        String arguments) {
         MxTootConfig config = holder.getConfig();
-        MatrixClient matrixClient = holder.getMatrixClient();
 
-        if (holder.getData() == null) {
-            if (config.getMastodonAccessToken() == null || config.getMastodonAccessToken().trim().isEmpty()) {
-                matrixClient.sendNotice(config.getRoomId(), "Client isn't initialized, start registration via !reg command.");
-                return;
-            }
-            MastodonTimeline.initMastodonClient(holder);
+        if (!initMastodonClient(holder)) {
+            return;
         }
 
+        EventMethods eventMethods = holder.getMatrixClient().event();
         try {
             Status status = new Statuses(holder.getData().getMastodonClient()).postStatus(arguments, null, null, false, null).execute();
 
-            matrixClient.sendNotice(config.getRoomId(), "Tooted: " + status.getUri());
+            eventMethods.sendNotice(config.getRoomId(), "Tooted: " + status.getUri());
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot toot";
             LOGGER.error(msg, e);
-            matrixClient.sendNotice(config.getRoomId(), msg);
+            eventMethods.sendNotice(config.getRoomId(), msg);
         }
     }
 

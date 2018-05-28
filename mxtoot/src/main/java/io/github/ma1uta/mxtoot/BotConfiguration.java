@@ -47,9 +47,6 @@ public class BotConfiguration extends Configuration {
     private JerseyClientConfiguration jerseyClient = new JerseyClientConfiguration();
 
     @NotEmpty
-    private String domain;
-
-    @NotEmpty
     @URL
     private String homeserverUrl;
 
@@ -111,14 +108,6 @@ public class BotConfiguration extends Configuration {
         this.jerseyClient = jerseyClient;
     }
 
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
     public String getHomeserverUrl() {
         return homeserverUrl;
     }
@@ -155,7 +144,8 @@ public class BotConfiguration extends Configuration {
         return commands;
     }
 
-    public void setCommands(List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient>>> commands) {
+    public void setCommands(
+        List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient>>> commands) {
         this.commands = commands;
     }
 

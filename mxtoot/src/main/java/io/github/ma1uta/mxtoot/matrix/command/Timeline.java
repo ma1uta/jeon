@@ -16,23 +16,19 @@
 
 package io.github.ma1uta.mxtoot.matrix.command;
 
-import com.google.gson.Gson;
-import com.sys1yagi.mastodon4j.MastodonClient;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.bot.BotHolder;
-import io.github.ma1uta.matrix.bot.Command;
-import io.github.ma1uta.matrix.client.MatrixClient;
+import io.github.ma1uta.matrix.client.EventMethods;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
 import io.github.ma1uta.mxtoot.matrix.MxTootConfig;
 import io.github.ma1uta.mxtoot.matrix.MxTootDao;
 import io.github.ma1uta.mxtoot.matrix.MxTootPersistentService;
 import io.github.ma1uta.mxtoot.matrix.TimelineState;
-import okhttp3.OkHttpClient;
 
 /**
  * Run mastodon timeline.
  */
-public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> {
+public class Timeline extends AbstractStatusCommand {
     @Override
     public String name() {
         return "timeline";
@@ -46,9 +42,9 @@ public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxToot
             return;
         }
 
-        MatrixClient matrixClient = holder.getMatrixClient();
+        EventMethods eventMethods = holder.getMatrixClient().event();
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + help());
+            eventMethods.sendNotice(config.getRoomId(), "Usage: " + help());
         } else {
             TimelineState clientState = TimelineState.valueOf(arguments.trim().toUpperCase());
             config.setTimelineState(clientState);
@@ -59,32 +55,15 @@ public class MastodonTimeline implements Command<MxTootConfig, MxTootDao, MxToot
                 case ON:
                 case AUTO:
                     if (!holder.getData().streaming()) {
-                        matrixClient.sendNotice(config.getRoomId(), "Cannot streaming");
+                        eventMethods.sendNotice(config.getRoomId(), "Cannot streaming");
                     }
                     break;
                 case OFF:
-                    holder.getData().shutdown();
+                    holder.getData().get();
                     break;
                 default:
-                    matrixClient.sendNotice(config.getRoomId(), "Unknown status " + clientState);
+                    eventMethods.sendNotice(config.getRoomId(), "Unknown status " + clientState);
             }
-        }
-    }
-
-    /**
-     * Initialize Mastodon client.
-     *
-     * @param holder bot's holder.
-     */
-    public static void initMastodonClient(BotHolder<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> holder) {
-        MxTootConfig config = holder.getConfig();
-        if (holder.getData() == null) {
-            MastodonClient client = new MastodonClient.Builder(config.getMastodonServer(), new OkHttpClient.Builder(), new Gson())
-                .useStreamingApi().accessToken(config.getMastodonAccessToken()).build();
-
-            MxMastodonClient mastodonClient = new MxMastodonClient(client, holder);
-            holder.setData(mastodonClient);
-            holder.addShutdownListener(mastodonClient);
         }
     }
 

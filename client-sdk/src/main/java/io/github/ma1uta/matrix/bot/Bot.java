@@ -64,12 +64,11 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
 
     private final BotHolder<C, D, S, E> holder;
 
-    public Bot(Client client, String homeserverUrl, String domain, String asToken, C config, S service,
+    public Bot(Client client, String homeserverUrl, String asToken, C config, S service,
                List<Class<? extends Command<C, D, S, E>>> commandsClasses) {
-        MatrixClient matrixClient = new MatrixClient(homeserverUrl, domain, client, true, true, config.getTxnId());
+        MatrixClient matrixClient = new MatrixClient(homeserverUrl, client, true, false, config.getTxnId());
         matrixClient.setAccessToken(asToken);
         matrixClient.setUserId(config.getUserId());
-        matrixClient.setDeviceId(config.getDeviceId());
         this.holder = new BotHolder<>(matrixClient, service);
         this.holder.setConfig(config);
         this.commands = new HashMap<>(commandsClasses.size());
@@ -170,7 +169,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
     protected LoopState loop(Function<SyncResponse, LoopState> loopAction) {
         C config = getHolder().getConfig();
         MatrixClient matrixClient = getHolder().getMatrixClient();
-        SyncResponse sync = matrixClient.sync(config.getFilterId(), config.getNextBatch(), false, null, null);
+        SyncResponse sync = matrixClient.sync().sync(config.getFilterId(), config.getNextBatch(), false, null, null);
         while (true) {
             LoopState nextState = loopAction.apply(sync);
 
@@ -188,7 +187,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
                 return LoopState.EXIT;
             }
 
-            sync = matrixClient.sync(config.getFilterId(), nextBatch, false, null, config.getTimeout());
+            sync = matrixClient.sync().sync(config.getFilterId(), nextBatch, false, null, config.getTimeout());
         }
     }
 
@@ -209,8 +208,8 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             registerRequest.setDeviceId(config.getDeviceId());
 
             MatrixClient matrixClient = holder.getMatrixClient();
-            matrixClient.register(registerRequest);
-            matrixClient.setDisplayName(config.getDisplayName());
+            matrixClient.account().register(registerRequest);
+            matrixClient.profile().setDisplayName(config.getDisplayName());
 
             RoomEventFilter roomEventFilter = new RoomEventFilter();
             roomEventFilter.setTypes(Collections.singletonList(Event.EventType.ROOM_MESSAGE));
@@ -323,7 +322,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      */
     public LoopState deletedState() {
         getHolder().runInTransaction((holder, dao) -> {
-            holder.getMatrixClient().deactivate();
+            holder.getMatrixClient().account().deactivate();
             dao.delete(holder.getConfig());
         });
         return LoopState.EXIT;
@@ -347,7 +346,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             }
         }
         if (lastEvent != null) {
-            matrixClient.sendReceipt(getHolder().getConfig().getRoomId(), lastEvent);
+            matrixClient.receipt().sendReceipt(getHolder().getConfig().getRoomId(), lastEvent);
         }
     }
 
@@ -433,7 +432,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             if (command != null) {
                 command.invoke(getHolder(), event, Arrays.stream(arguments).skip(1).collect(Collectors.joining(" ")));
             } else {
-                matrixClient.sendNotice(config.getRoomId(), getHelp());
+                matrixClient.event().sendNotice(config.getRoomId(), getHelp());
             }
         }
     }

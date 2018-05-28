@@ -43,9 +43,9 @@ public class NewName<C extends BotConfig, D extends BotDao<C>, S extends Persist
         MatrixClient matrixClient = holder.getMatrixClient();
         C config = holder.getConfig();
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.sendNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.event().sendNotice(config.getRoomId(), "Usage: " + usage());
         } else {
-            matrixClient.setDisplayName(arguments);
+            matrixClient.profile().setDisplayName(arguments);
             config.setDisplayName(arguments);
         }
     }

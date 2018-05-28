@@ -23,7 +23,7 @@ import io.github.ma1uta.matrix.bot.Bot;
 import io.github.ma1uta.matrix.bot.Command;
 import io.github.ma1uta.mxtoot.BotConfiguration;
 import io.github.ma1uta.mxtoot.mastodon.MxMastodonClient;
-import io.github.ma1uta.mxtoot.matrix.command.MastodonTimeline;
+import io.github.ma1uta.mxtoot.matrix.command.AbstractStatusCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
     public MxTootBotPool(BotConfiguration botConfiguration, MxTootPersistentService<MxTootDao> service, Client client,
                          List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>,
                              MxMastodonClient>>> cmds) {
-        super(botConfiguration.getHomeserverUrl(), botConfiguration.getDomain(), botConfiguration.getDisplayName(), client,
+        super(botConfiguration.getHomeserverUrl(), botConfiguration.getDisplayName(), client,
             botConfiguration.getAsToken(), service, cmds, botConfiguration.getRunState());
         this.botConfiguration = botConfiguration;
     }
@@ -77,10 +77,10 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
     protected void initializeBot(Bot<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient> bot) {
         bot.setInitAction((holder, dao) -> {
             if (TimelineState.AUTO.equals(holder.getConfig().getTimelineState())) {
-                MastodonTimeline.initMastodonClient(holder);
+                AbstractStatusCommand.initMastodonClient(holder);
                 if (!holder.getData().streaming()) {
                     LOGGER.error("Cannot streaming: " + holder.getConfig().getId());
-                    holder.getMatrixClient().sendNotice(holder.getConfig().getRoomId(), "Cannot streaming.");
+                    holder.getMatrixClient().event().sendNotice(holder.getConfig().getRoomId(), "Cannot streaming.");
                 }
             }
         });
