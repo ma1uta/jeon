@@ -70,7 +70,7 @@ public class Format implements Command<MxTootConfig, MxTootDao, MxTootPersistent
 
     @Override
     public String help() {
-        return "show or set a template of the post, reply, boost, date or locale of the date (can invoke only owner)";
+        return "show or set a template of the post, reply, boost, date or locale of the date (can invoke only owner).";
     }
 
     @Override

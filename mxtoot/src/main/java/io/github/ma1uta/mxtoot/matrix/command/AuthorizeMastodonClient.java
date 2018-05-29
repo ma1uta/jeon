@@ -84,7 +84,7 @@ public class AuthorizeMastodonClient implements Command<MxTootConfig, MxTootDao,
 
     @Override
     public String help() {
-        return "authorize mastodon client (can invoke only owner)";
+        return "authorize mastodon client (can invoke only owner).";
     }
 
     @Override

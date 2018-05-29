@@ -88,25 +88,6 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         return holder;
     }
 
-    /**
-     * Show commands help.
-     *
-     * @return help.
-     */
-    public String getHelp() {
-        C config = getHolder().getConfig();
-        String prefix = config.getPrefix() == null ? "!" : config.getPrefix();
-        String defaultCommand = config.getDefaultCommand();
-        return getCommands().entrySet().stream().map(entry -> {
-            StringBuilder commandHelp = new StringBuilder();
-            if (defaultCommand != null && !defaultCommand.trim().isEmpty() && entry.getKey().equals(defaultCommand)) {
-                commandHelp.append("(default) ");
-            }
-            commandHelp.append(prefix).append(entry.getValue().usage()).append(" - ").append(entry.getValue().help()).append("\n");
-            return commandHelp;
-        }).reduce(StringBuilder::append).map(StringBuilder::toString).orElse("");
-    }
-
     public BiConsumer<BotHolder<C, D, S, E>, D> getInitAction() {
         return initAction;
     }
@@ -448,8 +429,8 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      */
     protected void processAction(Event event, String content) {
         String[] arguments = content.trim().split("\\s");
-        Command<C, D, S, E> command = getCommands().get(arguments[0].substring(getPrefix().length()));
-        MatrixClient matrixClient = getHolder().getMatrixClient();
+        String commandName = arguments[0].substring(getPrefix().length());
+        Command<C, D, S, E> command = getCommands().get(commandName);
         C config = getHolder().getConfig();
         String argument = Arrays.stream(arguments).skip(1).collect(Collectors.joining(" "));
         String defaultCommand = config.getDefaultCommand();
@@ -460,7 +441,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         if (command != null) {
             command.invoke(getHolder(), event, argument);
         } else {
-            matrixClient.event().sendNotice(config.getRoomId(), getHelp());
+            getHolder().getMatrixClient().event().sendNotice(config.getRoomId(), "Unknown command: " + commandName);
         }
     }
 }

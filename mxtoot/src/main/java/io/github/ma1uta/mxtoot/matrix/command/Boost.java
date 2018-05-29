@@ -76,7 +76,7 @@ public class Boost extends AbstractStatusCommand {
 
     @Override
     public String help() {
-        return "boost a status";
+        return "boost a status.";
     }
 
     @Override

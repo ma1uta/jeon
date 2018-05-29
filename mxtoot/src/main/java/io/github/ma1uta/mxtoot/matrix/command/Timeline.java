@@ -69,7 +69,7 @@ public class Timeline extends AbstractStatusCommand {
 
     @Override
     public String help() {
-        return "start, stop or autostart timeline (only owner can invoke)";
+        return "start, stop or autostart timeline (only owner can invoke).";
     }
 
     @Override

@@ -86,7 +86,7 @@ public class RegisterMastodonClient implements Command<MxTootConfig, MxTootDao, 
 
     @Override
     public String help() {
-        return "start registration of the new mastodon client (can invoke only owner)";
+        return "start registration of the new mastodon client (can invoke only owner).";
     }
 
     @Override
