@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.mxtoot.matrix.command;
 
-import com.sys1yagi.mastodon4j.api.entity.Status;
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
 import com.sys1yagi.mastodon4j.api.method.Statuses;
 import io.github.ma1uta.matrix.Event;
@@ -52,9 +51,7 @@ public class Toot extends AbstractStatusCommand {
 
         EventMethods eventMethods = holder.getMatrixClient().event();
         try {
-            Status status = new Statuses(holder.getData().getMastodonClient()).postStatus(arguments, null, null, false, null).execute();
-
-            eventMethods.sendNotice(config.getRoomId(), "Tooted: " + status.getUri());
+            new Statuses(holder.getData().getMastodonClient()).postStatus(arguments, null, null, false, null).execute();
         } catch (Mastodon4jRequestException e) {
             String msg = "Cannot toot";
             LOGGER.error(msg, e);

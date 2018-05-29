@@ -112,7 +112,12 @@ public class BotConfig {
     /**
      * Command prefix.
      */
-    private String prefix = "/";
+    private String prefix = "!";
+
+    /**
+     * Default command to use without prefix.
+     */
+    private String defaultCommand;
 
     public Long getId() {
         return id;
@@ -216,6 +221,14 @@ public class BotConfig {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+    }
+
+    public String getDefaultCommand() {
+        return defaultCommand;
+    }
+
+    public void setDefaultCommand(String defaultCommand) {
+        this.defaultCommand = defaultCommand;
     }
 
     @Override

@@ -96,6 +96,8 @@ public class BotConfiguration extends Configuration {
     private List<Class<? extends Command<MxTootConfig, MxTootDao, MxTootPersistentService<MxTootDao>, MxMastodonClient>>> commands =
         new ArrayList<>();
 
+    private String prefix = "!";
+
     public DataSourceFactory getDataSourceFactory() {
         return database;
     }
@@ -219,5 +221,13 @@ public class BotConfiguration extends Configuration {
 
     public void setFetchMissingStatuses(Boolean fetchMissingStatuses) {
         this.fetchMissingStatuses = fetchMissingStatuses;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 }

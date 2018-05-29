@@ -49,6 +49,10 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
         this.botConfiguration = botConfiguration;
     }
 
+    public BotConfiguration getBotConfiguration() {
+        return botConfiguration;
+    }
+
     @Override
     protected MxTootConfig createConfig(String username) {
         MxTootConfig config = new MxTootConfig();
@@ -63,12 +67,13 @@ public class MxTootBotPool extends AbstractBotPool<MxTootConfig, MxTootDao, MxTo
         } else {
             config.setMastodonClient(UUID.randomUUID().toString());
         }
-        config.setPostFormat(botConfiguration.getPostFormat());
-        config.setReplyFormat(botConfiguration.getReplyFormat());
-        config.setBoostFormat(botConfiguration.getBoostFormat());
-        config.setDateTimeFormat(botConfiguration.getDateTimeFormat());
-        config.setDateTimeLocale(botConfiguration.getDateTimeLocale());
-        config.setFetchMissingStatuses(botConfiguration.getFetchMissingStatuses());
+        config.setPostFormat(getBotConfiguration().getPostFormat());
+        config.setReplyFormat(getBotConfiguration().getReplyFormat());
+        config.setBoostFormat(getBotConfiguration().getBoostFormat());
+        config.setDateTimeFormat(getBotConfiguration().getDateTimeFormat());
+        config.setDateTimeLocale(getBotConfiguration().getDateTimeLocale());
+        config.setFetchMissingStatuses(getBotConfiguration().getFetchMissingStatuses());
+        config.setPrefix(getBotConfiguration().getPrefix());
 
         return config;
     }

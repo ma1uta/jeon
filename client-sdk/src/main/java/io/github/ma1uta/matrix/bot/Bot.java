@@ -58,8 +58,6 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
 
     private final Map<String, Command<C, D, S, E>> commands;
 
-    private String help;
-
     private BiConsumer<BotHolder<C, D, S, E>, D> initAction;
 
     private final BotHolder<C, D, S, E> holder;
@@ -69,21 +67,17 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         MatrixClient matrixClient = new MatrixClient(homeserverUrl, client, true, false, config.getTxnId());
         matrixClient.setAccessToken(asToken);
         matrixClient.setUserId(config.getUserId());
-        this.holder = new BotHolder<>(matrixClient, service);
+        this.holder = new BotHolder<>(matrixClient, service, this);
         this.holder.setConfig(config);
         this.commands = new HashMap<>(commandsClasses.size());
-        String prefix = config.getPrefix() == null ? "!" : config.getPrefix();
-        StringBuilder sb = new StringBuilder(prefix + "help - show help.\n");
         commandsClasses.forEach(cl -> {
             try {
                 Command<C, D, S, E> command = cl.newInstance();
                 this.commands.put(command.name(), command);
-                sb.append(prefix).append(command.usage()).append(" - ").append(command.help()).append("\n");
             } catch (InstantiationException | IllegalAccessException e) {
                 LOGGER.error("Cannot create new instance of the command: " + cl.getCanonicalName(), e);
             }
         });
-        this.help = sb.toString();
     }
 
     public Map<String, Command<C, D, S, E>> getCommands() {
@@ -94,8 +88,23 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         return holder;
     }
 
+    /**
+     * Show commands help.
+     *
+     * @return help.
+     */
     public String getHelp() {
-        return help;
+        C config = getHolder().getConfig();
+        String prefix = config.getPrefix() == null ? "!" : config.getPrefix();
+        String defaultCommand = config.getDefaultCommand();
+        return getCommands().entrySet().stream().map(entry -> {
+            StringBuilder commandHelp = new StringBuilder();
+            if (defaultCommand != null && !defaultCommand.trim().isEmpty() && entry.getKey().equals(defaultCommand)) {
+                commandHelp.append("(default) ");
+            }
+            commandHelp.append(prefix).append(entry.getValue().usage()).append(" - ").append(entry.getValue().help()).append("\n");
+            return commandHelp;
+        }).reduce(StringBuilder::append).map(StringBuilder::toString).orElse("");
     }
 
     public BiConsumer<BotHolder<C, D, S, E>, D> getInitAction() {
@@ -387,16 +396,18 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      */
     protected void processEvent(Event event) {
         MatrixClient matrixClient = getHolder().getMatrixClient();
+        C config = getHolder().getConfig();
         Map<String, Object> content = event.getContent();
         String body = (String) content.get("body");
         if (Event.EventType.ROOM_MESSAGE.equals(event.getType())
             && !matrixClient.getUserId().equals(event.getSender())
             && Event.MessageType.TEXT.equals(content.get("msgtype"))
-            && permit(event) && body.startsWith(getPrefix())) {
+            && permit(event)
+            && (body.startsWith(getPrefix()) || (config.getDefaultCommand() != null && !config.getDefaultCommand().trim().isEmpty()))) {
             try {
                 getHolder().runInTransaction((holder, dao) -> {
                     processAction(event, body);
-                    getHolder().getConfig().setTxnId(matrixClient.getTxn().get());
+                    config.setTxnId(matrixClient.getTxn().get());
                     saveData(holder, dao);
                 });
             } catch (Exception e) {
@@ -440,8 +451,14 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         Command<C, D, S, E> command = getCommands().get(arguments[0].substring(getPrefix().length()));
         MatrixClient matrixClient = getHolder().getMatrixClient();
         C config = getHolder().getConfig();
+        String argument = Arrays.stream(arguments).skip(1).collect(Collectors.joining(" "));
+        String defaultCommand = config.getDefaultCommand();
+        if (command == null && defaultCommand != null && !defaultCommand.trim().isEmpty()) {
+            command = getCommands().get(defaultCommand);
+            argument = content;
+        }
         if (command != null) {
-            command.invoke(getHolder(), event, Arrays.stream(arguments).skip(1).collect(Collectors.joining(" ")));
+            command.invoke(getHolder(), event, argument);
         } else {
             matrixClient.event().sendNotice(config.getRoomId(), getHelp());
         }

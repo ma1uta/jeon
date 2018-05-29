@@ -46,9 +46,12 @@ public class BotHolder<C extends BotConfig, D extends BotDao<C>, S extends Persi
 
     private List<Supplier<Void>> shutdownListeners = new ArrayList<>();
 
-    public BotHolder(MatrixClient matrixClient, S service) {
+    private final Bot<C, D, S, E> bot;
+
+    public BotHolder(MatrixClient matrixClient, S service, Bot<C, D, S, E> bot) {
         this.matrixClient = matrixClient;
         this.service = service;
+        this.bot = bot;
     }
 
     public MatrixClient getMatrixClient() {
@@ -77,6 +80,10 @@ public class BotHolder<C extends BotConfig, D extends BotDao<C>, S extends Persi
 
     public List<Supplier<Void>> getShutdownListeners() {
         return shutdownListeners;
+    }
+
+    public Bot<C, D, S, E> getBot() {
+        return bot;
     }
 
     /**

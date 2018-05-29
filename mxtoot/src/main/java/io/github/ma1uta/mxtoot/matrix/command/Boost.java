@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.mxtoot.matrix.command;
 
-import com.sys1yagi.mastodon4j.api.entity.Status;
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
 import com.sys1yagi.mastodon4j.api.method.Statuses;
 import io.github.ma1uta.matrix.Event;
@@ -68,8 +67,7 @@ public class Boost extends AbstractStatusCommand {
         }
 
         try {
-            Status status = new Statuses(holder.getData().getMastodonClient()).postReblog(statusId).execute();
-            eventMethods.sendNotice(config.getRoomId(), "Boosted: " + status.getUrl());
+            new Statuses(holder.getData().getMastodonClient()).postReblog(statusId).execute();
         } catch (Mastodon4jRequestException e) {
             LOGGER.error("Cannot toot", e);
             eventMethods.sendNotice(config.getRoomId(), "Cannot boost: " + e.getMessage());
