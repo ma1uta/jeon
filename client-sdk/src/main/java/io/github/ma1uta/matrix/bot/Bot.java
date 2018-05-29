@@ -384,7 +384,8 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             && !matrixClient.getUserId().equals(event.getSender())
             && Event.MessageType.TEXT.equals(content.get("msgtype"))
             && permit(event)
-            && (body.startsWith(getPrefix()) || (config.getDefaultCommand() != null && !config.getDefaultCommand().trim().isEmpty()))) {
+            && (body.trim().startsWith(getPrefix()) || (config.getDefaultCommand() != null && !config.getDefaultCommand().trim()
+            .isEmpty()))) {
             try {
                 getHolder().runInTransaction((holder, dao) -> {
                     processAction(event, body);
