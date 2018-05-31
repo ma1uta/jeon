@@ -37,7 +37,7 @@ public class Boost extends AbstractStatusCommand {
 
     @Override
     public String name() {
-        return "reply";
+        return "boost";
     }
 
     @Override

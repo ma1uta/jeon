@@ -44,7 +44,7 @@ public class Help<C extends BotConfig, D extends BotDao<C>, S extends Persistent
         C config = holder.getConfig();
         MatrixClient matrixClient = holder.getMatrixClient();
 
-        String prefix = config.getPrefix() == null ? "!" : config.getPrefix();
+        String prefix = holder.getBot().getPrefix();
         String defaultCommand = config.getDefaultCommand();
         String help = holder.getBot().getCommands().entrySet().stream().map(entry -> {
             StringBuilder commandHelp = new StringBuilder();

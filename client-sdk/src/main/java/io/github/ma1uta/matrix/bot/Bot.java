@@ -416,7 +416,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      *
      * @return command prefix.
      */
-    protected String getPrefix() {
+    public String getPrefix() {
         C config = getHolder().getConfig();
         String prefix = config.getPrefix();
         return prefix == null ? "!" : prefix.replaceAll("\\{\\{display_name}}", config.getDisplayName());
@@ -429,8 +429,9 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      * @param content command.
      */
     protected void processAction(Event event, String content) {
-        String[] arguments = content.trim().split("\\s");
-        String commandName = arguments[0].substring(getPrefix().length());
+        String contentWithoutPrefix = content.trim().substring(getPrefix().length());
+        String[] arguments = contentWithoutPrefix.trim().split("\\s");
+        String commandName = arguments[0];
         Command<C, D, S, E> command = getCommands().get(commandName);
         C config = getHolder().getConfig();
         String argument = Arrays.stream(arguments).skip(1).collect(Collectors.joining(" "));

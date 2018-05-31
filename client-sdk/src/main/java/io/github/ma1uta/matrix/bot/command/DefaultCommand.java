@@ -48,7 +48,7 @@ public class DefaultCommand<C extends BotConfig, D extends BotDao<C>, S extends 
         }
 
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.event().sendNotice(config.getRoomId(), config.getDefaultCommand());
+            holder.getConfig().setDefaultCommand(null);
         } else {
             if (holder.getBot().getCommands().get(arguments) != null) {
                 holder.getConfig().setDefaultCommand(arguments);
