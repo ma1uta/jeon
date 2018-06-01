@@ -15,5 +15,4 @@ services (currently exists only Matrix-Mastodon bot).
 * common-backend - common classes of all implementations (WIP).
 * identity-backend - common classes of the the identity server's realization.
 * identity-dropwizard - sample implementation of the identity server using [dropwizard framework](https://www.dropwizard.io/) (Proof-of-concept, not ready for production).
-* mxtoot - [matrix-mastodon bot](mxtoot/Readme.md).
 
