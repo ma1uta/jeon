@@ -199,16 +199,5 @@
                 <module>identity-dropwizard</module>
             </modules>
         </profile>
-
-        <profile>
-            <id>mxtoot</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-
-            <modules>
-                <module>mxtoot</module>
-            </modules>
-        </profile>
     </profiles>
 </project>
