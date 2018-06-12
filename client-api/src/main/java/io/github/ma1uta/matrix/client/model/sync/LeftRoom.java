@@ -16,6 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
+
 /**
  * Left room.
  */
@@ -31,6 +35,12 @@ public class LeftRoom {
      */
     private Timeline timeline;
 
+    /**
+     * !!! Not described in spec.
+     */
+    @JsonProperty("account_data")
+    private Map<String, Object> accountData;
+
     public State getState() {
         return state;
     }
@@ -45,5 +55,13 @@ public class LeftRoom {
 
     public void setTimeline(Timeline timeline) {
         this.timeline = timeline;
+    }
+
+    public Map<String, Object> getAccountData() {
+        return accountData;
+    }
+
+    public void setAccountData(Map<String, Object> accountData) {
+        this.accountData = accountData;
     }
 }

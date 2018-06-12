@@ -9,6 +9,8 @@ Fields:
     * user_id
     * replaces_state
     * redacted_because
+* LeftRoom (io.github.ma1uta.matrix.client.model.sync.LeftRoom)
+    * account_data
 * Device lists (io.github.ma1uta.matrix.client.model.sync.DeviceLists):
     * left
 * Sync response (io.github.ma1uta.matrix.client.model.sync.SyncResponse):
