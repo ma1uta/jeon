@@ -158,7 +158,8 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         getService().invoke(dao -> {
             dao.save(config);
         });
-        Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getAppToken(), config, getService(), getCommandClasses());
+        Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getAppToken(), true, false, config, getService(),
+            getCommandClasses());
         initializeBot(bot);
         String userId = bot.getHolder().getConfig().getUserId();
         getBotMap().put(userId, bot);

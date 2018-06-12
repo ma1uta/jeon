@@ -24,7 +24,6 @@ import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.RoomEventFilter;
 import io.github.ma1uta.matrix.client.model.filter.RoomFilter;
 import io.github.ma1uta.matrix.client.model.room.RoomId;
-import io.github.ma1uta.matrix.client.model.sync.InviteState;
 import io.github.ma1uta.matrix.client.model.sync.InvitedRoom;
 import io.github.ma1uta.matrix.client.model.sync.JoinedRoom;
 import io.github.ma1uta.matrix.client.model.sync.LeftRoom;
@@ -62,9 +61,9 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
 
     private final BotHolder<C, D, S, E> holder;
 
-    public Bot(Client client, String homeserverUrl, String asToken, C config, S service,
-               List<Class<? extends Command<C, D, S, E>>> commandsClasses) {
-        MatrixClient matrixClient = new MatrixClient(homeserverUrl, client, true, false, config.getTxnId());
+    public Bot(Client client, String homeserverUrl, String asToken, boolean addUserIdToRequests, boolean updateAccessToken, C config,
+               S service, List<Class<? extends Command<C, D, S, E>>> commandsClasses) {
+        MatrixClient matrixClient = new MatrixClient(homeserverUrl, client, addUserIdToRequests, updateAccessToken, config.getTxnId());
         matrixClient.setAccessToken(asToken);
         matrixClient.setUserId(config.getUserId());
         this.holder = new BotHolder<>(matrixClient, service, this);
@@ -133,9 +132,15 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      * Run startup action.
      */
     public void init() {
+        BotHolder<C, D, S, E> holder = getHolder();
+        if (holder.getMatrixClient().isUpdateAccessToken()) {
+            C config = holder.getConfig();
+            holder.getMatrixClient().auth().login(config.getUserId(), config.getPassword());
+        }
+
         if (getInitAction() != null) {
-            getHolder().runInTransaction((holder, dao) -> {
-                getInitAction().accept(holder, dao);
+            holder.runInTransaction((txHolder, dao) -> {
+                getInitAction().accept(txHolder, dao);
             });
         }
     }
@@ -223,15 +228,19 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      * @return next loop state.
      */
     protected LoopState registeredState() {
-        return loop(sync -> registeredState(
-            sync.getRooms().getInvite().entrySet().stream().map(Map.Entry::getValue).map(InvitedRoom::getInviteState)
-                .map(InviteState::getEvents)
-                .flatMap(List::stream).collect(Collectors.toList())));
+        return loop(sync -> {
+            Map<String, InvitedRoom> invite = sync.getRooms().getInvite();
+            Map<String, List<Event>> eventMap = new HashMap<>();
+            for (Map.Entry<String, InvitedRoom> entry : invite.entrySet()) {
+                eventMap.put(entry.getKey(), entry.getValue().getInviteState().getEvents());
+            }
+            return registeredState(eventMap);
+        });
     }
 
-    protected LoopState registeredState(List<Event> events) {
-        if (!events.isEmpty()) {
-            events.forEach(event -> joinRoom(events));
+    protected LoopState registeredState(Map<String, List<Event>> eventMap) {
+        if (!eventMap.isEmpty()) {
+            joinRoom(eventMap);
             return LoopState.NEXT_STATE;
         }
 
@@ -251,8 +260,12 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             JoinedRoom joinedRoom = rooms.getJoin().get(config.getRoomId());
 
             MatrixClient matrixClient = getHolder().getMatrixClient();
+            List<String> joinedRooms = matrixClient.room().joinedRooms();
             for (Map.Entry<String, LeftRoom> roomEntry : rooms.getLeave().entrySet()) {
-                matrixClient.room().leaveRoom(roomEntry.getKey());
+                String leftRoom = roomEntry.getKey();
+                if (joinedRooms.contains(leftRoom)) {
+                    matrixClient.room().leaveRoom(leftRoom);
+                }
             }
 
             if (joinedRoom == null) {
@@ -280,29 +293,29 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
     /**
      * Join to room.
      *
-     * @param events invited events.
+     * @param eventMap invited eventMap. Map &lt;roomId&gt; - &lt;[event]&gt; room_id to invite_state.
      */
-    public void joinRoom(List<Event> events) {
+    public void joinRoom(Map<String, List<Event>> eventMap) {
         getHolder().runInTransaction((holder, dao) -> {
-            events.stream().filter(e -> {
-                Object membership = e.getContent().get("membership");
+            eventMap.forEach((roomId, events) -> events.stream().filter(event -> {
+                Object membership = event.getContent().get("membership");
                 return Event.MembershipState.INVITE.equals(membership)
-                    && Event.EventType.ROOM_MEMBER.equals(e.getType());
-            }).findFirst().ifPresent(e -> {
-                RoomId response = holder.getMatrixClient().room().joinRoomByIdOrAlias(e.getRoomId());
+                    && Event.EventType.ROOM_MEMBER.equals(event.getType());
+            }).findFirst().ifPresent(event -> {
+                RoomId response = holder.getMatrixClient().room().joinRoomByIdOrAlias(roomId);
 
                 if ((response.getErrcode() == null || response.getErrcode().trim().isEmpty())
                     && (response.getError() == null || response.getError().trim().isEmpty())) {
                     C config = holder.getConfig();
-                    config.setRoomId(e.getRoomId());
+                    config.setRoomId(roomId);
                     config.setState(BotState.JOINED);
-                    config.setOwner(e.getSender());
+                    config.setOwner(event.getSender());
                     saveData(holder, dao);
                 } else {
                     throw new RuntimeException(
                         String.format("Failed join to room, errcode: ''%s'', error: ''%s''", response.getErrcode(), response.getError()));
                 }
-            });
+            }));
         });
     }
 
@@ -353,7 +366,9 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
                 state = newState();
                 break;
             case REGISTERED:
-                state = registeredState(Collections.singletonList(event));
+                Map<String, List<Event>> eventMap = new HashMap<>();
+                eventMap.put(event.getRoomId(), Collections.singletonList(event));
+                state = registeredState(eventMap);
                 break;
             case JOINED:
                 state = joinedState(Collections.singletonList(event));

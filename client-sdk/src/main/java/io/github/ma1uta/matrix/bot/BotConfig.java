@@ -52,6 +52,11 @@ public class BotConfig {
     private String userId;
 
     /**
+     * Bot's password.
+     */
+    private String password;
+
+    /**
      * Bot's device id.
      */
     @Column(name = "device_id")
@@ -133,6 +138,14 @@ public class BotConfig {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getDeviceId() {

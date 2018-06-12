@@ -69,6 +69,15 @@ public class MatrixClient implements Closeable {
     }
 
     /**
+     * Return access token.
+     *
+     * @return access token.
+     */
+    public String getAccessToken() {
+        return getRequestMethods().getAccessToken();
+    }
+
+    /**
      * Setup access token.
      *
      * @param accessToken a new access token.
