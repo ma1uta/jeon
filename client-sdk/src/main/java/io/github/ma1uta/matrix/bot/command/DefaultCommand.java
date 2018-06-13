@@ -40,7 +40,7 @@ public class DefaultCommand<C extends BotConfig, D extends BotDao<C>, S extends 
     }
 
     @Override
-    public void invoke(BotHolder<C, D, S, E> holder, Event event, String arguments) {
+    public void invoke(BotHolder<C, D, S, E> holder, String roomId, Event event, String arguments) {
         C config = holder.getConfig();
         MatrixClient matrixClient = holder.getMatrixClient();
         if (config.getOwner() != null && !config.getOwner().equals(event.getSender())) {
@@ -53,7 +53,7 @@ public class DefaultCommand<C extends BotConfig, D extends BotDao<C>, S extends 
             if (holder.getBot().getCommands().get(arguments) != null) {
                 holder.getConfig().setDefaultCommand(arguments);
             } else {
-                matrixClient.event().sendNotice(config.getRoomId(), "Unknown command: " + arguments);
+                matrixClient.event().sendNotice(roomId, "Unknown command: " + arguments);
             }
         }
     }

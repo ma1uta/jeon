@@ -39,10 +39,11 @@ public interface Command<C extends BotConfig, D extends BotDao<C>, S extends Per
      * Invoking command.
      *
      * @param holder    bot's holder.
+     * @param roomId    room id.
      * @param event     event with command.
      * @param arguments (without command).
      */
-    void invoke(BotHolder<C, D, S, E> holder, Event event, String arguments);
+    void invoke(BotHolder<C, D, S, E> holder, String roomId, Event event, String arguments);
 
     /**
      * Help information.

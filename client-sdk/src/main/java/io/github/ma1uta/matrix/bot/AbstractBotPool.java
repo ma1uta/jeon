@@ -126,15 +126,18 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
     /**
      * Send an one event to the bot.
      *
-     * @param event event.
+     * @param roomId room id.
+     * @param event  event.
      * @return {@code true} if event was processed, else {@code false}.
      */
-    public boolean send(Event event) {
+    public boolean send(String roomId, Event event) {
         if (RunState.APPLICATION_SERVICE.equals(getRunState())) {
             Optional<Bot<C, D, S, E>> bot = getBotMap().entrySet().stream()
                 .filter(entry -> {
-                    C config = entry.getValue().getHolder().getConfig();
-                    if (event.getRoomId().equals(config.getRoomId())) {
+                    BotHolder<C, D, S, E> holder = entry.getValue().getHolder();
+                    List<String> joinedRooms = holder.getMatrixClient().room().joinedRooms();
+                    C config = holder.getConfig();
+                    if (joinedRooms.contains(roomId)) {
                         return true;
                     }
                     Object membership = event.getContent().get("membership");
@@ -158,7 +161,7 @@ public abstract class AbstractBotPool<C extends BotConfig, D extends BotDao<C>, 
         getService().invoke(dao -> {
             dao.save(config);
         });
-        Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getAppToken(), true, false, config, getService(),
+        Bot<C, D, S, E> bot = new Bot<>(getClient(), getHomeserverUrl(), getAppToken(), true, false, true, config, getService(),
             getCommandClasses());
         initializeBot(bot);
         String userId = bot.getHolder().getConfig().getUserId();

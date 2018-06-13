@@ -75,12 +75,6 @@ public class BotConfig {
     private String filterId;
 
     /**
-     * Bot's room.
-     */
-    @Column(name = "room_id")
-    private String roomId;
-
-    /**
      * Bot's batch to prevent process old events.
      */
     @Column(name = "next_batch")
@@ -123,6 +117,11 @@ public class BotConfig {
      * Default command to use without prefix.
      */
     private String defaultCommand;
+
+    /**
+     * Skip initial sync.
+     */
+    private Boolean skipInitialSync;
 
     public Long getId() {
         return id;
@@ -170,14 +169,6 @@ public class BotConfig {
 
     public void setFilterId(String filterId) {
         this.filterId = filterId;
-    }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
     }
 
     public String getNextBatch() {
@@ -242,6 +233,14 @@ public class BotConfig {
 
     public void setDefaultCommand(String defaultCommand) {
         this.defaultCommand = defaultCommand;
+    }
+
+    public Boolean getSkipInitialSync() {
+        return skipInitialSync;
+    }
+
+    public void setSkipInitialSync(Boolean skipInitialSync) {
+        this.skipInitialSync = skipInitialSync;
     }
 
     @Override

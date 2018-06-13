@@ -40,12 +40,11 @@ public class Help<C extends BotConfig, D extends BotDao<C>, S extends Persistent
     }
 
     @Override
-    public void invoke(BotHolder<C, D, S, E> holder, Event event, String arguments) {
-        C config = holder.getConfig();
+    public void invoke(BotHolder<C, D, S, E> holder, String roomId, Event event, String arguments) {
         MatrixClient matrixClient = holder.getMatrixClient();
 
         String prefix = holder.getBot().getPrefix();
-        String defaultCommand = config.getDefaultCommand();
+        String defaultCommand = holder.getConfig().getDefaultCommand();
         String help = holder.getBot().getCommands().entrySet().stream().map(entry -> {
             StringBuilder commandHelp = new StringBuilder();
             if (defaultCommand != null && !defaultCommand.trim().isEmpty() && entry.getKey().equals(defaultCommand)) {
@@ -55,7 +54,7 @@ public class Help<C extends BotConfig, D extends BotDao<C>, S extends Persistent
             return commandHelp;
         }).reduce(StringBuilder::append).map(StringBuilder::toString).orElse("");
 
-        matrixClient.event().sendNotice(config.getRoomId(), help);
+        matrixClient.event().sendNotice(roomId, help);
     }
 
     @Override

@@ -38,10 +38,10 @@ public class Leave<C extends BotConfig, D extends BotDao<C>, S extends Persisten
     }
 
     @Override
-    public void invoke(BotHolder<C, D, S, E> holder, Event event, String arguments) {
+    public void invoke(BotHolder<C, D, S, E> holder, String roomId, Event event, String arguments) {
         BotConfig config = holder.getConfig();
         if (config.getOwner() == null || config.getOwner().equals(event.getSender())) {
-            holder.getMatrixClient().room().leaveRoom(config.getRoomId());
+            holder.getMatrixClient().room().leaveRoom(roomId);
         }
     }
 

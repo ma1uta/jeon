@@ -61,14 +61,17 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
 
     private final BotHolder<C, D, S, E> holder;
 
-    public Bot(Client client, String homeserverUrl, String asToken, boolean addUserIdToRequests, boolean updateAccessToken, C config,
-               S service, List<Class<? extends Command<C, D, S, E>>> commandsClasses) {
+    private final boolean exitOnEmptyRooms;
+
+    public Bot(Client client, String homeserverUrl, String asToken, boolean addUserIdToRequests, boolean updateAccessToken,
+               boolean exitOnEmptyRooms, C config, S service, List<Class<? extends Command<C, D, S, E>>> commandsClasses) {
         MatrixClient matrixClient = new MatrixClient(homeserverUrl, client, addUserIdToRequests, updateAccessToken, config.getTxnId());
         matrixClient.setAccessToken(asToken);
         matrixClient.setUserId(config.getUserId());
         this.holder = new BotHolder<>(matrixClient, service, this);
         this.holder.setConfig(config);
         this.commands = new HashMap<>(commandsClasses.size());
+        this.exitOnEmptyRooms = exitOnEmptyRooms;
         commandsClasses.forEach(cl -> {
             try {
                 Command<C, D, S, E> command = cl.newInstance();
@@ -89,6 +92,10 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
 
     public BiConsumer<BotHolder<C, D, S, E>, D> getInitAction() {
         return initAction;
+    }
+
+    public boolean isExitOnEmptyRooms() {
+        return exitOnEmptyRooms;
     }
 
     public void setInitAction(BiConsumer<BotHolder<C, D, S, E>, D> initAction) {
@@ -166,6 +173,16 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         C config = getHolder().getConfig();
         MatrixClient matrixClient = getHolder().getMatrixClient();
         SyncResponse sync = matrixClient.sync().sync(config.getFilterId(), config.getNextBatch(), false, null, null);
+
+        String initialBatch = sync.getNextBatch();
+        if (config.getNextBatch() == null && config.getSkipInitialSync() != null && config.getSkipInitialSync()) {
+            getHolder().runInTransaction((holder, dao) -> {
+                holder.getConfig().setNextBatch(initialBatch);
+                saveData(holder, dao);
+            });
+            sync = matrixClient.sync().sync(config.getFilterId(), initialBatch, false, null, config.getTimeout());
+        }
+
         while (true) {
             LoopState nextState = loopAction.apply(sync);
 
@@ -256,9 +273,6 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         return loop(sync -> {
             Rooms rooms = sync.getRooms();
 
-            C config = getHolder().getConfig();
-            JoinedRoom joinedRoom = rooms.getJoin().get(config.getRoomId());
-
             MatrixClient matrixClient = getHolder().getMatrixClient();
             List<String> joinedRooms = matrixClient.room().joinedRooms();
             for (Map.Entry<String, LeftRoom> roomEntry : rooms.getLeave().entrySet()) {
@@ -268,20 +282,34 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
                 }
             }
 
-            if (joinedRoom == null) {
-                return LoopState.RUN;
-            } else {
-                return joinedState(joinedRoom.getTimeline().getEvents());
+            LoopState nextState = LoopState.RUN;
+            for (Map.Entry<String, JoinedRoom> joinedRoomEntry : rooms.getJoin().entrySet()) {
+                LoopState state = joinedState(joinedRoomEntry.getKey(), joinedRoomEntry.getValue().getTimeline().getEvents());
+                switch (state) {
+                    case EXIT:
+                        nextState = LoopState.EXIT;
+                        break;
+                    case NEXT_STATE:
+                        if (!LoopState.EXIT.equals(nextState)) {
+                            nextState = LoopState.NEXT_STATE;
+                        }
+                        break;
+                    case RUN:
+                    default:
+                        // nothing to do
+                        break;
+                }
             }
+            return nextState;
         });
     }
 
-    protected LoopState joinedState(List<Event> events) {
-        processJoinedRoom(events);
+    protected LoopState joinedState(String roomId, List<Event> events) {
+        processJoinedRoom(roomId, events);
 
         if (getHolder().getMatrixClient().room().joinedRooms().isEmpty()) {
             getHolder().runInTransaction((holder, dao) -> {
-                holder.getConfig().setState(BotState.DELETED);
+                holder.getConfig().setState(isExitOnEmptyRooms() ? BotState.DELETED : BotState.REGISTERED);
                 saveData(holder, dao);
             });
             return LoopState.NEXT_STATE;
@@ -307,7 +335,6 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
                 if ((response.getErrcode() == null || response.getErrcode().trim().isEmpty())
                     && (response.getError() == null || response.getError().trim().isEmpty())) {
                     C config = holder.getConfig();
-                    config.setRoomId(roomId);
                     config.setState(BotState.JOINED);
                     config.setOwner(event.getSender());
                     saveData(holder, dao);
@@ -335,14 +362,15 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
     /**
      * Process commands.
      *
+     * @param roomId room id.
      * @param events events.
      */
-    public void processJoinedRoom(List<Event> events) {
+    public void processJoinedRoom(String roomId, List<Event> events) {
         String lastEvent = null;
         long lastOriginTs = 0;
         MatrixClient matrixClient = getHolder().getMatrixClient();
         for (Event event : events) {
-            processEvent(event);
+            processEvent(roomId, event);
 
             if (event.getOriginServerTs() != null && event.getOriginServerTs() > lastOriginTs) {
                 lastOriginTs = event.getOriginServerTs();
@@ -350,7 +378,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             }
         }
         if (lastEvent != null) {
-            matrixClient.receipt().sendReceipt(getHolder().getConfig().getRoomId(), lastEvent);
+            matrixClient.receipt().sendReceipt(roomId, lastEvent);
         }
     }
 
@@ -371,7 +399,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
                 state = registeredState(eventMap);
                 break;
             case JOINED:
-                state = joinedState(Collections.singletonList(event));
+                state = joinedState(event.getRoomId(), Collections.singletonList(event));
                 break;
             case DELETED:
                 state = deletedState();
@@ -388,9 +416,10 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
     /**
      * Process an one event.
      *
-     * @param event event.
+     * @param roomId room id.
+     * @param event  event.
      */
-    protected void processEvent(Event event) {
+    protected void processEvent(String roomId, Event event) {
         MatrixClient matrixClient = getHolder().getMatrixClient();
         C config = getHolder().getConfig();
         Map<String, Object> content = event.getContent();
@@ -403,7 +432,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             .isEmpty()))) {
             try {
                 getHolder().runInTransaction((holder, dao) -> {
-                    processAction(event, body);
+                    processAction(roomId, event, body);
                     config.setTxnId(matrixClient.getTxn().get());
                     saveData(holder, dao);
                 });
@@ -440,10 +469,11 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
     /**
      * Process action.
      *
+     * @param roomId  room id.
      * @param event   event.
      * @param content command.
      */
-    protected void processAction(Event event, String content) {
+    protected void processAction(String roomId, Event event, String content) {
         String contentWithoutPrefix = content.trim().substring(getPrefix().length());
         String[] arguments = contentWithoutPrefix.trim().split("\\s");
         String commandName = arguments[0];
@@ -456,9 +486,9 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
             argument = content;
         }
         if (command != null) {
-            command.invoke(getHolder(), event, argument);
+            command.invoke(getHolder(), roomId, event, argument);
         } else {
-            getHolder().getMatrixClient().event().sendNotice(config.getRoomId(), "Unknown command: " + commandName);
+            getHolder().getMatrixClient().event().sendNotice(roomId, "Unknown command: " + commandName);
         }
     }
 }

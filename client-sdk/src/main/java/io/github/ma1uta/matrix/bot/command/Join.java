@@ -41,23 +41,19 @@ public class Join<C extends BotConfig, D extends BotDao<C>, S extends Persistent
     }
 
     @Override
-    public void invoke(BotHolder<C, D, S, E> holder, Event event, String arguments) {
+    public void invoke(BotHolder<C, D, S, E> holder, String roomId, Event event, String arguments) {
         C config = holder.getConfig();
         MatrixClient matrixClient = holder.getMatrixClient();
         if (config.getOwner() != null && !config.getOwner().equals(event.getSender())) {
             return;
         }
         if (arguments == null || arguments.trim().isEmpty()) {
-            matrixClient.event().sendNotice(config.getRoomId(), "Usage: " + usage());
+            matrixClient.event().sendNotice(roomId, "Usage: " + usage());
         } else {
             RoomId result = matrixClient.room().joinRoomByIdOrAlias(arguments);
-            if ((result.getError() == null || result.getError().trim().isEmpty())
-                && (result.getErrcode() == null || result.getErrcode().trim().isEmpty())) {
-                matrixClient.room().leaveRoom(config.getRoomId());
-                config.setRoomId(result.getRoomId());
-            } else {
-                matrixClient.event()
-                    .sendNotice(config.getRoomId(), String.format("Cannot join [%s]: %s", result.getErrcode(), result.getError()));
+            if (result.getError() != null && !result.getError().trim().isEmpty()
+                && result.getErrcode() != null && !result.getErrcode().trim().isEmpty()) {
+                matrixClient.event().sendNotice(roomId, String.format("Cannot join [%s]: %s", result.getErrcode(), result.getError()));
             }
         }
     }
