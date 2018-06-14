@@ -284,7 +284,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
 
             LoopState nextState = LoopState.RUN;
             for (Map.Entry<String, JoinedRoom> joinedRoomEntry : rooms.getJoin().entrySet()) {
-                LoopState state = joinedState(joinedRoomEntry.getKey(), joinedRoomEntry.getValue().getTimeline().getEvents());
+                LoopState state = processJoinedRoom(joinedRoomEntry.getKey(), joinedRoomEntry.getValue().getTimeline().getEvents());
                 switch (state) {
                     case EXIT:
                         nextState = LoopState.EXIT;
@@ -300,22 +300,16 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
                         break;
                 }
             }
+
+            if (getHolder().getMatrixClient().room().joinedRooms().isEmpty()) {
+                getHolder().runInTransaction((holder, dao) -> {
+                    holder.getConfig().setState(isExitOnEmptyRooms() ? BotState.DELETED : BotState.REGISTERED);
+                    saveData(holder, dao);
+                });
+                return LoopState.NEXT_STATE;
+            }
             return nextState;
         });
-    }
-
-    protected LoopState joinedState(String roomId, List<Event> events) {
-        processJoinedRoom(roomId, events);
-
-        if (getHolder().getMatrixClient().room().joinedRooms().isEmpty()) {
-            getHolder().runInTransaction((holder, dao) -> {
-                holder.getConfig().setState(isExitOnEmptyRooms() ? BotState.DELETED : BotState.REGISTERED);
-                saveData(holder, dao);
-            });
-            return LoopState.NEXT_STATE;
-        }
-
-        return LoopState.RUN;
     }
 
     /**
@@ -364,8 +358,9 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
      *
      * @param roomId room id.
      * @param events events.
+     * @return next loop state.
      */
-    public void processJoinedRoom(String roomId, List<Event> events) {
+    public LoopState processJoinedRoom(String roomId, List<Event> events) {
         String lastEvent = null;
         long lastOriginTs = 0;
         MatrixClient matrixClient = getHolder().getMatrixClient();
@@ -380,6 +375,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
         if (lastEvent != null) {
             matrixClient.receipt().sendReceipt(roomId, lastEvent);
         }
+        return LoopState.RUN;
     }
 
     /**
@@ -399,7 +395,7 @@ public class Bot<C extends BotConfig, D extends BotDao<C>, S extends PersistentS
                 state = registeredState(eventMap);
                 break;
             case JOINED:
-                state = joinedState(event.getRoomId(), Collections.singletonList(event));
+                state = processJoinedRoom(event.getRoomId(), Collections.singletonList(event));
                 break;
             case DELETED:
                 state = deletedState();
