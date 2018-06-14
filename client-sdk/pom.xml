@@ -23,17 +23,17 @@
     <parent>
         <groupId>io.github.ma1uta</groupId>
         <artifactId>jeon-parent</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.2</version>
     </parent>
 
     <artifactId>client-sdk</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
 
     <dependencies>
         <dependency>
             <groupId>io.github.ma1uta</groupId>
             <artifactId>client-api</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.2</version>
         </dependency>
 
         <dependency>

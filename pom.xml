@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta</groupId>
     <artifactId>jeon-parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -44,7 +44,7 @@
     </developers>
 
     <properties>
-        <jeon.version>0.2-SNAPSHOT</jeon.version>
+        <jeon.version>0.2</jeon.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
