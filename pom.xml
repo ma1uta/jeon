@@ -20,8 +20,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta</groupId>
-    <artifactId>jeon-parent</artifactId>
-    <version>0.2</version>
+    <artifactId>jeon</artifactId>
+    <version>0.3</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -44,7 +44,7 @@
     </developers>
 
     <properties>
-        <jeon.version>0.2</jeon.version>
+        <jeon.version>0.3</jeon.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -190,26 +190,5 @@
         <module>server-api</module>
         <module>application-api</module>
         <module>push-api</module>
-
-        <module>common-backend</module>
-
-        <module>homeserver-backend</module>
-
-        <module>client-sdk</module>
-
     </modules>
-
-    <profiles>
-        <profile>
-            <id>identity-server</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-
-            <modules>
-                <module>identity-backend</module>
-                <module>identity-dropwizard</module>
-            </modules>
-        </profile>
-    </profiles>
 </project>
