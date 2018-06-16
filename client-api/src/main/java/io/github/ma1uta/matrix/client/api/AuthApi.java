@@ -88,4 +88,25 @@ public interface AuthApi {
     @Path("/logout")
     EmptyResponse logout(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
                          @Context SecurityContext securityContext);
+
+    /**
+     * Invalidates all access tokens for a user, so that they can no longer be used for authorization. This includes the access token
+     * that made this request.
+     * <p/>
+     * This endpoint does not require UI authorization because UI authorization is designed to protect against attacks where the
+     * someone gets hold of a single access token then takes over the account. This endpoint invalidates all access tokens for the
+     * user, including the token used in the request, and therefore the attacker is unable to take over the account in this way.
+     * <p/>
+     * Requires auth: Yes.
+     *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
+     * @return Status code 200: The user's access tokens were succesfully invalidated.
+     */
+    @POST
+    @Secured
+    @Path("/logout/all")
+    EmptyResponse logoutAll(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                            @Context SecurityContext securityContext);
 }
