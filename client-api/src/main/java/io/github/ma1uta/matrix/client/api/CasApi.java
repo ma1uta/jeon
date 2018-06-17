@@ -16,7 +16,14 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.CasApi.URL;
+
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +50,14 @@ import javax.ws.rs.core.Context;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#cas-based-client-login">Specification.</a>
  */
-@Path("/_matrix/client/r0/login/cas")
+@Api(value = URL, description = "Central Authentication Service (CAS) is a web-based single sign-on protocol.")
+@Path(URL)
 public interface CasApi {
+
+    /**
+     * Cas api url.
+     */
+    String URL = "/_matrix/client/r0/login/cas";
 
     /**
      * A web-based Matrix client should instruct the user's browser to navigate to this endpoint in order to log in via CAS.
@@ -61,10 +74,18 @@ public interface CasApi {
      * @param servletResponse servlet response.
      * @return A redirect to the CAS interface.
      */
+    @ApiOperation(value = "A web-based Matrix client should instruct the user's browser to navigate to this endpoint in order to log "
+        + "in via CAS.",
+        notes = "The server MUST respond with an HTTP redirect to the CAS interface. The URI MUST include a service parameter giving "
+            + "the path of the /login/cas/ticket endpoint (including the redirectUrl query parameter).", response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 302, message = "A redirect to the CAS interface")
+    })
     @GET
     @Path("/redirect")
-    EmptyResponse redirect(@QueryParam("redirectUrl") String redirectUrl, @Context HttpServletRequest servletRequest,
-                           @Context HttpServletResponse servletResponse);
+    EmptyResponse redirect(@ApiParam(value = "URI to which the user will be redirected after the homeserver has authenticated the "
+        + "user with CAS.", required = true) @QueryParam("redirectUrl") String redirectUrl,
+                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Once the CAS server has authenticated the user, it will redirect the browser to this endpoint (assuming /login/cas/redirect
@@ -87,8 +108,21 @@ public interface CasApi {
      * <li>Status code 401: The server was unable to validate the CAS ticket.</li>
      * </ul>
      */
+    @ApiOperation(value = "Once the CAS server has authenticated the user, it will redirect the browser to this endpoint "
+        + "(assuming /login/cas/redirect gave it the correct service parameter).",
+        notes = "The server MUST call /proxyValidate on the CAS server, to validate the ticket supplied by the browser. "
+            + "If validation is successful, the server must generate a Matrix login token. It must then respond with an HTTP redirect "
+            + "to the URI given in the redirectUrl parameter, adding a loginToken query parameter giving the generated token. "
+            + "If validation is unsuccessful, the server should respond with a 401 Unauthorized error, the body of which will be displayed "
+            + "to the user.", response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 302, message = "A redirect to the Matrix client."),
+        @ApiResponse(code = 401, message = "The server was unable to validate the CAS ticket.")
+    })
     @GET
     @Path("/ticket")
-    EmptyResponse ticket(@QueryParam("redirectUrl") String redirectUrl, @QueryParam("ticket") String ticket,
+    EmptyResponse ticket(@ApiParam(value = "The redirectUrl originally provided by the client to /login/cas/redirect.", required = true)
+                         @QueryParam("redirectUrl") String redirectUrl,
+                         @ApiParam(value = "CAS authentication ticket", required = true) @QueryParam("ticket") String ticket,
                          @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 }
