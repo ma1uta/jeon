@@ -17,22 +17,27 @@
 package io.github.ma1uta.matrix.client.model.device;
 
 import io.github.ma1uta.matrix.client.model.account.AuthenticationData;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * JSON body request for bulk devices delete.
  */
+@ApiModel(description = "JSON body request for bulk devices delete.")
 public class DevicesDeleteRequest {
 
     /**
      * Required. The list of device IDs to delete.
      */
+    @ApiModelProperty(value = "The list of device IDs to delete.", required = true)
     private List<String> devices;
 
     /**
      * Additional authentication information for the user-interactive authentication API.
      */
+    @ApiModelProperty("Additional authentication information for the user-interactive authentication API.")
     private AuthenticationData auth;
 
     public List<String> getDevices() {

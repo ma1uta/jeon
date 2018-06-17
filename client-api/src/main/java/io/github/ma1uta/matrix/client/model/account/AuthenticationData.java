@@ -23,74 +23,74 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * Authentication Data.
  */
-@ApiModel(description = "Authentication Data")
+@ApiModel(description = "Authentication Data.")
 public class AuthenticationData {
 
     /**
      * AuthType.
      */
-    @ApiModelProperty("Auth type")
+    @ApiModelProperty("Auth type.")
     private String type;
 
     /**
      * Session.
      */
-    @ApiModelProperty("Session")
+    @ApiModelProperty("Session.")
     private String session;
 
     /**
      * User id.
      */
-    @ApiModelProperty("user")
+    @ApiModelProperty("user id.")
     private String user;
 
     /**
      * Password.
      */
-    @ApiModelProperty("password")
+    @ApiModelProperty("password.")
     private String password;
 
     /**
      * 3Pid address type.
      */
-    @ApiModelProperty("3pid address type")
+    @ApiModelProperty("3pid address type.")
     private String medium;
 
     /**
      * 3Pid address.
      */
-    @ApiModelProperty("3pid address")
+    @ApiModelProperty("3pid address.")
     private String address;
 
     /**
      * Capthca response.
      */
-    @ApiModelProperty("Captcha response")
+    @ApiModelProperty("Captcha response.")
     private String response;
 
     /**
      * Auth token.
      */
-    @ApiModelProperty("Auth token")
+    @ApiModelProperty("Auth token.")
     private String token;
 
     /**
      * Transaction id.
      */
-    @ApiModelProperty("transaction id")
+    @ApiModelProperty("transaction id.")
     @JsonProperty("txn_id")
     private String txnId;
 
     /**
      * OAuth uri.
      */
-    @ApiModelProperty("OAuth uri")
+    @ApiModelProperty("OAuth uri.")
     private String uri;
 
     /**
      * 3Pids credentials.
      */
-    @ApiModelProperty("3pids credentials")
+    @ApiModelProperty("3pids credentials.")
     private ThreePidCred[] threepidCreds;
 
     public String getType() {

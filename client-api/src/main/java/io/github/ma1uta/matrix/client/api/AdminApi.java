@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.AdminApi.URL;
+import static io.github.ma1uta.matrix.client.api.AdminApi.PATH;
 
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.admin.AdminResponse;
@@ -41,15 +41,15 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id112">Specification.</a>
  */
-@Api(value = URL, description = "Gets information about a particular user")
-@Path(URL)
+@Api(value = PATH, description = "Gets information about a particular user")
+@Path(PATH)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AdminApi {
 
     /**
      * Admin api url.
      */
-    String URL = "/_matrix/client/r0/admin";
+    String PATH = "/_matrix/client/r0/admin";
 
     /**
      * This API may be restricted to only be called by the user being looked up, or by a server admin. Server-local administrator

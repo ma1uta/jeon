@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.ContentApi.URL;
+import static io.github.ma1uta.matrix.client.api.ContentApi.PATH;
 
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
@@ -60,15 +60,15 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id307">Specification.</a>
  */
-@Api(value = URL, description = "This module allows users to upload content to their homeserver which is retrievable from other "
+@Api(value = PATH, description = "This module allows users to upload content to their homeserver which is retrievable from other "
     + "homeservers. Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs.")
-@Path(URL)
+@Path(PATH)
 public interface ContentApi {
 
     /**
      * Content api url.
      */
-    String URL = "/_matrix/media/r0";
+    String PATH = "/_matrix/media/r0";
 
     /**
      * The desired resizing method.
@@ -92,6 +92,7 @@ public interface ContentApi {
 
     /**
      * Upload some content to the content repository.
+     * <p/>
      * <b>Rate-limited</b>: Yes.
      * <b>Requires auth</b>: Yes.
      *
@@ -124,6 +125,7 @@ public interface ContentApi {
 
     /**
      * Download content from the content repository.
+     * <p/>
      * <b>Rate-limited</b>: Yes.
      *
      * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
@@ -257,9 +259,9 @@ public interface ContentApi {
                            @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
-     * Get information about a URL for a client.
+     * Get information about a PATH for a client.
      *
-     * @param url             Required. The URL to get a preview of.
+     * @param url             Required. The PATH to get a preview of.
      * @param ts              The preferred point in time to return a preview for. The server may return a newer version if it does not
      *                        have the requested version available.
      * @param servletRequest  servlet request.
@@ -286,7 +288,7 @@ public interface ContentApi {
      *     Status code 200: The content that was previously uploaded.
      *     Status code 429: This request was rate-limited.
      */
-    @ApiOperation(value = "Get information about a URL for a client.", response = Map.class)
+    @ApiOperation(value = "Get information about a PATH for a client.", response = Map.class)
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The content that was previously uploaded."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
@@ -296,7 +298,7 @@ public interface ContentApi {
     @Secured
     @Path("/preview_url")
     @Produces(MediaType.APPLICATION_JSON)
-    Map<String, String> previewUrl(@ApiParam(value = "The URL to get a preview of.", required = true) @QueryParam("url") String url,
+    Map<String, String> previewUrl(@ApiParam(value = "The PATH to get a preview of.", required = true) @QueryParam("url") String url,
                                    @ApiParam("The preferred point in time to return a preview for. The server may return a newer "
                                        + "version if it does not have the requested version available.") @QueryParam("ts") String ts,
                                    @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,

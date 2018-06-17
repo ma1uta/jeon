@@ -29,20 +29,20 @@ public class ThreePidCred {
     /**
      * Identity server id.
      */
-    @ApiModelProperty("Identity server id")
+    @ApiModelProperty("Identity server id.")
     private String sid;
 
     /**
      * Identity server client secret.
      */
-    @ApiModelProperty(name = "client_secret", value = "Identity server client secret")
+    @ApiModelProperty(name = "client_secret", value = "Identity server client secret.")
     @JsonProperty("client_secret")
     private String clientSecret;
 
     /**
      * Url of identity server auth with.
      */
-    @ApiModelProperty(name = "id_server", value = "Url of identity server auth with")
+    @ApiModelProperty(name = "id_server", value = "Url of identity server auth with.")
     @JsonProperty("id_server")
     private String idServer;
 

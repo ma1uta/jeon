@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.AuthApi.URL;
+import static io.github.ma1uta.matrix.client.api.AuthApi.PATH;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
@@ -48,8 +48,8 @@ import javax.ws.rs.core.SecurityContext;
  *
  * @author ma1uta
  */
-@Api(value = URL, description = "A client can obtain access tokens using the /login API")
-@Path(URL)
+@Api(value = PATH, description = "A client can obtain access tokens using the /login API")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AuthApi {
@@ -57,7 +57,7 @@ public interface AuthApi {
     /**
      * Auth api url.
      */
-    String URL = "/_matrix/client/r0";
+    String PATH = "/_matrix/client/r0";
 
     /**
      * Authentication types.
@@ -175,7 +175,7 @@ public interface AuthApi {
      * someone gets hold of a single access token then takes over the account. This endpoint invalidates all access tokens for the
      * user, including the token used in the request, and therefore the attacker is unable to take over the account in this way.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.

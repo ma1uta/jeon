@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.AccountApi.URL;
+import static io.github.ma1uta.matrix.client.api.AccountApi.PATH;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
@@ -55,8 +55,8 @@ import javax.ws.rs.core.SecurityContext;
  *
  * @author ma1uta
  */
-@Api(value = URL, description = "Account registration and management")
-@Path(URL)
+@Api(value = PATH, description = "Account registration and management")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountApi {
@@ -64,7 +64,7 @@ public interface AccountApi {
     /**
      * Account api url.
      */
-    String URL = "/_matrix/client/r0";
+    String PATH = "/_matrix/client/r0";
 
     /**
      * The kind of account to register.
@@ -270,7 +270,7 @@ public interface AccountApi {
      * that using this API does not normally reserve the username. This can mean that the username becomes unavailable
      * between checking its availability and attempting to register it.
      * <p/>
-     * Rate-limited: Yes.
+     * <b>Rate-limited</b>: Yes.
      *
      * @param username        Required. The username to check the availability of.
      * @param servletRequest  servlet request.
