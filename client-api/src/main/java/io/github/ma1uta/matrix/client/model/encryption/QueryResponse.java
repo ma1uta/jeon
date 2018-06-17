@@ -17,27 +17,35 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Map;
 
 /**
  * Response format.
  */
+@ApiModel(description = "Query response.")
 public class QueryResponse {
 
     /**
-     * f any remote homeservers could not be reached, they are recorded here. The names of the properties are the names of
+     * If any remote homeservers could not be reached, they are recorded here. The names of the properties are the names of
      * the unreachable servers.
      * <p/>
      * If the homeserver could be reached, but the user or device was unknown, no failure is recorded. Instead, the corresponding
      * user or device is missing from the device_keys result.
      */
+    @ApiModelProperty("If any remote homeservers could not be reached, they are recorded here. The names of the properties are "
+        + "the names of the unreachable servers.")
     private Map<String, Object> failures;
 
     /**
      * Information on the queried devices. A map from user ID, to a map from device ID to device information. For each device,
      * the information returned will be the same as uploaded via /keys/upload, with the addition of an unsigned property.
      */
+    @ApiModelProperty(name = "device_keys", value = "Information on the queried devices. A map from user ID, to a map from "
+        + "device ID to device information. For each device, the information returned will be the same as uploaded via "
+        + "/keys/upload, with the addition of an unsigned property.")
     @JsonProperty("device_keys")
     private Map<String, Map<String, DeviceKeys>> deviceKeys;
 

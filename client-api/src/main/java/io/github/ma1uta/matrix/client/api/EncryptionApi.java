@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.EncryptionApi.PATH;
+
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.encryption.ChangesResponse;
 import io.github.ma1uta.matrix.client.model.encryption.ClaimRequest;
@@ -24,6 +26,11 @@ import io.github.ma1uta.matrix.client.model.encryption.QueryRequest;
 import io.github.ma1uta.matrix.client.model.encryption.QueryResponse;
 import io.github.ma1uta.matrix.client.model.encryption.UploadRequest;
 import io.github.ma1uta.matrix.client.model.encryption.UploadResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,15 +49,22 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id338">Specification.</a>
  */
-@Path("/_matrix/client/r0/keys")
+@Api(value = PATH, description = "Matrix optionally supports end-to-end encryption, allowing rooms to be created whose conversation "
+    + "contents is not decryptable or interceptable on any of the participating homeservers.")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface EncryptionApi {
 
     /**
+     * Encryption api url.
+     */
+    String PATH = "/_matrix/client/r0/keys";
+
+    /**
      * Publishes end-to-end encryption keys for the device.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param uploadRequest   JSON body parameters.
      * @param servletRequest  servlet request.
@@ -58,16 +72,20 @@ public interface EncryptionApi {
      * @param securityContext security context.
      * @return Status code 200: The provided keys were sucessfully uploaded.
      */
+    @ApiOperation(value = "Publishes end-to-end encryption keys for the device.", response = UploadResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The provided keys were sucessfully uploaded.")
+    })
     @POST
     @Secured
     @Path("/upload")
-    UploadResponse upload(UploadRequest uploadRequest, @Context HttpServletRequest servletRequest,
+    UploadResponse upload(@ApiParam("JSON body request") UploadRequest uploadRequest, @Context HttpServletRequest servletRequest,
                           @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Returns the current devices and identity keys for the given users.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param queryRequest    JSON body parameters.
      * @param servletRequest  servlet request.
@@ -75,16 +93,21 @@ public interface EncryptionApi {
      * @param securityContext security context.
      * @return Status code 200: The device information.
      */
+    @ApiOperation(value = "Returns the current devices and identity keys for the given users.", response = QueryResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The device information.")
+    })
     @POST
     @Secured
     @Path("/query")
-    QueryResponse query(QueryRequest queryRequest, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+    QueryResponse query(@ApiParam("JSON body request") QueryRequest queryRequest,
+                        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
                         @Context SecurityContext securityContext);
 
     /**
      * Claims one-time keys for use in pre-key messages.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param claimRequest    JSON body parameters.
      * @param servletRequest  servlet request.
@@ -92,10 +115,15 @@ public interface EncryptionApi {
      * @param securityContext security context.
      * @return Status code 200: The claimed keys.
      */
+    @ApiOperation(value = "Claims one-time keys for use in pre-key messages.", response = ClaimResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The claimed keys.")
+    })
     @POST
     @Secured
     @Path("/claim")
-    ClaimResponse claim(ClaimRequest claimRequest, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+    ClaimResponse claim(@ApiParam("JSON body request.") ClaimRequest claimRequest,
+                        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
                         @Context SecurityContext securityContext);
 
     /**
@@ -119,9 +147,22 @@ public interface EncryptionApi {
      * @param securityContext security context.
      * @return Status code 200: The list of users who updated their devices.
      */
+    @ApiOperation(value = "Gets a list of users who have updated their device identity keys since a previous sync token.",
+        notes = "The server should include in the results any users who currently share a room with the calling user (ie, both "
+            + "users have membership state join); and added new device identity keys or removed an existing device with identity "
+            + "keys, between from and to.", response = ChangesResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The list of users who updated their devices.")
+    })
     @GET
     @Secured
     @Path("/changes")
-    ChangesResponse changes(String from, String to, @Context HttpServletRequest servletRequest,
+    ChangesResponse changes(@ApiParam(value = "The desired start point of the list. Should be the next_batch field from a response "
+        + "to an earlier call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted existing "
+        + "devices with identity keys since then, will be excluded from the results.", required = true) String from,
+                            @ApiParam(value = "The desired end point of the list. Should be the next_batch field from a recent call "
+                                + "to /sync - typically the most recent such call. This may be used by the server as a hint to check "
+                                + "its caches are up to date.", required = true) String to,
+                            @Context HttpServletRequest servletRequest,
                             @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

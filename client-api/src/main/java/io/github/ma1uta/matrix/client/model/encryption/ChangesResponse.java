@@ -16,21 +16,28 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
  * The list of users who updated their devices.
  */
+@ApiModel(description = "The list of users who updated their devices.")
 public class ChangesResponse {
 
     /**
      * The Matrix User IDs of all users who updated their device identity keys.
      */
+    @ApiModelProperty("The Matrix User IDs of all users who updated their device identity keys.")
     private List<String> changed;
 
     /**
      * The Matrix User IDs of all users who may have left all the end-to-end encrypted rooms they previously shared with the user.
      */
+    @ApiModelProperty("The Matrix User IDs of all users who may have left all the end-to-end encrypted rooms they previously "
+        + "shared with the user.")
     private List<String> left;
 
     public List<String> getChanged() {
