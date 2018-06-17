@@ -16,8 +16,15 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.AdminApi.URL;
+
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.admin.AdminResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,9 +41,15 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id112">Specification.</a>
  */
-@Path("/_matrix/client/r0/admin")
+@Api(value = URL, description = "Gets information about a particular user")
+@Path(URL)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AdminApi {
+
+    /**
+     * Admin api url.
+     */
+    String URL = "/_matrix/client/r0/admin";
 
     /**
      * This API may be restricted to only be called by the user being looked up, or by a server admin. Server-local administrator
@@ -48,9 +61,15 @@ public interface AdminApi {
      * @param securityContext security context.
      * @return Status code 200: The lookup was successful.
      */
+    @ApiOperation(value = "his API may be restricted to only be called by the user being looked up, or by a server admin. "
+        + "Server-local administrator privileges are not specified in this document.", response = AdminResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The lookup was successful.")
+    })
     @GET
     @Secured
     @Path("/whois/{userId}")
-    AdminResponse whois(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
-                        @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    AdminResponse whois(@ApiParam(value = "The use to look up", required = true) @PathParam("userId") String userId,
+                        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                        @Context SecurityContext securityContext);
 }

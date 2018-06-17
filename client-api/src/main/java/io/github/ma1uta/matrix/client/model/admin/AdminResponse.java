@@ -17,23 +17,28 @@
 package io.github.ma1uta.matrix.client.model.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Map;
 
 /**
  * Response for gets information about a particular user.
  */
+@ApiModel(description = "Response for gets information about a particular user.")
 public class AdminResponse {
 
     /**
      * The Matrix user ID of the user.
      */
+    @ApiModelProperty(name = "user_id", value = "he Matrix user ID of the user.")
     @JsonProperty("user_id")
     private String userId;
 
     /**
      * Each key is an identitfier for one of the user's devices.
      */
+    @ApiModelProperty("Each key is an identitfier for one of the user's devices")
     private Map<String, DeviceInfo> devices;
 
     public String getUserId() {

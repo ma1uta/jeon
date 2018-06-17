@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.AccountApi.API_URL;
+import static io.github.ma1uta.matrix.client.api.AccountApi.URL;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
@@ -55,8 +55,8 @@ import javax.ws.rs.core.SecurityContext;
  *
  * @author ma1uta
  */
-@Api(value = API_URL, description = "Account registration and management")
-@Path(API_URL)
+@Api(value = URL, description = "Account registration and management")
+@Path(URL)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountApi {
@@ -64,7 +64,7 @@ public interface AccountApi {
     /**
      * Account api url.
      */
-    String API_URL = "/_matrix/client/r0";
+    String URL = "/_matrix/client/r0";
 
     /**
      * The kind of account to register.

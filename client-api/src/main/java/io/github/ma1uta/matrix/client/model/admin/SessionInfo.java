@@ -16,16 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
  * Session info.
  */
+@ApiModel(description = "Session info.")
 public class SessionInfo {
 
     /**
      * Information particular connections in the session.
      */
+    @ApiModelProperty("Information particular connections in the session.")
     private List<ConnectionInfo> connections;
 
     public List<ConnectionInfo> getConnections() {
