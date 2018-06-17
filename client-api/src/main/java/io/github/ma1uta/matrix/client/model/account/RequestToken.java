@@ -17,32 +17,41 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Request for the proxies the identity server API validate/email/requestToken.
  */
+@ApiModel(description = "Request for the proxies the identity server API validate/email/requestToken.")
 public class RequestToken {
 
     /**
      * The ID server to send the onward request to as a hostname with an appended colon and port number if the port is not the default.
      */
+    @ApiModelProperty(name = "id_server", value = "The ID server to send the onward request to as a hostname with an appended "
+        + "colon and port number if the port is not the default.")
     @JsonProperty("id_server")
     private String idServer;
 
     /**
      * Required. Client-generated secret string used to protect this session.
      */
+    @ApiModelProperty(name = "client_secret", value = "Client-generated secret string used to protect this session.", required = true)
     @JsonProperty("client_secret")
     private String clientSecret;
 
     /**
      * Required. The email address.
      */
+    @ApiModelProperty(value = "The email address", required = true)
     private String email;
 
     /**
      * Required. Used to distinguish protocol level retries from requests to re-send the email.
      */
+    @ApiModelProperty(name = "send_attempt", value = "Used to distinguish protocol level retries from requests to re-send the email.",
+        required = true)
     @JsonProperty("send_attempt")
     private String sendAttempt;
 

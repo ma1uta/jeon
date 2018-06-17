@@ -26,6 +26,10 @@
     </parent>
     <artifactId>client-api</artifactId>
 
+    <properties>
+        <swagger-maven-plugin-version>3.1.7</swagger-maven-plugin-version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.ma1uta</groupId>
@@ -52,8 +56,73 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>1.5.19</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
+            <version>1.5.20</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>${swagger-maven-plugin-version}</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>false</springmvc>
+                            <locations>
+                                <location>io.github.ma1uta.matrix.client.api</location>
+                            </locations>
+                            <schemes>
+                                <schema>http</schema>
+                            </schemes>
+                            <host>localhost:8888</host>
+                            <basePath>/api</basePath>
+                            <info>
+                                <title>Matrix Client-Server Api</title>
+                                <version>v2</version>
+                                <!-- use markdown here because I'm using markdown for output,
+                                if you need to use html or other markup language, you need to use your target language,
+                                 and note escape your description for xml -->
+                                <description>
+                                    Matrix Client-Server Api
+                                </description>
+                                <termsOfService>
+                                    http://www.github.com/kongchen/swagger-maven-plugin
+                                </termsOfService>
+                                <contact>
+                                    <email>sablintolya@gmail.com</email>
+                                    <name>Anatoly</name>
+                                    <url>https://github.com/ma1uta/jeon</url>
+                                </contact>
+                                <license>
+                                    <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+                                    <name>Apache 2.0</name>
+                                </license>
+                            </info>
+                            <templatePath>${basedir}/src/test/resources/strapdown.html.hbs</templatePath>
+                            <outputPath>${basedir}/generated/document.html</outputPath>
+                            <swaggerDirectory>${basedir}/generated/swagger-ui</swaggerDirectory>
+                            <!--swaggerApiReader>com.wordnik.swagger.jaxrs.reader.DefaultJaxrsApiReader</swaggerApiReader-->
+                            <attachSwaggerArtifact>true</attachSwaggerArtifact>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

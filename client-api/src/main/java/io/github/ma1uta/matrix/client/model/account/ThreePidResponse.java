@@ -16,14 +16,20 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Response for gets a list of the third party identifiers that the homeserver has associated with the user's account.
  */
+@ApiModel(description = "Response for gets a list of the third party identifiers that the homeserver has associated with the user's"
+    + " account")
 public class ThreePidResponse {
 
     /**
      * All 3Pids.
      */
+    @ApiModelProperty("All 3pids")
     private ThirdPartyIdentifier[] threepids;
 
     public ThirdPartyIdentifier[] getThreepids() {

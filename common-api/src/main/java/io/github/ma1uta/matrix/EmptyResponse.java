@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix;
 
+import io.swagger.annotations.ApiModel;
+
 /**
  * Empty response.
  */
-public class EmptyResponse extends ErrorResponse {
+@ApiModel(description = "Empty response")
+public class EmptyResponse {
 }

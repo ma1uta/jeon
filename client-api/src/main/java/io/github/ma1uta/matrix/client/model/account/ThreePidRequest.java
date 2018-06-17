@@ -17,15 +17,19 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Request for adds contact information to the user's account.
  */
+@ApiModel(description = "Request for adds contact information to the user's account")
 public class ThreePidRequest {
 
     /**
      * Required. The third party credentials to associate with the account.
      */
+    @ApiModelProperty(value = "The third party credentials to associate with the account", required = true)
     @JsonProperty("three_pid_creds")
     private ThreePidCred[] threePidCreds;
 
@@ -33,6 +37,8 @@ public class ThreePidRequest {
      * Whether the homeserver should also bind this third party identifier to the account's Matrix ID with the passed identity server.
      * Default: false.
      */
+    @ApiModelProperty("Whether the homeserver should also bind this third party identifier to the account's Matrix ID with "
+        + "the passed identity server")
     private Boolean bind;
 
     public ThreePidCred[] getThreePidCreds() {

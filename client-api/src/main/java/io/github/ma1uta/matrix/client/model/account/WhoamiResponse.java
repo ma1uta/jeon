@@ -17,15 +17,19 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Response for gets information about the owner of a given access token.
  */
+@ApiModel(description = "Response for gets information about the owner of a given access token")
 public class WhoamiResponse {
 
     /**
      * MXID.
      */
+    @ApiModelProperty(name = "user_id", value = "mxid")
     @JsonProperty("user_id")
     private String userId;
 

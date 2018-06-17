@@ -17,14 +17,13 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.ErrorResponse;
 
 import java.util.List;
 
 /**
  * JSON body with roomId used in the room apis.
  */
-public class RoomId extends ErrorResponse {
+public class RoomId {
 
     /**
      * The created room's ID.

@@ -17,14 +17,13 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.ErrorResponse;
 
 import java.util.Map;
 
 /**
  * JSON body response for sync api.
  */
-public class SyncResponse extends ErrorResponse {
+public class SyncResponse {
 
     /**
      * The batch token to supply in the since param of the next /sync request.

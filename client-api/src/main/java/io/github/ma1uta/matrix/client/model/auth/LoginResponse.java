@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.ErrorResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -26,13 +25,13 @@ import io.swagger.annotations.ApiModelProperty;
  *
  * @author ma1uta
  */
-@ApiModel("JSON body response for the login api")
-public class LoginResponse extends ErrorResponse {
+@ApiModel(description = "JSON body response for the login api")
+public class LoginResponse {
 
     /**
      * The fully-qualified Matrix ID that has been registered.
      */
-    @ApiModelProperty(value = "The fully-qualified Matrix ID that has been registered.")
+    @ApiModelProperty(name = "user_id", value = "The fully-qualified Matrix ID that has been registered.")
     @JsonProperty("user_id")
     private String userId;
 

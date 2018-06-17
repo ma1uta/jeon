@@ -17,26 +17,32 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 3Pid credentials.
  */
+@ApiModel(description = "3pid credentials")
 public class ThreePidCred {
 
     /**
      * Identity server id.
      */
+    @ApiModelProperty("Identity server id")
     private String sid;
 
     /**
      * Identity server client secret.
      */
+    @ApiModelProperty(name = "client_secret", value = "Identity server client secret")
     @JsonProperty("client_secret")
     private String clientSecret;
 
     /**
      * Url of identity server auth with.
      */
+    @ApiModelProperty(name = "id_server", value = "Url of identity server auth with")
     @JsonProperty("id_server")
     private String idServer;
 

@@ -16,19 +16,26 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Request for gets a list of the third party identifiers that the homeserver has associated with the user's account.
  */
+@ApiModel(description = "Request for gets a list of the third party identifiers that the homeserver has associated with the user's "
+    + "account.")
 public class ThirdPartyIdentifier {
 
     /**
      * The medium of the third party identifier. Must be 'email'.
      */
+    @ApiModelProperty("The medium of the third party identifier. Must be 'email'")
     private String medium;
 
     /**
      * The third party identifier address.
      */
+    @ApiModelProperty("The third party identifier address")
     private String address;
 
     public String getMedium() {

@@ -16,14 +16,12 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
-import io.github.ma1uta.matrix.ErrorResponse;
-
 import java.util.Map;
 
 /**
  * Authentication flow.
  */
-public class AuthenticationFlows extends ErrorResponse {
+public class AuthenticationFlows {
 
     /**
      * Completed stages.
@@ -44,14 +42,6 @@ public class AuthenticationFlows extends ErrorResponse {
      * Authentication session.
      */
     private String session;
-
-    public AuthenticationFlows(String errcode, String error) {
-        super(errcode, error);
-    }
-
-    public AuthenticationFlows(String errcode, String error, Long retryAfterMs) {
-        super(errcode, error, retryAfterMs);
-    }
 
     public String[] getCompleted() {
         return completed;
