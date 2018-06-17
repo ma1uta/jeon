@@ -16,9 +16,16 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.ContentApi.URL;
+
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.content.ContentUri;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -53,8 +60,15 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id307">Specification.</a>
  */
-@Path("/_matrix/media/r0")
+@Api(value = URL, description = "This module allows users to upload content to their homeserver which is retrievable from other "
+    + "homeservers. Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs.")
+@Path(URL)
 public interface ContentApi {
+
+    /**
+     * Content api url.
+     */
+    String URL = "/_matrix/media/r0";
 
     /**
      * The desired resizing method.
@@ -91,13 +105,20 @@ public interface ContentApi {
      *     Status code 200: The MXC URI for the uploaded content.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "Upload some content to the content repository.", response = ContentUri.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The MXC URI for the uploaded content."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @POST
     @RateLimit
     @Secured
     @Path("/upload")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    ContentUri upload(InputStream inputStream, @QueryParam("filename") String filename, @HeaderParam("Content-Type") String contentType,
+    ContentUri upload(@ApiParam("The file content") InputStream inputStream,
+                      @ApiParam("The name of the file being uploaded.") @QueryParam("filename") String filename,
+                      @ApiParam("The content type of the file being uploaded") @HeaderParam("Content-Type") String contentType,
                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
                       @Context SecurityContext securityContext);
 
@@ -130,10 +151,18 @@ public interface ContentApi {
      *     Status code 200: The content that was previously uploaded.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "Download content from the content repository.", response = OutputStream.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @GET
     @RateLimit
     @Path("/download/{serverName}/{mediaId}")
-    OutputStream download(@PathParam("serverName") String serverName, @PathParam("mediaId") String mediaId,
+    OutputStream download(@ApiParam(value = "The server name from the mxc:// URI (the authoritory component).", required = true)
+                          @PathParam("serverName") String serverName,
+                          @ApiParam(value = "The media ID from the mxc:// URI (the path component).", required = true)
+                          @PathParam("mediaId") String mediaId,
                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
@@ -165,12 +194,21 @@ public interface ContentApi {
      *     Status code 200: The content that was previously uploaded.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "Download content from the content repository as a given filename.", response = OutputStream.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @GET
     @RateLimit
     @Path("/download/{serverName}/{mediaId}/{fileName}")
-    OutputStream download(@PathParam("serverName") String serverName, @PathParam("mediaId") String mediaId,
-                          @PathParam("fileName") String filename, @Context HttpServletRequest servletRequest,
-                          @Context HttpServletResponse servletResponse);
+    OutputStream download(@ApiParam(value = "he server name from the mxc:// URI (the authoritory component).", required = true)
+                          @PathParam("serverName") String serverName,
+                          @ApiParam(value = "The media ID from the mxc:// URI (the path component).", required = true)
+                          @PathParam("mediaId") String mediaId,
+                          @ApiParam(value = "The filename to give in the Content-Disposition.", required = true)
+                          @PathParam("fileName") String filename,
+                          @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Download a thumbnail of the content from the content repository.
@@ -198,11 +236,24 @@ public interface ContentApi {
      *     Status code 200: The content that was previously uploaded.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "Download a thumbnail of the content from the content repository.", response = OutputStream.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @GET
     @RateLimit
     @Path("/thumbnail/{serverName}/{mediaId}")
-    OutputStream thumbnail(@PathParam("serverName") String serverName, @PathParam("mediaId") String mediaId,
-                           @QueryParam("width") Long width, @QueryParam("height") Long height, @QueryParam("method") String method,
+    OutputStream thumbnail(@ApiParam(value = "The server name from the mxc:// URI (the authoritory component).", required = true)
+                           @PathParam("serverName") String serverName,
+                           @ApiParam(value = "The media ID from the mxc:// URI (the path component)", required = true)
+                           @PathParam("mediaId") String mediaId,
+                           @ApiParam("he desired width of the thumbnail. The actual thumbnail may not match the size specified.")
+                           @QueryParam("width") Long width,
+                           @ApiParam("The desired height of the thumbnail. The actual thumbnail may not match the size specified.")
+                           @QueryParam("height") Long height,
+                           @ApiParam(value = "The desired resizing method.", allowableValues = "['crop','scale']")
+                           @QueryParam("method") String method,
                            @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
@@ -235,11 +286,19 @@ public interface ContentApi {
      *     Status code 200: The content that was previously uploaded.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "Get information about a URL for a client.", response = Map.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @GET
     @RateLimit
     @Secured
     @Path("/preview_url")
     @Produces(MediaType.APPLICATION_JSON)
-    Map<String, String> previewUrl(@QueryParam("url") String url, @QueryParam("ts") String ts, @Context HttpServletRequest servletRequest,
-                                   @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    Map<String, String> previewUrl(@ApiParam(value = "The URL to get a preview of.", required = true) @QueryParam("url") String url,
+                                   @ApiParam("The preferred point in time to return a preview for. The server may return a newer "
+                                       + "version if it does not have the requested version available.") @QueryParam("ts") String ts,
+                                   @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                                   @Context SecurityContext securityContext);
 }
