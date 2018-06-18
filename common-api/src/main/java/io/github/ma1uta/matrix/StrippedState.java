@@ -17,28 +17,34 @@
 package io.github.ma1uta.matrix;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Map;
 
 /**
  * Provides information on a subset of state events such as the room name.
  */
+@ApiModel(description = "Provides information on a subset of state events such as the room name.")
 public class StrippedState {
 
     /**
      * Required. The content for the event.
      */
+    @ApiModelProperty(value = "The content for the event.", required = true)
     private Map<String, Object> content;
 
     /**
      * Required. The state_key for the event.
      */
+    @ApiModelProperty(name = "state_key", value = "The state_key for the event.", required = true)
     @JsonProperty("state_key")
     private String stateKey;
 
     /**
      * Required. The type for the event.
      */
+    @ApiModelProperty(value = "The type for the event.", required = true)
     private String type;
 
     public Map<String, Object> getContent() {

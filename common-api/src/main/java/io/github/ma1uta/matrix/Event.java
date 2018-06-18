@@ -17,6 +17,8 @@
 package io.github.ma1uta.matrix;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -24,14 +26,15 @@ import java.util.Map;
 /**
  * Event.
  */
+@ApiModel(description = "Event.")
 public class Event {
 
     /**
      * Event types.
      */
-    public static final class EventType {
+    public static class EventType {
 
-        private EventType() {
+        protected EventType() {
             //singleton
         }
 
@@ -940,9 +943,9 @@ public class Event {
     /**
      * Message types.
      */
-    public static final class MessageType {
+    public static class MessageType {
 
-        private MessageType() {
+        protected MessageType() {
             //singleton
         }
 
@@ -1478,9 +1481,9 @@ public class Event {
     /**
      * Membership states.
      */
-    public static final class MembershipState {
+    public static class MembershipState {
 
-        private MembershipState() {
+        protected MembershipState() {
             //singleton
         }
 
@@ -1515,9 +1518,9 @@ public class Event {
     /**
      * History visibility.
      */
-    public static final class Visibility {
+    public static class Visibility {
 
-        private Visibility() {
+        protected Visibility() {
             //singleton
         }
 
@@ -1546,47 +1549,58 @@ public class Event {
     /**
      * The fields in this object will vary depending on the type of event. When interacting with the REST API, this is the HTTP body.
      */
+    @ApiModelProperty("The fields in this object will vary depending on the type of event. When interacting with the REST API, this "
+        + "is the HTTP body.")
     private Map<String, Object> content;
 
     /**
      * Required. The type of event. This SHOULD be namespaced similar to Java package naming conventions e.g.
      * 'com.example.subdomain.event.type'
      */
+    @ApiModelProperty(value = "The type of event. This SHOULD be namespaced similar to Java package naming conventions.", required = true)
     private String type;
 
     // ---- Room events ----
     /**
      * Required. The globally unique event identifier.
      */
+    @ApiModelProperty(name = "event_id", value = "The globally unique event identifier.", required = true)
     @JsonProperty("event_id")
     private String eventId;
 
     /**
      * Required. The ID of the room associated with this event.
      */
+    @ApiModelProperty(name = "room_id", value = "The ID of the room associated with this event.", required = true)
     @JsonProperty("room_id")
     private String roomId;
 
     /**
      * Required. Contains the fully-qualified ID of the user who sent this event.
      */
+    @ApiModelProperty(value = "Contains the fully-qualified ID of the user who sent this event.", required = true)
     private String sender;
 
     /**
      * Required. Timestamp in milliseconds on originating homeserver when this event was sent.
      */
+    @ApiModelProperty(name = "origin_server_ts", value = "Timestamp in milliseconds on originating homeserver when this event was sent.",
+        required = true)
     @JsonProperty("origin_server_ts")
     private Long originServerTs;
 
     /**
      * Contains optional extra information about the event.
      */
+    @ApiModelProperty("Contains optional extra information about the event.")
     private Unsigned unsigned;
 
     // ---- State events ----
     /**
      * Optional. The previous content for this event. If there is no previous content, this key will be missing.
      */
+    @ApiModelProperty(name = "prev_content", value = "The previous content for this event. If there is no previous content, this key "
+        + "will be missing.")
     @JsonProperty("prev_content")
     private Map<String, Object> prevContent;
 
@@ -1594,57 +1608,26 @@ public class Event {
      * Required. A unique key which defines the overwriting semantics for this piece of room state. This value is often a
      * zero-length string. The presence of this key makes this event a State Event. The key MUST NOT start with '_'.
      */
+    @ApiModelProperty(name = "state_key", value = " A unique key which defines the overwriting semantics for this piece of room "
+        + "state. This value is often a zero-length string. The presence of this key makes this event a State Event. The key MUST "
+        + "NOT start with '_'.", required = true)
     @JsonProperty("state_key")
     private String stateKey;
 
     /**
      * This contains an array of StrippedState Events. These events provide information on a subset of state events such as the room name.
      */
+    @ApiModelProperty(name = "invite_room_state", value = "This contains an array of StrippedState Events. These events provide "
+        + "information on a subset of state events such as the room name.")
     @JsonProperty("invite_room_state")
     private List<StrippedState> inviteRoomState;
 
     /**
      * Required. The membership state of the user. One of: ["invite", "join", "knock", "leave", "ban"].
      */
+    @ApiModelProperty(value = "The membership state of the user.", required = true,
+        allowableValues = "[\"invite\", \"join\", \"knock\", \"leave\", \"ban\"]")
     private String membership;
-
-    /**
-     * Time in milliseconds since the event was sent.
-     * <p/>
-     * !!! Not described in spec.
-     */
-    private Long age;
-
-    /**
-     * Redacted event.
-     * <p/>
-     * !!! Not described in spec.
-     */
-    private String redacts;
-
-    /**
-     * User id (?).
-     * <p/>
-     * !!! Not described in spec.
-     */
-    @JsonProperty("user_id")
-    private String userId;
-
-    /**
-     * Event id to replace (?).
-     * <p/>
-     * !!! Not described in spec.
-     */
-    @JsonProperty("replaces_state")
-    private String replacesState;
-
-    /**
-     * Redacted reason.
-     * <p/>
-     * !!! Not described in spec.
-     */
-    @JsonProperty("redacted_because")
-    private Object redactedBecause;
 
     public String getEventId() {
         return eventId;
@@ -1732,45 +1715,5 @@ public class Event {
 
     public void setMembership(String membership) {
         this.membership = membership;
-    }
-
-    public Long getAge() {
-        return age;
-    }
-
-    public void setAge(Long age) {
-        this.age = age;
-    }
-
-    public String getRedacts() {
-        return redacts;
-    }
-
-    public void setRedacts(String redacts) {
-        this.redacts = redacts;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getReplacesState() {
-        return replacesState;
-    }
-
-    public void setReplacesState(String replacesState) {
-        this.replacesState = replacesState;
-    }
-
-    public Object getRedactedBecause() {
-        return redactedBecause;
-    }
-
-    public void setRedactedBecause(Object redactedBecause) {
-        this.redactedBecause = redactedBecause;
     }
 }

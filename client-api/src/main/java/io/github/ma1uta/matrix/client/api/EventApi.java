@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.EventApi.PATH;
+
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
@@ -23,6 +25,11 @@ import io.github.ma1uta.matrix.client.model.event.JoinedMembersResponse;
 import io.github.ma1uta.matrix.client.model.event.MembersResponse;
 import io.github.ma1uta.matrix.client.model.event.RedactRequest;
 import io.github.ma1uta.matrix.client.model.event.SendEventResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 import java.util.Map;
@@ -44,16 +51,22 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id172">Specification.</a>
  */
-@Path("/_matrix/client/r0/rooms/")
+@Api(value = PATH, description = "There are several APIs provided to GET events for a room.")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface EventApi {
 
     /**
+     * Event api url.
+     */
+    String PATH = "/_matrix/client/r0/rooms";
+
+    /**
      * Get a single event based on roomId/eventId. You must have permission to retrieve this event e.g. by being a member in the
      * room for this event.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The ID of the room the event is in.
      * @param eventId         Required. The event ID to get.
@@ -63,17 +76,25 @@ public interface EventApi {
      * @return Status code 200: The full event.
      *     Status code 404: The event was not found or you do not have permission to read this event.
      */
+    @ApiOperation(value = "Get a single event based on roomId/eventId. You must have permission to retrieve this event e.g. by "
+        + "being a member in the room for this event.", response = Event.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The full event."),
+        @ApiResponse(code = 404, message = "The event was not found or you do not have permission to read this event.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/event/{eventId}")
-    Event singleEvent(@PathParam("roomId") String roomId, @PathParam("eventId") String eventId, @Context HttpServletRequest servletRequest,
-                      @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    Event singleEvent(@ApiParam(value = "The ID of the room the event is in.", required = true) @PathParam("roomId") String roomId,
+                      @ApiParam(value = "The event ID to get.", required = true) @PathParam("eventId") String eventId,
+                      @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                      @Context SecurityContext securityContext);
 
     /**
      * Looks up the contents of a state event in a room. If the user is joined to the room then the state is taken from the current
      * state of the room. If the user has left the room then the state is taken from the state of the room when they left.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to look up the state in.
      * @param eventType       Required. The type of state to look up.
@@ -85,13 +106,22 @@ public interface EventApi {
      *     Status code 403: You aren't a member of the room and weren't previously a member of the room.
      *     Status code 404: The room has no state with the given type or key.
      */
+    @ApiOperation(value = "Looks up the contents of a state event in a room. If the user is joined to the room then the state is "
+        + "taken from the current state of the room. If the user has left the room then the state is taken from the state of the "
+        + "room when they left.", response = Map.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The content of the state event."),
+        @ApiResponse(code = 403, message = "You aren't a member of the room and weren't previously a member of the room."),
+        @ApiResponse(code = 404, message = "The room has no state with the given type or key.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/state/{eventType}/{stateKey}")
-    Map<String, Object> eventsForRoomWithTypeAndState(@PathParam("roomId") String roomId, @PathParam("eventType") String eventType,
-                                                      @PathParam("stateKey") String stateKey, @Context HttpServletRequest servletRequest,
-                                                      @Context HttpServletResponse servletResponse,
-                                                      @Context SecurityContext securityContext);
+    Map<String, Object> eventsForRoomWithTypeAndState(
+        @ApiParam(value = "The room to look up the state in.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The type of state to look up.", required = true) @PathParam("eventType") String eventType,
+        @ApiParam(value = "The key of the state to look up.", required = true) @PathParam("stateKey") String stateKey,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Looks up the contents of a state event in a room. If the user is joined to the room then the state is taken from the
@@ -99,7 +129,7 @@ public interface EventApi {
      * <p/>
      * This looks up the state event with the empty state key.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to look up the state in.
      * @param eventType       Required. The type of state to look up.
@@ -110,17 +140,27 @@ public interface EventApi {
      *     Status code 403: You aren't a member of the room and weren't previously a member of the room.
      *     Status code 404: The room has no state with the given type or key.
      */
+    @ApiOperation(value = "Looks up the contents of a state event in a room. If the user is joined to the room then the state is "
+        + "taken from the current state of the room. If the user has left the room then the state is taken from the state of the "
+        + "room when they left.",
+        notes = "This looks up the state event with the empty state key.", response = Map.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The content of the state event."),
+        @ApiResponse(code = 403, message = "You aren't a member of the room and weren't previously a member of the room."),
+        @ApiResponse(code = 404, message = "The room has no state with the given type or key.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/state/{eventType}")
-    Map<String, Object> eventsForRoomWithType(@PathParam("roomId") String roomId, @PathParam("eventType") String eventType,
-                                              @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                                              @Context SecurityContext securityContext);
+    Map<String, Object> eventsForRoomWithType(
+        @ApiParam(value = "The room to look up the state in.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The type of state to look up.", required = true) @PathParam("eventType") String eventType,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Get the state events for the current state of a room.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to look up the state for.
      * @param servletRequest  servlet request.
@@ -129,16 +169,22 @@ public interface EventApi {
      * @return Status code 200: The current state of the room
      *     Status code 403: You aren't a member of the room and weren't previously a member of the room.
      */
+    @ApiOperation(value = "Get the state events for the current state of a room.", response = List.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The current state of the room."),
+        @ApiResponse(code = 403, message = "You aren't a member of the room and weren't previously a member of the room.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/state")
-    List<Event> eventsForRoom(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
-                              @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    List<Event> eventsForRoom(
+        @ApiParam(value = "The room to look up the state for.", required = true) @PathParam("roomId") String roomId,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Get the list of members for this room.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to get the member events for.
      * @param servletRequest  servlet request.
@@ -148,11 +194,18 @@ public interface EventApi {
      *     members of the room. If you have left the room then this will be the members of the room when you left.
      *     Status code 403: You aren't a member of the room and weren't previously a member of the room.
      */
+    @ApiOperation(value = "Get the list of members for this room.", response = MembersResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "A list of members of the room. If you are joined to the room then this will be the current "
+            + "members of the room. If you have left the room then this will be the members of the room when you left."),
+        @ApiResponse(code = 403, message = "You aren't a member of the room and weren't previously a member of the room.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/members")
-    MembersResponse members(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
-                            @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    MembersResponse members(
+        @ApiParam(value = "The room to get the member events for.", required = true) @PathParam("roomId") String roomId,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * This API returns a map of MXIDs to member info objects for members of the room. The current user must be in the room for
