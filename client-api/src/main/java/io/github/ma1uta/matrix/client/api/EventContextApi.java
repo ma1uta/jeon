@@ -16,8 +16,15 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.EventContextApi.PATH;
+
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.eventcontext.EventContextResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,15 +43,22 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id114">Specification.</a>
  */
-@Path("/_matrix/client/r0/rooms")
+@Api(value = PATH, description = "This API returns a number of events that happened just before and after the specified event. "
+    + "This allows clients to get the context surrounding an event.")
+@Path(PATH)
 @Produces(MediaType.APPLICATION_JSON)
 public interface EventContextApi {
+
+    /**
+     * Event context api url.
+     */
+    String PATH = "/_matrix/client/r0/rooms";
 
     /**
      * This API returns a number of events that happened just before and after the specified event. This allows clients to get the
      * context surrounding an event.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to get events from.
      * @param eventId         Required. The event to get context around.
@@ -54,10 +68,17 @@ public interface EventContextApi {
      * @param securityContext security context.
      * @return Status code 200: The events and state surrounding the requested event.
      */
+    @ApiOperation(value = "This API returns a number of events that happened just before and after the specified event.",
+        notes = "This allows clients to get the context surrounding an event.")
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The events and state surrounding the requested event.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/context/{eventId}")
-    EventContextResponse context(@PathParam("roomId") String roomId, @PathParam("eventId") String eventId,
-                                 @QueryParam("limit") Integer limit, @Context HttpServletRequest servletRequest,
-                                 @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    EventContextResponse context(
+        @ApiParam(value = "The room to get events from.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The event to get context around.", required = true) @PathParam("eventId") String eventId,
+        @ApiParam("The maximum number of events to return. Default: 10.") @QueryParam("limit") Integer limit,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }
