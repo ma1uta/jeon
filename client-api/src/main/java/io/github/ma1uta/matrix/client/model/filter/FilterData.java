@@ -17,20 +17,23 @@
 package io.github.ma1uta.matrix.client.model.filter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * JSON body request for filter api (create filter).
  */
+@ApiModel(description = "JSON body request for filter api.")
 public class FilterData {
 
     /**
      * Event formats.
      */
-    public static final class EventFormat {
+    public static class EventFormat {
 
-        private EventFormat() {
+        protected EventFormat() {
             //singleton
         }
 
@@ -50,6 +53,10 @@ public class FilterData {
      * to indicate sub-fields. So ['content.body'] will include the 'body' field of the 'content' object. A literal '.' character
      * in a field name may be escaped using a '\'. A server may include more fields than were requested.
      */
+    @ApiModelProperty(name = "event_fields", value = "List of event fields to include. If this list is absent then all fields are "
+        + "included. The entries may include '.' charaters to indicate sub-fields. So ['content.body'] will include the 'body' "
+        + "field of the 'content' object. A literal '.' character in a field name may be escaped using a '\'. A server may include "
+        + "more fields than were requested.")
     @JsonProperty("event_fields")
     private List<String> eventFields;
 
@@ -57,23 +64,29 @@ public class FilterData {
      * The format to use for events. 'client' will return the events in a format suitable for clients. 'federation' will return the
      * raw event as receieved over federation. The default is 'client'. One of: ["client", "federation"]
      */
+    @ApiModelProperty(name = "event_format", value = "The format to use for events. 'client' will return the events in a format "
+        + "suitable for clients. 'federation' will return the raw event as receieved over federation. The default is 'client'.",
+        allowableValues = "['client', 'federation']")
     @JsonProperty("event_format")
     private String eventFormat;
 
     /**
      * The presence updates to include.
      */
+    @ApiModelProperty("The presence updates to include.")
     private Filter presence;
 
     /**
      * The user account data that isn't associated with rooms to include.
      */
+    @ApiModelProperty(name = "account_data", value = "The user account data that isn't associated with rooms to include.")
     @JsonProperty("account_data")
     private Filter accountData;
 
     /**
      * Filters to be applied to room data.
      */
+    @ApiModelProperty("Filters to be applied to room data.")
     private RoomFilter room;
 
     public List<String> getEventFields() {

@@ -17,51 +17,64 @@
 package io.github.ma1uta.matrix.client.model.filter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * Room filter.
  */
+@ApiModel("Room filter.")
 public class RoomFilter {
 
     /**
      * A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even if it
-     * is listed in the 'rooms' filter. This filter is applied before the filters in ephemeral, state, timeline or account_data
+     * is listed in the 'rooms' filter. This filter is applied before the filters in ephemeral, state, timeline or account_data.
      */
+    @ApiModelProperty(name = "not_rooms", value = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. "
+        + "A matching room will be excluded even if it is listed in the 'rooms' filter. This filter is applied before the filters in "
+        + "ephemeral, state, timeline or account_data.")
     @JsonProperty("not_rooms")
     private List<String> notRooms;
 
     /**
      * A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied before the filters
-     * in ephemeral, state, timeline or account_data
+     * in ephemeral, state, timeline or account_data.
      */
+    @ApiModelProperty("A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied "
+        + "before the filters in ephemeral, state, timeline or account_data.")
     private List<String> rooms;
 
     /**
      * The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms.
      */
+    @ApiModelProperty("The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms.")
     private RoomEventFilter ephemeral;
 
     /**
      * Include rooms that the user has left in the sync, default false.
      */
+    @ApiModelProperty(name = "include_leave", value = "Include rooms that the user has left in the sync, default false.")
     @JsonProperty("include_leave")
     private Boolean includeLeave;
 
     /**
      * The state events to include for rooms.
      */
+    @ApiModelProperty("The state events to include for rooms.")
     private RoomEventFilter state;
 
     /**
      * The message and state update events to include for rooms.
      */
+    @ApiModelProperty("The message and state update events to include for rooms.")
     private RoomEventFilter timeline;
 
     /**
      * The per user account data to include for rooms.
      */
+    @ApiModelProperty(name = "account_data", value = "The per user account data to include for rooms.")
     @JsonProperty("account_data")
     private RoomEventFilter accountData;
 
