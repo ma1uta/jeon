@@ -17,18 +17,21 @@
 package io.github.ma1uta.matrix.client.model.presence;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * JSON body request for presence api.
  */
+@ApiModel(description = "SON body request for presence api.")
 public class PresenceStatus {
 
     /**
      * Presence types.
      */
-    public static final class PresenceType {
+    public static class PresenceType {
 
-        private PresenceType() {
+        protected PresenceType() {
             //singleton
         }
 
@@ -51,23 +54,27 @@ public class PresenceStatus {
     /**
      * Required. The new presence state. One of: ["online", "offline", "unavailable"].
      */
+    @ApiModelProperty(value = "The new presence state.", required = true, allowableValues = "['online', 'offline', 'unavailable']")
     private String presence;
 
     /**
      * The status message to attach to this state.
      */
+    @ApiModelProperty(name = "status_msg", value = "The status message to attach to this state.")
     @JsonProperty("status_msg")
     private String statusMsg;
 
     /**
      * The length of time in milliseconds since an action was performed by this user.
      */
+    @ApiModelProperty(name = "last_active_ago", value = "The length of time in milliseconds since an action was performed by this user.")
     @JsonProperty("last_active_ago")
     private Long lastActiveAgo;
 
     /**
      * Whether the user is currently active.
      */
+    @ApiModelProperty(name = "currently_active", value = "Whether the user is currently active.")
     @JsonProperty("currently_active")
     private Boolean currentlyActive;
 

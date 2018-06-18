@@ -16,12 +16,19 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.PresenceApi.PATH;
+
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.presence.PresenceList;
 import io.github.ma1uta.matrix.client.model.presence.PresenceStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -63,19 +70,25 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id295">Specification.</a>
  */
-@Path("/_matrix/client/r0/presence")
+@Api(value = PATH, description = "Each user has the concept of presence information.")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface PresenceApi {
+
+    /**
+     * Presence api url.
+     */
+    String PATH = "/_matrix/client/r0/presence";
 
     /**
      * This API sets the given user's presence state. When setting the status, the activity time is updated to reflect
      * that activity; the client does not need to specify the last_active_ago field. You cannot set the presence state of
      * another user.
      * <p/>
-     * Rate-limited: Yes.
+     * <b>Rate-limited</b>: Yes.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user whose presence state to update.
      * @param presenceStatus  JSON body request.
@@ -85,13 +98,21 @@ public interface PresenceApi {
      * @return Status code 200: The new presence state was set.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "This API sets the given user's presence state. When setting the status, the activity time is updated to "
+        + "reflect that activity; the client does not need to specify the last_active_ago field. You cannot set the presence state of "
+        + "another user.", response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The new presence state was set."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @PUT
     @RateLimit
     @Secured
     @Path("/{userId}/status")
-    EmptyResponse setPresenceStatus(@PathParam("userId") String userId, PresenceStatus presenceStatus,
-                                    @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                                    @Context SecurityContext securityContext);
+    EmptyResponse setPresenceStatus(
+        @ApiParam(value = "The user whose presence state to update.", required = true) @PathParam("userId") String userId,
+        @ApiParam("JSON body request.") PresenceStatus presenceStatus,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Get the given user's presence state.
@@ -102,17 +123,24 @@ public interface PresenceApi {
      * @return Status code 200: The presence state for this user.
      *     Status code 404: There is no presence state for this user. This user may not exist or isn't exposing presence information to you.
      */
+    @ApiOperation(value = "Get the given user's presence state.", response = PresenceStatus.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The presence state for this user."),
+        @ApiResponse(code = 404, message = "There is no presence state for this user. This user may not exist or isn't "
+            + "exposing presence information to you.")
+    })
     @GET
     @Path("/{userId}/status")
-    PresenceStatus getPresenceStatus(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
-                                     @Context HttpServletResponse servletResponse);
+    PresenceStatus getPresenceStatus(
+        @ApiParam(value = "The user whose presence state to get.", required = true) @PathParam("userId") String userId,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Adds or removes users from this presence list.
      * <p/>
-     * Rate-limited: Yes.
+     * <b>Rate-limited</b>: Yes.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user whose presence list is being modified.
      * @param presenceList    JSON body request.
@@ -122,12 +150,19 @@ public interface PresenceApi {
      * @return Status code 200: The list was updated.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "Adds or removes users from this presence list.", response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The list was updated."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @POST
     @RateLimit
     @Secured
     @Path("/list/{userId}")
-    EmptyResponse setPresenceList(@PathParam("userId") String userId, PresenceList presenceList, @Context HttpServletRequest servletRequest,
-                                  @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    EmptyResponse setPresenceList(
+        @ApiParam(value = "The user whose presence list is being modified.", required = true) @PathParam("userId") String userId,
+        @ApiParam("JSON body request") PresenceList presenceList,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Retrieve a list of presence events for every user on this list.
@@ -137,8 +172,13 @@ public interface PresenceApi {
      * @param servletResponse servlet response.
      * @return Status code 200: A list of presence events for this list.
      */
+    @ApiOperation(value = "Retrieve a list of presence events for every user on this list.", response = List.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "A list of presence events for this list.")
+    })
     @GET
     @Path("/list/{userId}")
-    List<Event> getPresenceList(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
-                                @Context HttpServletResponse servletResponse);
+    List<Event> getPresenceList(
+        @ApiParam(value = "The user whose presence list should be retrieved.", required = true) @PathParam("userId") String userId,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 }

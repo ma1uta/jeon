@@ -16,21 +16,27 @@
 
 package io.github.ma1uta.matrix.client.model.presence;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
  * JSON body request for presence api.
  */
+@ApiModel("JSON body request for presence api.")
 public class PresenceList {
 
     /**
      * A list of user IDs to add to the list.
      */
+    @ApiModelProperty("A list of user IDs to add to the list.")
     private List<String> invite;
 
     /**
      * A list of user IDs to remove from the list.
      */
+    @ApiModelProperty("A list of user IDs to remove from the list.")
     private List<String> drop;
 
     public List<String> getInvite() {
