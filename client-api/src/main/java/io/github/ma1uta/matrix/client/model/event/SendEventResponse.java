@@ -17,15 +17,19 @@
 package io.github.ma1uta.matrix.client.model.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Sended event.
+ * Sent event.
  */
+@ApiModel(description = "Sent event.")
 public class SendEventResponse {
 
     /**
      * A unique identifier for the event.
      */
+    @ApiModelProperty(name = "event_id", value = "A unique identifier for the event.")
     @JsonProperty("event_id")
     private String eventId;
 

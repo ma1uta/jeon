@@ -16,6 +16,9 @@
 
 package io.github.ma1uta.matrix;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
@@ -23,13 +26,15 @@ import java.util.List;
  *
  * @param <T> pagination item.
  */
+@ApiModel(description = "Pagination.")
 public class Page<T> {
 
     /**
      * Query parameters.
      */
-    public static final class Query {
-        private Query() {
+    public static class Query {
+
+        protected Query() {
             //singleton
         }
 
@@ -58,16 +63,19 @@ public class Page<T> {
     /**
      * The token the pagination starts from. If dir=b this will be the token supplied in from.
      */
+    @ApiModelProperty("The token the pagination starts from. If dir=b this will be the token supplied in from.")
     private String start;
 
     /**
      * The token the pagination ends at. If dir=b this token should be used again to request even earlier events.
      */
+    @ApiModelProperty("The token the pagination ends at. If dir=b this token should be used again to request even earlier events.")
     private String end;
 
     /**
      * A list of room events.
      */
+    @ApiModelProperty("A list of room events.")
     private List<T> chunk;
 
     public String getStart() {

@@ -213,7 +213,7 @@ public interface EventApi {
      * is primarily for Application Services and should be faster to respond than /members as it can be implemented more
      * efficiently on the server.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to get the members of.
      * @param servletRequest  servlet request.
@@ -222,16 +222,25 @@ public interface EventApi {
      * @return Status code 200: A map of MXID to room member objects.
      *     Status code 403: You aren't a member of the room.
      */
+    @ApiOperation(value = "This API returns a map of MXIDs to member info objects for members of the room.",
+        notes = "The current user must be in the room for it to work, unless it is an Application Service in which case any of "
+            + "the AS's users must be in the room. This API is primarily for Application Services and should be faster to respond "
+            + "than/members as it can be implemented more efficiently on the server.", response = JoinedMembersResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "A map of MXID to room member objects."),
+        @ApiResponse(code = 403, message = "You aren't a member of the room.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/joined_members")
-    JoinedMembersResponse joinedMembers(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
-                                        @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    JoinedMembersResponse joinedMembers(
+        @ApiParam(value = "The room to get the members of.", required = true) @PathParam("roomId") String roomId,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * This API returns a list of message and state events for a room. It uses pagination query parameters to paginate history in the room.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to get events from.
      * @param from            Required. The token to start returning events from. This token can be obtained from a prev_batch token
@@ -248,13 +257,29 @@ public interface EventApi {
      * @return Status code 200: A list of messages with a new token to request more.
      *     Status code 403: You aren't a member of the room.
      */
+    @ApiOperation(value = "This API returns a list of message and state events for a room.",
+        notes = "It uses pagination query parameters to paginate history in the room.", response = Page.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "A list of messages with a new token to request more."),
+        @ApiResponse(code = 403, message = "You aren't a member of the room.")
+    })
     @GET
     @Secured
     @Path("/{roomId}/messages")
-    Page<Event> messages(@PathParam("roomId") String roomId, @QueryParam("from") String from, @QueryParam("to") String to,
-                         @QueryParam("dir") String dir, @QueryParam("limit") Integer limit, @QueryParam("filter") String filter,
-                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                         @Context SecurityContext securityContext);
+    Page<Event> messages(
+        @ApiParam(value = "The room to get events from.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The token to start returning events from. This token can be obtained from a prev_batch token "
+            + "returned for each room by the sync API, or from a start or end token returned by a previous request to "
+            + "this endpoint.", required = true) @QueryParam("from") String from,
+        @ApiParam(value = "The token to stop returning events at. This token can be obtained from a prev_batch token returned for "
+            + "each room by the sync endpoint, or from a start or end token returned by a previous "
+            + "request to this endpoint.") @QueryParam("to") String to,
+        @ApiParam(value = "The direction to return events from.", required = true, allowableValues = "['b','f]")
+        @QueryParam("dir") String dir,
+        @ApiParam("The maximum number of events to return. Default: 10.") @QueryParam("limit") Integer limit,
+        @ApiParam("A JSON RoomEventFilter to filter returned events with.") @QueryParam("filter") String filter,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext);
 
     /**
      * State events can be sent using this endpoint. These events will be overwritten if (room id), (event type) and (state key) all match.
@@ -265,7 +290,7 @@ public interface EventApi {
      * The body of the request should be the content object of the event; the fields in this object will vary depending on the
      * type of event. See Room Events for the m. event specification.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to set the state in.
      * @param eventType       Required. The type of event to send.
@@ -276,13 +301,25 @@ public interface EventApi {
      * @param securityContext security context.
      * @return Status code 200: An ID for the sent event.
      */
+    @ApiOperation(value = "State events can be sent using this endpoint.",
+        notes = "These events will be overwritten if (room id), (event type) and (state key) all match. Requests to this "
+            + "endpoint cannot use transaction IDs like other PUT paths because they cannot be differentiated from the state_key. "
+            + "Furthermore, POST is unsupported on state paths. The body of the request should be the content object of the event; "
+            + "the fields in this object will vary depending on the type of event.See Room Events for the m.event specification.",
+        response = SendEventResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "An ID for the sent event.")
+    })
     @PUT
     @Secured
     @Path("/{roomId}/state/{eventType}/{stateKey}")
-    SendEventResponse sendEventWithTypeAndState(@PathParam("roomId") String roomId, @PathParam("eventType") String eventType,
-                                                @PathParam("stateKey") String stateKey, Map<String, Object> event,
-                                                @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                                                @Context SecurityContext securityContext);
+    SendEventResponse sendEventWithTypeAndState(
+        @ApiParam(value = "The room to set the state in.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The type of event to send.", required = true) @PathParam("eventType") String eventType,
+        @ApiParam(value = "The state_key for the state to send. Defaults to the empty string.", required = true)
+        @PathParam("stateKey") String stateKey,
+        @ApiParam("event") Map<String, Object> event,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * State events can be sent using this endpoint. This endpoint is equivalent to calling /rooms/{roomId}/state/{eventType}/{stateKey}
@@ -294,9 +331,9 @@ public interface EventApi {
      * The body of the request should be the content object of the event; the fields in this object will vary depending on the type
      * of event. See Room Events for the m. event specification.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
-     * @param roomId          Required. The room to set the state in
+     * @param roomId          Required. The room to set the state in.
      * @param eventType       Required. The type of event to send.
      * @param event           event.
      * @param servletRequest  servlet request.
@@ -304,12 +341,24 @@ public interface EventApi {
      * @param securityContext security context.
      * @return Status code 200: An ID for the sent event.
      */
+    @ApiOperation(value = "State events can be sent using this endpoint.",
+        notes = "This endpoint is equivalent to calling /rooms/{roomId}/state/{eventType}/{stateKey} with an empty stateKey. "
+            + "Previous state events with matching (roomId) and (eventType), and empty (stateKey), will be overwritten. "
+            + "Requests to this endpoint cannot use transaction IDs like other PUT paths because they cannot be differentiated "
+            + "from the state_key. Furthermore, POST is unsupported on state paths. The body of the request should be the content "
+            + "object of the event; the fields in this object will vary depending on the type of event. See Room Events for the "
+            + "m.event specification.", response = SendEventResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "An ID for the sent event.")
+    })
     @PUT
     @Secured
     @Path("/{roomId}/state/{eventType}")
-    SendEventResponse sendEventWithType(@PathParam("roomId") String roomId, @PathParam("eventType") String eventType,
-                                        Map<String, Object> event, @Context HttpServletRequest servletRequest,
-                                        @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    SendEventResponse sendEventWithType(
+        @ApiParam(value = "The room to set the state in.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The type of event to send.", required = true) @PathParam("eventType") String eventType,
+        @ApiParam("Event") Map<String, Object> event,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * This endpoint is used to send a message event to a room. Message events allow access to historical events and pagination,
@@ -318,7 +367,7 @@ public interface EventApi {
      * The body of the request should be the content object of the event; the fields in this object will vary depending on the
      * type of event. See Room Events for the m. event specification.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to send the event to.
      * @param eventType       Required. The type of event to send.
@@ -330,12 +379,24 @@ public interface EventApi {
      * @param securityContext security context.
      * @return Status code 200: An ID for the sent event.
      */
+    @ApiOperation(value = "This endpoint is used to send a message event to a room.",
+        notes = "Message events allow access to historical events and pagination, making them suited for \"once-off\" activity in a room. "
+            + "The body of the request should be the content object of the event; the fields in this object will vary depending on the "
+            + "type of event. See Room Events for the m. event specification.", response = SendEventResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "An ID for the sent event.")
+    })
     @PUT
     @Secured
     @Path("/{roomId}/send/{eventType}/{txnId}")
-    SendEventResponse sendEvent(@PathParam("roomId") String roomId, @PathParam("eventType") String eventType,
-                                @PathParam("txnId") String txnId, Map<String, Object> event, @Context HttpServletRequest servletRequest,
-                                @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    SendEventResponse sendEvent(
+        @ApiParam(value = "The room to send the event to.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The type of event to send.", required = true) @PathParam("eventType") String eventType,
+        @ApiParam(value = "The transaction ID for this event. Clients should generate an ID unique across requests with "
+            + "the same access token; it will be used by the server to ensure idempotency of requests.", required = true)
+        @PathParam("txnId") String txnId,
+        @ApiParam("Event") Map<String, Object> event,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Strips all information out of an event which isn't critical to the integrity of the server-side representation of the room.
@@ -345,7 +406,7 @@ public interface EventApi {
      * Users may redact their own events, and any user with a power level greater than or equal to the redact power level of the
      * room may redact events there.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room from which to redact the event.
      * @param eventId         Required. The ID of the event to redact.
@@ -357,11 +418,22 @@ public interface EventApi {
      * @param securityContext security context.
      * @return Status code 200: An ID for the redaction event.
      */
+    @ApiOperation(value = "Strips all information out of an event which isn't critical to the integrity of the server-side "
+        + "representation of the room.", notes = "This cannot be undone. Users may redact their own events, and any user with "
+        + "a power level greater than or equal to the redact power level of the room may redact events there.",
+        response = SendEventResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "An ID for the redaction event.")
+    })
     @PUT
     @Secured
     @Path("/{roomId}/redact/{eventId}/{txnId}")
-    SendEventResponse redact(@PathParam("roomId") String roomId, @PathParam("eventId") String eventId,
-                             @PathParam("txnId") String txnId, RedactRequest event, @Context HttpServletRequest servletRequest,
-                             @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    SendEventResponse redact(
+        @ApiParam(value = "The room from which to redact the event.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The ID of the event to redact.", required = true) @PathParam("eventId") String eventId,
+        @ApiParam(value = "The transaction ID for this event. Clients should generate a unique ID; it will be used by the server "
+            + "to ensure idempotency of requests.", required = true) @PathParam("txnId") String txnId,
+        @ApiParam("The reason for the event being redacted.") RedactRequest event,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
 }
