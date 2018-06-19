@@ -78,13 +78,13 @@ public interface ClientConfigApi {
     @PUT
     @Secured
     @Path("/{userId}/account_data/{type}")
-    EmptyResponse addConfig(@ApiParam(value = "The id of the user to set account_data for. The access token must be authorized to make "
-        + "requests for this user id.", required = true) @PathParam("userId") String userId,
-                            @ApiParam(value = "The event type of the account_data to set. Custom types should be namespaced to "
-                                + "avoid clashes.", required = true) @PathParam("type") String type,
-                            @ApiParam("Account data") Map<String, String> accountData,
-                            @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                            @Context SecurityContext securityContext);
+    EmptyResponse addConfig(
+        @ApiParam(value = "The id of the user to set account_data for. The access token must be authorized to make "
+            + "requests for this user id.", required = true) @PathParam("userId") String userId,
+        @ApiParam(value = "The event type of the account_data to set. Custom types should be namespaced to "
+            + "avoid clashes.", required = true) @PathParam("type") String type,
+        @ApiParam("Account data") Map<String, String> accountData,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Set some account_data for the client on a given room. This config is only visible to the user that set the account_data.
@@ -111,12 +111,12 @@ public interface ClientConfigApi {
     @PUT
     @Secured
     @Path("/{userId}/rooms/{roomId}/account_data/{type}")
-    EmptyResponse addConfig(@ApiParam(value = "The id of the user to set account_data for. The access token must be authorized to make "
-        + "requests for this user id.", required = true) @PathParam("userId") String userId,
-                            @ApiParam(value = "The id of the room to set account_data on.", required = true)
-                            @PathParam("roomId") String roomId,
-                            @ApiParam(value = "The event type of the account_data to set. Custom types should be namespaced to avoid "
-                                + "clashes.", required = true) @PathParam("type") String type,
-                            @ApiParam("Account data") Map<String, String> accountData, @Context HttpServletRequest servletRequest,
-                            @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    EmptyResponse addConfig(
+        @ApiParam(value = "The id of the user to set account_data for. The access token must be authorized to make "
+            + "requests for this user id.", required = true) @PathParam("userId") String userId,
+        @ApiParam(value = "The id of the room to set account_data on.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The event type of the account_data to set. Custom types should be namespaced to avoid "
+            + "clashes.", required = true) @PathParam("type") String type,
+        @ApiParam("Account data") Map<String, String> accountData,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

@@ -17,21 +17,26 @@
 package io.github.ma1uta.matrix.client.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * JSON body for profile api (profile).
  */
+@ApiModel(description = "JSON body for profile api (profile).")
 public class Profile {
 
     /**
      * The user's avatar URL if they have set one, otherwise not present.
      */
+    @ApiModelProperty(name = "avatar_url", value = "The user's avatar URL if they have set one, otherwise not present.")
     @JsonProperty("avatar_url")
     private String avatarUrl;
 
     /**
      * The user's display name if they have set one, otherwise not present.
      */
+    @ApiModelProperty("The user's display name if they have set one, otherwise not present.")
     private String displayname;
 
     public String getAvatarUrl() {

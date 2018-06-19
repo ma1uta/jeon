@@ -141,8 +141,8 @@ public interface AuthApi {
     @POST
     @RateLimit
     @Path("/login")
-    LoginResponse login(@ApiParam("login request") LoginRequest loginRequest, @Context HttpServletRequest servletRequest,
-                        @Context HttpServletResponse servletResponse);
+    LoginResponse login(@ApiParam("login request") LoginRequest loginRequest,
+                        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Invalidates an existing access token, so that it can no longer be used for authorization.
