@@ -16,9 +16,16 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.ReceiptApi.PATH;
+
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,16 +48,38 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id288">Specification.</a>
  */
-@Path("/_matrix/client/r0/rooms")
+@Api(value = PATH, description = "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. "
+    + "This module defines a single acknowledgement: m.read which indicates that the user has read up to a given event.")
+@Path(PATH)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ReceiptApi {
 
     /**
+     * Receipt api url.
+     */
+    String PATH = "/_matrix/client/r0/rooms";
+
+    /**
+     * Receipt types.
+     */
+    class Receipt {
+
+        protected Receipt() {
+            //singleton
+        }
+
+        /**
+         * Read receipt type.
+         */
+        public static final String READ = "m.read";
+    }
+
+    /**
      * This API updates the marker for the given receipt type to the event ID specified.
      * <p/>
-     * Rate-limited: Yes.
+     * <b>Rate-limited</b>: Yes.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room in which to send the event.
      * @param receiptType     Required. The type of receipt to send. One of: ["m.read"]
@@ -61,11 +90,20 @@ public interface ReceiptApi {
      * @return Status code 200: The receipt was sent.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "This API updates the marker for the given receipt type to the event ID specified.",
+        response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The receipt was sent."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @POST
     @RateLimit
     @Secured
     @Path("/{roomId}/receipt/{receiptType}/{eventId}")
-    EmptyResponse receipt(@PathParam("roomId") String roomId, @PathParam("receiptType") String receiptType,
-                          @PathParam("eventId") String eventId, @Context HttpServletRequest servletRequest,
-                          @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    EmptyResponse receipt(
+        @ApiParam(value = "The room in which to send the event.", required = true) @PathParam("roomId") String roomId,
+        @ApiParam(value = "The type of receipt to send.", required = true, allowableValues = "[\"m.read\"]")
+        @PathParam("receiptType") String receiptType,
+        @ApiParam(value = "The event ID to acknowledge up to.", required = true) @PathParam("eventId") String eventId,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }
