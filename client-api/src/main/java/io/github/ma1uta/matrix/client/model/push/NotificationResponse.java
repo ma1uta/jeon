@@ -17,24 +17,30 @@
 package io.github.ma1uta.matrix.client.model.push;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * JSON body response for push notifications.
  */
+@ApiModel(description = "JSON body response for push notifications.")
 public class NotificationResponse {
 
     /**
      * The token to supply in the from param of the next /notifications request in order to request more events.
      * If this is absent, there are no more results.
      */
+    @ApiModelProperty(name = "next_token", value = "The token to supply in the from param of the next /notifications request in "
+        + "order to request more events. If this is absent, there are no more results.")
     @JsonProperty("next_token")
     private String nextToken;
 
     /**
      * Required. The list of events that triggered notifications.
      */
+    @ApiModelProperty(value = "The list of events that triggered notifications.", required = true)
     private List<Notification> notifications;
 
     public String getNextToken() {

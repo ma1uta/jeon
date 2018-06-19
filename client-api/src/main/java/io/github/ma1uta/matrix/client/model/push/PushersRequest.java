@@ -16,9 +16,13 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * JSON body request to create a new pusher.
  */
+@ApiModel(description = "JSON body request to create a new pusher.")
 public class PushersRequest extends Pusher {
 
     /**
@@ -26,6 +30,9 @@ public class PushersRequest extends Pusher {
      * user IDs. Otherwise, the homeserver must remove any other pushers with the same App ID and pushkey for different users.
      * The default is false.
      */
+    @ApiModelProperty("If true, the homeserver should add another pusher with the given pushkey and App ID in addition to any "
+        + "others with different user IDs. Otherwise, the homeserver must remove any other pushers with the same App ID and "
+        + "pushkey for different users. The default is false.")
     private Boolean append;
 
     public Boolean getAppend() {

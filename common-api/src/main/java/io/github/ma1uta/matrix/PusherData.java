@@ -16,14 +16,19 @@
 
 package io.github.ma1uta.matrix;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Pusher data.
  */
+@ApiModel(description = "Pusher data.")
 public class PusherData {
 
     /**
      * Required if kind is http. The URL to use to send notifications to.
      */
+    @ApiModelProperty("Required if kind is http. The URL to use to send notifications to.")
     private String url;
 
     public String getUrl() {

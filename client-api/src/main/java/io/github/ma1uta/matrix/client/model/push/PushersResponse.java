@@ -16,16 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
  * Pusher list.
  */
+@ApiModel(description = "Pusher list.")
 public class PushersResponse {
 
     /**
      * An array containing the current pushers for the user.
      */
+    @ApiModelProperty("An array containing the current pushers for the user.")
     private List<Pusher> pushers;
 
     public List<Pusher> getPushers() {

@@ -18,44 +18,54 @@ package io.github.ma1uta.matrix.client.model.push;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * Notification.
  */
+@ApiModel(description = "Notification")
 public class Notification {
 
     /**
      * Required. The action(s) to perform when the conditions for this rule are met. See Push Rules: API.
      */
+    @ApiModelProperty(value = "The action(s) to perform when the conditions for this rule are met. See Push Rules: API.", required = true)
     private List<Object> actions;
 
     /**
      * Required. The Event object for the event that triggered the notification.
      */
+    @ApiModelProperty(value = "The Event object for the event that triggered the notification.", required = true)
     private Event event;
 
     /**
      * The profile tag of the rule that matched this event.
      */
+    @ApiModelProperty(name = "profile_tag", value = "The profile tag of the rule that matched this event.")
     @JsonProperty("profile_tag")
     private String profileTag;
 
     /**
      * Required. Indicates whether the user has sent a read receipt indicating that they have read this message.
      */
+    @ApiModelProperty(value = "Indicates whether the user has sent a read receipt indicating that they have read this message.",
+        required = true)
     private Boolean read;
 
     /**
      * Required. The ID of the room in which the event was posted.
      */
+    @ApiModelProperty(name = "room_id", value = "The ID of the room in which the event was posted.", required = true)
     @JsonProperty("room_id")
     private String roomId;
 
     /**
      * Required. The unix timestamp at which the event notification was sent, in milliseconds.
      */
+    @ApiModelProperty(value = "The unix timestamp at which the event notification was sent, in milliseconds.", required = true)
     private Long ts;
 
     public List<Object> getActions() {

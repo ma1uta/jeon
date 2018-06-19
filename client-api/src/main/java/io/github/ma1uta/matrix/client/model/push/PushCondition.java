@@ -16,25 +16,33 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Push condition.
  */
+@ApiModel(description = "Push condition.")
 public class PushCondition {
 
     /**
      * Required. One of: ["event_match", "contains_display_name", "room_member_count"].
      */
+    @ApiModelProperty(required = true, allowableValues = "[\"event_match\", \"contains_display_name\", \"room_member_count\"]")
     private String kind;
 
     /**
      * Required for event_match conditions. The dot- separated field of the event to match.
      */
+    @ApiModelProperty("Required for event_match conditions. The dot- separated field of the event to match.")
     private String key;
 
     /**
      * Required for event_match conditions. The glob- style pattern to match against. Patterns with no special glob characters should
      * be treated as having asterisks prepended and appended when testing the condition.
      */
+    @ApiModelProperty("Required for event_match conditions. The glob- style pattern to match against. Patterns with no special glob "
+        + "characters should be treated as having asterisks prepended and appended when testing the condition.")
     private String pattern;
 
     /**
@@ -42,6 +50,9 @@ public class PushCondition {
      * A prefix of < matches rooms where the member count is strictly less than the given number and so forth.
      * If no prefix is present, this parameter defaults to ==.
      */
+    @ApiModelProperty("Required for room_member_count conditions. A decimal integer optionally prefixed by one of, ==, <, >, >= or <=. "
+        + "A prefix of < matches rooms where the member count is strictly less than the given number and so forth. "
+        + "If no prefix is present, this parameter defaults to==.")
     private String is;
 
     public String getKind() {

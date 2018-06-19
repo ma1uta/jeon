@@ -16,14 +16,19 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * JSON body response for push api.
  */
+@ApiModel(description = "JSON body response for push api.")
 public class PushRulesResponse {
 
     /**
      * Required. The global ruleset.
      */
+    @ApiModelProperty(value = "The global ruleset.", required = true)
     private Ruleset global;
 
     public Ruleset getGlobal() {

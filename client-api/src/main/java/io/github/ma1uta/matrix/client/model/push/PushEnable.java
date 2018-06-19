@@ -16,14 +16,19 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * JSON body request/response for enable/disable push api.
  */
+@ApiModel(description = "JSON body request/response for enable/disable push api.")
 public class PushEnable {
 
     /**
      * Required. Whether the push rule is enabled or not.
      */
+    @ApiModelProperty(value = "Whether the push rule is enabled or not.", required = true)
     private Boolean enabled;
 
     public Boolean getEnabled() {
