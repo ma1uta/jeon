@@ -17,15 +17,20 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Join request.
  */
+@ApiModel(description = "Join request.")
 public class JoinRequest {
 
     /**
      * A signature of an m.third_party_invite token to prove that this user owns a third party identity which has been invited to the room.
      */
+    @ApiModelProperty(name = "third_party_signed", value = "A signature of an m.third_party_invite token to prove that this user owns "
+        + "a third party identity which has been invited to the room.")
     @JsonProperty("third_party_signed")
     private ThirdPartySigned thirdPartySigned;
 

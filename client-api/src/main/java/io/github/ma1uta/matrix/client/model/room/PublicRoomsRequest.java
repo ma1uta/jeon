@@ -16,25 +16,33 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * JSON body request.
  */
+@ApiModel(description = "JSON body request.")
 public class PublicRoomsRequest {
 
     /**
      * Limit the number of results returned.
      */
+    @ApiModelProperty("Limit the number of results returned.")
     private Long limit;
 
     /**
      * A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms.
      * The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.
      */
+    @ApiModelProperty("A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms. "
+        + "lThe direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.")
     private String since;
 
     /**
      * Filter to apply to the results.
      */
+    @ApiModelProperty("Filter to apply to the results.")
     private PublicRoomsFilter filter;
 
     public Long getLimit() {

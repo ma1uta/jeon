@@ -17,26 +17,33 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Invite 3pid.
  */
+@ApiModel(description = "Invite 3pid.")
 public class Invite3pid {
 
     /**
      * Required. The hostname+port of the identity server which should be used for third party identifier lookups.
      */
+    @ApiModelProperty(name = "id_server", value = "The hostname+port of the identity server which should be used for third party "
+        + "identifier lookups.", required = true)
     @JsonProperty("id_server")
     private String idServer;
 
     /**
      * Required. The kind of address being passed in the address field, for example email.
      */
+    @ApiModelProperty(value = "The kind of address being passed in the address field, for example email.", required = true)
     private String medium;
 
     /**
      * Required. The invitee's third party identifier.
      */
+    @ApiModelProperty(value = "The invitee's third party identifier.", required = true)
     private String address;
 
     public String getIdServer() {

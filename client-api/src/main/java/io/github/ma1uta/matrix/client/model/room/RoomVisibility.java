@@ -16,14 +16,19 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * JSON body request and response for listing room api.
  */
+@ApiModel(description = "JSON body request and response for listing room api.")
 public class RoomVisibility {
 
     /**
      * The visibility of the room in the directory. One of: ["private", "public"]
      */
+    @ApiModelProperty(value = "The visibility of the room in the directory.", allowableValues = "[\"private\",\"public\"]")
     private String visibility;
 
     public String getVisibility() {

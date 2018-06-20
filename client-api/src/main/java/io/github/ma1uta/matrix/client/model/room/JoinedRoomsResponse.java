@@ -17,17 +17,21 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * JSON body resposnse with joined rooms.
  */
+@ApiModel(description = "JSON body resposnse with joined rooms.")
 public class JoinedRoomsResponse {
 
     /**
      * Required. The ID of each room in which the user has joined membership.
      */
+    @ApiModelProperty(name = "joined_rooms", value = "The ID of each room in which the user has joined membership.", required = true)
     @JsonProperty("joined_rooms")
     private List<String> joinedRooms;
 
