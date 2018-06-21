@@ -61,7 +61,7 @@
     "name" : "_matrixmediar0",
     "description" : "This module allows users to upload content to their homeserver which is retrievable from other homeservers. Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs."
   } ],
-  "schemes" : [ "http" ],
+  "schemes" : [ "https" ],
   "paths" : {
     "/_matrix/client/r0/account/3pid" : {
       "get" : {

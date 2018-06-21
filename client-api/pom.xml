@@ -80,7 +80,7 @@
                                 <location>io.github.ma1uta.matrix.client.api</location>
                             </locations>
                             <schemes>
-                                <schema>http</schema>
+                                <schema>https</schema>
                             </schemes>
                             <host>matrix.org:8448</host>
                             <basePath/>
