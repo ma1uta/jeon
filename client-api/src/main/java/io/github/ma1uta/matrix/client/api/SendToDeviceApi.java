@@ -16,9 +16,16 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.SendToDeviceApi.PATH;
+
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.sendtodevice.SendToDeviceRequest;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,15 +48,22 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id317">Specification.</a>
  */
-@Path("/_matrix/client/r0/sendToDevice")
+@Api(value = PATH, description = "This module provides a means by which clients can exchange signalling messages without them "
+    + "being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device.")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SendToDeviceApi {
 
     /**
+     * Send to device api url.
+     */
+    String PATH = "/_matrix/client/r0/sendToDevice";
+
+    /**
      * This endpoint is used to send send-to-device events to a set of client devices.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param eventType           Required. The type of event to send.
      * @param txnId               Required. The transaction ID for this event. Clients should generate an ID unique across requests with the
@@ -60,10 +74,18 @@ public interface SendToDeviceApi {
      * @param securityContext     security context.
      * @return Status code 200: The message was successfully sent.
      */
+    @ApiOperation(value = "This endpoint is used to send send-to-device events to a set of client devices.", response = EmptyResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The message was successfully sent.")
+    })
     @PUT
     @Secured
     @Path("/{eventType}/{txnId}")
-    EmptyResponse send(@PathParam("eventType") String eventType, @PathParam("txnId") String txnId, SendToDeviceRequest sendToDeviceRequest,
-                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                       @Context SecurityContext securityContext);
+    EmptyResponse send(
+        @ApiParam(value = "The type of event to send.", required = true) @PathParam("eventType") String eventType,
+        @ApiParam(value = "The transaction ID for this event. Clients should generate an ID unique across requests with the "
+            + "same access token; it will be used by the server to ensure idempotency of requests.", required = true)
+        @PathParam("txnId") String txnId,
+        @ApiParam("JSON resuest body") SendToDeviceRequest sendToDeviceRequest,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }
