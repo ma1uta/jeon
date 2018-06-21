@@ -16,7 +16,13 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.VersionApi.PATH;
+
 import io.github.ma1uta.matrix.client.model.version.VersionsResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,9 +44,15 @@ import javax.ws.rs.core.MediaType;
  *
  * @author ma1uta
  */
-@Path("/_matrix/client/versions")
+@Api(value = PATH, description = "Gets the versions of the specification supported by the server.")
+@Path(PATH)
 @Produces(MediaType.APPLICATION_JSON)
 public interface VersionApi {
+
+    /**
+     * Version api url.
+     */
+    String PATH = "/_matrix/client/versions";
 
     /**
      * Gets the versions of the specification supported by the server.
@@ -49,6 +61,10 @@ public interface VersionApi {
      * @param servletResponse servlet response
      * @return Status code 200: The versions supported by the server.
      */
+    @ApiOperation(value = "Gets the versions of the specification supported by the server.", response = VersionsResponse.class)
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "The versions supported by the server.")
+    })
     @GET
     VersionsResponse versions(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 }
