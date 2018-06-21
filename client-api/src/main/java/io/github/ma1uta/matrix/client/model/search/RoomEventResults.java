@@ -18,6 +18,8 @@ package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -25,32 +27,40 @@ import java.util.Map;
 /**
  * Room events results.
  */
+@ApiModel(description = "Room events results.")
 public class RoomEventResults {
 
     /**
      * An approximate count of the total number of results found.
      */
+    @ApiModelProperty("An approximate count of the total number of results found.")
     private Long count;
 
     /**
      * List of results in the requested order.
      */
+    @ApiModelProperty("List of results in the requested order.")
     private List<Result> results;
 
     /**
      * The current state for every room in the results. This is included if the request had the include_state key set with a value of true.
      */
+    @ApiModelProperty("The current state for every room in the results. This is included if the request had the include_state "
+        + "key set with a value of true.")
     private Map<String, List<Event>> state;
 
     /**
      * Any groups that were requested.
      */
+    @ApiModelProperty("Any groups that were requested.")
     private Map<String, Map<String, GroupValue>> groups;
 
     /**
      * Token that can be used to get the next batch of results, by passing as the next_batch parameter to the next call. If this field
      * is absent, there are no more results.
      */
+    @ApiModelProperty(name = "next_batch", value = "Token that can be used to get the next batch of results, by passing as the "
+        + "next_batch parameter to the next call. If this field is absent, there are no more results.")
     @JsonProperty("next_batch")
     private String nextBatch;
 

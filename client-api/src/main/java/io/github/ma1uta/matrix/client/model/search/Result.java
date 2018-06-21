@@ -17,25 +17,31 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import io.github.ma1uta.matrix.Event;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Search result.
  */
+@ApiModel(description = "Search result.")
 public class Result {
 
     /**
      * A number that describes how closely this result matches the search. Higher is closer.
      */
+    @ApiModelProperty("A number that describes how closely this result matches the search. Higher is closer.")
     private Long rank;
 
     /**
      * The event that matched.
      */
+    @ApiModelProperty("The event that matched.")
     private Event result;
 
     /**
      * Context for result, if requested.
      */
+    @ApiModelProperty("Context for result, if requested.")
     private EventContextResponse context;
 
     public Long getRank() {

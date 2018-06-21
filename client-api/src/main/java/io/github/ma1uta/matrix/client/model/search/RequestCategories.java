@@ -17,15 +17,19 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Categories.
  */
+@ApiModel(description = "Categories.")
 public class RequestCategories {
 
     /**
      * Mapping of category name to search criteria.
      */
+    @ApiModelProperty(name = "room_events", value = "Mapping of category name to search criteria.")
     @JsonProperty("room_events")
     private RoomEvents roomEvents;
 

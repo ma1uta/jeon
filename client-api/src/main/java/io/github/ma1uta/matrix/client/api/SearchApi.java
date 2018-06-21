@@ -16,10 +16,17 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.SearchApi.PATH;
+
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.search.SearchRequest;
 import io.github.ma1uta.matrix.client.model.search.SearchResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,17 +46,25 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id395">Specification.</a>
  */
-@Path("/_matrix/client/r0")
+@Api(value = PATH, description = "The search API allows clients to perform full text search across events in all rooms that "
+    + "the user has been in, including those that they have left. Only events that the user is allowed to see will be searched, "
+    + "e.g. it won't include events in rooms that happened after you left.")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SearchApi {
 
     /**
+     * Search api url.
+     */
+    String PATH = "/_matrix/client/r0";
+
+    /**
      * Performs a full text search across different categories.
      * <p/>
-     * Rate-limited: Yes.
+     * <b>Rate-limited</b>: Yes.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param nextBatch       The point to return events from. If given, this should be a next_batch result from a previous call
      *                        to this endpoint.
@@ -61,11 +76,19 @@ public interface SearchApi {
      *     Status code 400: Part of the request was invalid.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "Performs a full text search across different categories.", response = SearchResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "Results of the search."),
+        @ApiResponse(code = 400, message = "Part of the request was invalid."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @POST
     @RateLimit
     @Secured
     @Path("/search")
-    SearchResponse search(@QueryParam("next_batch") String nextBatch, SearchRequest searchRequest,
-                          @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                          @Context SecurityContext securityContext);
+    SearchResponse search(
+        @ApiParam("The point to return events from. If given, this should be a next_batch result from a previous call "
+            + "to this endpoint.") @QueryParam("next_batch") String nextBatch,
+        @ApiParam("JSON body request") SearchRequest searchRequest,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

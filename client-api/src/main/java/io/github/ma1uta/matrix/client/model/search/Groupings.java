@@ -17,17 +17,21 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * Groupings.
  */
+@ApiModel(description = "Groupings.")
 public class Groupings {
 
     /**
      * List of groups to request.
      */
+    @ApiModelProperty(name = "group_by", value = "List of groups to request.")
     @JsonProperty("group_by")
     private List<Group> groupBy;
 
