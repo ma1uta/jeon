@@ -16,31 +16,39 @@
 
 package io.github.ma1uta.matrix.client.model.voip;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
  * The TURN server credentials.
  */
+@ApiModel(description = "The TURN server credentials.")
 public class VoipResponse {
 
     /**
      * Required. The username to use.
      */
+    @ApiModelProperty(value = "The username to use.", required = true)
     private String username;
 
     /**
      * Required. The password to use.
      */
+    @ApiModelProperty(value = "The password to use.", required = true)
     private String password;
 
     /**
      * Required. A list of TURN URIs.
      */
+    @ApiModelProperty(value = "A list of TURN URIs.", required = true)
     private List<String> uris;
 
     /**
      * Required. The time-to-live in seconds.
      */
+    @ApiModelProperty(value = "The time-to-live in seconds.", required = true)
     private Long ttl;
 
     public String getUsername() {

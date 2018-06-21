@@ -16,9 +16,15 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.VoipApi.PATH;
+
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.voip.VoipResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,16 +41,23 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#get-matrix-client-r0-voip-turnserver">Specification.</a>
  */
-@Path("/_matrix/client/r0/voip")
+@Api(value = PATH, description = "The homeserver MAY provide a TURN server which clients can use to contact the remote party. "
+    + "The following HTTP API endpoints will be used by clients in order to get information about the TURN server.")
+@Path(PATH)
 @Produces(MediaType.APPLICATION_JSON)
 public interface VoipApi {
 
     /**
+     * Voip api url.
+     */
+    String PATH = "/_matrix/client/r0/voip";
+
+    /**
      * This API provides credentials for the client to use when initiating calls.
      * <p/>
-     * Rate-limited: Yes.
+     * <b>Rate-limited</b>: Yes.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
@@ -52,6 +65,11 @@ public interface VoipApi {
      * @return Status code 200: The TURN server credentials.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "This API provides credentials for the client to use when initiating calls.", response = VoipResponse.class)
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "The TURN server credentials."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @GET
     @RateLimit
     @Secured
