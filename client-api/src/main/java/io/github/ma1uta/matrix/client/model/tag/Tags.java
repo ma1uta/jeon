@@ -16,16 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.tag;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Map;
 
 /**
  * Tag request.
  */
+@ApiModel(description = "Tag request.")
 public class Tags {
 
     /**
      * Tags.
      */
+    @ApiModelProperty("Tags.")
     private Map<String, Map<String, Object>> tags;
 
     public Map<String, Map<String, Object>> getTags() {
