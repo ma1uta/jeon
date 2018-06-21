@@ -17,21 +17,26 @@
 package io.github.ma1uta.matrix.client.model.userdirectory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * JSON body request for user directory api (search).
  */
+@ApiModel(description = "JSON body request for user directory api (search).")
 public class SearchRequest {
 
     /**
-     * Required. The term to search for
+     * Required. The term to search for.
      */
+    @ApiModelProperty(name = "search_term", value = "The term to search for.", required = true)
     @JsonProperty("search_term")
     private String searchTerm;
 
     /**
      * The maximum number of results to return (Defaults to 10).
      */
+    @ApiModelProperty("The maximum number of results to return (Defaults to 10).")
     private Long limit;
 
     public String getSearchTerm() {

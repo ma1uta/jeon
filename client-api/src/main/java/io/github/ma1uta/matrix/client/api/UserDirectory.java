@@ -16,10 +16,17 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.UserDirectory.PATH;
+
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.userdirectory.SearchRequest;
 import io.github.ma1uta.matrix.client.model.userdirectory.SearchResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,18 +43,24 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * Provides search over all users.
  */
-@Path("/_matrix/client/r0/user_directory")
+@Api(value = PATH, description = "User directory.")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface UserDirectory {
 
     /**
+     * User directory api url.
+     */
+    String PATH = "/_matrix/client/r0/user_directory";
+
+    /**
      * This API performs a server-side search over all users registered on the server. It searches user ID and displayname
      * case-insensitively for users that you share a room with or that are in public rooms.
      * <p/>
-     * Rate-limited: Yes.
+     * <b>Rate-limited</b>: Yes.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param request         json body request.
      * @param servletRequest  servlet request.
@@ -56,10 +69,18 @@ public interface UserDirectory {
      * @return Status code 200: The results of the search.
      *     Status code 429: This request was rate-limited.
      */
+    @ApiOperation(value = "This API performs a server-side search over all users registered on the server. It searches user ID "
+        + "and displayname case-insensitively for users that you share a room with or that are in public rooms.",
+        response = SearchResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The results of the search."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
     @POST
     @RateLimit
     @Secured
     @Path("/search")
-    SearchResponse search(SearchRequest request, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                          @Context SecurityContext securityContext);
+    SearchResponse search(
+        @ApiParam("JSON body request.") SearchRequest request,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

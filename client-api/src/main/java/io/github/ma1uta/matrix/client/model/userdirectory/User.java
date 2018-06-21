@@ -17,27 +17,33 @@
 package io.github.ma1uta.matrix.client.model.userdirectory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * JSON body response for user directory api (User).
  */
+@ApiModel(description = "JSON body response for user directory api (User).")
 public class User {
 
     /**
      * Required. The user's matrix user ID.
      */
+    @ApiModelProperty(name = "user_id", value = "The user's matrix user ID.", required = true)
     @JsonProperty("user_id")
     private String userId;
 
     /**
      * The display name of the user, if one exists.
      */
+    @ApiModelProperty(name = "display_name", value = "The display name of the user, if one exists.")
     @JsonProperty("display_name")
     private String displayName;
 
     /**
      * The avatar url, as an MXC, if one exists.
      */
+    @ApiModelProperty(name = "avatar_url", value = "The avatar url, as an MXC, if one exists.")
     @JsonProperty("avatar_url")
     private String avatarUrl;
 
