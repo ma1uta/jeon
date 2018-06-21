@@ -17,17 +17,21 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import io.github.ma1uta.matrix.Event;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * State.
  */
+@ApiModel(description = "State.")
 public class State {
 
     /**
      * List of events.
      */
+    @ApiModelProperty("List of events.")
     private List<Event> events;
 
     public List<Event> getEvents() {

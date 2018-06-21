@@ -16,30 +16,26 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Map;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Left room.
  */
+@ApiModel(description = "Left room.")
 public class LeftRoom {
 
     /**
      * The state updates for the room up to the start of the timeline.
      */
+    @ApiModelProperty("The state updates for the room up to the start of the timeline.")
     private State state;
 
     /**
      * The timeline of messages and state changes in the room up to the point when the user left.
      */
+    @ApiModelProperty("The timeline of messages and state changes in the room up to the point when the user left.")
     private Timeline timeline;
-
-    /**
-     * !!! Not described in spec.
-     */
-    @JsonProperty("account_data")
-    private Map<String, Object> accountData;
 
     public State getState() {
         return state;
@@ -55,13 +51,5 @@ public class LeftRoom {
 
     public void setTimeline(Timeline timeline) {
         this.timeline = timeline;
-    }
-
-    public Map<String, Object> getAccountData() {
-        return accountData;
-    }
-
-    public void setAccountData(Map<String, Object> accountData) {
-        this.accountData = accountData;
     }
 }

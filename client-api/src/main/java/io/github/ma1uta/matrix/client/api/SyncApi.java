@@ -16,10 +16,17 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static io.github.ma1uta.matrix.client.api.SyncApi.PATH;
+
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.sync.SyncResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,10 +48,20 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#syncing">Specification.</a>
  */
-@Path("/_matrix/client/r0")
+@Api(value = "To read events, the intended flow of operation is for clients to first call the /sync API without a since parameter. "
+    + "This returns the most recent message events for each room, as well as the state of the room at the start of the returned timeline. "
+    + "The response also includes a next_batch field, which should be used as the value of the since parameter in the next call to /sync. "
+    + "Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to "
+    + "the /rooms/&lt;room_id&gt;/messages API to retrieve earlier messages.")
+@Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SyncApi {
+
+    /**
+     * Sync api url.
+     */
+    String PATH = "/_matrix/client/r0";
 
     /**
      * Presence.
@@ -56,7 +73,7 @@ public interface SyncApi {
      * an initial snapshot of the state on the server, and then continue to call this API to get incremental deltas to the state,
      * and to receive new messages.
      * <p/>
-     * Requires auth:
+     * <b>Requires auth:</b> Yes.
      *
      * @param filter          The ID of a filter created using the filter API or a filter JSON object encoded as a string. The server will
      *                        detect whether it is an ID or a JSON object by whether the first character is a "{" open brace. Passing the
@@ -85,13 +102,31 @@ public interface SyncApi {
      * @param securityContext security context.
      * @return Status code 200: The initial snapshot or delta for the client to use to update their state.
      */
+    @ApiOperation(value = "Synchronise the client's state with the latest state on the server. Clients use this API when they first "
+        + "log in to get an initial snapshot of the state on the server, and then continue to call this API to get incremental deltas "
+        + "to the state, and to receive new messages.", response = SyncResponse.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The initial snapshot or delta for the client to use to update their state.")
+    })
     @GET
     @Secured
     @Path("/sync")
-    SyncResponse sync(@QueryParam("filter") String filter, @QueryParam("since") String since, @QueryParam("full_state") Boolean fullState,
-                      @QueryParam("set_presence") String setPresence, @QueryParam("timeout") Long timeout,
-                      @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                      @Context SecurityContext securityContext);
+    SyncResponse sync(
+        @ApiParam("The ID of a filter created using the filter API or a filter JSON object encoded as a string. The server will "
+            + "detect whether it is an ID or a JSON object by whether the first character is a \"{\" open brace. Passing the "
+            + "JSON inline is best suited to one off requests. Creating a filter using the filter API is recommended for "
+            + "clients that reuse the same filter multiple times, for example in long poll requests.") @QueryParam("filter") String filter,
+        @ApiParam("A point in time to continue a sync from.") @QueryParam("since") String since,
+        @ApiParam("Controls whether to include the full state for all rooms the user is a member of.")
+        @QueryParam("full_state") Boolean fullState,
+        @ApiParam(value = "Controls whether the client is automatically marked as online by polling this API. If this parameter is "
+            + "omitted then the client is automatically marked as online when it uses this API. Otherwise if the parameter "
+            + "is set to \"offline\" then the client is not marked as being online when it uses this API.",
+            allowableValues = "[\"offline\"]") @QueryParam("set_presence") String setPresence,
+        @ApiParam("The maximum time to wait, in milliseconds, before returning this request. If no events (or other data) become "
+            + "available before this time elapses, the server will return a response with empty fields.")
+        @QueryParam("timeout") Long timeout,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * This will listen for new events related to a particular room and return them to the caller. This will block until an event is
@@ -102,7 +137,7 @@ public interface SyncApi {
      * Note that the normal /events endpoint has been deprecated. This API will also be deprecated at some point, but its
      * replacement is not yet known.
      * <p/>
-     * Requires auth: Yes.
+     * <b>Requires auth</b>: Yes.
      *
      * @param from            The token to stream from. This token is either from a previous request to this API or from the initial sync
      *                        API.
@@ -114,10 +149,19 @@ public interface SyncApi {
      * @return Status code 200: The events received, which may be none.
      *     Status code 400: Bad pagination from parameter.
      */
+    @ApiOperation(value = "This will listen for new events related to a particular room and return them to the caller. "
+        + "This will block until an event is received, or until the timeout is reached.", response = Page.class)
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The events received, which may be none."),
+        @ApiResponse(code = 400, message = "Bad pagination from parameter.")
+    })
     @GET
     @Secured
     @Path("/events")
-    Page<Event> events(@QueryParam("from") String from, @QueryParam("timeout") Long timeout, @QueryParam("room_id") String roomId,
-                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                       @Context SecurityContext securityContext);
+    Page<Event> events(
+        @ApiParam("The token to stream from. This token is either from a previous request to this API or from the initial sync API.")
+        @QueryParam("from") String from,
+        @ApiParam("The maximum time in milliseconds to wait for an event.") @QueryParam("timeout") Long timeout,
+        @ApiParam("The room ID for which events should be returned.") @QueryParam("room_id") String roomId,
+        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

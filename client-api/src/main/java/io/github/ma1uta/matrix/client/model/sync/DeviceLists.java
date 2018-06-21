@@ -16,24 +16,22 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
  * Device lists.
  */
+@ApiModel(description = "Device lists.")
 public class DeviceLists {
 
     /**
      * List of users who have updated their device identity keys since the previous sync response.
      */
+    @ApiModelProperty("List of users who have updated their device identity keys since the previous sync response.")
     private List<String> changed;
-
-    /**
-     * Left devices?
-     * <p/>
-     * !!! Don't descride in spec.
-     */
-    private List<String> left;
 
     public List<String> getChanged() {
         return changed;
@@ -41,13 +39,5 @@ public class DeviceLists {
 
     public void setChanged(List<String> changed) {
         this.changed = changed;
-    }
-
-    public List<String> getLeft() {
-        return left;
-    }
-
-    public void setLeft(List<String> left) {
-        this.left = left;
     }
 }

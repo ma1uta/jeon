@@ -17,21 +17,26 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Unread notification counts.
  */
+@ApiModel(description = "Unread notification counts.")
 public class UnreadNotificationCounts {
 
     /**
      * The number of unread notifications for this room with the highlight flag set.
      */
+    @ApiModelProperty(name = "highlight_count", value = "The number of unread notifications for this room with the highlight flag set.")
     @JsonProperty("highlight_count")
     private Long highlightCount;
 
     /**
      * The total number of unread notifications for this room.
      */
+    @ApiModelProperty(name = "notification_count", value = "The total number of unread notifications for this room.")
     @JsonProperty("notification_count")
     private Long notificationCount;
 

@@ -18,27 +18,34 @@ package io.github.ma1uta.matrix.client.model.sync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 /**
  * Timeline.
  */
+@ApiModel(description = "Timeline.")
 public class Timeline {
 
     /**
      * List of events.
      */
+    @ApiModelProperty("List of events.")
     private List<Event> events;
 
     /**
      * True if the number of events returned was limited by the limit on the filter.
      */
+    @ApiModelProperty("True if the number of events returned was limited by the limit on the filter.")
     private Boolean limited;
 
     /**
      * A token that can be supplied to the from parameter of the rooms/{roomId}/messages endpoint.
      */
+    @ApiModelProperty(name = "prev_batch", value = "A token that can be supplied to the from parameter of the "
+        + "rooms/{roomId}/messages endpoint.")
     @JsonProperty("prev_batch")
     private String prevBatch;
 

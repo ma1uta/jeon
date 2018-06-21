@@ -17,62 +17,55 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Map;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * JSON body response for sync api.
  */
+@ApiModel(description = "JSON body response for sync api.")
 public class SyncResponse {
 
     /**
      * The batch token to supply in the since param of the next /sync request.
      */
+    @ApiModelProperty(name = "next_batch", value = "The batch token to supply in the since param of the next /sync request.")
     @JsonProperty("next_batch")
     private String nextBatch;
 
     /**
      * Updates to rooms.
      */
+    @ApiModelProperty("Updates to rooms.")
     private Rooms rooms;
 
     /**
      * The updates to the presence status of other users.
      */
+    @ApiModelProperty("The updates to the presence status of other users.")
     private Presence presence;
 
     /**
      * The global private data created by this user.
      */
+    @ApiModelProperty(name = "account_data", value = "The global private data created by this user.")
     @JsonProperty("account_data")
     private AccountData accountData;
 
     /**
      * Information on the send-to-device messages for the client device, as defined in Send-to-Device messaging.
      */
+    @ApiModelProperty(name = "to_device", value = "Information on the send-to-device messages for the client device, as defined "
+        + "in Send-to-Device messaging.")
     @JsonProperty("to_device")
     private ToDevice toDevice;
 
     /**
      * Information on end-to-end device updates, as specified in End-to-end encryption.
      */
+    @ApiModelProperty(name = "device_lists", value = "Information on end-to-end device updates, as specified in End-to-end encryption.")
     @JsonProperty("device_lists")
     private DeviceLists deviceLists;
-
-    /**
-     * Amount of the one-time keys.
-     * <p/>
-     * !!! Not described in spec.
-     */
-    @JsonProperty("device_one_time_keys_count")
-    private Map<String, Object> deviceOneTimeKeysCount;
-
-    /**
-     * Groups.
-     * <p/>
-     * !!! Don't described in spec.
-     */
-    private Map<String, Object> groups;
 
     public String getNextBatch() {
         return nextBatch;
@@ -120,21 +113,5 @@ public class SyncResponse {
 
     public void setDeviceLists(DeviceLists deviceLists) {
         this.deviceLists = deviceLists;
-    }
-
-    public Map<String, Object> getDeviceOneTimeKeysCount() {
-        return deviceOneTimeKeysCount;
-    }
-
-    public void setDeviceOneTimeKeysCount(Map<String, Object> deviceOneTimeKeysCount) {
-        this.deviceOneTimeKeysCount = deviceOneTimeKeysCount;
-    }
-
-    public Map<String, Object> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Map<String, Object> groups) {
-        this.groups = groups;
     }
 }
