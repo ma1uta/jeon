@@ -82,11 +82,11 @@
                             <schemes>
                                 <schema>http</schema>
                             </schemes>
-                            <host>localhost:8888</host>
-                            <basePath>/api</basePath>
+                            <host>matrix.org:8448</host>
+                            <basePath/>
                             <info>
                                 <title>Matrix Client-Server Api</title>
-                                <version>v2</version>
+                                <version>r0.3.0</version>
                                 <!-- use markdown here because I'm using markdown for output,
                                 if you need to use html or other markup language, you need to use your target language,
                                  and note escape your description for xml -->
@@ -109,7 +109,6 @@
                             <templatePath>${basedir}/src/test/resources/strapdown.html.hbs</templatePath>
                             <outputPath>${basedir}/generated/document.html</outputPath>
                             <swaggerDirectory>${basedir}/generated/swagger-ui</swaggerDirectory>
-                            <!--swaggerApiReader>com.wordnik.swagger.jaxrs.reader.DefaultJaxrsApiReader</swaggerApiReader-->
                             <attachSwaggerArtifact>true</attachSwaggerArtifact>
                         </apiSource>
                     </apiSources>
