@@ -37,6 +37,12 @@ public class RoomEventResults {
     private Long count;
 
     /**
+     * List of words which should be highlighted, useful for stemming which may change the query terms.
+     */
+    @ApiModelProperty("List of words which should be highlighted, useful for stemming which may change the query terms.")
+    private List<String> highlights;
+
+    /**
      * List of results in the requested order.
      */
     @ApiModelProperty("List of results in the requested order.")
@@ -70,6 +76,14 @@ public class RoomEventResults {
 
     public void setCount(Long count) {
         this.count = count;
+    }
+
+    public List<String> getHighlights() {
+        return highlights;
+    }
+
+    public void setHighlights(List<String> highlights) {
+        this.highlights = highlights;
     }
 
     public List<Result> getResults() {

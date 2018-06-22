@@ -386,13 +386,19 @@ public interface AccountApi {
      * @param servletResponse servlet response.
      * @param securityContext security context.
      * @return Status code 200: The token belongs to a known user.
+     *     Status code 401: The token is not recognised.
+     *     Status code 403: The appservice cannot masquerade as the user or has not registered them.
+     *     Status code 429: This request was rate-limited.
      */
     @ApiOperation(value = "Gets information about the owner of a given access token",
         notes = "Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their namespace "
             + "by giving a user_id query parameter. In this situation, the server should verify that the given user_id is registered by "
             + "the appservice, and return it in the response body.", response = WhoamiResponse.class)
     @ApiResponses( {
-        @ApiResponse(code = 200, message = "The token belongs to a known user")
+        @ApiResponse(code = 200, message = "The token belongs to a known user"),
+        @ApiResponse(code = 401, message = "The token is not recognised."),
+        @ApiResponse(code = 403, message = "The appservice cannot masquerade as the user or has not registered them."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
     })
     @GET
     @RateLimit

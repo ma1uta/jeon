@@ -126,11 +126,11 @@ public interface DeviceApi {
     @PUT
     @Secured
     @Path("/devices/{deviceId}")
-    EmptyResponse update(@ApiParam(value = "The device to update.", required = true) @PathParam("deviceId") String deviceId,
-                         @ApiParam("The new display name for this device. If not given, the display name is unchanged.")
-                             DeviceUpdateRequest deviceUpdateRequest,
-                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                         @Context SecurityContext securityContext);
+    EmptyResponse updateDevice(@ApiParam(value = "The device to update.", required = true) @PathParam("deviceId") String deviceId,
+                               @ApiParam("The new display name for this device. If not given, the display name is unchanged.")
+                                   DeviceUpdateRequest deviceUpdateRequest,
+                               @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                               @Context SecurityContext securityContext);
 
     /**
      * This API endpoint uses the User-Interactive Authentication API.
@@ -156,11 +156,11 @@ public interface DeviceApi {
     @DELETE
     @Secured
     @Path("/devices/{deviceId}")
-    EmptyResponse delete(@ApiParam(value = "The device to delete", required = true) @PathParam("deviceId") String deviceId,
-                         @ApiParam("Additional authentication information for the user-interactive authentication API.")
-                             DeviceDeleteRequest deviceDeleteRequest,
-                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                         @Context SecurityContext securityContext);
+    EmptyResponse deleteDevice(@ApiParam(value = "The device to delete", required = true) @PathParam("deviceId") String deviceId,
+                               @ApiParam("Additional authentication information for the user-interactive authentication API.")
+                                   DeviceDeleteRequest deviceDeleteRequest,
+                               @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                               @Context SecurityContext securityContext);
 
     /**
      * This API endpoint uses the User-Interactive Authentication API.

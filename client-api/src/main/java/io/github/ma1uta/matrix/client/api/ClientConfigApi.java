@@ -111,7 +111,7 @@ public interface ClientConfigApi {
     @PUT
     @Secured
     @Path("/{userId}/rooms/{roomId}/account_data/{type}")
-    EmptyResponse addConfig(
+    EmptyResponse addRoomConfig(
         @ApiParam(value = "The id of the user to set account_data for. The access token must be authorized to make "
             + "requests for this user id.", required = true) @PathParam("userId") String userId,
         @ApiParam(value = "The id of the room to set account_data on.", required = true) @PathParam("roomId") String roomId,

@@ -27,9 +27,9 @@ import io.swagger.annotations.ApiModelProperty;
 public class WhoamiResponse {
 
     /**
-     * MXID.
+     * Required. The user id that owns the access token.
      */
-    @ApiModelProperty(name = "user_id", value = "mxid")
+    @ApiModelProperty(name = "user_id", value = "The user id that owns the access token.", required = true)
     @JsonProperty("user_id")
     private String userId;
 

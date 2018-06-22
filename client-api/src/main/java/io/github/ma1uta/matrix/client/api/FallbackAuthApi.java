@@ -61,7 +61,7 @@ public interface FallbackAuthApi {
     })
     @GET
     @Path("/static/client/login")
-    String login();
+    String staticLogin();
 
     /**
      * Clients cannot be expected to be able to know how to process every single login type. If a client does not know how to

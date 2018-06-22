@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Room filter.
  */
-@ApiModel("Room filter.")
+@ApiModel(description = "Room filter.")
 public class RoomFilter {
 
     /**

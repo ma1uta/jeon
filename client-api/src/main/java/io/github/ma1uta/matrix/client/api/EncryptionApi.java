@@ -39,6 +39,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -79,8 +80,8 @@ public interface EncryptionApi {
     @POST
     @Secured
     @Path("/upload")
-    UploadResponse upload(@ApiParam("JSON body request") UploadRequest uploadRequest, @Context HttpServletRequest servletRequest,
-                          @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+    UploadResponse uploadKey(@ApiParam("JSON body request") UploadRequest uploadRequest, @Context HttpServletRequest servletRequest,
+                             @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**
      * Returns the current devices and identity keys for the given users.
@@ -159,10 +160,10 @@ public interface EncryptionApi {
     @Path("/changes")
     ChangesResponse changes(@ApiParam(value = "The desired start point of the list. Should be the next_batch field from a response "
         + "to an earlier call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted existing "
-        + "devices with identity keys since then, will be excluded from the results.", required = true) String from,
+        + "devices with identity keys since then, will be excluded from the results.", required = true) @QueryParam("from") String from,
                             @ApiParam(value = "The desired end point of the list. Should be the next_batch field from a recent call "
                                 + "to /sync - typically the most recent such call. This may be used by the server as a hint to check "
-                                + "its caches are up to date.", required = true) String to,
+                                + "its caches are up to date.", required = true) @QueryParam("to") String to,
                             @Context HttpServletRequest servletRequest,
                             @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

@@ -130,6 +130,8 @@ public interface ContentApi {
      *
      * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
      * @param mediaId         Required. The media ID from the mxc:// URI (the path component).
+     * @param allowRemote     Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
+     *                        This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return Response headers:
@@ -165,6 +167,9 @@ public interface ContentApi {
                           @PathParam("serverName") String serverName,
                           @ApiParam(value = "The media ID from the mxc:// URI (the path component).", required = true)
                           @PathParam("mediaId") String mediaId,
+                          @ApiParam("Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
+                              + "This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.")
+                          @QueryParam("allow_remote") Boolean allowRemote,
                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
@@ -173,6 +178,8 @@ public interface ContentApi {
      * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
      * @param mediaId         Required. The media ID from the mxc:// URI (the path component).
      * @param filename        Required. The filename to give in the Content-Disposition.
+     * @param allowRemote     Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
+     *                        This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return Response headers:
@@ -204,13 +211,16 @@ public interface ContentApi {
     @GET
     @RateLimit
     @Path("/download/{serverName}/{mediaId}/{fileName}")
-    OutputStream download(@ApiParam(value = "he server name from the mxc:// URI (the authoritory component).", required = true)
-                          @PathParam("serverName") String serverName,
-                          @ApiParam(value = "The media ID from the mxc:// URI (the path component).", required = true)
-                          @PathParam("mediaId") String mediaId,
-                          @ApiParam(value = "The filename to give in the Content-Disposition.", required = true)
-                          @PathParam("fileName") String filename,
-                          @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    OutputStream downloadFile(@ApiParam(value = "he server name from the mxc:// URI (the authoritory component).", required = true)
+                              @PathParam("serverName") String serverName,
+                              @ApiParam(value = "The media ID from the mxc:// URI (the path component).", required = true)
+                              @PathParam("mediaId") String mediaId,
+                              @ApiParam(value = "The filename to give in the Content-Disposition.", required = true)
+                              @PathParam("fileName") String filename,
+                              @ApiParam("Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
+                                  + "This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.")
+                              @QueryParam("allow_remote") Boolean allowRemote,
+                              @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Download a thumbnail of the content from the content repository.
@@ -220,6 +230,8 @@ public interface ContentApi {
      * @param width           The desired width of the thumbnail. The actual thumbnail may not match the size specified.
      * @param height          The desired height of the thumbnail. The actual thumbnail may not match the size specified.
      * @param method          The desired resizing method. One of: ["crop", "scale"].
+     * @param allowRemote     Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
+     *                        This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return Response headers:
@@ -256,6 +268,9 @@ public interface ContentApi {
                            @QueryParam("height") Long height,
                            @ApiParam(value = "The desired resizing method.", allowableValues = "['crop','scale']")
                            @QueryParam("method") String method,
+                           @ApiParam("Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
+                               + "This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.")
+                           @QueryParam("allow_remote") Boolean allowRemote,
                            @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
@@ -282,7 +297,7 @@ public interface ContentApi {
      * <tr>
      * <td>og:image</td>
      * <td>string</td>
-     * <td>An MXC URI to the image. Ommitted if there is no image.</td>
+     * <td>An MXC URI to the image. Omitted if there is no image.</td>
      * </tr>
      * </table>
      *     Status code 200: The content that was previously uploaded.

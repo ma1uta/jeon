@@ -23,7 +23,7 @@
     "description" : "If a client does not recognize any or all login flows it can use the fallback login API."
   }, {
     "name" : "_matrixclientr0",
-    "description" : "The search API allows clients to perform full text search across events in all rooms that the user has been in, including those that they have left. Only events that the user is allowed to see will be searched, e.g. it won't include events in rooms that happened after you left."
+    "description" : "Rooms api."
   }, {
     "name" : "_matrixclientr0admin",
     "description" : "Gets information about a particular user"
@@ -41,13 +41,13 @@
     "description" : "Profiles."
   }, {
     "name" : "_matrixclientr0rooms",
-    "description" : "When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge of every user who is currently typing. The reason for this is that the server does not remember users who are not currently typing as that list gets big quickly. The client should mark as not typing any user ID who is not in that list."
+    "description" : "This API returns a number of events that happened just before and after the specified event. This allows clients to get the context surrounding an event."
   }, {
     "name" : "_matrixclientr0sendToDevice",
     "description" : "This module provides a means by which clients can exchange signalling messages without them being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device."
   }, {
     "name" : "_matrixclientr0user",
-    "description" : "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices."
+    "description" : "Filters can be created on the server and can be passed as as a parameter to APIs which return events. These filters alter the data returned from those APIs. Not all APIs accept filters."
   }, {
     "name" : "_matrixclientr0user_directory",
     "description" : "User directory."
@@ -225,6 +225,15 @@
             "schema" : {
               "$ref" : "#/definitions/WhoamiResponse"
             }
+          },
+          "401" : {
+            "description" : "The token is not recognised."
+          },
+          "403" : {
+            "description" : "The appservice cannot masquerade as the user or has not registered them."
+          },
+          "429" : {
+            "description" : "This request was rate-limited."
           }
         }
       }
@@ -392,7 +401,7 @@
         "tags" : [ "_matrixclientr0" ],
         "summary" : "Updates the metadata on the given device.",
         "description" : "",
-        "operationId" : "update",
+        "operationId" : "updateDevice",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -426,7 +435,7 @@
         "tags" : [ "_matrixclientr0" ],
         "summary" : "Deletes the given device, and invalidates any access token associated with it.",
         "description" : "This API endpoint uses the User-Interactive Authentication API.",
-        "operationId" : "delete",
+        "operationId" : "deleteDevice",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -711,21 +720,17 @@
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
+          "name" : "from",
+          "in" : "query",
           "description" : "The desired start point of the list. Should be the next_batch field from a response to an earlier call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted existing devices with identity keys since then, will be excluded from the results.",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
+          "type" : "string"
         }, {
-          "in" : "body",
-          "name" : "body",
+          "name" : "to",
+          "in" : "query",
           "description" : "The desired end point of the list. Should be the next_batch field from a recent call to /sync - typically the most recent such call. This may be used by the server as a hint to check its caches are up to date.",
           "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
+          "type" : "string"
         } ],
         "responses" : {
           "200" : {
@@ -796,7 +801,7 @@
         "tags" : [ "_matrixclientr0keys" ],
         "summary" : "Publishes end-to-end encryption keys for the device.",
         "description" : "",
-        "operationId" : "upload",
+        "operationId" : "uploadKey",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -1033,7 +1038,7 @@
           "description" : "JSON body request",
           "required" : false,
           "schema" : {
-            "$ref" : "#/definitions/JSON body request for presence api."
+            "$ref" : "#/definitions/PresenceList"
           }
         } ],
         "responses" : {
@@ -1434,7 +1439,7 @@
         "tags" : [ "_matrixclientr0" ],
         "summary" : "This endpoint allows the creation, modification and deletion of pushers for this user ID. The behaviour of this endpoint varies depending on the values in the JSON body.",
         "description" : "",
-        "operationId" : "update",
+        "operationId" : "updateRule",
         "parameters" : [ {
           "name" : "scope",
           "in" : "path",
@@ -1494,7 +1499,7 @@
         "tags" : [ "_matrixclientr0" ],
         "summary" : "This endpoint removes the push rule defined in the path.",
         "description" : "",
-        "operationId" : "delete",
+        "operationId" : "deleteRule",
         "parameters" : [ {
           "name" : "scope",
           "in" : "path",
@@ -2875,7 +2880,7 @@
         "tags" : [ "_matrixclientr0user" ],
         "summary" : "Set some account_data for the client on a given room.",
         "description" : "This config is only visible to the user that set the account_data. The config will be synced to clients in the per-room account_data.",
-        "operationId" : "addConfig",
+        "operationId" : "addRoomConfig",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -3037,7 +3042,7 @@
         "tags" : [ "_matrixclientr0user_directory" ],
         "summary" : "This API performs a server-side search over all users registered on the server. It searches user ID and displayname case-insensitively for users that you share a room with or that are in public rooms.",
         "description" : "",
-        "operationId" : "search",
+        "operationId" : "searchUsers",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -3117,6 +3122,12 @@
           "description" : "The media ID from the mxc:// URI (the path component).",
           "required" : true,
           "type" : "string"
+        }, {
+          "name" : "allow_remote",
+          "in" : "query",
+          "description" : "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.",
+          "required" : false,
+          "type" : "boolean"
         } ],
         "responses" : {
           "200" : {
@@ -3136,7 +3147,7 @@
         "tags" : [ "_matrixmediar0" ],
         "summary" : "Download content from the content repository as a given filename.",
         "description" : "",
-        "operationId" : "download",
+        "operationId" : "downloadFile",
         "parameters" : [ {
           "name" : "serverName",
           "in" : "path",
@@ -3155,6 +3166,12 @@
           "description" : "The filename to give in the Content-Disposition.",
           "required" : true,
           "type" : "string"
+        }, {
+          "name" : "allow_remote",
+          "in" : "query",
+          "description" : "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.",
+          "required" : false,
+          "type" : "boolean"
         } ],
         "responses" : {
           "200" : {
@@ -3244,6 +3261,12 @@
           "required" : false,
           "type" : "string",
           "enum" : [ "['crop'", "'scale']" ]
+        }, {
+          "name" : "allow_remote",
+          "in" : "query",
+          "description" : "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.",
+          "required" : false,
+          "type" : "boolean"
         } ],
         "responses" : {
           "200" : {
@@ -3305,7 +3328,7 @@
         "tags" : [ "_matrix" ],
         "summary" : "Fallback login.",
         "description" : "",
-        "operationId" : "login",
+        "operationId" : "staticLogin",
         "produces" : [ "text/html" ],
         "responses" : {
           "200" : {
@@ -3930,7 +3953,7 @@
         },
         "room" : {
           "description" : "Filters to be applied to room data.",
-          "$ref" : "#/definitions/Room filter."
+          "$ref" : "#/definitions/RoomFilter"
         },
         "event_fields" : {
           "type" : "array",
@@ -4072,25 +4095,6 @@
         }
       },
       "description" : "Invite room."
-    },
-    "JSON body request for presence api." : {
-      "type" : "object",
-      "properties" : {
-        "invite" : {
-          "type" : "array",
-          "description" : "A list of user IDs to add to the list.",
-          "items" : {
-            "type" : "string"
-          }
-        },
-        "drop" : {
-          "type" : "array",
-          "description" : "A list of user IDs to remove from the list.",
-          "items" : {
-            "type" : "string"
-          }
-        }
-      }
     },
     "JoinRequest" : {
       "type" : "object",
@@ -4363,6 +4367,26 @@
       },
       "description" : "Presence."
     },
+    "PresenceList" : {
+      "type" : "object",
+      "properties" : {
+        "invite" : {
+          "type" : "array",
+          "description" : "A list of user IDs to add to the list.",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "drop" : {
+          "type" : "array",
+          "description" : "A list of user IDs to remove from the list.",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "JSON body request for presence api."
+    },
     "PresenceStatus" : {
       "type" : "object",
       "required" : [ "presence" ],
@@ -4386,7 +4410,7 @@
           "description" : "Whether the user is currently active."
         }
       },
-      "description" : "SON body request for presence api."
+      "description" : "JSON body request for presence api."
     },
     "Profile" : {
       "type" : "object",
@@ -4896,45 +4920,6 @@
       },
       "description" : "Search result."
     },
-    "Room filter." : {
-      "type" : "object",
-      "properties" : {
-        "rooms" : {
-          "type" : "array",
-          "description" : "A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied before the filters in ephemeral, state, timeline or account_data.",
-          "items" : {
-            "type" : "string"
-          }
-        },
-        "ephemeral" : {
-          "description" : "The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms.",
-          "$ref" : "#/definitions/RoomEventFilter"
-        },
-        "state" : {
-          "description" : "The state events to include for rooms.",
-          "$ref" : "#/definitions/RoomEventFilter"
-        },
-        "timeline" : {
-          "description" : "The message and state update events to include for rooms.",
-          "$ref" : "#/definitions/RoomEventFilter"
-        },
-        "not_rooms" : {
-          "type" : "array",
-          "description" : "A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even if it is listed in the 'rooms' filter. This filter is applied before the filters in ephemeral, state, timeline or account_data.",
-          "items" : {
-            "type" : "string"
-          }
-        },
-        "include_leave" : {
-          "type" : "boolean",
-          "description" : "Include rooms that the user has left in the sync, default false."
-        },
-        "account_data" : {
-          "description" : "The per user account data to include for rooms.",
-          "$ref" : "#/definitions/RoomEventFilter"
-        }
-      }
-    },
     "RoomEventFilter" : {
       "type" : "object",
       "properties" : {
@@ -4999,6 +4984,13 @@
           "type" : "integer",
           "format" : "int64",
           "description" : "An approximate count of the total number of results found."
+        },
+        "highlights" : {
+          "type" : "array",
+          "description" : "List of words which should be highlighted, useful for stemming which may change the query terms.",
+          "items" : {
+            "type" : "string"
+          }
         },
         "results" : {
           "type" : "array",
@@ -5072,6 +5064,46 @@
         }
       },
       "description" : "Room events."
+    },
+    "RoomFilter" : {
+      "type" : "object",
+      "properties" : {
+        "rooms" : {
+          "type" : "array",
+          "description" : "A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied before the filters in ephemeral, state, timeline or account_data.",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "ephemeral" : {
+          "description" : "The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms.",
+          "$ref" : "#/definitions/RoomEventFilter"
+        },
+        "state" : {
+          "description" : "The state events to include for rooms.",
+          "$ref" : "#/definitions/RoomEventFilter"
+        },
+        "timeline" : {
+          "description" : "The message and state update events to include for rooms.",
+          "$ref" : "#/definitions/RoomEventFilter"
+        },
+        "not_rooms" : {
+          "type" : "array",
+          "description" : "A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even if it is listed in the 'rooms' filter. This filter is applied before the filters in ephemeral, state, timeline or account_data.",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "include_leave" : {
+          "type" : "boolean",
+          "description" : "Include rooms that the user has left in the sync, default false."
+        },
+        "account_data" : {
+          "description" : "The per user account data to include for rooms.",
+          "$ref" : "#/definitions/RoomEventFilter"
+        }
+      },
+      "description" : "Room filter."
     },
     "RoomId" : {
       "type" : "object",
@@ -5624,10 +5656,11 @@
     },
     "WhoamiResponse" : {
       "type" : "object",
+      "required" : [ "user_id" ],
       "properties" : {
         "user_id" : {
           "type" : "string",
-          "description" : "mxid"
+          "description" : "The user id that owns the access token."
         }
       },
       "description" : "Response for gets information about the owner of a given access token"

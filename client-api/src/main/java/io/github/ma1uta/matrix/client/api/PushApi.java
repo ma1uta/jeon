@@ -412,7 +412,7 @@ public interface PushApi {
     @DELETE
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}")
-    EmptyResponse delete(
+    EmptyResponse deleteRule(
         @ApiParam(value = "Global to specify global rules.", required = true) @PathParam("scope") String scope,
         @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
             + "\"content\"]") @PathParam("kind") String kind,
@@ -453,7 +453,7 @@ public interface PushApi {
     @RateLimit
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}")
-    EmptyResponse update(
+    EmptyResponse updateRule(
         @ApiParam(value = "Global to specify global rules.", required = true) @PathParam("scope") String scope,
         @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
             + "\"content\"].") @PathParam("kind") String kind,

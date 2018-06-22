@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * JSON body request for presence api.
  */
-@ApiModel("JSON body request for presence api.")
+@ApiModel(description = "JSON body request for presence api.")
 public class PresenceList {
 
     /**

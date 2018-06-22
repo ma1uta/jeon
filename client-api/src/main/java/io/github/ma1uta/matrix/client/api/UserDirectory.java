@@ -80,7 +80,7 @@ public interface UserDirectory {
     @RateLimit
     @Secured
     @Path("/search")
-    SearchResponse search(
+    SearchResponse searchUsers(
         @ApiParam("JSON body request.") SearchRequest request,
         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 }

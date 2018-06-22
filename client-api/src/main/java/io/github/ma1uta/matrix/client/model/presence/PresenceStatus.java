@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * JSON body request for presence api.
  */
-@ApiModel(description = "SON body request for presence api.")
+@ApiModel(description = "JSON body request for presence api.")
 public class PresenceStatus {
 
     /**
