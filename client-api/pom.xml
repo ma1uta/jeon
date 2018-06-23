@@ -22,49 +22,28 @@
     <parent>
         <groupId>io.github.ma1uta</groupId>
         <artifactId>jeon</artifactId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.4</version>
     </parent>
     <artifactId>client-api</artifactId>
+    <version>0.4</version>
 
     <properties>
         <swagger-maven-plugin-version>3.1.7</swagger-maven-plugin-version>
+        <common.api.version>0.4</common.api.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.github.ma1uta</groupId>
             <artifactId>common-api</artifactId>
-            <version>${jeon.version}</version>
+            <version>${common.api.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
-            <version>1.5.20</version>
-        </dependency>
-    </dependencies>
+   </dependencies>
 
     <build>
         <plugins>
