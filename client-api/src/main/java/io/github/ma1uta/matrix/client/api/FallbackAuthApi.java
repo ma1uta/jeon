@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.FallbackAuthApi.PATH;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -39,15 +37,11 @@ import javax.ws.rs.core.MediaType;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#login-fallback">Specification.</a>
  */
-@Api(value = PATH, description = "If a client does not recognize any or all login flows it can use the fallback login API.")
-@Path(PATH)
+@Api(value = "FallbackAuthentication", description = "If a client does not recognize any or all login flows it can use the "
+    + "fallback login API.")
+@Path("/_matrix")
 @Produces(MediaType.TEXT_HTML)
 public interface FallbackAuthApi {
-
-    /**
-     * Fallback auth api url.
-     */
-    String PATH = "/_matrix";
 
     /**
      * Fallback login.

@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.PushApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
@@ -54,17 +52,12 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id82">Specification.</a>
  */
-@Api(value = PATH, description = "This module adds support for push notifications. Homeservers send notifications of "
+@Api(value = "Push", description = "This module adds support for push notifications. Homeservers send notifications of "
     + "events to user-configured HTTP endpoints. Users may also configure a number of rules that determine which events "
     + "generate notifications. These are all stored and managed by the user's homeserver. This allows user-specific push "
     + "settings to be reused between client applications.")
-@Path(PATH)
+@Path("/_matrix/client/r0")
 public interface PushApi {
-
-    /**
-     * Push api url.
-     */
-    String PATH = "/_matrix/client/r0";
 
     /**
      * Kind of the push rules.
@@ -72,7 +65,6 @@ public interface PushApi {
     class Kind {
 
         protected Kind() {
-            //singleton
         }
 
         /**
@@ -110,7 +102,6 @@ public interface PushApi {
     class Actions {
 
         protected Actions() {
-            //singleton
         }
 
         /**
@@ -144,7 +135,6 @@ public interface PushApi {
     class Tweak {
 
         protected Tweak() {
-            //singleton
         }
 
         /**
@@ -169,7 +159,6 @@ public interface PushApi {
     class Rule {
 
         protected Rule() {
-            //singleton
         }
 
         /**
@@ -230,7 +219,6 @@ public interface PushApi {
     class Condition {
 
         protected Condition() {
-            //singletion
         }
 
         /**

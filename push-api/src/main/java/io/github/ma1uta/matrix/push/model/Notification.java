@@ -29,10 +29,9 @@ public class Notification {
     /**
      * Notification's priority.
      */
-    public static final class Priority {
+    public static class Priority {
 
         private Priority() {
-            //singleton
         }
 
         /**

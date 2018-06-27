@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.SearchApi.PATH;
-
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.search.SearchRequest;
@@ -46,18 +44,13 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id395">Specification.</a>
  */
-@Api(value = PATH, description = "The search API allows clients to perform full text search across events in all rooms that "
+@Api(value = "Search", description = "The search API allows clients to perform full text search across events in all rooms that "
     + "the user has been in, including those that they have left. Only events that the user is allowed to see will be searched, "
     + "e.g. it won't include events in rooms that happened after you left.")
-@Path(PATH)
+@Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SearchApi {
-
-    /**
-     * Search api url.
-     */
-    String PATH = "/_matrix/client/r0";
 
     /**
      * Performs a full text search across different categories.

@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.VoipApi.PATH;
-
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.voip.VoipResponse;
@@ -41,16 +39,11 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#get-matrix-client-r0-voip-turnserver">Specification.</a>
  */
-@Api(value = PATH, description = "The homeserver MAY provide a TURN server which clients can use to contact the remote party. "
+@Api(value = "VOIP", description = "The homeserver MAY provide a TURN server which clients can use to contact the remote party. "
     + "The following HTTP API endpoints will be used by clients in order to get information about the TURN server.")
-@Path(PATH)
+@Path("/_matrix/client/r0/voip")
 @Produces(MediaType.APPLICATION_JSON)
 public interface VoipApi {
-
-    /**
-     * Voip api url.
-     */
-    String PATH = "/_matrix/client/r0/voip";
 
     /**
      * This API provides credentials for the client to use when initiating calls.

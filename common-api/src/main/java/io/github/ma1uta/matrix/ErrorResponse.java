@@ -29,7 +29,7 @@ public class ErrorResponse {
     /**
      * Standard error codes.
      */
-    public static final class Code {
+    public static class Code {
 
         private Code() {
             // singleton

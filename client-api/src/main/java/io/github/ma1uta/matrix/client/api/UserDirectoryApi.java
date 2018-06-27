@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.UserDirectoryApi.PATH;
-
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.userdirectory.SearchRequest;
@@ -43,16 +41,11 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * Provides search over all users.
  */
-@Api(value = PATH, description = "User directory.")
-@Path(PATH)
+@Api(value = "UserDirectory", description = "User directory.")
+@Path("/_matrix/client/r0/user_directory")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface UserDirectoryApi {
-
-    /**
-     * User directory api url.
-     */
-    String PATH = "/_matrix/client/r0/user_directory";
 
     /**
      * This API performs a server-side search over all users registered on the server. It searches user ID and displayname

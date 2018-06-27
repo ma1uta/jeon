@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.CasApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,14 +48,9 @@ import javax.ws.rs.core.Context;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#cas-based-client-login">Specification.</a>
  */
-@Api(value = PATH, description = "Central Authentication Service (CAS) is a web-based single sign-on protocol.")
-@Path(PATH)
+@Api(value = "CAS", description = "Central Authentication Service (CAS) is a web-based single sign-on protocol.")
+@Path("/_matrix/client/r0/login/cas")
 public interface CasApi {
-
-    /**
-     * Cas api url.
-     */
-    String PATH = "/_matrix/client/r0/login/cas";
 
     /**
      * A web-based Matrix client should instruct the user's browser to navigate to this endpoint in order to log in via CAS.

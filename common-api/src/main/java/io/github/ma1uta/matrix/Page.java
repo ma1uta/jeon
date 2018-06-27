@@ -35,7 +35,6 @@ public class Page<T> {
     public static class Query {
 
         protected Query() {
-            //singleton
         }
 
         /**

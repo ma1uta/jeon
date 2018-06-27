@@ -35,7 +35,6 @@ public class CreateRoomRequest {
     public static class Visibility {
 
         protected Visibility() {
-            //singleton
         }
 
         /**
@@ -55,7 +54,6 @@ public class CreateRoomRequest {
     public static class Preset {
 
         protected Preset() {
-            //singleton
         }
 
         /**

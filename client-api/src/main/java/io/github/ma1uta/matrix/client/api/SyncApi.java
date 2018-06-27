@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.SyncApi.PATH;
-
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
@@ -48,25 +46,29 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#syncing">Specification.</a>
  */
-@Api(value = "To read events, the intended flow of operation is for clients to first call the /sync API without a since parameter. "
-    + "This returns the most recent message events for each room, as well as the state of the room at the start of the returned timeline. "
-    + "The response also includes a next_batch field, which should be used as the value of the since parameter in the next call to /sync. "
-    + "Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to "
-    + "the /rooms/&lt;room_id&gt;/messages API to retrieve earlier messages.")
-@Path(PATH)
+@Api(value = "Sync", description = "To read events, the intended flow of operation is for clients to first call the /sync API without a "
+    + "since parameter. This returns the most recent message events for each room, as well as the state of the room at the start of the "
+    + "returned timeline. The response also includes a next_batch field, which should be used as the value of the since parameter in the "
+    + "next call to /sync. Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to "
+    + "the /rooms/<room_id>/messages API to retrieve earlier messages.")
+@Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SyncApi {
 
     /**
-     * Sync api url.
-     */
-    String PATH = "/_matrix/client/r0";
-
-    /**
      * Presence.
      */
-    String OFFLINE = "offline";
+    class Presence {
+
+        protected Presence() {
+        }
+
+        /**
+         * Offline.
+         */
+        public static final String OFFLINE = "offline";
+    }
 
     /**
      * Synchronise the client's state with the latest state on the server. Clients use this API when they first log in to get

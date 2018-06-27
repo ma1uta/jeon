@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.ContentApi.PATH;
-
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.content.ContentUri;
@@ -60,23 +58,17 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id307">Specification.</a>
  */
-@Api(value = PATH, description = "This module allows users to upload content to their homeserver which is retrievable from other "
+@Api(value = "Content", description = "This module allows users to upload content to their homeserver which is retrievable from other "
     + "homeservers. Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs.")
-@Path(PATH)
+@Path("/_matrix/media/r0")
 public interface ContentApi {
-
-    /**
-     * Content api url.
-     */
-    String PATH = "/_matrix/media/r0";
 
     /**
      * The desired resizing method.
      */
-    final class Method {
+    class Method {
 
-        private Method() {
-            //singleton
+        protected Method() {
         }
 
         /**

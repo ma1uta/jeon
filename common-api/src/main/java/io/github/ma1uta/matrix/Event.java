@@ -35,7 +35,6 @@ public class Event {
     public static class EventType {
 
         protected EventType() {
-            //singleton
         }
 
         /**
@@ -946,7 +945,6 @@ public class Event {
     public static class MessageType {
 
         protected MessageType() {
-            //singleton
         }
 
         /**
@@ -1484,7 +1482,6 @@ public class Event {
     public static class MembershipState {
 
         protected MembershipState() {
-            //singleton
         }
 
         /**
@@ -1521,7 +1518,6 @@ public class Event {
     public static class Visibility {
 
         protected Visibility() {
-            //singleton
         }
 
         /**

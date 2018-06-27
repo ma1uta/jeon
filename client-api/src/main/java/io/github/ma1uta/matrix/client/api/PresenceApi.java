@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.PresenceApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.RateLimit;
@@ -70,16 +68,11 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id295">Specification.</a>
  */
-@Api(value = PATH, description = "Each user has the concept of presence information.")
-@Path(PATH)
+@Api(value = "Presence", description = "Each user has the concept of presence information.")
+@Path("/_matrix/client/r0/presence")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface PresenceApi {
-
-    /**
-     * Presence api url.
-     */
-    String PATH = "/_matrix/client/r0/presence";
 
     /**
      * This API sets the given user's presence state. When setting the status, the activity time is updated to reflect

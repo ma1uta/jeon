@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.FilterApi.PATH;
-
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.FilterResponse;
@@ -45,17 +43,12 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#filtering">Specification.</a>
  */
-@Api(value = PATH, description = "Filters can be created on the server and can be passed as as a parameter to APIs which return events. "
-    + "These filters alter the data returned from those APIs. Not all APIs accept filters.")
-@Path(PATH)
+@Api(value = "Filter", description = "Filters can be created on the server and can be passed as as a parameter to APIs which return "
+    + "events. These filters alter the data returned from those APIs. Not all APIs accept filters.")
+@Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface FilterApi {
-
-    /**
-     * Filter api url.
-     */
-    String PATH = "/_matrix/client/r0/user";
 
     /**
      * Uploads a new filter definition to the homeserver. Returns a filter ID that may be used in future requests to restrict which

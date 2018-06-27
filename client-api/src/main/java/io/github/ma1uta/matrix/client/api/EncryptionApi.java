@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.EncryptionApi.PATH;
-
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.encryption.ChangesResponse;
 import io.github.ma1uta.matrix.client.model.encryption.ClaimRequest;
@@ -50,17 +48,12 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id338">Specification.</a>
  */
-@Api(value = PATH, description = "Matrix optionally supports end-to-end encryption, allowing rooms to be created whose conversation "
-    + "contents is not decryptable or interceptable on any of the participating homeservers.")
-@Path(PATH)
+@Api(value = "Encryption", description = "Matrix optionally supports end-to-end encryption, allowing rooms to be created whose "
+    + "conversation contents is not decryptable or interceptable on any of the participating homeservers.")
+@Path("/_matrix/client/r0/keys")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface EncryptionApi {
-
-    /**
-     * Encryption api url.
-     */
-    String PATH = "/_matrix/client/r0/keys";
 
     /**
      * Publishes end-to-end encryption keys for the device.

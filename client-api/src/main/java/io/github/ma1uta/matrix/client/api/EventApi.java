@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.EventApi.PATH;
-
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
@@ -51,16 +49,11 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id172">Specification.</a>
  */
-@Api(value = PATH, description = "There are several APIs provided to GET events for a room.")
-@Path(PATH)
+@Api(value = "Event", description = "There are several APIs provided to GET events for a room.")
+@Path("/_matrix/client/r0/rooms")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface EventApi {
-
-    /**
-     * Event api url.
-     */
-    String PATH = "/_matrix/client/r0/rooms";
 
     /**
      * Get a single event based on roomId/eventId. You must have permission to retrieve this event e.g. by being a member in the

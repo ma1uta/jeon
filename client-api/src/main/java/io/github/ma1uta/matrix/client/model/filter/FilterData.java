@@ -34,7 +34,6 @@ public class FilterData {
     public static class EventFormat {
 
         protected EventFormat() {
-            //singleton
         }
 
         /**

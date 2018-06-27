@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.ClientConfigApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.swagger.annotations.Api;
@@ -43,16 +41,11 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id424">Specification.</a>
  */
-@Api(value = PATH, description = "Client Behaviour")
-@Path(PATH)
+@Api(value = "ClientConfig", description = "Client Behaviour")
+@Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ClientConfigApi {
-
-    /**
-     * Client config api url.
-     */
-    String PATH = "/_matrix/client/r0/user";
 
     /**
      * Set some account_data for the client. This config is only visible to the user that set the account_data. The config will be

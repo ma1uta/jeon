@@ -35,7 +35,6 @@ public class RoomEvents {
     public static class Key {
 
         protected Key() {
-            //singleton
         }
 
         /**
@@ -60,7 +59,6 @@ public class RoomEvents {
     public static class Order {
 
         protected Order() {
-            //singleton
         }
 
         /**

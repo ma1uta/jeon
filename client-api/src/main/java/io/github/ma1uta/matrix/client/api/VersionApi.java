@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.VersionApi.PATH;
-
 import io.github.ma1uta.matrix.client.model.version.VersionsResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,15 +42,10 @@ import javax.ws.rs.core.MediaType;
  *
  * @author ma1uta
  */
-@Api(value = PATH, description = "Gets the versions of the specification supported by the server.")
-@Path(PATH)
+@Api(value = "Version", description = "Gets the versions of the specification supported by the server.")
+@Path("/_matrix/client/versions")
 @Produces(MediaType.APPLICATION_JSON)
 public interface VersionApi {
-
-    /**
-     * Version api url.
-     */
-    String PATH = "/_matrix/client/versions";
 
     /**
      * Gets the versions of the specification supported by the server.

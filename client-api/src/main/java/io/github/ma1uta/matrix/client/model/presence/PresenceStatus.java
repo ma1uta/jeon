@@ -32,7 +32,6 @@ public class PresenceStatus {
     public static class PresenceType {
 
         protected PresenceType() {
-            //singleton
         }
 
         /**

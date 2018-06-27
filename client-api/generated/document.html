@@ -10499,7 +10499,7 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>A token that can be used to paginate backwards with.</td>
+            <td>Pagination token for the start of the chunk.</td>
             <td></td>
         </tr>
 
@@ -10512,33 +10512,20 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>A token that can be used to paginate forwards with.</td>
+            <td>Pagination token for the end of the chunk.</td>
             <td></td>
         </tr>
 
         <tr>
-            <td>event</td>
+            <td>profile_info</td>
             <td>
 
-                    <a href="#/definitions/Event">Event</a>
 
+                    object
 
             </td>
             <td>optional</td>
-            <td>Details of the requested event.</td>
-            <td></td>
-        </tr>
-
-        <tr>
-            <td>state</td>
-            <td>
-
-                    <a href="#/definitions/Event">Event</a>
-
-
-            </td>
-            <td>optional</td>
-            <td>The state of the room at the last event returned.</td>
+            <td>The historic profile information of the users that sent the events returned.</td>
             <td></td>
         </tr>
 
@@ -10553,7 +10540,7 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>A list of room events that happened just before the requested event, in reverse-chronological order.</td>
+            <td>Events just before the result.</td>
             <td></td>
         </tr>
 
@@ -10568,7 +10555,7 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>A list of room events that happened just after the requested event, in chronological order.</td>
+            <td>Events just after the result.</td>
             <td></td>
         </tr>
 

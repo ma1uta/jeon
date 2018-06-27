@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.DeviceApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.device.Device;
@@ -51,17 +49,12 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id323">Specification.</a>
  */
-@Api(value = PATH, description = "Clients that implement this module should offer the user a list of registered devices, as well "
+@Api(value = "Device", description = "Clients that implement this module should offer the user a list of registered devices, as well "
     + "as the means to update their display names. Clients should also allow users to delete disused devices.")
-@Path(PATH)
+@Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface DeviceApi {
-
-    /**
-     * Device api url.
-     */
-    String PATH = "/_matrix/client/r0";
 
     /**
      * Gets information about all devices for the current user.

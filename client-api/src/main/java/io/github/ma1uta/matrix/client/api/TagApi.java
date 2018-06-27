@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.TagApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.tag.Tags;
@@ -47,17 +45,12 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#room-tagging">Specification.</a>
  */
-@Api(value = PATH, description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
+@Api(value = "Tag", description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
     + "A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices.")
-@Path(PATH)
+@Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface TagApi {
-
-    /**
-     * Tag api url.
-     */
-    String PATH = "/_matrix/client/r0/user";
 
     /**
      * Tag special names.
@@ -65,7 +58,6 @@ public interface TagApi {
     class Tag {
 
         protected Tag() {
-            //singleton
         }
 
         /**

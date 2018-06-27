@@ -17,55 +17,89 @@
   },
   "host" : "matrix.org:8448",
   "tags" : [ {
-    "name" : "To read events, the intended flow of operation is for clients to first call the sync API without a since parameter. This returns the most recent message events for each room, as well as the state of the room at the start of the returned timeline. The response also includes a next_batch field, which should be used as the value of the since parameter in the next call to sync. Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to the rooms&lt;room_id&gt;messages API to retrieve earlier messages."
+    "name" : "Account",
+    "description" : "Account registration and management"
   }, {
-    "name" : "_matrix",
-    "description" : "If a client does not recognize any or all login flows it can use the fallback login API."
-  }, {
-    "name" : "_matrixclientr0",
-    "description" : "Rooms api."
-  }, {
-    "name" : "_matrixclientr0admin",
+    "name" : "Admin",
     "description" : "Gets information about a particular user"
   }, {
-    "name" : "_matrixclientr0keys",
-    "description" : "Matrix optionally supports end-to-end encryption, allowing rooms to be created whose conversation contents is not decryptable or interceptable on any of the participating homeservers."
+    "name" : "Authentication",
+    "description" : "A client can obtain access tokens using the /login API"
   }, {
-    "name" : "_matrixclientr0logincas",
+    "name" : "CAS",
     "description" : "Central Authentication Service (CAS) is a web-based single sign-on protocol."
   }, {
-    "name" : "_matrixclientr0presence",
-    "description" : "Each user has the concept of presence information."
+    "name" : "ClientConfig",
+    "description" : "Client Behaviour"
   }, {
-    "name" : "_matrixclientr0profile",
-    "description" : "Profiles."
+    "name" : "Content",
+    "description" : "This module allows users to upload content to their homeserver which is retrievable from other homeservers. Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs."
   }, {
-    "name" : "_matrixclientr0rooms",
+    "name" : "Device",
+    "description" : "Clients that implement this module should offer the user a list of registered devices, as well as the means to update their display names. Clients should also allow users to delete disused devices."
+  }, {
+    "name" : "Encryption",
+    "description" : "Matrix optionally supports end-to-end encryption, allowing rooms to be created whose conversation contents is not decryptable or interceptable on any of the participating homeservers."
+  }, {
+    "name" : "Event",
+    "description" : "There are several APIs provided to GET events for a room."
+  }, {
+    "name" : "EventContext",
     "description" : "This API returns a number of events that happened just before and after the specified event. This allows clients to get the context surrounding an event."
   }, {
-    "name" : "_matrixclientr0sendToDevice",
-    "description" : "This module provides a means by which clients can exchange signalling messages without them being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device."
+    "name" : "FallbackAuthentication",
+    "description" : "If a client does not recognize any or all login flows it can use the fallback login API."
   }, {
-    "name" : "_matrixclientr0user",
+    "name" : "Filter",
     "description" : "Filters can be created on the server and can be passed as as a parameter to APIs which return events. These filters alter the data returned from those APIs. Not all APIs accept filters."
   }, {
-    "name" : "_matrixclientr0user_directory",
+    "name" : "Presence",
+    "description" : "Each user has the concept of presence information."
+  }, {
+    "name" : "Profile",
+    "description" : "Profiles."
+  }, {
+    "name" : "Push",
+    "description" : "This module adds support for push notifications. Homeservers send notifications of events to user-configured HTTP endpoints. Users may also configure a number of rules that determine which events generate notifications. These are all stored and managed by the user's homeserver. This allows user-specific push settings to be reused between client applications."
+  }, {
+    "name" : "Receipt",
+    "description" : "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. This module defines a single acknowledgement: m.read which indicates that the user has read up to a given event."
+  }, {
+    "name" : "Report",
+    "description" : "Users may encounter content which they find inappropriate and should be able to report it to the server administrators or room moderators for review. This module defines a way for users to report content."
+  }, {
+    "name" : "Room",
+    "description" : "Rooms api."
+  }, {
+    "name" : "Search",
+    "description" : "The search API allows clients to perform full text search across events in all rooms that the user has been in, including those that they have left. Only events that the user is allowed to see will be searched, e.g. it won't include events in rooms that happened after you left."
+  }, {
+    "name" : "SendToDevice",
+    "description" : "This module provides a means by which clients can exchange signalling messages without them being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device."
+  }, {
+    "name" : "Sync",
+    "description" : "To read events, the intended flow of operation is for clients to first call the /sync API without a since parameter. This returns the most recent message events for each room, as well as the state of the room at the start of the returned timeline. The response also includes a next_batch field, which should be used as the value of the since parameter in the next call to /sync. Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to the /rooms/<room_id>/messages API to retrieve earlier messages."
+  }, {
+    "name" : "Tag",
+    "description" : "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices."
+  }, {
+    "name" : "Typing",
+    "description" : "When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge of every user who is currently typing. The reason for this is that the server does not remember users who are not currently typing as that list gets big quickly. The client should mark as not typing any user ID who is not in that list."
+  }, {
+    "name" : "UserDirectory",
     "description" : "User directory."
   }, {
-    "name" : "_matrixclientr0voip",
+    "name" : "VOIP",
     "description" : "The homeserver MAY provide a TURN server which clients can use to contact the remote party. The following HTTP API endpoints will be used by clients in order to get information about the TURN server."
   }, {
-    "name" : "_matrixclientversions",
+    "name" : "Version",
     "description" : "Gets the versions of the specification supported by the server."
-  }, {
-    "name" : "_matrixmediar0",
-    "description" : "This module allows users to upload content to their homeserver which is retrievable from other homeservers. Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs."
   } ],
   "schemes" : [ "https" ],
   "paths" : {
     "/_matrix/client/r0/account/3pid" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Gets a list of the third party identifiers that the homeserver has associated with the user's account",
         "description" : "This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers. Identifiers in this list may be used by the homeserver as, for example, identifiers that it will accept to reset the user's account password.",
         "operationId" : "showThreePid",
@@ -81,7 +115,7 @@
         }
       },
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Adds contact information to the user's account",
         "description" : "",
         "operationId" : "updateThreePid",
@@ -111,7 +145,7 @@
     },
     "/_matrix/client/r0/account/3pid/email/requestToken" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Proxies the identity server API validate/email/requestToken",
         "description" : "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not already associated with an account on this Home Server. This API should be used to request validation tokens when adding an email address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken endpoint.",
         "operationId" : "threePidRequestToken",
@@ -129,7 +163,7 @@
     },
     "/_matrix/client/r0/account/deactivate" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Deactivate the user's account, removing all ability for the user to login again.",
         "description" : "This API endpoint uses the User-Interactive Authentication API.An access token should be submitted to this endpoint if the client has an active session.The homeserver may change the flows available depending on whether a valid access token is provided.",
         "operationId" : "deactivate",
@@ -162,7 +196,7 @@
     },
     "/_matrix/client/r0/account/password" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Changes the password for an account on this homeserver.",
         "description" : "This API endpoint uses the User-Interactive Authentication API. An access token should be submitted to this endpoint if the client has an active session. The homeserver may change the flows available depending on whether a valid access token is provided.",
         "operationId" : "password",
@@ -195,7 +229,7 @@
     },
     "/_matrix/client/r0/account/password/email/requestToken" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Proxies the identity server API validate/email/requestToken, but first checks that the given email address is associated with an account on this Home Server.",
         "description" : "This API should be used to request validation tokens when authenticating for the account/password endpoint. This API's parameters and response are identical to that of the HS API /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email address could be found. The server may instead send an email to the given address prompting the user to create an account. M_THREEPID_IN_USE may not be returned.",
         "operationId" : "passwordRequestToken",
@@ -213,7 +247,7 @@
     },
     "/_matrix/client/r0/account/whoami" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Gets information about the owner of a given access token",
         "description" : "Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their namespace by giving a user_id query parameter. In this situation, the server should verify that the given user_id is registered by the appservice, and return it in the response body.",
         "operationId" : "whoami",
@@ -240,7 +274,7 @@
     },
     "/_matrix/client/r0/admin/whois/{userId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0admin" ],
+        "tags" : [ "Admin" ],
         "summary" : "his API may be restricted to only be called by the user being looked up, or by a server admin. Server-local administrator privileges are not specified in this document.",
         "description" : "",
         "operationId" : "whois",
@@ -264,7 +298,7 @@
     },
     "/_matrix/client/r0/auth/{auth}/fallback/web" : {
       "get" : {
-        "tags" : [ "_matrix" ],
+        "tags" : [ "FallbackAuthentication" ],
         "summary" : "Fallback login endpoint",
         "description" : "If a client does not know how to handle a given login type, it can direct the user to a web browser with the URL of a fallback page which will allow the user to complete that login step out-of-band in their web browser.",
         "operationId" : "auth",
@@ -294,7 +328,7 @@
     },
     "/_matrix/client/r0/createRoom" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Create a new room with various configuration options.",
         "description" : "The server MUST apply the normal state resolution rules when creating the new room, including checking power levels for each event.",
         "operationId" : "create",
@@ -324,7 +358,7 @@
     },
     "/_matrix/client/r0/delete_devices" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Device" ],
         "summary" : "Deletes the given devices, and invalidates any access token associated with them.",
         "description" : "This API endpoint uses the User-Interactive Authentication API.",
         "operationId" : "deleteDevices",
@@ -354,7 +388,7 @@
     },
     "/_matrix/client/r0/devices" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Device" ],
         "summary" : "Gets information about all devices for the current user.",
         "description" : "",
         "operationId" : "devices",
@@ -372,7 +406,7 @@
     },
     "/_matrix/client/r0/devices/{deviceId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Device" ],
         "summary" : "Gets information on a single device, by device id.",
         "description" : "",
         "operationId" : "device",
@@ -398,7 +432,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Device" ],
         "summary" : "Updates the metadata on the given device.",
         "description" : "",
         "operationId" : "updateDevice",
@@ -432,7 +466,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Device" ],
         "summary" : "Deletes the given device, and invalidates any access token associated with it.",
         "description" : "This API endpoint uses the User-Interactive Authentication API.",
         "operationId" : "deleteDevice",
@@ -468,7 +502,7 @@
     },
     "/_matrix/client/r0/directory/list/room/{roomId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Gets the visibility of a given room on the server's public room directory.",
         "description" : "",
         "operationId" : "getVisibility",
@@ -494,7 +528,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Sets the visibility of a given room in the server's public room directory.",
         "description" : "",
         "operationId" : "setVisibility",
@@ -530,7 +564,7 @@
     },
     "/_matrix/client/r0/directory/room/{roomAlias}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Requests that the server resolve a room alias to a room ID. The server will use the federation API to resolve the alias if the domain part of the alias does not correspond to the server's own domain.",
         "description" : "",
         "operationId" : "resolve",
@@ -556,7 +590,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Create a new mapping from room alias to room ID.",
         "description" : "",
         "operationId" : "newAlias",
@@ -590,7 +624,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Remove a mapping of room alias to room ID.",
         "description" : "",
         "operationId" : "delete",
@@ -615,7 +649,7 @@
     },
     "/_matrix/client/r0/events" : {
       "get" : {
-        "tags" : [ "To read events, the intended flow of operation is for clients to first call the sync API without a since parameter. This returns the most recent message events for each room, as well as the state of the room at the start of the returned timeline. The response also includes a next_batch field, which should be used as the value of the since parameter in the next call to sync. Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to the rooms&lt;room_id&gt;messages API to retrieve earlier messages." ],
+        "tags" : [ "Sync" ],
         "summary" : "This will listen for new events related to a particular room and return them to the caller. This will block until an event is received, or until the timeout is reached.",
         "description" : "",
         "operationId" : "events",
@@ -656,7 +690,7 @@
     },
     "/_matrix/client/r0/join/{roomIdOrAlias}" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "This API starts a user participating in a particular room, if that user is allowed to participate in that room. After this call, the client is allowed to see all current state events in the room, and all subsequent events associated with the room until the user leaves the room.",
         "description" : "",
         "operationId" : "joinByIdOrAlias",
@@ -695,7 +729,7 @@
     },
     "/_matrix/client/r0/joined_rooms" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "This API returns a list of the user's current rooms.",
         "description" : "",
         "operationId" : "joinedRooms",
@@ -713,7 +747,7 @@
     },
     "/_matrix/client/r0/keys/changes" : {
       "get" : {
-        "tags" : [ "_matrixclientr0keys" ],
+        "tags" : [ "Encryption" ],
         "summary" : "Gets a list of users who have updated their device identity keys since a previous sync token.",
         "description" : "The server should include in the results any users who currently share a room with the calling user (ie, both users have membership state join); and added new device identity keys or removed an existing device with identity keys, between from and to.",
         "operationId" : "changes",
@@ -744,7 +778,7 @@
     },
     "/_matrix/client/r0/keys/claim" : {
       "post" : {
-        "tags" : [ "_matrixclientr0keys" ],
+        "tags" : [ "Encryption" ],
         "summary" : "Claims one-time keys for use in pre-key messages.",
         "description" : "",
         "operationId" : "claim",
@@ -771,7 +805,7 @@
     },
     "/_matrix/client/r0/keys/query" : {
       "post" : {
-        "tags" : [ "_matrixclientr0keys" ],
+        "tags" : [ "Encryption" ],
         "summary" : "Returns the current devices and identity keys for the given users.",
         "description" : "",
         "operationId" : "query",
@@ -798,7 +832,7 @@
     },
     "/_matrix/client/r0/keys/upload" : {
       "post" : {
-        "tags" : [ "_matrixclientr0keys" ],
+        "tags" : [ "Encryption" ],
         "summary" : "Publishes end-to-end encryption keys for the device.",
         "description" : "",
         "operationId" : "uploadKey",
@@ -825,7 +859,7 @@
     },
     "/_matrix/client/r0/login" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Authentication" ],
         "summary" : "Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests",
         "description" : "If the client does not supply a device_id, the server must auto-generate one. The returned access token must be associated with the device_id supplied by the client or generated by the server. The server may invalidate any access token previously associated with that device",
         "operationId" : "login",
@@ -861,7 +895,7 @@
     },
     "/_matrix/client/r0/login/cas/redirect" : {
       "get" : {
-        "tags" : [ "_matrixclientr0logincas" ],
+        "tags" : [ "CAS" ],
         "summary" : "A web-based Matrix client should instruct the user's browser to navigate to this endpoint in order to log in via CAS.",
         "description" : "The server MUST respond with an HTTP redirect to the CAS interface. The URI MUST include a service parameter giving the path of the /login/cas/ticket endpoint (including the redirectUrl query parameter).",
         "operationId" : "redirect",
@@ -887,7 +921,7 @@
     },
     "/_matrix/client/r0/login/cas/ticket" : {
       "get" : {
-        "tags" : [ "_matrixclientr0logincas" ],
+        "tags" : [ "CAS" ],
         "summary" : "Once the CAS server has authenticated the user, it will redirect the browser to this endpoint (assuming /login/cas/redirect gave it the correct service parameter).",
         "description" : "The server MUST call /proxyValidate on the CAS server, to validate the ticket supplied by the browser. If validation is successful, the server must generate a Matrix login token. It must then respond with an HTTP redirect to the URI given in the redirectUrl parameter, adding a loginToken query parameter giving the generated token. If validation is unsuccessful, the server should respond with a 401 Unauthorized error, the body of which will be displayed to the user.",
         "operationId" : "ticket",
@@ -922,7 +956,7 @@
     },
     "/_matrix/client/r0/logout" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Authentication" ],
         "summary" : "Invalidates an existing access token, so that it can no longer be used for authorization.",
         "description" : "",
         "operationId" : "logout",
@@ -940,7 +974,7 @@
     },
     "/_matrix/client/r0/logout/all" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Authentication" ],
         "summary" : "Invalidates all access tokens for a user, so that they can no longer be used for authorization. This includes the access token that made this request",
         "description" : "This endpoint does not require UI authorization because UI authorization is designed to protect against attacks where the someone gets hold of a single access token then takes over the account. This endpoint invalidates all access tokens for the user, including the token used in the request, and therefore the attacker is unable to take over the account in this way.",
         "operationId" : "logoutAll",
@@ -958,7 +992,7 @@
     },
     "/_matrix/client/r0/notifications" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "This API is used to paginate through the list of events that the user has been, or would have been notified about.",
         "description" : "",
         "operationId" : "notifications",
@@ -994,7 +1028,7 @@
     },
     "/_matrix/client/r0/presence/list/{userId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0presence" ],
+        "tags" : [ "Presence" ],
         "summary" : "Retrieve a list of presence events for every user on this list.",
         "description" : "",
         "operationId" : "getPresenceList",
@@ -1020,7 +1054,7 @@
         }
       },
       "post" : {
-        "tags" : [ "_matrixclientr0presence" ],
+        "tags" : [ "Presence" ],
         "summary" : "Adds or removes users from this presence list.",
         "description" : "",
         "operationId" : "setPresenceList",
@@ -1056,7 +1090,7 @@
     },
     "/_matrix/client/r0/presence/{userId}/status" : {
       "get" : {
-        "tags" : [ "_matrixclientr0presence" ],
+        "tags" : [ "Presence" ],
         "summary" : "Get the given user's presence state.",
         "description" : "",
         "operationId" : "getPresenceStatus",
@@ -1082,7 +1116,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0presence" ],
+        "tags" : [ "Presence" ],
         "summary" : "This API sets the given user's presence state. When setting the status, the activity time is updated to reflect that activity; the client does not need to specify the last_active_ago field. You cannot set the presence state of another user.",
         "description" : "",
         "operationId" : "setPresenceStatus",
@@ -1118,7 +1152,7 @@
     },
     "/_matrix/client/r0/profile/{userId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0profile" ],
+        "tags" : [ "Profile" ],
         "summary" : "Get the combined profile information for this user. This API may be used to fetch the user's own profile information or other users; either locally or on remote homeservers. This API may return keys which are not limited to displayname or avatar_url.",
         "description" : "",
         "operationId" : "profile",
@@ -1146,7 +1180,7 @@
     },
     "/_matrix/client/r0/profile/{userId}/avatar_url" : {
       "get" : {
-        "tags" : [ "_matrixclientr0profile" ],
+        "tags" : [ "Profile" ],
         "summary" : "Get the user's avatar URL. This API may be used to fetch the user's own avatar URL or to query the URL of other users;  either locally or on remote homeservers.",
         "description" : "",
         "operationId" : "showAvatarUrl",
@@ -1172,7 +1206,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0profile" ],
+        "tags" : [ "Profile" ],
         "summary" : "This API sets the given user's avatar URL. You must have permission to set this user's avatar URL, e.g. you need to have their access_token.",
         "description" : "",
         "operationId" : "setAvatarUrl",
@@ -1208,7 +1242,7 @@
     },
     "/_matrix/client/r0/profile/{userId}/displayname" : {
       "get" : {
-        "tags" : [ "_matrixclientr0profile" ],
+        "tags" : [ "Profile" ],
         "summary" : "Get the user's display name. This API may be used to fetch the user's own displayname or to query the name of other users; either locally or on remote homeservers.",
         "description" : "",
         "operationId" : "showDisplayName",
@@ -1234,7 +1268,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0profile" ],
+        "tags" : [ "Profile" ],
         "summary" : "his API sets the given user's display name. You must have permission to set this user's display name, e.g. you need to have their access_token.",
         "description" : "",
         "operationId" : "setDisplayName",
@@ -1270,7 +1304,7 @@
     },
     "/_matrix/client/r0/publicRooms" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Lists the public rooms on the server. This API returns paginated responses. The rooms are ordered by the number of joined members, with the largest rooms first.",
         "description" : "",
         "operationId" : "showPublicRooms",
@@ -1306,7 +1340,7 @@
         }
       },
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Lists the public rooms on the server, with optional filter. This API returns paginated responses. The rooms are ordered by the number of joined members, with the largest rooms first.",
         "description" : "",
         "operationId" : "searchPublicRooms",
@@ -1339,7 +1373,7 @@
     },
     "/_matrix/client/r0/pushers" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "Gets all currently active pushers for the authenticated user.",
         "description" : "",
         "operationId" : "showPushers",
@@ -1355,7 +1389,7 @@
     },
     "/_matrix/client/r0/pushers/set" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "This endpoint allows the creation, modification and deletion of pushers for this user ID. The behaviour of this endpoint varies depending on the values in the JSON body.",
         "description" : "",
         "operationId" : "setPushers",
@@ -1386,7 +1420,7 @@
     },
     "/_matrix/client/r0/pushrules" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "Retrieve all push rulesets for this user. Clients can \"drill-down]\"on the rulesets by suffixing a scope to this path e.g. /pushrules/global/. This will return a subset of this data under the specified key e.g. the global key.",
         "description" : "",
         "operationId" : "pushRules",
@@ -1402,7 +1436,7 @@
     },
     "/_matrix/client/r0/pushrules/{scope}/{kind}/{ruleId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "Retrieve a single specified push rule.",
         "description" : "",
         "operationId" : "pushRule",
@@ -1436,7 +1470,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "This endpoint allows the creation, modification and deletion of pushers for this user ID. The behaviour of this endpoint varies depending on the values in the JSON body.",
         "description" : "",
         "operationId" : "updateRule",
@@ -1496,7 +1530,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "This endpoint removes the push rule defined in the path.",
         "description" : "",
         "operationId" : "deleteRule",
@@ -1532,7 +1566,7 @@
     },
     "/_matrix/client/r0/pushrules/{scope}/{kind}/{ruleId}/actions" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "This endpoint get the actions for the specified push rule.",
         "description" : "",
         "operationId" : "getActions",
@@ -1566,7 +1600,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "This endpoint allows clients to change the actions of a push rule. This can be used to change the actions of builtin rules.",
         "description" : "",
         "operationId" : "setActions",
@@ -1610,7 +1644,7 @@
     },
     "/_matrix/client/r0/pushrules/{scope}/{kind}/{ruleId}/enabled" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "This endpoint gets whether the specified push rule is enabled.",
         "description" : "",
         "operationId" : "getEnabled",
@@ -1644,7 +1678,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Push" ],
         "summary" : "his endpoint allows clients to enable or disable the specified push rule.",
         "description" : "",
         "operationId" : "setEnabled",
@@ -1688,7 +1722,7 @@
     },
     "/_matrix/client/r0/register" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Register for an account on this homeserver.",
         "description" : "",
         "operationId" : "register",
@@ -1732,7 +1766,7 @@
     },
     "/_matrix/client/r0/register/available" : {
       "get" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Checks to see if a username is available, and valid, for the server.",
         "description" : "he server should check to ensure that, at the time of the request, the username requested is available for use.This includes verifying that an application service has not claimed the username and that the username fits the server'sdesired requirements (for example, a server could dictate that it does not permit usernames with underscores).Matrix clients may wish to use this API prior to attempting registration, however the clients must also be awarethat using this API does not normally reserve the username. This can mean that the username becomes unavailablebetween checking its availability and attempting to register it.",
         "operationId" : "available",
@@ -1763,7 +1797,7 @@
     },
     "/_matrix/client/r0/register/email/requestToken" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Account" ],
         "summary" : "Request token.",
         "description" : "Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not already associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects, though the Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.",
         "operationId" : "requestToken",
@@ -1793,7 +1827,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/ban" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Ban a user in the room. If the user is currently in the room, also kick them.",
         "description" : "",
         "operationId" : "ban",
@@ -1829,7 +1863,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/context/{eventId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "EventContext" ],
         "summary" : "This API returns a number of events that happened just before and after the specified event.",
         "description" : "This allows clients to get the context surrounding an event.",
         "operationId" : "context",
@@ -1866,7 +1900,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/event/{eventId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "Get a single event based on roomId/eventId. You must have permission to retrieve this event e.g. by being a member in the room for this event.",
         "description" : "",
         "operationId" : "singleEvent",
@@ -1900,7 +1934,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/forget" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "This API stops a user remembering about a particular room. In general, history is a first class citizen in Matrix. After this API is called, however, a user will no longer be able to retrieve history for this room. If all users on a homeserver forget a room, the room is eligible for deletion from that homeserver.",
         "description" : "",
         "operationId" : "forget",
@@ -1928,7 +1962,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/invite" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "This API invites a user to participate in a particular room. They do not start participating in the room until they actually join the room.",
         "description" : "",
         "operationId" : "invite",
@@ -1967,7 +2001,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/join" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "This API starts a user participating in a particular room, if that user is allowed to participate in that room. After this call, the client is allowed to see all current state events in the room, and all subsequent events associated with the room until the user leaves the room.",
         "description" : "",
         "operationId" : "join",
@@ -2006,7 +2040,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/joined_members" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "This API returns a map of MXIDs to member info objects for members of the room.",
         "description" : "The current user must be in the room for it to work, unless it is an Application Service in which case any of the AS's users must be in the room. This API is primarily for Application Services and should be faster to respond than/members as it can be implemented more efficiently on the server.",
         "operationId" : "joinedMembers",
@@ -2034,7 +2068,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/kick" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Kick a user from the room.",
         "description" : "",
         "operationId" : "kick",
@@ -2070,7 +2104,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/leave" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "This API stops a user participating in a particular room. If the user was already in the room, they will no longer be able to see new events in the room. If the room requires an invite to join, they will need to be re-invited before they can re-join. If the user was invited to the room, but had not joined, this call serves to reject the invite.The user will still be allowed to retrieve history from the room which they were previously allowed to see.",
         "description" : "",
         "operationId" : "leave",
@@ -2098,7 +2132,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/members" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "Get the list of members for this room.",
         "description" : "",
         "operationId" : "members",
@@ -2126,7 +2160,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/messages" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "This API returns a list of message and state events for a room.",
         "description" : "It uses pagination query parameters to paginate history in the room.",
         "operationId" : "messages",
@@ -2186,7 +2220,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/receipt/{receiptType}/{eventId}" : {
       "post" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Receipt" ],
         "summary" : "This API updates the marker for the given receipt type to the event ID specified.",
         "description" : "",
         "operationId" : "receipt",
@@ -2226,7 +2260,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/redact/{eventId}/{txnId}" : {
       "put" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "Strips all information out of an event which isn't critical to the integrity of the server-side representation of the room.",
         "description" : "This cannot be undone. Users may redact their own events, and any user with a power level greater than or equal to the redact power level of the room may redact events there.",
         "operationId" : "redact",
@@ -2271,7 +2305,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/report/{eventId}" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Report" ],
         "summary" : "Reports an event as inappropriate to the server, which may then notify the appropriate people.",
         "description" : "",
         "operationId" : "report",
@@ -2310,7 +2344,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/send/{eventType}/{txnId}" : {
       "put" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "This endpoint is used to send a message event to a room.",
         "description" : "Message events allow access to historical events and pagination, making them suited for \"once-off\" activity in a room. The body of the request should be the content object of the event; the fields in this object will vary depending on the type of event. See Room Events for the m. event specification.",
         "operationId" : "sendEvent",
@@ -2358,7 +2392,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/state" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "Get the state events for the current state of a room.",
         "description" : "",
         "operationId" : "eventsForRoom",
@@ -2389,7 +2423,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/state/{eventType}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "Looks up the contents of a state event in a room. If the user is joined to the room then the state is taken from the current state of the room. If the user has left the room then the state is taken from the state of the room when they left.",
         "description" : "This looks up the state event with the empty state key.",
         "operationId" : "eventsForRoomWithType",
@@ -2427,7 +2461,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "State events can be sent using this endpoint.",
         "description" : "This endpoint is equivalent to calling /rooms/{roomId}/state/{eventType}/{stateKey} with an empty stateKey. Previous state events with matching (roomId) and (eventType), and empty (stateKey), will be overwritten. Requests to this endpoint cannot use transaction IDs like other PUT paths because they cannot be differentiated from the state_key. Furthermore, POST is unsupported on state paths. The body of the request should be the content object of the event; the fields in this object will vary depending on the type of event. See Room Events for the m.event specification.",
         "operationId" : "sendEventWithType",
@@ -2469,7 +2503,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/state/{eventType}/{stateKey}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "Looks up the contents of a state event in a room. If the user is joined to the room then the state is taken from the current state of the room. If the user has left the room then the state is taken from the state of the room when they left.",
         "description" : "",
         "operationId" : "eventsForRoomWithTypeAndState",
@@ -2513,7 +2547,7 @@
         }
       },
       "put" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Event" ],
         "summary" : "State events can be sent using this endpoint.",
         "description" : "These events will be overwritten if (room id), (event type) and (state key) all match. Requests to this endpoint cannot use transaction IDs like other PUT paths because they cannot be differentiated from the state_key. Furthermore, POST is unsupported on state paths. The body of the request should be the content object of the event; the fields in this object will vary depending on the type of event.See Room Events for the m.event specification.",
         "operationId" : "sendEventWithTypeAndState",
@@ -2561,7 +2595,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/typing/{userId}" : {
       "put" : {
-        "tags" : [ "_matrixclientr0rooms" ],
+        "tags" : [ "Typing" ],
         "summary" : "This tells the server that the user is typing for the next N milliseconds where N is the value specified in the timeout key. Alternatively, if typing is false, it tells the server that the user has stopped typing.",
         "description" : "",
         "operationId" : "typing",
@@ -2603,7 +2637,7 @@
     },
     "/_matrix/client/r0/rooms/{roomId}/unban" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Room" ],
         "summary" : "Unban a user from the room. This allows them to be invited to the room, and join if they would otherwise be allowed to join according to its join rules.",
         "description" : "",
         "operationId" : "unban",
@@ -2639,7 +2673,7 @@
     },
     "/_matrix/client/r0/search" : {
       "post" : {
-        "tags" : [ "_matrixclientr0" ],
+        "tags" : [ "Search" ],
         "summary" : "Performs a full text search across different categories.",
         "description" : "",
         "operationId" : "search",
@@ -2678,7 +2712,7 @@
     },
     "/_matrix/client/r0/sendToDevice/{eventType}/{txnId}" : {
       "put" : {
-        "tags" : [ "_matrixclientr0sendToDevice" ],
+        "tags" : [ "SendToDevice" ],
         "summary" : "This endpoint is used to send send-to-device events to a set of client devices.",
         "description" : "",
         "operationId" : "send",
@@ -2717,7 +2751,7 @@
     },
     "/_matrix/client/r0/sync" : {
       "get" : {
-        "tags" : [ "To read events, the intended flow of operation is for clients to first call the sync API without a since parameter. This returns the most recent message events for each room, as well as the state of the room at the start of the returned timeline. The response also includes a next_batch field, which should be used as the value of the since parameter in the next call to sync. Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to the rooms&lt;room_id&gt;messages API to retrieve earlier messages." ],
+        "tags" : [ "Sync" ],
         "summary" : "Synchronise the client's state with the latest state on the server. Clients use this API when they first log in to get an initial snapshot of the state on the server, and then continue to call this API to get incremental deltas to the state, and to receive new messages.",
         "description" : "",
         "operationId" : "sync",
@@ -2768,7 +2802,7 @@
     },
     "/_matrix/client/r0/user/{userId}/account_data/{type}" : {
       "put" : {
-        "tags" : [ "_matrixclientr0user" ],
+        "tags" : [ "ClientConfig" ],
         "summary" : "Set some account_data for the client.",
         "description" : "This config is only visible to the user that set the account_data. The config will be synced to clients in the top-level account_data.",
         "operationId" : "addConfig",
@@ -2810,7 +2844,7 @@
     },
     "/_matrix/client/r0/user/{userId}/filter" : {
       "post" : {
-        "tags" : [ "_matrixclientr0user" ],
+        "tags" : [ "Filter" ],
         "summary" : "Ploads a new filter definition to the homeserver.",
         "description" : "Returns a filter ID that may be used in future requests to restrict which events are returned to the client.",
         "operationId" : "uploadFilter",
@@ -2843,7 +2877,7 @@
     },
     "/_matrix/client/r0/user/{userId}/filter/{filterId}" : {
       "get" : {
-        "tags" : [ "_matrixclientr0user" ],
+        "tags" : [ "Filter" ],
         "summary" : "Download a filter.",
         "description" : "",
         "operationId" : "getFilter",
@@ -2877,7 +2911,7 @@
     },
     "/_matrix/client/r0/user/{userId}/rooms/{roomId}/account_data/{type}" : {
       "put" : {
-        "tags" : [ "_matrixclientr0user" ],
+        "tags" : [ "ClientConfig" ],
         "summary" : "Set some account_data for the client on a given room.",
         "description" : "This config is only visible to the user that set the account_data. The config will be synced to clients in the per-room account_data.",
         "operationId" : "addRoomConfig",
@@ -2925,7 +2959,7 @@
     },
     "/_matrix/client/r0/user/{userId}/rooms/{roomId}/tags" : {
       "get" : {
-        "tags" : [ "_matrixclientr0user" ],
+        "tags" : [ "Tag" ],
         "summary" : "List the tags set by a user on a room.",
         "description" : "",
         "operationId" : "showTags",
@@ -2956,7 +2990,7 @@
     },
     "/_matrix/client/r0/user/{userId}/rooms/{roomId}/tags/{tag}" : {
       "put" : {
-        "tags" : [ "_matrixclientr0user" ],
+        "tags" : [ "Tag" ],
         "summary" : "Add a tag to the room.",
         "description" : "",
         "operationId" : "addTag",
@@ -3002,7 +3036,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "_matrixclientr0user" ],
+        "tags" : [ "Tag" ],
         "summary" : "Remove a tag from the room.",
         "description" : "",
         "operationId" : "deleteTag",
@@ -3039,7 +3073,7 @@
     },
     "/_matrix/client/r0/user_directory/search" : {
       "post" : {
-        "tags" : [ "_matrixclientr0user_directory" ],
+        "tags" : [ "UserDirectory" ],
         "summary" : "This API performs a server-side search over all users registered on the server. It searches user ID and displayname case-insensitively for users that you share a room with or that are in public rooms.",
         "description" : "",
         "operationId" : "searchUsers",
@@ -3069,7 +3103,7 @@
     },
     "/_matrix/client/r0/voip/turnServer" : {
       "get" : {
-        "tags" : [ "_matrixclientr0voip" ],
+        "tags" : [ "VOIP" ],
         "summary" : "This API provides credentials for the client to use when initiating calls.",
         "description" : "",
         "operationId" : "turnServer",
@@ -3089,7 +3123,7 @@
     },
     "/_matrix/client/versions" : {
       "get" : {
-        "tags" : [ "_matrixclientversions" ],
+        "tags" : [ "Version" ],
         "summary" : "Gets the versions of the specification supported by the server.",
         "description" : "",
         "operationId" : "versions",
@@ -3106,7 +3140,7 @@
     },
     "/_matrix/media/r0/download/{serverName}/{mediaId}" : {
       "get" : {
-        "tags" : [ "_matrixmediar0" ],
+        "tags" : [ "Content" ],
         "summary" : "Download content from the content repository.",
         "description" : "",
         "operationId" : "download",
@@ -3144,7 +3178,7 @@
     },
     "/_matrix/media/r0/download/{serverName}/{mediaId}/{fileName}" : {
       "get" : {
-        "tags" : [ "_matrixmediar0" ],
+        "tags" : [ "Content" ],
         "summary" : "Download content from the content repository as a given filename.",
         "description" : "",
         "operationId" : "downloadFile",
@@ -3188,7 +3222,7 @@
     },
     "/_matrix/media/r0/preview_url" : {
       "get" : {
-        "tags" : [ "_matrixmediar0" ],
+        "tags" : [ "Content" ],
         "summary" : "Get information about a PATH for a client.",
         "description" : "",
         "operationId" : "previewUrl",
@@ -3224,7 +3258,7 @@
     },
     "/_matrix/media/r0/thumbnail/{serverName}/{mediaId}" : {
       "get" : {
-        "tags" : [ "_matrixmediar0" ],
+        "tags" : [ "Content" ],
         "summary" : "Download a thumbnail of the content from the content repository.",
         "description" : "",
         "operationId" : "thumbnail",
@@ -3283,7 +3317,7 @@
     },
     "/_matrix/media/r0/upload" : {
       "post" : {
-        "tags" : [ "_matrixmediar0" ],
+        "tags" : [ "Content" ],
         "summary" : "Upload some content to the content repository.",
         "description" : "",
         "operationId" : "upload",
@@ -3325,7 +3359,7 @@
     },
     "/_matrix/static/client/login" : {
       "get" : {
-        "tags" : [ "_matrix" ],
+        "tags" : [ "FallbackAuthentication" ],
         "summary" : "Fallback login.",
         "description" : "",
         "operationId" : "staticLogin",
@@ -3874,36 +3908,35 @@
       "properties" : {
         "start" : {
           "type" : "string",
-          "description" : "A token that can be used to paginate backwards with."
+          "description" : "Pagination token for the start of the chunk."
         },
         "end" : {
           "type" : "string",
-          "description" : "A token that can be used to paginate forwards with."
+          "description" : "Pagination token for the end of the chunk."
         },
-        "event" : {
-          "description" : "Details of the requested event.",
-          "$ref" : "#/definitions/Event"
-        },
-        "state" : {
-          "description" : "The state of the room at the last event returned.",
-          "$ref" : "#/definitions/Event"
+        "profile_info" : {
+          "type" : "object",
+          "description" : "The historic profile information of the users that sent the events returned.",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/Profile"
+          }
         },
         "events_before" : {
           "type" : "array",
-          "description" : "A list of room events that happened just before the requested event, in reverse-chronological order.",
+          "description" : "Events just before the result.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         },
         "events_after" : {
           "type" : "array",
-          "description" : "A list of room events that happened just after the requested event, in chronological order.",
+          "description" : "Events just after the result.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         }
       },
-      "description" : "Events that happened just before and after the specified event."
+      "description" : "Event context."
     },
     "Filter" : {
       "type" : "object",

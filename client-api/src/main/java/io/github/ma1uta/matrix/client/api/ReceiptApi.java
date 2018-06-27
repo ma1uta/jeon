@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.ReceiptApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
@@ -48,16 +46,11 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id288">Specification.</a>
  */
-@Api(value = PATH, description = "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. "
+@Api(value = "Receipt", description = "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. "
     + "This module defines a single acknowledgement: m.read which indicates that the user has read up to a given event.")
-@Path(PATH)
+@Path("/_matrix/client/r0/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 public interface ReceiptApi {
-
-    /**
-     * Receipt api url.
-     */
-    String PATH = "/_matrix/client/r0/rooms";
 
     /**
      * Receipt types.
@@ -65,7 +58,6 @@ public interface ReceiptApi {
     class Receipt {
 
         protected Receipt() {
-            //singleton
         }
 
         /**

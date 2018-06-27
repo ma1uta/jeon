@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.EventContextApi.PATH;
-
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.eventcontext.EventContextResponse;
 import io.swagger.annotations.Api;
@@ -43,16 +41,11 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id114">Specification.</a>
  */
-@Api(value = PATH, description = "This API returns a number of events that happened just before and after the specified event. "
+@Api(value = "EventContext", description = "This API returns a number of events that happened just before and after the specified event. "
     + "This allows clients to get the context surrounding an event.")
-@Path(PATH)
+@Path("/_matrix/client/r0/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 public interface EventContextApi {
-
-    /**
-     * Event context api url.
-     */
-    String PATH = "/_matrix/client/r0/rooms";
 
     /**
      * This API returns a number of events that happened just before and after the specified event. This allows clients to get the

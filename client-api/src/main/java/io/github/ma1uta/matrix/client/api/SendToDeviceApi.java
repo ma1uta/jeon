@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.SendToDeviceApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.sendtodevice.SendToDeviceRequest;
@@ -48,17 +46,12 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id317">Specification.</a>
  */
-@Api(value = PATH, description = "This module provides a means by which clients can exchange signalling messages without them "
+@Api(value = "SendToDevice", description = "This module provides a means by which clients can exchange signalling messages without them "
     + "being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device.")
-@Path(PATH)
+@Path("/_matrix/client/r0/sendToDevice")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SendToDeviceApi {
-
-    /**
-     * Send to device api url.
-     */
-    String PATH = "/_matrix/client/r0/sendToDevice";
 
     /**
      * This endpoint is used to send send-to-device events to a set of client devices.

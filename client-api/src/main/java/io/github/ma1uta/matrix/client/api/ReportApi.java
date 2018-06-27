@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.ReportApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.report.ReportRequest;
@@ -44,17 +42,12 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * Content is reported based upon a negative score, where -100 is "most offensive" and 0 is "inoffensive".
  */
-@Api(value = PATH, description = "Users may encounter content which they find inappropriate and should be able to report it to "
+@Api(value = "Report", description = "Users may encounter content which they find inappropriate and should be able to report it to "
     + "the server administrators or room moderators for review. This module defines a way for users to report content.")
-@Path(PATH)
+@Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ReportApi {
-
-    /**
-     * Report api url.
-     */
-    String PATH = "/_matrix/client/r0";
 
     /**
      * Reports an event as inappropriate to the server, which may then notify the appropriate people.

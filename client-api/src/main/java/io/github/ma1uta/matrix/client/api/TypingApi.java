@@ -16,8 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.TypingApi.PATH;
-
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
@@ -53,18 +51,13 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id285">Specification.</a>
  */
-@Api(value = PATH, description = "When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge "
+@Api(value = "Typing", description = "When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge "
     + "of every user who is currently typing. The reason for this is that the server does not remember users who are not currently "
     + "typing as that list gets big quickly. The client should mark as not typing any user ID who is not in that list.")
-@Path(PATH)
+@Path("/_matrix/client/r0/rooms")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface TypingApi {
-
-    /**
-     * Typing api url.
-     */
-    String PATH = "/_matrix/client/r0/rooms";
 
     /**
      * This tells the server that the user is typing for the next N milliseconds where N is the value specified in the timeout key.
