@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import static io.github.ma1uta.matrix.client.api.UserDirectory.PATH;
+import static io.github.ma1uta.matrix.client.api.UserDirectoryApi.PATH;
 
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
@@ -47,7 +47,7 @@ import javax.ws.rs.core.SecurityContext;
 @Path(PATH)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface UserDirectory {
+public interface UserDirectoryApi {
 
     /**
      * User directory api url.

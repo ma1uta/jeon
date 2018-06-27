@@ -25,7 +25,7 @@
         <version>0.4</version>
     </parent>
     <artifactId>client-api</artifactId>
-    <version>0.4</version>
+    <version>0.4.1-SNAPSHOT</version>
 
     <properties>
         <swagger-maven-plugin-version>3.1.7</swagger-maven-plugin-version>
