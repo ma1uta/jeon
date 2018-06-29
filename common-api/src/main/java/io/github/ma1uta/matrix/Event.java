@@ -688,7 +688,7 @@ public class Event {
          * </tr>
          * </table>
          */
-        public static final String HISTORY_VESIBILITY = "m.room.history_visibility";
+        public static final String ROOM_HISTORY_VESIBILITY = "m.room.history_visibility";
 
         /**
          * State Event: state_key - The token, of which a signature must be produced in order to join the room.
@@ -749,7 +749,7 @@ public class Event {
          * </tr>
          * </table>
          */
-        public static final String THIRD_PARTY_INVITE = "m.room.third_party_invite";
+        public static final String ROOM_THIRD_PARTY_INVITE = "m.room.third_party_invite";
 
         /**
          * State Event: state_key - A zero-length string.
@@ -770,7 +770,7 @@ public class Event {
          * </tr>
          * </table>
          */
-        public static final String GUEST_ACCESS = "m.room.guest_access";
+        public static final String ROOM_GUEST_ACCESS = "m.room.guest_access";
 
         /**
          * Informs the client of tags on a room.
@@ -1539,6 +1539,27 @@ public class Event {
          * Joined.
          */
         public static final String JOINED = "joined";
+    }
+
+    /**
+     * Whether guests can join the room.
+     */
+    public static class GuestAccess {
+
+        protected GuestAccess() {
+        }
+
+        /**
+         * Can join.
+         */
+        public static final String CAN_JOIN = "can_join";
+
+        /**
+         * Forbidden.
+         */
+        public static final String FORBUDDEN = "forbidden";
+
+
     }
 
     // ---- Common properties ----
