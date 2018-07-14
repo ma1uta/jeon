@@ -33,7 +33,7 @@ public class RoomHistoryVisibilityEventContent implements EventContent {
 
     @Override
     public String type() {
-        return Event.EventType.ROOM_HISTORY_VESIBILITY;
+        return Event.EventType.ROOM_HISTORY_VISIBILITY;
     }
 
     public String getHistoryVisibility() {

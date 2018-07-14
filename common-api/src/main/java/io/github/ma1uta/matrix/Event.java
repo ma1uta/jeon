@@ -688,7 +688,7 @@ public class Event {
          * </tr>
          * </table>
          */
-        public static final String ROOM_HISTORY_VESIBILITY = "m.room.history_visibility";
+        public static final String ROOM_HISTORY_VISIBILITY = "m.room.history_visibility";
 
         /**
          * State Event: state_key - The token, of which a signature must be produced in order to join the room.
@@ -1557,9 +1557,7 @@ public class Event {
         /**
          * Forbidden.
          */
-        public static final String FORBUDDEN = "forbidden";
-
-
+        public static final String FORBIDDEN = "forbidden";
     }
 
     // ---- Common properties ----
