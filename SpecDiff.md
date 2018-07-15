@@ -2,25 +2,24 @@
 
 Remark: there are not all differences but only those I found.
 
-Fields:
-* Event (io.github.ma1uta.matrix.Event):
+Fields which receives from the server but don't described in the spec:
+* Event:
     * age
     * redacts
     * user_id
     * replaces_state
     * redacted_because
     * age_ts
-* LeftRoom (io.github.ma1uta.matrix.client.model.sync.LeftRoom)
-    * account_data
-* Device lists (io.github.ma1uta.matrix.client.model.sync.DeviceLists):
-    * left
-* Sync response (io.github.ma1uta.matrix.client.model.sync.SyncResponse):
+* Sync response:
     * device_one_time_keys_count
-    * groups
-* Unsigned (io.github.ma1uta.matrix.Unsigned):
+    * groups (missing api)
+* LeftRoom (from the sync response - rooms - leave):
+    * account_data
+* Device lists (from the sync response):
+    * left
+* Unsigned (inside the event):
     * prev_sender
     * replaces_state
  
-Api:
-* group (community api)
-* incompleted federation api
+Missing api:
+* group/community api
