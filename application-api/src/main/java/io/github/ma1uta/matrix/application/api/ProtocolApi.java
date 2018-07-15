@@ -99,11 +99,32 @@ public interface ProtocolApi {
     })
     @GET
     @Path("/location/{protocol}")
-    List<ProtocolLocation> location(
+    List<ProtocolLocation> locationProtocol(
         @ApiParam(value = "The protocol used to communicate to the third party network.", required = true)
         @PathParam("protocol") String protocol,
         @ApiParam("One or more custom fields to help identify the third party location.") @QueryParam("searchFields") String searchFields,
         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+
+    /**
+     * Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.
+     *
+     * @param protocol        Required. The name of the protocol.
+     * @param uriInfo         uri info to retrieve all query params.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: The Matrix User IDs found with the given parameters.
+     *     Status code 404: The Matrix User ID was not found.
+     */
+    @ApiOperation("Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
+        @ApiResponse(code = 404, message = "The Matrix User ID was not found.")
+    })
+    @GET
+    @Path("/user/{protocol}")
+    List<ProtocolUser> userProtocol(
+        @ApiParam(value = "The name of the protocol", required = true) @PathParam("protocol") String protocol,
+        @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Retreive an array of third party network locations from a Matrix room alias.
@@ -126,27 +147,6 @@ public interface ProtocolApi {
         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
-     * Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.
-     *
-     * @param protocol        Required. The name of the protocol.
-     * @param uriInfo         uri info to retrieve all query params.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: The Matrix User IDs found with the given parameters.
-     *     Status code 404: The Matrix User ID was not found.
-     */
-    @ApiOperation("Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.")
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
-        @ApiResponse(code = 404, message = "The Matrix User ID was not found.")
-    })
-    @GET
-    @Path("/user/{protocol}")
-    List<ProtocolUser> user(
-        @ApiParam(value = "The name of the protocol", required = true) @PathParam("protocol") String protocol,
-        @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
-
-    /**
      * Retreive an array of third party users from a Matrix User ID.
      *
      * @param userId          Required. The Matrix User ID to look up.
@@ -161,7 +161,7 @@ public interface ProtocolApi {
         @ApiResponse(code = 404, message = "The Matrix User ID was not found.")
     })
     @GET
-    @Path("/user/{protocol}")
+    @Path("/user")
     List<ProtocolUser> user(
         @ApiParam(value = "The Matrix User Id to look up", required = true) @QueryParam("userid") String userId,
         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);

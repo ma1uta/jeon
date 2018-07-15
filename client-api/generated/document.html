@@ -1710,6 +1710,22 @@ This API endpoint uses the User-Interactive Authentication API.
     </tr>
 
     <tr>
+        <th>server_name</th>
+        <td>query</td>
+        <td>no</td>
+        <td>
+            The servers to attempt to join the room through. One of the serversmust be participating in the room.
+
+        </td>
+        <td> - </td>
+
+
+                <td>Array[string] (multi)</td>
+
+
+    </tr>
+
+    <tr>
         <th>body</th>
         <td>body</td>
         <td>no</td>
@@ -2159,6 +2175,42 @@ The server should include in the results any users who currently share a room wi
 
 
 ## /_matrix/client/r0/login
+
+
+### GET
+
+<a id="supportedLoginTypes">Gets the homeserver&#x27;s supported login types to authenticate users. Clients should pick one of these and supply it as the type when logging in.</a>
+
+
+
+
+
+
+
+
+
+#### Request
+
+
+**Content-Type: ** application/json
+
+##### Parameters
+
+
+
+
+
+
+#### Response
+
+**Content-Type: ** application/json
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | The login types the homeserver supports. | <a href="#/definitions/SupportedLoginResponse">SupportedLoginResponse</a>|
+| 429    | This request was rate-limited. |  - |
+
 
 
 
@@ -2873,6 +2925,7 @@ This endpoint does not require UI authorization because UI authorization is desi
 | Status Code | Reason      | Response Model |
 |-------------|-------------|----------------|
 | 200    | The presence state for this user. | <a href="#/definitions/PresenceStatus">PresenceStatus</a>|
+| 403    | You are not allowed to see this user&#x27;s presence status. |  - |
 | 404    | There is no presence state for this user. This user may not exist or isn&#x27;t exposing presence information to you. |  - |
 
 
@@ -5244,6 +5297,7 @@ This allows clients to get the context surrounding an event.
 | Status Code | Reason      | Response Model |
 |-------------|-------------|----------------|
 | 200    | The room has been forgotten. | <a href="#/definitions/EmptyResponse">EmptyResponse</a>|
+| 400    | The user has not left the room. |  - |
 | 429    | This request was rate-limited. |  - |
 
 
@@ -7559,6 +7613,485 @@ These events will be overwritten if (room id), (event type) and (state key) all 
 
 
 
+## /_matrix/client/r0/thirdparty/location
+
+
+### GET
+
+<a id="location">Retreive an array of third party network locations from a Matrix room alias.</a>
+
+
+
+
+
+
+
+
+
+#### Request
+
+
+**Content-Type: ** application/json
+
+##### Parameters
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Located in</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Default</th>
+        <th>Schema</th>
+    </tr>
+
+
+
+    <tr>
+        <th>alias</th>
+        <td>query</td>
+        <td>no</td>
+        <td>
+
+
+        </td>
+        <td> - </td>
+
+
+                <td>string </td>
+
+
+    </tr>
+
+
+</table>
+
+
+
+#### Response
+
+**Content-Type: ** application/json
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | At least one portal room was found. | Array[<a href="#/definitions/ProtocolLocation">ProtocolLocation</a>]|
+| 404    | No portal rooms were found. |  - |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## /_matrix/client/r0/thirdparty/location/{protocol}
+
+
+### GET
+
+<a id="locationProtocol">Requesting this endpoint with a valid protocol name results in a list of successful mapping resultsin a JSON array.</a>
+
+Each result contains objects to represent the Matrix room or rooms that represent a portal to this third party network. Each has the Matrix room alias string, an identifier for the particular third party network protocol, and an object containing the network-specific fields that comprise this identifier.It should attempt to canonicalise the identifier as much as reasonably possible given the network type.
+
+
+
+
+
+
+
+#### Request
+
+
+**Content-Type: ** application/json
+
+##### Parameters
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Located in</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Default</th>
+        <th>Schema</th>
+    </tr>
+
+
+
+    <tr>
+        <th>protocol</th>
+        <td>path</td>
+        <td>yes</td>
+        <td>
+            The protocol used to communicate to the third party network.
+
+        </td>
+        <td> - </td>
+
+
+                <td>string </td>
+
+
+    </tr>
+
+    <tr>
+        <th>searchFields</th>
+        <td>query</td>
+        <td>no</td>
+        <td>
+            One or more custom fields to help identify the third party location.
+
+        </td>
+        <td> - </td>
+
+
+                <td>string </td>
+
+
+    </tr>
+
+
+</table>
+
+
+
+#### Response
+
+**Content-Type: ** application/json
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | At least one portal room was found. | Array[<a href="#/definitions/ProtocolLocation">ProtocolLocation</a>]|
+| 404    | No portal rooms were found. |  - |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## /_matrix/client/r0/thirdparty/protocol/{protocol}
+
+
+### GET
+
+<a id="protocol">Fetches the metadata from the homeserver about a particular third party protocol.</a>
+
+
+
+
+
+
+
+
+
+#### Request
+
+
+**Content-Type: ** application/json
+
+##### Parameters
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Located in</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Default</th>
+        <th>Schema</th>
+    </tr>
+
+
+
+    <tr>
+        <th>protocol</th>
+        <td>path</td>
+        <td>yes</td>
+        <td>
+            the name of the protocol
+
+        </td>
+        <td> - </td>
+
+
+                <td>string </td>
+
+
+    </tr>
+
+
+</table>
+
+
+
+#### Response
+
+**Content-Type: ** application/json
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | The protocol was found and metadata returned. | <a href="#/definitions/Protocol">Protocol</a>|
+| 404    | The protocol is unknown. |  - |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## /_matrix/client/r0/thirdparty/protocols
+
+
+### GET
+
+<a id="protocols">Fetches the overall metadata about protocols supported by the homeserver.Includes both the available protocols and all fields required for queries against each protocol.</a>
+
+
+
+
+
+
+
+
+
+#### Request
+
+
+**Content-Type: ** application/json
+
+##### Parameters
+
+
+
+
+
+
+#### Response
+
+**Content-Type: ** application/json
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | The protocols supported by the homeserver. | |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## /_matrix/client/r0/thirdparty/user
+
+
+### GET
+
+<a id="user">Retreive an array of third party users from a Matrix User ID.</a>
+
+
+
+
+
+
+
+
+
+#### Request
+
+
+**Content-Type: ** application/json
+
+##### Parameters
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Located in</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Default</th>
+        <th>Schema</th>
+    </tr>
+
+
+
+    <tr>
+        <th>userid</th>
+        <td>query</td>
+        <td>yes</td>
+        <td>
+            The Matrix User Id to look up
+
+        </td>
+        <td> - </td>
+
+
+                <td>string </td>
+
+
+    </tr>
+
+
+</table>
+
+
+
+#### Response
+
+**Content-Type: ** application/json
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | The Matrix User IDs found with the given parameters. | Array[<a href="#/definitions/ProtocolUser">ProtocolUser</a>]|
+| 404    | The Matrix User ID was not found. |  - |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## /_matrix/client/r0/thirdparty/user/{protocol}
+
+
+### GET
+
+<a id="userProtocol">Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.</a>
+
+
+
+
+
+
+
+
+
+#### Request
+
+
+**Content-Type: ** application/json
+
+##### Parameters
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Located in</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Default</th>
+        <th>Schema</th>
+    </tr>
+
+
+
+    <tr>
+        <th>protocol</th>
+        <td>path</td>
+        <td>yes</td>
+        <td>
+            The name of the protocol
+
+        </td>
+        <td> - </td>
+
+
+                <td>string </td>
+
+
+    </tr>
+
+
+</table>
+
+
+
+#### Response
+
+**Content-Type: ** application/json
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | The Matrix User IDs found with the given parameters. | Array[<a href="#/definitions/ProtocolUser">ProtocolUser</a>]|
+| 404    | The Matrix User ID was not found. |  - |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## /_matrix/client/r0/user/{userId}/account_data/{type}
 
 
@@ -8495,6 +9028,59 @@ This config is only visible to the user that set the account_data. The config wi
 | Status Code | Reason      | Response Model |
 |-------------|-------------|----------------|
 | 200    | The versions supported by the server. | <a href="#/definitions/VersionsResponse">VersionsResponse</a>|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## /_matrix/media/r0
+
+
+### GET
+
+<a id="config">his endpoint allows clients to retrieve the configuration of the content repository, suchas upload limitations.</a>
+
+Clients SHOULD use this as a guide when using content repository endpoints. All values are intentionally left optional. Clients SHOULD follow the advice given in the field description when the field is not available. NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is advertised by the server on this endpoint.
+
+
+
+
+
+
+
+#### Request
+
+
+
+##### Parameters
+
+
+
+
+
+
+#### Response
+
+
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | The public content repository configuration for the matrix server. | <a href="#/definitions/ContentConfig">ContentConfig</a>|
+| 429    | This request was rate-limited. |  - |
 
 
 
@@ -9648,6 +10234,32 @@ This config is only visible to the user that set the account_data. The config wi
 
 </table>
 
+## <a name="/definitions/ContentConfig">ContentConfig</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>m.upload.size</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The maximum size an upload can be in bytes. Clients SHOULD use this as aguide when uploading content. If not listed or null, the size limit should be treated as unknown.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/ContentUri">ContentUri</a>
 
 <table border="1">
@@ -10499,7 +11111,7 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>Pagination token for the start of the chunk.</td>
+            <td>A token that can be used to paginate backwards with.</td>
             <td></td>
         </tr>
 
@@ -10512,20 +11124,33 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>Pagination token for the end of the chunk.</td>
+            <td>A token that can be used to paginate forwards with.</td>
             <td></td>
         </tr>
 
         <tr>
-            <td>profile_info</td>
+            <td>event</td>
             <td>
 
+                    <a href="#/definitions/Event">Event</a>
 
-                    object
 
             </td>
             <td>optional</td>
-            <td>The historic profile information of the users that sent the events returned.</td>
+            <td>Details of the requested event.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>state</td>
+            <td>
+
+                    <a href="#/definitions/Event">Event</a>
+
+
+            </td>
+            <td>optional</td>
+            <td>The state of the room at the last event returned.</td>
             <td></td>
         </tr>
 
@@ -10540,7 +11165,7 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>Events just before the result.</td>
+            <td>A list of room events that happened just before the requested event, in reverse-chronological order.</td>
             <td></td>
         </tr>
 
@@ -10555,7 +11180,46 @@ This config is only visible to the user that set the account_data. The config wi
 
             </td>
             <td>optional</td>
-            <td>Events just after the result.</td>
+            <td>A list of room events that happened just after the requested event, in chronological order.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/FieldMetadata">FieldMetadata</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>regexp</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>A regular expression for validation of a field's value.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>placeholder</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>An placeholder serving as a valid example of the field value.</td>
             <td></td>
         </tr>
 
@@ -10859,6 +11523,58 @@ This config is only visible to the user that set the account_data. The config wi
         <th>description</th>
         <th>example</th>
     </tr>
+
+</table>
+
+## <a name="/definitions/Instance">Instance</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>desc</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>Description.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>icon</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>Icon.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>fields</td>
+            <td>
+
+
+                    object
+
+            </td>
+            <td>optional</td>
+            <td>fields</td>
+            <td></td>
+        </tr>
 
 </table>
 
@@ -11449,6 +12165,32 @@ This config is only visible to the user that set the account_data. The config wi
 
 </table>
 
+## <a name="/definitions/LoginType">LoginType</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>type</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>Type of the authentication stage.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/MembersResponse">MembersResponse</a>
 
 <table border="1">
@@ -11879,6 +12621,190 @@ This config is only visible to the user that set the account_data. The config wi
             </td>
             <td>optional</td>
             <td>The user's avatar URL if they have set one, otherwise not present.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/Protocol">Protocol</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>icon</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>An icon representing the third party protocol.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>instances</td>
+            <td>
+
+
+                        array[<a href="#/definitions/Instance">Instance</a>]
+
+
+
+            </td>
+            <td>optional</td>
+            <td>A list of objects representing independent instances of configuration. For instance multiple networkson IRC if multiple are bridged by the same bridge.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>user_fields</td>
+            <td>
+
+
+                    array[string]
+
+            </td>
+            <td>optional</td>
+            <td>Fields used to identify a third party user.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>location_fields</td>
+            <td>
+
+
+                    array[string]
+
+            </td>
+            <td>optional</td>
+            <td>Fields used to identify a third party location.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>field_types</td>
+            <td>
+
+
+                    object
+
+            </td>
+            <td>optional</td>
+            <td>All location or user fields should have an entry here.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/ProtocolLocation">ProtocolLocation</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>alias</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>An alias for a matrix room.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>protocol</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The protocol ID that the third party location is a part of.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>fields</td>
+            <td>
+
+
+                    object
+
+            </td>
+            <td>optional</td>
+            <td>Information used to identify this third party location.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/ProtocolUser">ProtocolUser</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>userid</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>A Matrix User ID represting a third party user.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>protocol</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The protocol ID that the third party location is a part of.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>fields</td>
+            <td>
+
+
+                    object
+
+            </td>
+            <td>optional</td>
+            <td>Information used to identify this third party location.</td>
             <td></td>
         </tr>
 
@@ -14063,6 +14989,34 @@ This config is only visible to the user that set the account_data. The config wi
             </td>
             <td>required</td>
             <td>The state_key for the event.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/SupportedLoginResponse">SupportedLoginResponse</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>flows</td>
+            <td>
+
+
+                        array[<a href="#/definitions/LoginType">LoginType</a>]
+
+
+
+            </td>
+            <td>optional</td>
+            <td>Supported login types.</td>
             <td></td>
         </tr>
 

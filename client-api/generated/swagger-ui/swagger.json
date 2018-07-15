@@ -83,6 +83,9 @@
     "name" : "Tag",
     "description" : "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices."
   }, {
+    "name" : "ThirdPartyProtocol",
+    "description" : "Application services can provide access to third party networks via bridging.This allows Matrix users to communicate with users on other communication platforms, with messages ferried back and forthby the application service. A single application service may bridge multiple third party networks, and many individuallocations within those networks. A single third party network location may be bridged to multiple Matrix rooms."
+  }, {
     "name" : "Typing",
     "description" : "When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge of every user who is currently typing. The reason for this is that the server does not remember users who are not currently typing as that list gets big quickly. The client should mark as not typing any user ID who is not in that list."
   }, {
@@ -703,6 +706,16 @@
           "required" : true,
           "type" : "string"
         }, {
+          "name" : "server_name",
+          "in" : "query",
+          "description" : "The servers to attempt to join the room through. One of the serversmust be participating in the room.",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
           "in" : "body",
           "name" : "body",
           "description" : "JSON body request.",
@@ -858,6 +871,25 @@
       }
     },
     "/_matrix/client/r0/login" : {
+      "get" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Gets the homeserver's supported login types to authenticate users. Clients should pick one of these and supply it as the type when logging in.",
+        "description" : "",
+        "operationId" : "supportedLoginTypes",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "The login types the homeserver supports.",
+            "schema" : {
+              "$ref" : "#/definitions/SupportedLoginResponse"
+            }
+          },
+          "429" : {
+            "description" : "This request was rate-limited."
+          }
+        }
+      },
       "post" : {
         "tags" : [ "Authentication" ],
         "summary" : "Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests",
@@ -1109,6 +1141,9 @@
             "schema" : {
               "$ref" : "#/definitions/PresenceStatus"
             }
+          },
+          "403" : {
+            "description" : "You are not allowed to see this user's presence status."
           },
           "404" : {
             "description" : "There is no presence state for this user. This user may not exist or isn't exposing presence information to you."
@@ -1953,6 +1988,9 @@
             "schema" : {
               "$ref" : "#/definitions/EmptyResponse"
             }
+          },
+          "400" : {
+            "description" : "The user has not left the room."
           },
           "429" : {
             "description" : "This request was rate-limited."
@@ -2800,6 +2838,184 @@
         }
       }
     },
+    "/_matrix/client/r0/thirdparty/location" : {
+      "get" : {
+        "tags" : [ "ThirdPartyProtocol" ],
+        "summary" : "Retreive an array of third party network locations from a Matrix room alias.",
+        "description" : "",
+        "operationId" : "location",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "alias",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "At least one portal room was found.",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ProtocolLocation"
+              }
+            }
+          },
+          "404" : {
+            "description" : "No portal rooms were found."
+          }
+        }
+      }
+    },
+    "/_matrix/client/r0/thirdparty/location/{protocol}" : {
+      "get" : {
+        "tags" : [ "ThirdPartyProtocol" ],
+        "summary" : "Requesting this endpoint with a valid protocol name results in a list of successful mapping resultsin a JSON array.",
+        "description" : "Each result contains objects to represent the Matrix room or rooms that represent a portal to this third party network. Each has the Matrix room alias string, an identifier for the particular third party network protocol, and an object containing the network-specific fields that comprise this identifier.It should attempt to canonicalise the identifier as much as reasonably possible given the network type.",
+        "operationId" : "locationProtocol",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "protocol",
+          "in" : "path",
+          "description" : "The protocol used to communicate to the third party network.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "searchFields",
+          "in" : "query",
+          "description" : "One or more custom fields to help identify the third party location.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "At least one portal room was found.",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ProtocolLocation"
+              }
+            }
+          },
+          "404" : {
+            "description" : "No portal rooms were found."
+          }
+        }
+      }
+    },
+    "/_matrix/client/r0/thirdparty/protocol/{protocol}" : {
+      "get" : {
+        "tags" : [ "ThirdPartyProtocol" ],
+        "summary" : "Fetches the metadata from the homeserver about a particular third party protocol.",
+        "description" : "",
+        "operationId" : "protocol",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "protocol",
+          "in" : "path",
+          "description" : "the name of the protocol",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The protocol was found and metadata returned.",
+            "schema" : {
+              "$ref" : "#/definitions/Protocol"
+            }
+          },
+          "404" : {
+            "description" : "The protocol is unknown."
+          }
+        }
+      }
+    },
+    "/_matrix/client/r0/thirdparty/protocols" : {
+      "get" : {
+        "tags" : [ "ThirdPartyProtocol" ],
+        "summary" : "Fetches the overall metadata about protocols supported by the homeserver.Includes both the available protocols and all fields required for queries against each protocol.",
+        "description" : "",
+        "operationId" : "protocols",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "The protocols supported by the homeserver.",
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : {
+                "$ref" : "#/definitions/Protocol"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/_matrix/client/r0/thirdparty/user" : {
+      "get" : {
+        "tags" : [ "ThirdPartyProtocol" ],
+        "summary" : "Retreive an array of third party users from a Matrix User ID.",
+        "description" : "",
+        "operationId" : "user",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "query",
+          "description" : "The Matrix User Id to look up",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The Matrix User IDs found with the given parameters.",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ProtocolUser"
+              }
+            }
+          },
+          "404" : {
+            "description" : "The Matrix User ID was not found."
+          }
+        }
+      }
+    },
+    "/_matrix/client/r0/thirdparty/user/{protocol}" : {
+      "get" : {
+        "tags" : [ "ThirdPartyProtocol" ],
+        "summary" : "Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.",
+        "description" : "",
+        "operationId" : "userProtocol",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "protocol",
+          "in" : "path",
+          "description" : "The name of the protocol",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The Matrix User IDs found with the given parameters.",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ProtocolUser"
+              }
+            }
+          },
+          "404" : {
+            "description" : "The Matrix User ID was not found."
+          }
+        }
+      }
+    },
     "/_matrix/client/r0/user/{userId}/account_data/{type}" : {
       "put" : {
         "tags" : [ "ClientConfig" ],
@@ -3134,6 +3350,25 @@
             "schema" : {
               "$ref" : "#/definitions/VersionsResponse"
             }
+          }
+        }
+      }
+    },
+    "/_matrix/media/r0" : {
+      "get" : {
+        "tags" : [ "Content" ],
+        "summary" : "his endpoint allows clients to retrieve the configuration of the content repository, suchas upload limitations.",
+        "description" : "Clients SHOULD use this as a guide when using content repository endpoints. All values are intentionally left optional. Clients SHOULD follow the advice given in the field description when the field is not available. NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is advertised by the server on this endpoint.",
+        "operationId" : "config",
+        "responses" : {
+          "200" : {
+            "description" : "The public content repository configuration for the matrix server.",
+            "schema" : {
+              "$ref" : "#/definitions/ContentConfig"
+            }
+          },
+          "429" : {
+            "description" : "This request was rate-limited."
           }
         }
       }
@@ -3566,6 +3801,17 @@
       },
       "description" : "Connection info."
     },
+    "ContentConfig" : {
+      "type" : "object",
+      "properties" : {
+        "m.upload.size" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The maximum size an upload can be in bytes. Clients SHOULD use this as aguide when uploading content. If not listed or null, the size limit should be treated as unknown."
+        }
+      },
+      "description" : "Content config."
+    },
     "ContentUri" : {
       "type" : "object",
       "properties" : {
@@ -3908,35 +4154,50 @@
       "properties" : {
         "start" : {
           "type" : "string",
-          "description" : "Pagination token for the start of the chunk."
+          "description" : "A token that can be used to paginate backwards with."
         },
         "end" : {
           "type" : "string",
-          "description" : "Pagination token for the end of the chunk."
+          "description" : "A token that can be used to paginate forwards with."
         },
-        "profile_info" : {
-          "type" : "object",
-          "description" : "The historic profile information of the users that sent the events returned.",
-          "additionalProperties" : {
-            "$ref" : "#/definitions/Profile"
-          }
+        "event" : {
+          "description" : "Details of the requested event.",
+          "$ref" : "#/definitions/Event"
+        },
+        "state" : {
+          "description" : "The state of the room at the last event returned.",
+          "$ref" : "#/definitions/Event"
         },
         "events_before" : {
           "type" : "array",
-          "description" : "Events just before the result.",
+          "description" : "A list of room events that happened just before the requested event, in reverse-chronological order.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         },
         "events_after" : {
           "type" : "array",
-          "description" : "Events just after the result.",
+          "description" : "A list of room events that happened just after the requested event, in chronological order.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         }
       },
-      "description" : "Event context."
+      "description" : "Events that happened just before and after the specified event."
+    },
+    "FieldMetadata" : {
+      "type" : "object",
+      "properties" : {
+        "regexp" : {
+          "type" : "string",
+          "description" : "A regular expression for validation of a field's value."
+        },
+        "placeholder" : {
+          "type" : "string",
+          "description" : "An placeholder serving as a valid example of the field value."
+        }
+      },
+      "description" : "Definition of valid values for a field."
     },
     "Filter" : {
       "type" : "object",
@@ -4063,6 +4324,27 @@
     },
     "InputStream" : {
       "type" : "object"
+    },
+    "Instance" : {
+      "type" : "object",
+      "properties" : {
+        "desc" : {
+          "type" : "string",
+          "description" : "Description."
+        },
+        "icon" : {
+          "type" : "string",
+          "description" : "Icon."
+        },
+        "fields" : {
+          "type" : "object",
+          "description" : "fields",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Instance."
     },
     "Invite3pid" : {
       "type" : "object",
@@ -4283,6 +4565,16 @@
       },
       "description" : "JSON body response for the login api"
     },
+    "LoginType" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "Type of the authentication stage."
+        }
+      },
+      "description" : "Login type."
+    },
     "MembersResponse" : {
       "type" : "object",
       "properties" : {
@@ -4458,6 +4750,86 @@
         }
       },
       "description" : "JSON body for profile api (profile)."
+    },
+    "Protocol" : {
+      "type" : "object",
+      "properties" : {
+        "icon" : {
+          "type" : "string",
+          "description" : "An icon representing the third party protocol."
+        },
+        "instances" : {
+          "type" : "array",
+          "description" : "A list of objects representing independent instances of configuration. For instance multiple networkson IRC if multiple are bridged by the same bridge.",
+          "items" : {
+            "$ref" : "#/definitions/Instance"
+          }
+        },
+        "user_fields" : {
+          "type" : "array",
+          "description" : "Fields used to identify a third party user.",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "location_fields" : {
+          "type" : "array",
+          "description" : "Fields used to identify a third party location.",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "field_types" : {
+          "type" : "object",
+          "description" : "All location or user fields should have an entry here.",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/FieldMetadata"
+          }
+        }
+      },
+      "description" : "Protocola metadata."
+    },
+    "ProtocolLocation" : {
+      "type" : "object",
+      "properties" : {
+        "alias" : {
+          "type" : "string",
+          "description" : "An alias for a matrix room."
+        },
+        "protocol" : {
+          "type" : "string",
+          "description" : "The protocol ID that the third party location is a part of."
+        },
+        "fields" : {
+          "type" : "object",
+          "description" : "Information used to identify this third party location.",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Protocol Location."
+    },
+    "ProtocolUser" : {
+      "type" : "object",
+      "properties" : {
+        "userid" : {
+          "type" : "string",
+          "description" : "A Matrix User ID represting a third party user."
+        },
+        "protocol" : {
+          "type" : "string",
+          "description" : "The protocol ID that the third party location is a part of."
+        },
+        "fields" : {
+          "type" : "object",
+          "description" : "Information used to identify this third party location.",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Protocol User."
     },
     "PublicRoomsChunk" : {
       "type" : "object",
@@ -5355,6 +5727,19 @@
         }
       },
       "description" : "Provides information on a subset of state events such as the room name."
+    },
+    "SupportedLoginResponse" : {
+      "type" : "object",
+      "properties" : {
+        "flows" : {
+          "type" : "array",
+          "description" : "Supported login types.",
+          "items" : {
+            "$ref" : "#/definitions/LoginType"
+          }
+        }
+      },
+      "description" : "Supported login types."
     },
     "SyncResponse" : {
       "type" : "object",
