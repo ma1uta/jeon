@@ -34,7 +34,7 @@ public class KickRequest {
     private String userId;
 
     /**
-     * The reason the user has been kicked.
+     * The reason the user has been kicked. This will be supplied as the ``reason`` on the target's updated `m.room.member`_ event.
      */
     @ApiModelProperty("The reason the user has been kicked.")
     private String reason;

@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
+import io.github.ma1uta.matrix.client.model.content.ContentConfig;
 import io.github.ma1uta.matrix.client.model.content.ContentUri;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -310,4 +311,39 @@ public interface ContentApi {
                                        + "version if it does not have the requested version available.") @QueryParam("ts") String ts,
                                    @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
                                    @Context SecurityContext securityContext);
+
+    /**
+     * This endpoint allows clients to retrieve the configuration of the content repository, such as upload limitations.
+     * Clients SHOULD use this as a guide when using content repository endpoints. All values are intentionally left optional.
+     * Clients SHOULD follow the advice given in the field description when the field is not available.
+     * <p/>
+     * NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect
+     * the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is
+     * advertised by the server on this endpoint.
+     * <p/>
+     * <b>Rate-limited</b>: Yes.
+     * <b>Requires auth</b>: Yes.
+     *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @param securityContext security context.
+     * @return Status code 200: The public content repository configuration for the matrix server.
+     *     Status code 429: This request was rate-limited.
+     */
+    @ApiOperation(value = "his endpoint allows clients to retrieve the configuration of the content repository, such"
+        + "as upload limitations.",
+        notes = "Clients SHOULD use this as a guide when using content repository endpoints. All values are intentionally left optional."
+            + " Clients SHOULD follow the advice given in the field description when the field is not available."
+            + " NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect"
+            + " the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is"
+            + " advertised by the server on this endpoint.", response = ContentConfig.class)
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "The public content repository configuration for the matrix server."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
+    @GET
+    @RateLimit
+    @Secured
+    ContentConfig config(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
+                         @Context SecurityContext securityContext);
 }

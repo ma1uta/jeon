@@ -30,49 +30,6 @@ import java.util.List;
 public class CreateRoomRequest {
 
     /**
-     * Visibility.
-     */
-    public static class Visibility {
-
-        protected Visibility() {
-        }
-
-        /**
-         * Public.
-         */
-        public static final String PUBLIC = "public";
-
-        /**
-         * Private.
-         */
-        public static final String PRIVATE = "private";
-    }
-
-    /**
-     * Presets.
-     */
-    public static class Preset {
-
-        protected Preset() {
-        }
-
-        /**
-         * Private.
-         */
-        public static final String PRIVATE_CHAT = "private_chat";
-
-        /**
-         * Public.
-         */
-        public static final String PUBLIC_CHAT = "public_chat";
-
-        /**
-         * Trusted.
-         */
-        public static final String TRUSTED_PRIVATE_CHAT = "trusted_private_chat";
-    }
-
-    /**
      * A public visibility indicates that the room will be shown in the published room list. A private visibility will hide the room
      * from the published room list. Rooms default to private visibility if this key is not included. NB: This should not be confused
      * with join_rules which also uses the word public. One of: ["public", "private"]
@@ -138,7 +95,7 @@ public class CreateRoomRequest {
      * A list of state events to set in the new room. This allows the user to override the default state events set in the new room.
      * The expected format of the state events are an object with type, state_key and content keys set.
      * <p/>
-     * Takes precedence over events set by presets, but gets overriden by name and topic keys.
+     * Takes precedence over events set by preset, but gets overriden by name and topic keys.
      */
     @ApiModelProperty(name = "initial_event", value = "A list of state events to set in the new room. This allows the user to "
         + "override the default state events set in the new room. The expected format of the state events are an object with "
@@ -147,15 +104,7 @@ public class CreateRoomRequest {
     private List<Event> initialEvent;
 
     /**
-     * Convenience parameter for setting various default state events based on a preset. Must be either:
-     * <p/>
-     * private_chat => join_rules is set to invite. history_visibility is set to shared.
-     * <p/>
-     * trusted_private_chat => join_rules is set to invite. history_visibility is set to shared. All invitees are given the same
-     * power level as the room creator.
-     * <p/>
-     * public_chat: => join_rules is set to public. history_visibility is set to shared. One of: ["private_chat", "public_chat",
-     * "trusted_private_chat"]
+     * Convenience parameter for setting various default state events based on a preset.
      */
     @ApiModelProperty(value = "Convenience parameter for setting various default state events based on a preset.",
         allowableValues = "[\"private_chat\",\"public_chat\",\"trusted_private_chat\"]")

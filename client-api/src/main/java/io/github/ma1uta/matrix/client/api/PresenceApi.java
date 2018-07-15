@@ -114,11 +114,13 @@ public interface PresenceApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return Status code 200: The presence state for this user.
+     *     Status code 403: You are not allowed to see this user's presence status.
      *     Status code 404: There is no presence state for this user. This user may not exist or isn't exposing presence information to you.
      */
     @ApiOperation(value = "Get the given user's presence state.", response = PresenceStatus.class)
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The presence state for this user."),
+        @ApiResponse(code = 403, message = "You are not allowed to see this user's presence status."),
         @ApiResponse(code = 404, message = "There is no presence state for this user. This user may not exist or isn't "
             + "exposing presence information to you.")
     })

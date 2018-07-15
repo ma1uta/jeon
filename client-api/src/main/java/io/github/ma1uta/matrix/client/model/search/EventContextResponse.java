@@ -45,6 +45,8 @@ public class EventContextResponse {
 
     /**
      * The historic profile information of the users that sent the events returned.
+     * <p/>
+     * The string key is the user ID for which the profile belongs to.
      */
     @ApiModelProperty(name = "profile_info", value = "The historic profile information of the users that sent the events returned.")
     @JsonProperty("profile_info")

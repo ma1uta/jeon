@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.events.messages;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomMessageEventContent;
 
@@ -24,8 +25,50 @@ import io.github.ma1uta.matrix.events.RoomMessageEventContent;
  */
 public class RoomMessageTextEventContent extends RoomMessageEventContent {
 
+    /**
+     * Format.
+     */
+    public static class Format {
+
+        protected Format(){
+
+        }
+
+        /**
+         * "org.matrix.custom.html".
+         */
+        public static final String ORG_MATRIX_CUSTOM_HTML = "org.matrix.custom.html";
+    }
+
+    /**
+     * The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported.
+     */
+    private String format;
+
+    /**
+     * The formatted version of the ``body``. This is required if ``format`` is specified.
+     */
+    @JsonProperty("formatted_body")
+    private String formattedBody;
+
     @Override
     public String getMsgtype() {
         return Event.MessageType.TEXT;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getFormattedBody() {
+        return formattedBody;
+    }
+
+    public void setFormattedBody(String formattedBody) {
+        this.formattedBody = formattedBody;
     }
 }

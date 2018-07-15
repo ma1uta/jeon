@@ -21,6 +21,7 @@ import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;
+import io.github.ma1uta.matrix.client.model.auth.SupportedLoginResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,6 +31,7 @@ import io.swagger.annotations.ApiResponses;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -101,6 +103,26 @@ public interface AuthApi {
          */
         public static final String APPLICATION_SERVICE = "m.login.application_service";
     }
+
+    /**
+     * Gets the homeserver's supported login types to authenticate users. Clients should pick one of these and supply it as the
+     * type when logging in.
+     *
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: The login types the homeserver supports.
+     *     Status code 429: This request was rate-limited.
+     */
+    @ApiOperation(value = "Gets the homeserver's supported login types to authenticate users. Clients should pick one of these and"
+        + " supply it as the type when logging in.", response = SupportedLoginResponse.class)
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "The login types the homeserver supports."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
+    @GET
+    @RateLimit
+    @Path("/login")
+    SupportedLoginResponse supportedLoginTypes(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests.

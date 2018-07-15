@@ -34,6 +34,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -61,17 +62,90 @@ import javax.ws.rs.core.SecurityContext;
 public interface RoomApi {
 
     /**
+     * Visibility.
+     */
+    class Visibility {
+
+        protected Visibility() {
+        }
+
+        /**
+         * Public.
+         */
+        public static final String PUBLIC = "public";
+
+        /**
+         * Private.
+         */
+        public static final String PRIVATE = "private";
+    }
+
+    /**
+     * Presets.
+     */
+    class Preset {
+
+        protected Preset() {
+        }
+
+        /**
+         * Private.
+         */
+        public static final String PRIVATE_CHAT = "private_chat";
+
+        /**
+         * Public.
+         */
+        public static final String PUBLIC_CHAT = "public_chat";
+
+        /**
+         * Trusted.
+         */
+        public static final String TRUSTED_PRIVATE_CHAT = "trusted_private_chat";
+    }
+
+    /**
      * Create a new room with various configuration options.
      * <p/>
      * The server MUST apply the normal state resolution rules when creating the new room, including checking power levels for each event.
      * It MUST apply the events implied by the request in the following order:
      * <ol>
      * <li>A default m.room.power_levels event, giving the room creator (and not other members) permission to send state events.</li>
-     * <li>Events set by presets.</li>
+     * <li>Events set by the presets.</li>
      * <li>Events listed in initial_state, in the order that they are listed.</li>
      * <li>Events implied by name and topic.</li>
      * <li>Invite events implied by invite and invite_3pid.</li>
      * </ol>
+     * <p/>
+     * The available presets do the following with respect to room state:
+     * <table>
+     *     <tr>
+     *         <th>Preset</th>
+     *         <th>join_rules</th>
+     *         <th>history_visibility</th>
+     *         <th>guest_access</th>
+     *         <th>Other</th>
+     *     </tr>
+     *     <tr>
+     *         <td>private_chat</td>
+     *         <td>invite</td>
+     *         <td>shared</td>
+     *         <td>can_join</td>
+     *     </tr>
+     *     <tr>
+     *         <td>trusted_private_chat</td>
+     *         <td>invite</td>
+     *         <td>shared</td>
+     *         <td>can_join</td>
+     *         <td>All invitees are given the same power level as the room creator.</td>
+     *     </tr>
+     *     <tr>
+     *         <td>public_chat</td>
+     *         <td>public</td>
+     *         <td>shared</td>
+     *         <td>forbidden</td>
+     *     </tr>
+     * </table>
      * <b>Requires auth</b>: Yes.
      *
      * @param createRoomRequest JSON body parameters.
@@ -313,6 +387,7 @@ public interface RoomApi {
      *
      * @param roomIdOrAlias   Required. The room identifier or alias to join.
      * @param joinRequest     JSON body request.
+     * @param serverName      The servers to attempt to join the room through. One of the servers must be participating in the room.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
@@ -341,6 +416,8 @@ public interface RoomApi {
     @Path("/join/{roomIdOrAlias}")
     RoomId joinByIdOrAlias(
         @ApiParam(value = "The room identifier or alias to join.", required = true) @PathParam("roomIdOrAlias") String roomIdOrAlias,
+        @ApiParam(name = "server_name", value = "The servers to attempt to join the room through. One of the servers"
+            + "must be participating in the room.") @QueryParam("server_name") List<String> serverName,
         @ApiParam("JSON body request.") JoinRequest joinRequest,
         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
@@ -389,7 +466,7 @@ public interface RoomApi {
      * able to retrieve history for this room. If all users on a homeserver forget a room, the room is eligible for deletion
      * from that homeserver.
      * <p/>
-     * If the user is currently joined to the room, they will implicitly leave the room as part of this API call.
+     * If the user is currently joined to the room, they must leave the room before calling this API.
      * <p/>
      * <b>Rate-limited</b>: Yes.
      * <p/>
@@ -400,6 +477,7 @@ public interface RoomApi {
      * @param servletResponse servlet response.
      * @param securityContext security context.
      * @return Status code 200: The room has been forgotten.
+     *     Status code 400: The user has not left the room.
      *     Status code 429: This request was rate-limited.
      */
     @ApiOperation(value = "This API stops a user remembering about a particular room. In general, history is a first class "
@@ -408,6 +486,7 @@ public interface RoomApi {
         response = EmptyResponse.class)
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The room has been forgotten."),
+        @ApiResponse(code = 400, message = "The user has not left the room."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
     })
     @POST
@@ -422,6 +501,10 @@ public interface RoomApi {
      * Kick a user from the room.
      * <p/>
      * The caller must have the required power level in order to perform this operation.
+     * <p/>
+     * Kicking a user adjusts the target member's membership state to be ``leave`` with an
+     * optional ``reason``. Like with other membership changes, a user can directly adjust
+     * the target member's state by making a request to ``/rooms/&lt;room id&gt;/state/m.room.member/&lt;user id&gt;``.
      * <p/>
      * <b>Requires auth</b>: Yes.
      *
