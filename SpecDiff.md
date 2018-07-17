@@ -10,6 +10,7 @@ Fields which receives from the server but don't described in the spec:
     * replaces_state
     * redacted_because
     * age_ts
+    * membership
 * Sync response:
     * device_one_time_keys_count
     * groups (missing api)
