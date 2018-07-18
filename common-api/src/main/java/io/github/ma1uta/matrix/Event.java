@@ -16,12 +16,68 @@
 
 package io.github.ma1uta.matrix;
 
+import static io.github.ma1uta.matrix.Event.EventType.CALL_ANSWER;
+import static io.github.ma1uta.matrix.Event.EventType.CALL_CANDIDATES;
+import static io.github.ma1uta.matrix.Event.EventType.CALL_HANGUP;
+import static io.github.ma1uta.matrix.Event.EventType.CALL_INVITE;
+import static io.github.ma1uta.matrix.Event.EventType.DIRECT;
+import static io.github.ma1uta.matrix.Event.EventType.IGNORED_USER_LIST;
+import static io.github.ma1uta.matrix.Event.EventType.PRESENCE;
+import static io.github.ma1uta.matrix.Event.EventType.RECEIPT;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_ALIASES;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_AVATAR;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_CANONICAL_ALIAS;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_CREATE;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_GUEST_ACCESS;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_HISTORY_VISIBILITY;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_JOIN_RULES;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_MEMBER;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_MESSAGE;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_MESSAGE_FEEDBACK;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_NAME;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_PINNED_EVENTS;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_POWER_LEVELS;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_REDACTION;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_THIRD_PARTY_INVITE;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_TOPIC;
+import static io.github.ma1uta.matrix.Event.EventType.STICKER;
+import static io.github.ma1uta.matrix.Event.EventType.TAG;
+import static io.github.ma1uta.matrix.Event.EventType.TYPING;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.github.ma1uta.matrix.events.CallAnswer;
+import io.github.ma1uta.matrix.events.CallCandidates;
+import io.github.ma1uta.matrix.events.CallHangup;
+import io.github.ma1uta.matrix.events.CallInvite;
+import io.github.ma1uta.matrix.events.Direct;
+import io.github.ma1uta.matrix.events.IgnoredUserList;
+import io.github.ma1uta.matrix.events.Presence;
+import io.github.ma1uta.matrix.events.Receipt;
+import io.github.ma1uta.matrix.events.RoomAliases;
+import io.github.ma1uta.matrix.events.RoomAvatar;
+import io.github.ma1uta.matrix.events.RoomCanonicalAlias;
+import io.github.ma1uta.matrix.events.RoomCreate;
+import io.github.ma1uta.matrix.events.RoomGuestAccess;
+import io.github.ma1uta.matrix.events.RoomHistoryVisibility;
+import io.github.ma1uta.matrix.events.RoomJoinRules;
+import io.github.ma1uta.matrix.events.RoomMember;
+import io.github.ma1uta.matrix.events.RoomMessage;
+import io.github.ma1uta.matrix.events.RoomMessageFeedback;
+import io.github.ma1uta.matrix.events.RoomName;
+import io.github.ma1uta.matrix.events.RoomPinned;
+import io.github.ma1uta.matrix.events.RoomPowerLevels;
+import io.github.ma1uta.matrix.events.RoomRedaction;
+import io.github.ma1uta.matrix.events.RoomThirdPartyInvite;
+import io.github.ma1uta.matrix.events.RoomTopic;
+import io.github.ma1uta.matrix.events.Sticker;
+import io.github.ma1uta.matrix.events.Tag;
+import io.github.ma1uta.matrix.events.Typing;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Event.
@@ -286,6 +342,7 @@ public class Event {
          * <p/>
          * There are no guarantees that the client has seen the event ID being acknowledged.
          */
+        @Deprecated
         public static final String ROOM_MESSAGE_FEEDBACK = "m.room.message.feedback";
 
         /**
@@ -783,7 +840,7 @@ public class Event {
          * </tr>
          * <tr>
          * <td>tags</td>
-         * <td>{string: Tag}</td>
+         * <td>{string: TagInfo}</td>
          * <td>The tags on the room and their contents.</td>
          * </tr>
          * </table>
@@ -1566,7 +1623,41 @@ public class Event {
      */
     @ApiModelProperty("The fields in this object will vary depending on the type of event. When interacting with the REST API, this "
         + "is the HTTP body.")
-    private Map<String, Object> content;
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
+        property = "type"
+    )
+    @JsonSubTypes( {
+        @JsonSubTypes.Type(value = CallAnswer.class,            name = CALL_ANSWER),
+        @JsonSubTypes.Type(value = CallCandidates.class,        name = CALL_CANDIDATES),
+        @JsonSubTypes.Type(value = CallHangup.class,            name = CALL_HANGUP),
+        @JsonSubTypes.Type(value = CallInvite.class,            name = CALL_INVITE),
+        @JsonSubTypes.Type(value = Direct.class,                name = DIRECT),
+        @JsonSubTypes.Type(value = IgnoredUserList.class,       name = IGNORED_USER_LIST),
+        @JsonSubTypes.Type(value = Presence.class,              name = PRESENCE),
+        @JsonSubTypes.Type(value = Receipt.class,               name = RECEIPT),
+        @JsonSubTypes.Type(value = RoomAliases.class,           name = ROOM_ALIASES),
+        @JsonSubTypes.Type(value = RoomAvatar.class,            name = ROOM_AVATAR),
+        @JsonSubTypes.Type(value = RoomCanonicalAlias.class,    name = ROOM_CANONICAL_ALIAS),
+        @JsonSubTypes.Type(value = RoomCreate.class,            name = ROOM_CREATE),
+        @JsonSubTypes.Type(value = RoomGuestAccess.class,       name = ROOM_GUEST_ACCESS),
+        @JsonSubTypes.Type(value = RoomHistoryVisibility.class, name = ROOM_HISTORY_VISIBILITY),
+        @JsonSubTypes.Type(value = RoomJoinRules.class,         name = ROOM_JOIN_RULES),
+        @JsonSubTypes.Type(value = RoomMember.class,            name = ROOM_MEMBER),
+        @JsonSubTypes.Type(value = RoomMessage.class,           name = ROOM_MESSAGE),
+        @JsonSubTypes.Type(value = RoomMessageFeedback.class,   name = ROOM_MESSAGE_FEEDBACK),
+        @JsonSubTypes.Type(value = RoomName.class,              name = ROOM_NAME),
+        @JsonSubTypes.Type(value = RoomPinned.class,            name = ROOM_PINNED_EVENTS),
+        @JsonSubTypes.Type(value = RoomPowerLevels.class,       name = ROOM_POWER_LEVELS),
+        @JsonSubTypes.Type(value = RoomRedaction.class,         name = ROOM_REDACTION),
+        @JsonSubTypes.Type(value = RoomThirdPartyInvite.class,  name = ROOM_THIRD_PARTY_INVITE),
+        @JsonSubTypes.Type(value = RoomTopic.class,             name = ROOM_TOPIC),
+        @JsonSubTypes.Type(value = Sticker.class,               name = STICKER),
+        @JsonSubTypes.Type(value = Tag.class,                   name = TAG),
+        @JsonSubTypes.Type(value = Typing.class,                name = TYPING)
+    })
+    private EventContent content;
 
     /**
      * Required. The type of event. This SHOULD be namespaced similar to Java package naming conventions e.g.
@@ -1617,7 +1708,7 @@ public class Event {
     @ApiModelProperty(name = "prev_content", value = "The previous content for this event. If there is no previous content, this key "
         + "will be missing.")
     @JsonProperty("prev_content")
-    private Map<String, Object> prevContent;
+    private EventContent prevContent;
 
     /**
      * Required. A unique key which defines the overwriting semantics for this piece of room state. This value is often a
@@ -1637,13 +1728,6 @@ public class Event {
     @JsonProperty("invite_room_state")
     private List<StrippedState> inviteRoomState;
 
-    /**
-     * Required. The membership state of the user. One of: ["invite", "join", "knock", "leave", "ban"].
-     */
-    @ApiModelProperty(value = "The membership state of the user.", required = true,
-        allowableValues = "[\"invite\", \"join\", \"knock\", \"leave\", \"ban\"]")
-    private String membership;
-
     public String getEventId() {
         return eventId;
     }
@@ -1660,11 +1744,11 @@ public class Event {
         this.roomId = roomId;
     }
 
-    public Map<String, Object> getContent() {
+    public EventContent getContent() {
         return content;
     }
 
-    public void setContent(Map<String, Object> content) {
+    public void setContent(EventContent content) {
         this.content = content;
     }
 
@@ -1708,11 +1792,11 @@ public class Event {
         this.unsigned = unsigned;
     }
 
-    public Map<String, Object> getPrevContent() {
+    public EventContent getPrevContent() {
         return prevContent;
     }
 
-    public void setPrevContent(Map<String, Object> prevContent) {
+    public void setPrevContent(EventContent prevContent) {
         this.prevContent = prevContent;
     }
 
@@ -1722,13 +1806,5 @@ public class Event {
 
     public void setInviteRoomState(List<StrippedState> inviteRoomState) {
         this.inviteRoomState = inviteRoomState;
-    }
-
-    public String getMembership() {
-        return membership;
-    }
-
-    public void setMembership(String membership) {
-        this.membership = membership;
     }
 }

@@ -16,14 +16,19 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Receipt timestamps.
  */
+@ApiModel(description = "eceipt timestamps.")
 public class ReceiptTs {
 
     /**
      * The timestamp the receipt was sent at.
      */
+    @ApiModelProperty("The timestamp the receipt was sent at.")
     private Long ts;
 
     public Long getTs() {

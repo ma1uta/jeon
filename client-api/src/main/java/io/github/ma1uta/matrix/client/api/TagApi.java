@@ -45,7 +45,7 @@ import javax.ws.rs.core.SecurityContext;
  * <p/>
  * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#room-tagging">Specification.</a>
  */
-@Api(value = "Tag", description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
+@Api(value = "TagInfo", description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
     + "A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices.")
 @Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -53,7 +53,7 @@ import javax.ws.rs.core.SecurityContext;
 public interface TagApi {
 
     /**
-     * Tag special names.
+     * TagInfo special names.
      */
     class Tag {
 
@@ -124,7 +124,7 @@ public interface TagApi {
             required = true) @PathParam("userId") String userId,
         @ApiParam(value = "The id of the room to add a tag to.", required = true) @PathParam("roomId") String roomId,
         @ApiParam(value = "The tag to add.", required = true) @PathParam("tag") String tag,
-        @ApiParam("Tag data.") Map<String, String> tagData,
+        @ApiParam("TagInfo data.") Map<String, String> tagData,
         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
 
     /**

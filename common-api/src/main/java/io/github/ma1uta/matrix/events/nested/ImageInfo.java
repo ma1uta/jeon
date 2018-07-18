@@ -17,21 +17,28 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Image info.
  */
+@ApiModel(description = "Image info.")
 public class ImageInfo extends FileInfo {
 
     /**
      * The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
+    @ApiModelProperty(name = "h", value = "The intended display height of the image in pixels. This may differ from the intrinsic"
+        + " dimensions of the image file.")
     @JsonProperty("h")
     private Long height;
 
     /**
      * The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
+    @ApiModelProperty(name = "w", value = "The intended display width of the image in pixels. This may differ from the intrinsic"
+        + " dimensions of the image file.")
     @JsonProperty("w")
     private Long width;
 

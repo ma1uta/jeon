@@ -80,7 +80,7 @@
     "name" : "Sync",
     "description" : "To read events, the intended flow of operation is for clients to first call the /sync API without a since parameter. This returns the most recent message events for each room, as well as the state of the room at the start of the returned timeline. The response also includes a next_batch field, which should be used as the value of the since parameter in the next call to /sync. Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to the /rooms/<room_id>/messages API to retrieve earlier messages."
   }, {
-    "name" : "Tag",
+    "name" : "TagInfo",
     "description" : "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices."
   }, {
     "name" : "ThirdPartyProtocol",
@@ -3175,7 +3175,7 @@
     },
     "/_matrix/client/r0/user/{userId}/rooms/{roomId}/tags" : {
       "get" : {
-        "tags" : [ "Tag" ],
+        "tags" : [ "TagInfo" ],
         "summary" : "List the tags set by a user on a room.",
         "description" : "",
         "operationId" : "showTags",
@@ -3206,7 +3206,7 @@
     },
     "/_matrix/client/r0/user/{userId}/rooms/{roomId}/tags/{tag}" : {
       "put" : {
-        "tags" : [ "Tag" ],
+        "tags" : [ "TagInfo" ],
         "summary" : "Add a tag to the room.",
         "description" : "",
         "operationId" : "addTag",
@@ -3233,7 +3233,7 @@
         }, {
           "in" : "body",
           "name" : "body",
-          "description" : "Tag data.",
+          "description" : "TagInfo data.",
           "required" : false,
           "schema" : {
             "type" : "object",
@@ -3252,7 +3252,7 @@
         }
       },
       "delete" : {
-        "tags" : [ "Tag" ],
+        "tags" : [ "TagInfo" ],
         "summary" : "Remove a tag from the room.",
         "description" : "",
         "operationId" : "deleteTag",
@@ -3641,6 +3641,60 @@
       },
       "description" : "Response for gets information about a particular user."
     },
+    "Answer" : {
+      "type" : "object",
+      "required" : [ "sdp", "type" ],
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "The type of session description. Must be 'answer'."
+        },
+        "sdp" : {
+          "type" : "string",
+          "description" : "The SDP text of the session description."
+        }
+      },
+      "description" : "Answer"
+    },
+    "Audio" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "required" : [ "url" ],
+        "properties" : {
+          "info" : {
+            "description" : "Metadata for the audio clip referred to in url.",
+            "$ref" : "#/definitions/AudioInfo"
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to the audio clip."
+          }
+        },
+        "description" : "This message represents a single audio clip."
+      } ]
+    },
+    "AudioInfo" : {
+      "type" : "object",
+      "properties" : {
+        "duration" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The duration of the audio in milliseconds."
+        },
+        "mimetype" : {
+          "type" : "string",
+          "description" : "The mimetype of the audio e.g. audio/aac."
+        },
+        "size" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The size of the audio clip in bytes."
+        }
+      },
+      "description" : "Audio type."
+    },
     "AuthenticationData" : {
       "type" : "object",
       "properties" : {
@@ -3713,6 +3767,126 @@
         }
       },
       "description" : "JSON body request for profile api."
+    },
+    "CallAnswer" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "answer", "call_id", "version" ],
+        "properties" : {
+          "answer" : {
+            "description" : "The session description object.",
+            "$ref" : "#/definitions/Answer"
+          },
+          "version" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "The version of the VoIP specification this message adheres to. This specification is version 0."
+          },
+          "call_id" : {
+            "type" : "string",
+            "description" : "The ID of the call this event relates to."
+          }
+        },
+        "description" : "This event is sent by the callee when they wish to answer the call."
+      } ]
+    },
+    "CallCandidates" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "call_id", "candidates", "version" ],
+        "properties" : {
+          "candidates" : {
+            "type" : "array",
+            "description" : "Array of objects describing the candidates.",
+            "items" : {
+              "$ref" : "#/definitions/Candidate"
+            }
+          },
+          "version" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "The version of the VoIP specification this messages adheres to. This specification is version 0."
+          },
+          "call_id" : {
+            "type" : "string",
+            "description" : "The ID of the call this event relates to."
+          }
+        },
+        "description" : "This event is sent by callers after sending an invite and by the callee after answering. Its purpose is to give the other party additional ICE candidates to try using to communicate."
+      } ]
+    },
+    "CallHangup" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "call_id", "version" ],
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "The version of the VoIP specification this message adheres to. This specification is version 0."
+          },
+          "call_id" : {
+            "type" : "string",
+            "description" : "The ID of the call this event relates to."
+          }
+        },
+        "description" : "Sent by either party to signal their termination of the call. This can be sent either once the call has has been established or before to abort the call."
+      } ]
+    },
+    "CallInvite" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "call_id", "lifetime", "offer", "version" ],
+        "properties" : {
+          "offer" : {
+            "description" : "The session description object.",
+            "$ref" : "#/definitions/Offer"
+          },
+          "version" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "The version of the VoIP specification this message adheres to. This specification is version 0."
+          },
+          "lifetime" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "The time in milliseconds that the invite is valid for. Once the invite age exceeds this value, clients should discard it. They should also no longer show the call as awaiting an answer in the UI."
+          },
+          "call_id" : {
+            "type" : "string",
+            "description" : "The ID of the call this event relates to."
+          }
+        },
+        "description" : "This event is sent by the caller when they wish to establish a call."
+      } ]
+    },
+    "Candidate" : {
+      "type" : "object",
+      "required" : [ "candidate", "sdpMLineIndex", "sdpMid" ],
+      "properties" : {
+        "sdpMid" : {
+          "type" : "string",
+          "description" : "The SDP media type this candidate is intended for."
+        },
+        "sdpMLineIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The index of the SDP 'm' line this candidate is intended for."
+        },
+        "candidate" : {
+          "type" : "string",
+          "description" : "The SDP 'a' line of the candidate."
+        }
+      },
+      "description" : "Candidate."
     },
     "ChangesResponse" : {
       "type" : "object",
@@ -4050,6 +4224,14 @@
       },
       "description" : "JSON body request for profile api."
     },
+    "Emote" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "description" : "This message is similar to m.text except that the sender is 'performing' the action contained in the body key, similar to /me in IRC. This message should be prefixed by the name of the sender. This message could also be represented in a different colour to distinguish it from regular m.text messages."
+      } ]
+    },
     "EmptyResponse" : {
       "type" : "object",
       "description" : "Empty response"
@@ -4069,14 +4251,11 @@
     },
     "Event" : {
       "type" : "object",
-      "required" : [ "event_id", "membership", "origin_server_ts", "room_id", "sender", "state_key", "type" ],
+      "required" : [ "event_id", "origin_server_ts", "room_id", "sender", "state_key", "type" ],
       "properties" : {
         "content" : {
-          "type" : "object",
           "description" : "The fields in this object will vary depending on the type of event. When interacting with the REST API, this is the HTTP body.",
-          "additionalProperties" : {
-            "type" : "object"
-          }
+          "$ref" : "#/definitions/EventContent"
         },
         "type" : {
           "type" : "string",
@@ -4089,11 +4268,6 @@
         "unsigned" : {
           "description" : "Contains optional extra information about the event.",
           "$ref" : "#/definitions/Unsigned"
-        },
-        "membership" : {
-          "type" : "string",
-          "description" : "The membership state of the user.",
-          "enum" : [ "[\"invite\"", "\"join\"", "\"knock\"", "\"leave\"", "\"ban\"]" ]
         },
         "event_id" : {
           "type" : "string",
@@ -4109,11 +4283,8 @@
           "description" : "Timestamp in milliseconds on originating homeserver when this event was sent."
         },
         "prev_content" : {
-          "type" : "object",
           "description" : "The previous content for this event. If there is no previous content, this key will be missing.",
-          "additionalProperties" : {
-            "type" : "object"
-          }
+          "$ref" : "#/definitions/EventContent"
         },
         "state_key" : {
           "type" : "string",
@@ -4128,6 +4299,11 @@
         }
       },
       "description" : "Event."
+    },
+    "EventContent" : {
+      "type" : "object",
+      "discriminator" : "type",
+      "description" : "Parent class of all event contents part in the Event."
     },
     "EventContext" : {
       "type" : "object",
@@ -4198,6 +4374,52 @@
         }
       },
       "description" : "Definition of valid values for a field."
+    },
+    "File" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "required" : [ "filename", "url" ],
+        "properties" : {
+          "filename" : {
+            "type" : "string",
+            "description" : "The original filename of the uploaded file."
+          },
+          "info" : {
+            "description" : "Information about the file referred to in url.",
+            "$ref" : "#/definitions/FileInfo"
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to the file."
+          }
+        },
+        "description" : "This message represents a generic file."
+      } ]
+    },
+    "FileInfo" : {
+      "type" : "object",
+      "properties" : {
+        "mimetype" : {
+          "type" : "string",
+          "description" : "The mimetype of the image, e.g. image/jpeg."
+        },
+        "size" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Size of the image in bytes."
+        },
+        "thumbnail_url" : {
+          "type" : "string",
+          "description" : "The URL to a thumbnail of the image."
+        },
+        "thumbnail_info" : {
+          "description" : "Metadata about the image referred to in thumbnail_url.",
+          "$ref" : "#/definitions/ThumbnailInfo"
+        }
+      },
+      "description" : "File info."
     },
     "Filter" : {
       "type" : "object",
@@ -4322,6 +4544,76 @@
       },
       "description" : "Groupings."
     },
+    "IgnoredUserList" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "ignoredUsers" ],
+        "properties" : {
+          "ignoredUsers" : {
+            "type" : "object",
+            "description" : "The map of users to ignore.",
+            "additionalProperties" : {
+              "type" : "object"
+            }
+          }
+        },
+        "description" : "A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list."
+      } ]
+    },
+    "Image" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "required" : [ "url" ],
+        "properties" : {
+          "info" : {
+            "description" : "Information about the file referred to in url.",
+            "$ref" : "#/definitions/ImageInfo"
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to the file."
+          }
+        },
+        "description" : "This message represents a single image and an optional thumbnail."
+      } ]
+    },
+    "ImageInfo" : {
+      "type" : "object",
+      "properties" : {
+        "mimetype" : {
+          "type" : "string",
+          "description" : "The mimetype of the image, e.g. image/jpeg."
+        },
+        "size" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Size of the image in bytes."
+        },
+        "thumbnail_url" : {
+          "type" : "string",
+          "description" : "The URL to a thumbnail of the image."
+        },
+        "thumbnail_info" : {
+          "description" : "Metadata about the image referred to in thumbnail_url.",
+          "$ref" : "#/definitions/ThumbnailInfo"
+        },
+        "h" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        },
+        "w" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        }
+      },
+      "description" : "Image info."
+    },
     "InputStream" : {
       "type" : "object"
     },
@@ -4345,6 +4637,21 @@
         }
       },
       "description" : "Instance."
+    },
+    "Invite" : {
+      "type" : "object",
+      "required" : [ "display_name", "signed" ],
+      "properties" : {
+        "signed" : {
+          "description" : "A block of content which has been signed, which servers can use to verify the event. Clients should ignore this.",
+          "$ref" : "#/definitions/Signed"
+        },
+        "display_name" : {
+          "type" : "string",
+          "description" : "A name which can be displayed to represent the user instead of their third party identifier."
+        }
+      },
+      "description" : "Third-party invites."
     },
     "Invite3pid" : {
       "type" : "object",
@@ -4503,6 +4810,39 @@
       },
       "description" : "Left room."
     },
+    "Location" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "required" : [ "geo_uri" ],
+        "properties" : {
+          "info" : {
+            "description" : "Information about the file referred to in url.",
+            "$ref" : "#/definitions/LocationInfo"
+          },
+          "geo_uri" : {
+            "type" : "string",
+            "description" : "A geo URI representing this location."
+          }
+        },
+        "description" : "This message represents a real-world location."
+      } ]
+    },
+    "LocationInfo" : {
+      "type" : "object",
+      "properties" : {
+        "thumbnail_url" : {
+          "type" : "string",
+          "description" : "The URL to a thumbnail of the location being represented."
+        },
+        "thumbnail_info" : {
+          "description" : "Metadata about the image referred to in thumbnail_url.",
+          "$ref" : "#/definitions/ThumbnailInfo"
+        }
+      },
+      "description" : "Location info."
+    },
     "LoginRequest" : {
       "type" : "object",
       "required" : [ "type" ],
@@ -4588,6 +4928,24 @@
       },
       "description" : "The list of members for this room."
     },
+    "Notice" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "format" : {
+            "type" : "string",
+            "description" : "The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported."
+          },
+          "formatted_body" : {
+            "type" : "string",
+            "description" : "The formatted version of the ``body``. This is required if ``format`` is specified."
+          }
+        },
+        "description" : "The ``m.notice`` type is primarily intended for responses from automated clients. An ``m.notice`` message must be treated the same way as a regular ``m.text`` message with two exceptions. Firstly, clients should present ``m.notice`` messages to users in a distinct manner, and secondly, ``m.notice`` messages must never be automatically responded to. This helps to prevent infinite-loop situations where two automated clients continuously exchange messages."
+      } ]
+    },
     "Notification" : {
       "type" : "object",
       "required" : [ "actions", "event", "read", "room_id", "ts" ],
@@ -4640,6 +4998,21 @@
         }
       },
       "description" : "JSON body response for push notifications."
+    },
+    "Offer" : {
+      "type" : "object",
+      "required" : [ "sdp", "type" ],
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "description" : "The type of session description. Must be 'offer'."
+        },
+        "sdp" : {
+          "type" : "string",
+          "description" : "The SDP text of the session description."
+        }
+      },
+      "description" : "Offer"
     },
     "OutputStream" : {
       "type" : "object"
@@ -4830,6 +5203,21 @@
         }
       },
       "description" : "Protocol User."
+    },
+    "PublicKeys" : {
+      "type" : "object",
+      "required" : [ "publicKey" ],
+      "properties" : {
+        "publicKey" : {
+          "type" : "string",
+          "description" : "A base-64 encoded ed25519 key with which token may be signed."
+        },
+        "key_validity_url" : {
+          "type" : "string",
+          "description" : "An optional URL which can be fetched, with querystring public_key=public_key, to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'. If this URL is absent, the key must be considered valid indefinitely."
+        }
+      },
+      "description" : "Public keys."
     },
     "PublicRoomsChunk" : {
       "type" : "object",
@@ -5207,6 +5595,17 @@
       },
       "description" : "Query response."
     },
+    "ReceiptTs" : {
+      "type" : "object",
+      "properties" : {
+        "ts" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The timestamp the receipt was sent at."
+        }
+      },
+      "description" : "eceipt timestamps."
+    },
     "RedactRequest" : {
       "type" : "object",
       "properties" : {
@@ -5324,6 +5723,77 @@
         }
       },
       "description" : "Search result."
+    },
+    "RoomAliases" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "aliases" ],
+        "properties" : {
+          "aliases" : {
+            "type" : "array",
+            "description" : "A list of room aliases.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        },
+        "description" : "This event is sent by a homeserver directly to inform of changes to the list of aliases it knows about for that room. The state_key for this event is set to the homeserver which owns the room alias. The entire set of known aliases for the room is the union of all the m.room.aliases events, one for each homeserver. Clients should check the validity of any room alias given in this list before presenting it to the user as trusted fact. The lists given by this event should be considered simply as advice on which aliases might exist, for which the client can perform the lookup to confirm whether it receives the correct room ID."
+      } ]
+    },
+    "RoomAvatar" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "url" ],
+        "properties" : {
+          "info" : {
+            "description" : "Metadata about the image referred to in url.",
+            "$ref" : "#/definitions/ImageInfo"
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to the image."
+          }
+        },
+        "description" : "A picture that is associated with the room. This can be displayed alongside the room information."
+      } ]
+    },
+    "RoomCanonicalAlias" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "alias" ],
+        "properties" : {
+          "alias" : {
+            "type" : "string",
+            "description" : "The canonical alias"
+          }
+        },
+        "description" : "This event is used to inform the room about which alias should be considered the canonical one. This could be for display purposes or as suggestion to users which alias to use to advertise the room. A room with an m.room.canonical_alias event with an absent, null, or empty alias field should be treated the same as a room with no m.room.canonical_alias event."
+      } ]
+    },
+    "RoomCreate" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "creator" ],
+        "properties" : {
+          "creator" : {
+            "type" : "string",
+            "description" : "The user_id of the room creator. This is set by the homeserver."
+          },
+          "m.federate" : {
+            "type" : "boolean",
+            "description" : "Whether users on other servers can join this room. Defaults to ``true`` if key does not exist."
+          }
+        },
+        "description" : "This is the first event in a room and cannot be changed. It acts as the root of all other events."
+      } ]
     },
     "RoomEventFilter" : {
       "type" : "object",
@@ -5510,6 +5980,37 @@
       },
       "description" : "Room filter."
     },
+    "RoomGuestAccess" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "guest_access" : {
+            "type" : "string",
+            "description" : "Whether guests can join the room.",
+            "enum" : [ "can_join", "forbidden" ]
+          }
+        },
+        "description" : "This event controls whether guest users are allowed to join rooms. If this event is absent, servers should act as if it is present and has the guest_access value \"forbidden\"."
+      } ]
+    },
+    "RoomHistoryVisibility" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "history_visibility" ],
+        "properties" : {
+          "history_visibility" : {
+            "type" : "string",
+            "description" : "Who can see the room history.",
+            "enum" : [ "invited", "joined", "shared", "world_readable" ]
+          }
+        },
+        "description" : "This event controls whether a user can see the events that happened in a room from before they joined."
+      } ]
+    },
     "RoomId" : {
       "type" : "object",
       "properties" : {
@@ -5527,19 +6028,225 @@
       },
       "description" : "JSON body with roomId used in the room apis."
     },
-    "RoomMember" : {
-      "type" : "object",
-      "properties" : {
-        "display_name" : {
-          "type" : "string",
-          "description" : "The display name of the user this object is representing."
+    "RoomJoinRules" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "join_rule" : {
+            "type" : "string",
+            "description" : "The type of rules used for users wishing to join this room.",
+            "enum" : [ "public", "knock", "invite", "private" ]
+          }
         },
-        "avatar_url" : {
-          "type" : "string",
-          "description" : "The mxc avatar url of the user this object is representing."
-        }
-      },
-      "description" : "Room member."
+        "description" : "A room may be ``public`` meaning anyone can join the room without any prior action. Alternatively, it can be ``invite`` meaning that a user who wishes to join the room must first receive an invite to the room from someone already inside of the room. Currently, ``knock`` and ``private`` are reserved keywords which are not implemented."
+      } ]
+    },
+    "RoomMember" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "membership" ],
+        "properties" : {
+          "displayname" : {
+            "type" : "string",
+            "description" : "The display name for this user, if any. This is added by the homeserver."
+          },
+          "membership" : {
+            "type" : "string",
+            "description" : "The membership state of the user.",
+            "enum" : [ "invite", "join", "knock", "leave", "ban" ]
+          },
+          "direct" : {
+            "type" : "boolean"
+          },
+          "avatar_url" : {
+            "type" : "string",
+            "description" : "The avatar URL for this user, if any. This is added by the homeserver."
+          },
+          "is_direct" : {
+            "type" : "boolean",
+            "description" : "Flag indicating if the room containing this event was created with the intention of being a direct chat. See Direct Messaging."
+          },
+          "third_party_invite" : {
+            "description" : "Third-party invites.",
+            "$ref" : "#/definitions/Invite"
+          }
+        },
+        "description" : "Adjusts the membership state for a user in a room. It is preferable to use the membership APIs (/rooms/<room id>/invite etc) when performing membership actions rather than adjusting the state directly as there are a restricted set of valid transformations. For example, user A cannot force user B to join a room, and trying to force this state change directly will fail."
+      } ]
+    },
+    "RoomMessage" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "body" : {
+            "type" : "string"
+          },
+          "msgtype" : {
+            "type" : "string",
+            "description" : "Message type.",
+            "readOnly" : true
+          }
+        },
+        "description" : "This event is used when sending messages in a room. Messages are not limited to be text. The ``msgtype`` key outlines the type of message, e.g. text, audio, image, video, etc. The ``body`` key is text and MUST be used with every kind of ``msgtype`` as a fallback mechanism for when a client cannot render a message. This allows clients to display *something* even if it is just plain text."
+      } ]
+    },
+    "RoomName" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "name" ],
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the room. This MUST NOT exceed 255 bytes."
+          }
+        },
+        "description" : "A room has an opaque room ID which is not human-friendly to read. A room alias is human-friendly, but not all rooms have room aliases. The room name is a human-friendly string designed to be displayed to the end-user. The room name is not unique, as multiple rooms can have the same room name set. A room with an m.room.name event with an absent, null, or empty name field should be treated the same as a room with no m.room.name event. An event of this type is automatically created when creating a room using /createRoom with the name key."
+      } ]
+    },
+    "RoomPinned" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "pinned" ],
+        "properties" : {
+          "pinned" : {
+            "type" : "array",
+            "description" : "An ordered list of event IDs to pin.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        },
+        "description" : "This event is used to \"pin\" particular events in a room for other participants to review later. The order of the pinned events is guaranteed and based upon the order supplied in the event. Clients should be aware that the current user may not be able to see some of the events pinned due to visibility settings in the room. Clients are responsible for determining if a particular event in the pinned list is displayable, and have the option to not display it if it cannot be pinned in the client."
+      } ]
+    },
+    "RoomPowerLevels" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "ban" : {
+            "type" : "string",
+            "format" : "byte"
+          },
+          "events" : {
+            "type" : "object",
+            "description" : "The level required to send specific event types. This is a mapping from event type to power level required.",
+            "additionalProperties" : {
+              "type" : "string",
+              "format" : "byte"
+            }
+          },
+          "invite" : {
+            "type" : "string",
+            "format" : "byte",
+            "description" : "The level required to invite a user. Defaults to 50 if unspecified."
+          },
+          "kick" : {
+            "type" : "string",
+            "format" : "byte",
+            "description" : "The level required to kick a user. Defaults to 50 if unspecified."
+          },
+          "redact" : {
+            "type" : "string",
+            "format" : "byte",
+            "description" : "The level required to redact an event. Defaults to 50 if unspecified."
+          },
+          "users" : {
+            "type" : "object",
+            "description" : "The power levels for specific users. This is a mapping from user_id to power level for that user.",
+            "additionalProperties" : {
+              "type" : "string",
+              "format" : "byte"
+            }
+          },
+          "events_default" : {
+            "type" : "string",
+            "format" : "byte",
+            "description" : "The default level required to send message events. Can be overridden by the events key. Defaults to 0 if unspecified."
+          },
+          "state_default" : {
+            "type" : "string",
+            "format" : "byte",
+            "description" : "The default level required to send state events. Can be overridden by the events key. Defaults to 50 if unspecified, but 0 if there is no m.room.power_levels event at all."
+          },
+          "users_default" : {
+            "type" : "string",
+            "format" : "byte",
+            "description" : "The default power level for every user in the room, unless their user_id is mentioned in the users key. Defaults to 0 if unspecified."
+          }
+        },
+        "description" : "This event specifies the minimum level a user must have in order to perform a certain action. It also specifies the levels of each user in the room. If a user_id is in the users list, then that user_id has the associated power level. Otherwise they have the default level users_default. If users_default is not supplied, it is assumed to be 0. If the room contains no m.room.power_levels event, the room's creator has a power level of 100, and all other users have a power level of 0. The level required to send a certain event is governed by events, state_default and events_default. If an event type is specified in events, then the user must have at least the level specified in order to send that event. If the event type is not supplied, it defaults to events_default for Message Events and state_default for State Events. If there is no state_default in the m.room.power_levels event, the state_default is 50. If there is no events_default in the m.room.power_levels event, the events_default is 0. If the room contains no m.room.power_levels event, both the state_default and events_default are 0. The power level required to invite a user to the room, kick a user from the room, ban a user from the room, or redact an event, is defined by invite, kick, ban, and redact, respectively. Each of these levels defaults to 50 if they are not specified in the m.room.power_levels event, or if the room contains no m.room.power_levels event."
+      } ]
+    },
+    "RoomRedaction" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "description" : "The reason for the redaction, if any."
+          }
+        },
+        "description" : "Events can be redacted by either room or server admins. Redacting an event means that all keys not required by the protocol are stripped off, allowing admins to remove offensive or illegal content that may have been attached to any event. This cannot be undone, allowing server owners to physically delete the offending data. There is also a concept of a moderator hiding a message event, which can be undone, but cannot be applied to state events. The event that has been redacted is specified in the redacts event level key."
+      } ]
+    },
+    "RoomThirdPartyInvite" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "display_name", "key_validity_url", "public_key" ],
+        "properties" : {
+          "display_name" : {
+            "type" : "string",
+            "description" : "A user-readable string which represents the user who has been invited. This should not contain the user's third party ID, as otherwise when the invite is accepted it would leak the association between the matrix ID and the third party ID."
+          },
+          "key_validity_url" : {
+            "type" : "string",
+            "description" : "A URL which can be fetched, with querystring public_key=public_key, to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'."
+          },
+          "public_key" : {
+            "type" : "string",
+            "description" : "A base64-encoded ed25519 key with which token must be signed (though a signature from any entry in public_keys is also sufficient). This exists for backwards compatibility."
+          },
+          "public_keys" : {
+            "type" : "array",
+            "description" : "Keys with which the token may be signed.",
+            "items" : {
+              "$ref" : "#/definitions/PublicKeys"
+            }
+          }
+        },
+        "description" : "Acts as an m.room.member invite event, where there isn't a target user_id to invite. This event contains a token and a public key whose private key must be used to sign the token. Any user who can present that signature may use this invitation to join the target room."
+      } ]
+    },
+    "RoomTopic" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "topic" ],
+        "properties" : {
+          "topic" : {
+            "type" : "string",
+            "description" : "The topic text"
+          }
+        },
+        "description" : "A topic is a short message detailing what is currently being discussed in the room. It can also be used as a way to display extra information about the room, which may not be suitable for the room name. The room topic can also be set when creating a room using /createRoom with the topic key."
+      } ]
     },
     "RoomVisibility" : {
       "type" : "object",
@@ -5693,6 +6400,30 @@
       },
       "description" : "Session info."
     },
+    "Signed" : {
+      "type" : "object",
+      "properties" : {
+        "mxid" : {
+          "type" : "string",
+          "description" : "Owner of the 3pid."
+        },
+        "token" : {
+          "type" : "string",
+          "description" : "Token which generated by server."
+        },
+        "signatures" : {
+          "type" : "object",
+          "description" : "Signatures by long-term identity server key.",
+          "additionalProperties" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "description" : "Signed part of the invitation request."
+    },
     "State" : {
       "type" : "object",
       "properties" : {
@@ -5705,6 +6436,29 @@
         }
       },
       "description" : "State."
+    },
+    "Sticker" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "body", "info", "url" ],
+        "properties" : {
+          "body" : {
+            "type" : "string",
+            "description" : "A textual representation or associated description of the sticker image. This could be the alt text of the original image, or a message to accompany and further describe the sticker."
+          },
+          "info" : {
+            "description" : "Metadata about the image referred to in url including a thumbnail representation.",
+            "$ref" : "#/definitions/ImageInfo"
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to the sticker image. This must be a valid mxc:// URI."
+          }
+        },
+        "description" : "This message represents a single sticker image."
+      } ]
     },
     "StrippedState" : {
       "type" : "object",
@@ -5771,6 +6525,26 @@
       },
       "description" : "JSON body response for sync api."
     },
+    "Tag" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "tags" : {
+            "type" : "object",
+            "description" : "The tags on the room and their contents.",
+            "additionalProperties" : {
+              "type" : "object",
+              "additionalProperties" : {
+                "type" : "object"
+              }
+            }
+          }
+        },
+        "description" : "Informs the client of tags on a room."
+      } ]
+    },
     "Tags" : {
       "type" : "object",
       "properties" : {
@@ -5785,7 +6559,25 @@
           }
         }
       },
-      "description" : "Tag request."
+      "description" : "TagInfo request."
+    },
+    "Text" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "format" : {
+            "type" : "string",
+            "description" : "The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported."
+          },
+          "formatted_body" : {
+            "type" : "string",
+            "description" : "The formatted version of the ``body``. This is required if ``format`` is specified."
+          }
+        },
+        "description" : "This message is the most basic message and is used to represent text."
+      } ]
     },
     "ThirdPartyIdentifier" : {
       "type" : "object",
@@ -5879,6 +6671,31 @@
       },
       "description" : "Response for gets a list of the third party identifiers that the homeserver has associated with the user's account"
     },
+    "ThumbnailInfo" : {
+      "type" : "object",
+      "properties" : {
+        "mimetype" : {
+          "type" : "string",
+          "description" : "The mimetype of the image, e.g. image/jpeg."
+        },
+        "size" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Size of the image in bytes."
+        },
+        "h" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        },
+        "w" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        }
+      },
+      "description" : "Thumbnail info."
+    },
     "Timeline" : {
       "type" : "object",
       "properties" : {
@@ -5912,6 +6729,24 @@
         }
       },
       "description" : "To device."
+    },
+    "Typing" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "user_ids" ],
+        "properties" : {
+          "user_ids" : {
+            "type" : "array",
+            "description" : "The list of user IDs typing in this room, if any.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        },
+        "description" : "Informs the client of the list of users currently typing."
+      } ]
     },
     "TypingRequest" : {
       "type" : "object",
@@ -6044,6 +6879,63 @@
         }
       },
       "description" : "The versions supported by the server."
+    },
+    "Video" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/RoomMessage"
+      }, {
+        "type" : "object",
+        "required" : [ "url" ],
+        "properties" : {
+          "info" : {
+            "description" : "Metadata about the video clip referred to in url.",
+            "$ref" : "#/definitions/VideoInfo"
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL to the video clip."
+          }
+        },
+        "description" : "This message represents a single video clip."
+      } ]
+    },
+    "VideoInfo" : {
+      "type" : "object",
+      "properties" : {
+        "mimetype" : {
+          "type" : "string",
+          "description" : "The mimetype of the image, e.g. image/jpeg."
+        },
+        "size" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Size of the image in bytes."
+        },
+        "duration" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The duration of the video in milliseconds."
+        },
+        "thumbnail_url" : {
+          "type" : "string",
+          "description" : "The URL to a thumbnail of the image."
+        },
+        "thumbnail_info" : {
+          "description" : "Metadata about the image referred to in thumbnail_url.",
+          "$ref" : "#/definitions/ThumbnailInfo"
+        },
+        "h" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        },
+        "w" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        }
+      },
+      "description" : "Video info."
     },
     "VoipResponse" : {
       "type" : "object",

@@ -8720,7 +8720,7 @@ This config is only visible to the user that set the account_data. The config wi
         <td>body</td>
         <td>no</td>
         <td>
-            Tag data.
+            TagInfo data.
 
         </td>
         <td> - </td>
@@ -9842,6 +9842,110 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/Answer">Answer</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>type</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>The type of session description. Must be 'answer'.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>sdp</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>The SDP text of the session description.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/Audio">Audio</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/AudioInfo">AudioInfo</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>duration</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The duration of the audio in milliseconds.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>mimetype</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The mimetype of the audio e.g. audio/aac.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>size</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The size of the audio clip in bytes.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/AuthenticationData">AuthenticationData</a>
 
 <table border="1">
@@ -10047,6 +10151,110 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             </td>
             <td>optional</td>
             <td>The new avatar URL for this user.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/CallAnswer">CallAnswer</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/CallCandidates">CallCandidates</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/CallHangup">CallHangup</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/CallInvite">CallInvite</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/Candidate">Candidate</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>sdpMid</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>The SDP media type this candidate is intended for.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>sdpMLineIndex</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>required</td>
+            <td>The index of the SDP 'm' line this candidate is intended for.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>candidate</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>The SDP 'a' line of the candidate.</td>
             <td></td>
         </tr>
 
@@ -10840,6 +11048,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/Emote">Emote</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
 ## <a name="/definitions/EmptyResponse">EmptyResponse</a>
 
 <table border="1">
@@ -10896,8 +11117,8 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             <td>content</td>
             <td>
 
+                    <a href="#/definitions/EventContent">EventContent</a>
 
-                    object
 
             </td>
             <td>optional</td>
@@ -10945,19 +11166,6 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
         </tr>
 
         <tr>
-            <td>membership</td>
-            <td>
-
-
-                    string
-
-            </td>
-            <td>required</td>
-            <td>The membership state of the user.</td>
-            <td></td>
-        </tr>
-
-        <tr>
             <td>event_id</td>
             <td>
 
@@ -11000,8 +11208,8 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             <td>prev_content</td>
             <td>
 
+                    <a href="#/definitions/EventContent">EventContent</a>
 
-                    object
 
             </td>
             <td>optional</td>
@@ -11036,6 +11244,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             <td>This contains an array of StrippedState Events. These events provide information on a subset of state events such as the room name.</td>
             <td></td>
         </tr>
+
+</table>
+
+## <a name="/definitions/EventContent">EventContent</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
 </table>
 
@@ -11220,6 +11441,84 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             </td>
             <td>optional</td>
             <td>An placeholder serving as a valid example of the field value.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/File">File</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/FileInfo">FileInfo</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>mimetype</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The mimetype of the image, e.g. image/jpeg.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>size</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>Size of the image in bytes.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>thumbnail_url</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The URL to a thumbnail of the image.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>thumbnail_info</td>
+            <td>
+
+                    <a href="#/definitions/ThumbnailInfo">ThumbnailInfo</a>
+
+
+            </td>
+            <td>optional</td>
+            <td>Metadata about the image referred to in thumbnail_url.</td>
             <td></td>
         </tr>
 
@@ -11513,6 +11812,123 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/IgnoredUserList">IgnoredUserList</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/Image">Image</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/ImageInfo">ImageInfo</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>mimetype</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The mimetype of the image, e.g. image/jpeg.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>size</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>Size of the image in bytes.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>thumbnail_url</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The URL to a thumbnail of the image.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>thumbnail_info</td>
+            <td>
+
+                    <a href="#/definitions/ThumbnailInfo">ThumbnailInfo</a>
+
+
+            </td>
+            <td>optional</td>
+            <td>Metadata about the image referred to in thumbnail_url.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>h</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>w</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/InputStream">InputStream</a>
 
 <table border="1">
@@ -11573,6 +11989,45 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             </td>
             <td>optional</td>
             <td>fields</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/Invite">Invite</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>signed</td>
+            <td>
+
+                    <a href="#/definitions/Signed">Signed</a>
+
+
+            </td>
+            <td>required</td>
+            <td>A block of content which has been signed, which servers can use to verify the event. Clients should ignore this.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>display_name</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>A name which can be displayed to represent the user instead of their third party identifier.</td>
             <td></td>
         </tr>
 
@@ -11983,6 +12438,58 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/Location">Location</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/LocationInfo">LocationInfo</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>thumbnail_url</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The URL to a thumbnail of the location being represented.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>thumbnail_info</td>
+            <td>
+
+                    <a href="#/definitions/ThumbnailInfo">ThumbnailInfo</a>
+
+
+            </td>
+            <td>optional</td>
+            <td>Metadata about the image referred to in thumbnail_url.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/LoginRequest">LoginRequest</a>
 
 <table border="1">
@@ -12219,6 +12726,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/Notice">Notice</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
 ## <a name="/definitions/Notification">Notification</a>
 
 <table border="1">
@@ -12346,6 +12866,45 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             </td>
             <td>optional</td>
             <td>The token to supply in the from param of the next /notifications request in order to request more events. If this is absent, there are no more results.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/Offer">Offer</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>type</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>The type of session description. Must be 'offer'.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>sdp</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>The SDP text of the session description.</td>
             <td></td>
         </tr>
 
@@ -12805,6 +13364,45 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             </td>
             <td>optional</td>
             <td>Information used to identify this third party location.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/PublicKeys">PublicKeys</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>publicKey</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>A base-64 encoded ed25519 key with which token may be signed.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>key_validity_url</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>An optional URL which can be fetched, with querystring public_key=public_key, to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'. If this URL is absent, the key must be considered valid indefinitely.</td>
             <td></td>
         </tr>
 
@@ -13767,6 +14365,32 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/ReceiptTs">ReceiptTs</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>ts</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The timestamp the receipt was sent at.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/RedactRequest">RedactRequest</a>
 
 <table border="1">
@@ -14089,6 +14713,58 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             <td>Context for result, if requested.</td>
             <td></td>
         </tr>
+
+</table>
+
+## <a name="/definitions/RoomAliases">RoomAliases</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomAvatar">RoomAvatar</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomCanonicalAlias">RoomCanonicalAlias</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomCreate">RoomCreate</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
 </table>
 
@@ -14510,6 +15186,32 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/RoomGuestAccess">RoomGuestAccess</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomHistoryVisibility">RoomHistoryVisibility</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
 ## <a name="/definitions/RoomId">RoomId</a>
 
 <table border="1">
@@ -14549,6 +15251,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/RoomJoinRules">RoomJoinRules</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
 ## <a name="/definitions/RoomMember">RoomMember</a>
 
 <table border="1">
@@ -14560,31 +15275,96 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
         <th>example</th>
     </tr>
 
-        <tr>
-            <td>display_name</td>
-            <td>
+</table>
 
+## <a name="/definitions/RoomMessage">RoomMessage</a>
 
-                    string
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
-            </td>
-            <td>optional</td>
-            <td>The display name of the user this object is representing.</td>
-            <td></td>
-        </tr>
+</table>
 
-        <tr>
-            <td>avatar_url</td>
-            <td>
+## <a name="/definitions/RoomName">RoomName</a>
 
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
-                    string
+</table>
 
-            </td>
-            <td>optional</td>
-            <td>The mxc avatar url of the user this object is representing.</td>
-            <td></td>
-        </tr>
+## <a name="/definitions/RoomPinned">RoomPinned</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomPowerLevels">RoomPowerLevels</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomRedaction">RoomRedaction</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomThirdPartyInvite">RoomThirdPartyInvite</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/RoomTopic">RoomTopic</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
 </table>
 
@@ -14914,6 +15694,58 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/Signed">Signed</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>mxid</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>Owner of the 3pid.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>token</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>Token which generated by server.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>signatures</td>
+            <td>
+
+
+                    object
+
+            </td>
+            <td>optional</td>
+            <td>Signatures by long-term identity server key.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/State">State</a>
 
 <table border="1">
@@ -14939,6 +15771,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             <td>List of events.</td>
             <td></td>
         </tr>
+
+</table>
+
+## <a name="/definitions/Sticker">Sticker</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
 </table>
 
@@ -15113,6 +15958,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/Tag">Tag</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
 ## <a name="/definitions/Tags">Tags</a>
 
 <table border="1">
@@ -15136,6 +15994,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             <td>Tags.</td>
             <td></td>
         </tr>
+
+</table>
+
+## <a name="/definitions/Text">Text</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
 </table>
 
@@ -15364,6 +16235,71 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/ThumbnailInfo">ThumbnailInfo</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>mimetype</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The mimetype of the image, e.g. image/jpeg.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>size</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>Size of the image in bytes.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>h</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>w</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/Timeline">Timeline</a>
 
 <table border="1">
@@ -15443,6 +16379,19 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             <td>List of events.</td>
             <td></td>
         </tr>
+
+</table>
+
+## <a name="/definitions/Typing">Typing</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
 
 </table>
 
@@ -15753,6 +16702,123 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
             </td>
             <td>optional</td>
             <td>The supported versions.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/Video">Video</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+</table>
+
+## <a name="/definitions/VideoInfo">VideoInfo</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>mimetype</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The mimetype of the image, e.g. image/jpeg.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>size</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>Size of the image in bytes.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>duration</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The duration of the video in milliseconds.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>thumbnail_url</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>optional</td>
+            <td>The URL to a thumbnail of the image.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>thumbnail_info</td>
+            <td>
+
+                    <a href="#/definitions/ThumbnailInfo">ThumbnailInfo</a>
+
+
+            </td>
+            <td>optional</td>
+            <td>Metadata about the image referred to in thumbnail_url.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>h</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>w</td>
+            <td>
+
+
+                    integer (int64)
+
+            </td>
+            <td>optional</td>
+            <td>The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.</td>
             <td></td>
         </tr>
 

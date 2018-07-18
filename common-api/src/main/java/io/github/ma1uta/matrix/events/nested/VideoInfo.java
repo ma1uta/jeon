@@ -17,38 +17,36 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Video info.
  */
+@ApiModel(description = "Video info.")
 public class VideoInfo extends FileInfo {
 
     /**
      * The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
+    @ApiModelProperty(name = "h", value = "The intended display height of the image in pixels. This may differ from the"
+        + " intrinsic dimensions of the image file.")
     @JsonProperty("h")
     private Long height;
 
     /**
      * The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
+    @ApiModelProperty(name = "w", value = "The intended display width of the image in pixels. This may differ from the"
+        + " intrinsic dimensions of the image file.")
     @JsonProperty("w")
     private Long width;
 
     /**
      * The duration of the video in milliseconds.
      */
+    @ApiModelProperty("The duration of the video in milliseconds.")
     private Long duration;
-
-    /**
-     * The mimetype of the video e.g. video/mp4.
-     */
-    private String mimetype;
-
-    /**
-     * The size of the video in bytes.
-     */
-    private Long size;
 
     public Long getHeight() {
         return height;
@@ -72,25 +70,5 @@ public class VideoInfo extends FileInfo {
 
     public void setDuration(Long duration) {
         this.duration = duration;
-    }
-
-    @Override
-    public String getMimetype() {
-        return mimetype;
-    }
-
-    @Override
-    public void setMimetype(String mimetype) {
-        this.mimetype = mimetype;
-    }
-
-    @Override
-    public Long getSize() {
-        return size;
-    }
-
-    @Override
-    public void setSize(Long size) {
-        this.size = size;
     }
 }

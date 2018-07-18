@@ -22,9 +22,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Map;
 
 /**
- * Tag request.
+ * TagInfo request.
  */
-@ApiModel(description = "Tag request.")
+@ApiModel(description = "TagInfo request.")
 public class Tags {
 
     /**
