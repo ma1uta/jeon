@@ -42,8 +42,6 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * Profiles.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id213">Specification.</a>
  */
 @Api(value = "Profile", description = "Profiles.")
 @Path("/_matrix/client/r0/profile")
@@ -54,9 +52,9 @@ public interface ProfileApi {
     /**
      * This API sets the given user's display name. You must have permission to set this user's display name, e.g. you need to
      * have their access_token.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user whose display name to set.
@@ -64,8 +62,8 @@ public interface ProfileApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The display name was set.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The display name was set.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "his API sets the given user's display name. You must have permission to set this user's display "
         + "name, e.g. you need to have their access_token.", response = EmptyResponse.class)
@@ -89,8 +87,8 @@ public interface ProfileApi {
      * @param userId          Required. The user whose display name to get.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The display name for this user.
-     *     Status code 404: There is no display name for this user or this user does not exist.
+     * @return <p>Status code 200: The display name for this user.</p>
+     * <p>Status code 404: There is no display name for this user or this user does not exist.</p>
      */
     @ApiOperation(value = "Get the user's display name. This API may be used to fetch the user's own displayname or to "
         + "query the name of other users; either locally or on remote homeservers.", response = DisplayName.class)
@@ -107,9 +105,9 @@ public interface ProfileApi {
     /**
      * This API sets the given user's avatar URL. You must have permission to set this user's avatar URL, e.g. you need to have
      * their access_token.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user whose avatar URL to set.
@@ -117,8 +115,8 @@ public interface ProfileApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The avatar URL was set.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The avatar URL was set.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API sets the given user's avatar URL. You must have permission to set this user's avatar "
         + "URL, e.g. you need to have their access_token.", response = EmptyResponse.class)
@@ -142,8 +140,8 @@ public interface ProfileApi {
      * @param userId          Required. The user whose avatar URL to get.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The avatar URL for this user.
-     *     Status code 404: There is no avatar URL for this user or this user does not exist.
+     * @return <p>Status code 200: The avatar URL for this user.</p>
+     * <p>Status code 404: There is no avatar URL for this user or this user does not exist.</p>
      */
     @ApiOperation(value = "Get the user's avatar URL. This API may be used to fetch the user's own avatar URL or to query "
         + "the URL of other users;  either locally or on remote homeservers.", response = AvatarUrl.class)
@@ -164,13 +162,13 @@ public interface ProfileApi {
      * @param userId          Required. The user whose profile information to get.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The avatar URL for this user.
-     *     Status code 404: There is no profile information for this user or this user does not exist.
+     * @return <p>Status code 200: The avatar URL for this user.</p>
+     * <p>Status code 404: There is no profile information for this user or this user does not exist.</p>
      */
     @ApiOperation(value = "Get the combined profile information for this user. This API may be used to fetch the user's own "
         + "profile information or other users; either locally or on remote homeservers. This API may return keys which are "
         + "not limited to displayname or avatar_url.", response = Profile.class)
-    @ApiResponses({
+    @ApiResponses( {
         @ApiResponse(code = 200, message = "The avatar URL for this user."),
         @ApiResponse(code = 404, message = "There is no profile information for this user or this user does not exist.")
     })

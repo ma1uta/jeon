@@ -38,8 +38,6 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * Client Behaviour.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id424">Specification.</a>
  */
 @Api(value = "ClientConfig", description = "Client Behaviour")
 @Path("/_matrix/client/r0/user")
@@ -50,7 +48,7 @@ public interface ClientConfigApi {
     /**
      * Set some account_data for the client. This config is only visible to the user that set the account_data. The config will be
      * synced to clients in the top-level account_data.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The id of the user to set account_data for. The access token must be authorized to make
@@ -60,7 +58,7 @@ public interface ClientConfigApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The account_data was successfully added.
+     * @return <p>Status code 200: The account_data was successfully added.</p>
      */
     @ApiOperation(value = "Set some account_data for the client.",
         notes = "This config is only visible to the user that set the account_data. The config will be "
@@ -82,7 +80,7 @@ public interface ClientConfigApi {
     /**
      * Set some account_data for the client on a given room. This config is only visible to the user that set the account_data.
      * The config will be synced to clients in the per-room account_data.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The id of the user to set account_data for. The access token must be authorized to make requests for
@@ -93,7 +91,7 @@ public interface ClientConfigApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The account_data was successfully added.
+     * @return <p>Status code 200: The account_data was successfully added.</p>
      */
     @ApiOperation(value = "Set some account_data for the client on a given room.",
         notes = "This config is only visible to the user that set the account_data. The config will be synced to clients in the "

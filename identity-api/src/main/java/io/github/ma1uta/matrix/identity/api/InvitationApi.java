@@ -30,8 +30,6 @@ import javax.ws.rs.core.MediaType;
 /**
  * An identity service can store pending invitations to a user's 3pid, which will be retrieved and can be either notified on or
  * look up when the 3pid is associated with a Matrix user ID.
- *
- * @author ma1uta
  */
 @Path("/_matrix/identity/api/v1")
 public interface InvitationApi {
@@ -46,7 +44,7 @@ public interface InvitationApi {
      * @param sender          The matrix user ID of the inviting user.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return result of the pending invitation.
+     * @return <p>Status code 200: result of the pending invitation.</p>
      */
     @POST
     @Path("/store-invite")

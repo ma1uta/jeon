@@ -24,8 +24,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Message Event.
- * <p/>
+ * <p>
  * This event is sent by the caller when they wish to establish a call.
+ * </p>
  */
 @ApiModel(description = "This event is sent by the caller when they wish to establish a call.")
 public class CallInvite implements EventContent {

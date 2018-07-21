@@ -24,8 +24,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Message Event.
- * <p/>
+ * <p>
  * This event is sent by the callee when they wish to answer the call.
+ * </p>
  */
 @ApiModel(description = "This event is sent by the callee when they wish to answer the call.")
 public class CallAnswer implements EventContent {

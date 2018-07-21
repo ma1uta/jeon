@@ -33,8 +33,6 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Association lookup.
- *
- * @author ma1uta
  */
 @Path("/_matrix/identity/api/v1")
 public interface LookupApi {
@@ -46,7 +44,7 @@ public interface LookupApi {
      * @param address         Required. The address of the 3pid being looked up. See the 3PID Types Appendix.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return The association for that 3pid, or the empty object if no association is known.
+     * @return <p>Status code 200: The association for that 3pid, or the empty object if no association is known.</p>
      */
     @GET
     @Path("/lookup")
@@ -60,7 +58,7 @@ public interface LookupApi {
      * @param request         JSON body.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return A list of known 3PID mappings for the supplied 3PIDs.
+     * @return <p>Status code 200: A list of known 3PID mappings for the supplied 3PIDs.</p>
      */
     @POST
     @Path("/bulk_lookup")

@@ -27,6 +27,9 @@
     <artifactId>client-api</artifactId>
     <version>0.4.1-SNAPSHOT</version>
 
+    <name>Client-Server API</name>
+    <description>Client-Server API</description>
+
     <properties>
         <swagger-maven-plugin-version>3.1.7</swagger-maven-plugin-version>
         <common.api.version>0.4.1-SNAPSHOT</common.api.version>

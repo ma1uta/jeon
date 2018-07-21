@@ -33,8 +33,6 @@ import javax.ws.rs.core.MediaType;
 /**
  * This contains application service APIs which are used by the homeserver. All application services MUST implement these APIs.
  * These APIs are defined below.
- * <p/>
- * <a href="https://matrix.org/docs/spec/application_service/unstable.html#id7">Specification.</a>
  */
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -49,7 +47,7 @@ public interface ApplicationApi {
      * @param request         JSON body request.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The transaction was processed successfully.
+     * @return <p>Status code 200: The transaction was processed successfully.</p>
      */
     @PUT
     @Path("/transactions/{txnId}")
@@ -64,17 +62,14 @@ public interface ApplicationApi {
      * @param roomAlias       Required. The room alias being queried.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The application service indicates that this room alias exists. The application service MUST have
-     *     created a room and associated it with the queried room alias using the client-server API. Additional information
-     *     about the room such as its name and topic can be set before responding.
-     *     <p/>
-     *     Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
-     *     be included in the body of this response.
-     *     <p/>
-     *     Status code 403: The credentials supplied by the homeserver were rejected.
-     *     <p/>
-     *     Status code 404: The application service indicates that this room alias does not exist. Optional error information can
-     *     be included in the body of this response.
+     * @return <p>Status code 200: The application service indicates that this room alias exists. The application service MUST have
+     * created a room and associated it with the queried room alias using the client-server API. Additional information
+     * about the room such as its name and topic can be set before responding.</p>
+     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
+     * be included in the body of this response.</p>
+     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
+     * <p>Status code 404: The application service indicates that this room alias does not exist. Optional error information can
+     * be included in the body of this response.</p>
      */
     @GET
     @Path("/rooms/{roomAlias}")
@@ -89,16 +84,14 @@ public interface ApplicationApi {
      * @param userId          Required. The user ID being queried.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The application service indicates that this user exists. The application service MUST create
-     *     the user using the client-server API.
-     *     <p/>
-     *     Status code 401: The homeserver has not supplied credentials to the application service. Optional error information
-     *     can be included in the body of this response.
-     *     <p/>
-     *     Status code 403: The credentials supplied by the homeserver were rejected.
-     *     <p/>
-     *     Status code 404: The application service indicates that this user does not exist. Optional error information can be
-     *     included in the body of this response.
+     * @return <p>Status code 200: The application service indicates that this user exists. The application service MUST create
+     * the user using the client-server API.</p>
+     * <br>
+     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information
+     * can be included in the body of this response.</p>
+     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
+     * <p>Status code 404: The application service indicates that this user does not exist. Optional error information can be
+     * included in the body of this response.</p>
      */
     @GET
     @Path("/users/{userId}")

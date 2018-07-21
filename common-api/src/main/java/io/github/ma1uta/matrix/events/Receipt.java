@@ -27,8 +27,9 @@ import java.util.Map;
  * A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an event of type m.direct.
  * The content of this event is an object where the keys are the user IDs and values are lists of room ID strings of the 'direct'
  * rooms for that user ID.
- * <p/>
- * Map EVENT_ID -> 'm.read' -> USER_ID -> ts: long
+ * <p>
+ * Map EVENT_ID -&gt; 'm.read' -&gt; USER_ID -&gt; ts: long
+ * </p>
  */
 @ApiModel(description = "A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an"
     + " event of type m.direct. The content of this event is an object where the keys are the user IDs and values are lists"

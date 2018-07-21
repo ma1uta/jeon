@@ -42,7 +42,7 @@ import javax.ws.rs.core.Response;
  * Matrix homeservers use the Federation APIs (also known as server-server APIs) to communicate with each other. Homeservers use
  * these APIs to push messages to each other in real-time, to request historic messages from each other, and to query profile and
  * presence information about users on each other's servers.
- * <p/>
+ * <br>
  * The APIs are implemented using HTTPS GETs and PUTs between each of the servers. These HTTPS requests are strongly authenticated
  * using public key signatures at the TLS transport layer and using public key signatures in HTTP Authorization headers at the HTTP layer.
  */
@@ -53,7 +53,7 @@ public interface FederationApi {
 
     /**
      * For active pushing of messages representing live activity "as it happens".
-     * <p/>
+     * <br>
      * The transaction_id path argument will override any ID given in the JSON body. The destination name will be set to that of the
      * receiving server itself. Each embedded PDU in the transaction body will be processed.
      *
@@ -70,7 +70,7 @@ public interface FederationApi {
 
     /**
      * To fetch all the state of a given room.
-     * <p/>
+     * <br>
      * Retrieves a snapshot of the entire current state of the given room. The response will contain a single Transaction, inside
      * which will be a list of PDUs that encode the state.
      *
@@ -99,7 +99,7 @@ public interface FederationApi {
 
     /**
      * To fetch a particular event.
-     * <p/>
+     * <br>
      * Retrieves a single event. The response will contain a partial Transaction, having just the origin, origin_server_ts and pdus fields;
      * the event will be encoded as the only PDU in the pdus list.
      *
@@ -115,7 +115,7 @@ public interface FederationApi {
 
     /**
      * To backfill events on a given room.
-     * <p/>
+     * <br>
      * Retrieves a sliding-window history of previous PDUs that occurred on the given room. Starting from the PDU ID(s) given in the
      * "v" argument, the PDUs that preceded it are retrieved, up to a total number given by the "limit" argument.
      *
@@ -133,7 +133,7 @@ public interface FederationApi {
 
     /**
      * To stream events all the events.
-     * <p/>
+     * <br>
      * Retrieves all of the transactions later than any version given by the "v" arguments.
      *
      * @param parentId        parent PDU ID.
@@ -149,7 +149,7 @@ public interface FederationApi {
 
     /**
      * To make a query.
-     * <p/>
+     * <br>
      * Performs a single query request on the receiving homeserver. The Query Type part of the path specifies the kind of query being
      * made, and its query arguments have a meaning specific to that kind of query. The response is a JSON-encoded object whose meaning
      * also depends on the kind of query.
@@ -167,7 +167,7 @@ public interface FederationApi {
 
     /**
      * To make a join request.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param context         context (?).
@@ -183,7 +183,7 @@ public interface FederationApi {
 
     /**
      * To send a join request.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param context         context (?).
@@ -199,7 +199,7 @@ public interface FederationApi {
 
     /**
      * To make a leave request.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param context         context (?).
@@ -215,7 +215,7 @@ public interface FederationApi {
 
     /**
      * To send a leave request.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param roomId          room id.
@@ -231,7 +231,7 @@ public interface FederationApi {
 
     /**
      * (?).
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param context         context (?).
@@ -247,7 +247,7 @@ public interface FederationApi {
 
     /**
      * Send invite.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param context         context (?).
@@ -263,7 +263,7 @@ public interface FederationApi {
 
     /**
      * To get 3pid invites of the specified room.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param roomId          room identifier.
@@ -278,7 +278,7 @@ public interface FederationApi {
 
     /**
      * Query a user keys (?).
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param query           query.
@@ -293,7 +293,7 @@ public interface FederationApi {
 
     /**
      * To get user's devices.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param userId          user identifier.
@@ -308,7 +308,7 @@ public interface FederationApi {
 
     /**
      * To claim user ont-time-key.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param servletRequest  servlet request.
@@ -321,7 +321,7 @@ public interface FederationApi {
 
     /**
      * To query auth chains.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param context         context (?).
@@ -338,7 +338,7 @@ public interface FederationApi {
 
     /**
      * To get missing events (?).
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param roomId          room identifier.
@@ -353,10 +353,10 @@ public interface FederationApi {
 
     /**
      * Exchange a bearer token for information about a user.
-     * <p/>
+     * <br>
      * The response format should be compatible with:
      * <a href="http://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse">UserInfoResponse</a>
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param servletRequest  servlet request.
@@ -370,11 +370,11 @@ public interface FederationApi {
 
     /**
      * Fetch the public room list for this server.
-     * <p/>
+     * <br>
      * This API returns information in the same format as /publicRooms on the
      * client API, but will only ever include local public rooms and hence is
      * intended for consumption by other home servers.
-     * <p/>
+     * <br>
      * !!! Not described in spec.
      *
      * @param limit                limit retrieved rooms.

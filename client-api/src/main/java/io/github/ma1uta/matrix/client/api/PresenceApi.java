@@ -50,23 +50,21 @@ import javax.ws.rs.core.SecurityContext;
  * <li>Whether a given client considers the user to be currently idle</li>
  * <li>Arbitrary information about the user's current status (e.g. "in a meeting").</li>
  * </ul>
- * <p/>
+ * <br>
  * This information is collated from both per-device (online, idle, last_active) and per-user (status) data, aggregated
  * by the user's homeserver and transmitted as an m.presence event. This is one of the few events which are sent outside
  * the context of a room. Presence events are sent to all users who subscribe to this user's presence through a presence
  * list or by sharing membership of a room.
- * <p/>
+ * <br>
  * A presence list is a list of user IDs whose presence the user wants to follow. To be added to this list, the user being
  * added must be invited by the list owner who must accept the invitation.
- * <p/>
+ * <br>
  * User's presence state is represented by the presence key, which is an enum of one of the following:
  * <ul>
  * <li>online : The default state when the user is connected to an event stream.</li>
  * <li>unavailable : The user is not reachable at this time e.g. they are idle.</li>
  * <li>offline : The user is not connected to an event stream or is explicitly suppressing their profile information from being sent.</li>
  * </ul>
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id295">Specification.</a>
  */
 @Api(value = "Presence", description = "Each user has the concept of presence information.")
 @Path("/_matrix/client/r0/presence")
@@ -78,9 +76,9 @@ public interface PresenceApi {
      * This API sets the given user's presence state. When setting the status, the activity time is updated to reflect
      * that activity; the client does not need to specify the last_active_ago field. You cannot set the presence state of
      * another user.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user whose presence state to update.
@@ -88,8 +86,8 @@ public interface PresenceApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The new presence state was set.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The new presence state was set.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API sets the given user's presence state. When setting the status, the activity time is updated to "
         + "reflect that activity; the client does not need to specify the last_active_ago field. You cannot set the presence state of "
@@ -113,9 +111,10 @@ public interface PresenceApi {
      * @param userId          Required. The user whose presence state to get.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The presence state for this user.
-     *     Status code 403: You are not allowed to see this user's presence status.
-     *     Status code 404: There is no presence state for this user. This user may not exist or isn't exposing presence information to you.
+     * @return <p>Status code 200: The presence state for this user.</p>
+     * <p>Status code 403: You are not allowed to see this user's presence status.</p>
+     * <p>Status code 404: There is no presence state for this user. This user may not exist or isn't exposing presence information
+     * to you.</p>
      */
     @ApiOperation(value = "Get the given user's presence state.", response = PresenceStatus.class)
     @ApiResponses( {
@@ -132,9 +131,9 @@ public interface PresenceApi {
 
     /**
      * Adds or removes users from this presence list.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user whose presence list is being modified.
@@ -142,8 +141,8 @@ public interface PresenceApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The list was updated.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The list was updated.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Adds or removes users from this presence list.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -165,7 +164,7 @@ public interface PresenceApi {
      * @param userId          Required. The user whose presence list should be retrieved.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: A list of presence events for this list.
+     * @return <p>Status code 200: A list of presence events for this list.</p>
      */
     @ApiOperation(value = "Retrieve a list of presence events for every user on this list.", response = List.class)
     @ApiResponses( {

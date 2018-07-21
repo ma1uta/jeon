@@ -31,8 +31,6 @@ import javax.ws.rs.core.MediaType;
 /**
  * This describes the format used by "HTTP" pushers to send notifications of events to Push Gateways. If the endpoint returns an HTTP
  * error code, the homeserver SHOULD retry for a reasonable amount of time using exponential backoff.
- * <p/>
- * <a href="https://matrix.org/docs/spec/push_gateway/unstable.html#id3">Specification.</a>
  */
 @Path("/_matrix/push/r0")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -44,19 +42,19 @@ public interface PushApi {
      * a user has. In the former case it will contain selected information about the event. In either case it may contain numeric
      * counts of the number of unread events of different types the user has. The counts may be sent along with a notification about
      * an event or by themselves.
-     * <p/>
+     * <br>
      * Notifications about a particular event will normally cause the user to be alerted in some way. It is therefore necessary to
      * perform duplicate suppression for such notifications using the event_id field to avoid retries of this HTTP API causing
      * duplicate alerts. The operation of updating counts of unread notifications should be idempotent and therefore do not require
      * duplicate suppression.
-     * <p/>
+     * <br>
      * Notifications are sent to the URL configured when the pusher is created. This means that the HTTP path may be different
      * depending on the push gateway.
      *
      * @param notification    notification.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: A list of rejected push keys.
+     * @return <p>Status code 200: A list of rejected push keys.</p>
      */
     @POST
     @Path("/notify")

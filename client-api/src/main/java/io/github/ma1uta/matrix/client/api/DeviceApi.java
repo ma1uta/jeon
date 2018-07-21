@@ -46,8 +46,6 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * Clients that implement this module should offer the user a list of registered devices, as well as the means to update their
  * display names. Clients should also allow users to delete disused devices.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id323">Specification.</a>
  */
 @Api(value = "Device", description = "Clients that implement this module should offer the user a list of registered devices, as well "
     + "as the means to update their display names. Clients should also allow users to delete disused devices.")
@@ -58,13 +56,13 @@ public interface DeviceApi {
 
     /**
      * Gets information about all devices for the current user.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return A list of all registered devices for this user.
+     * @return <p>Status code 200: A list of all registered devices for this user.</p>
      */
     @ApiOperation(value = "Gets information about all devices for the current user.", response = DevicesResponse.class)
     @ApiResponses( {
@@ -78,13 +76,15 @@ public interface DeviceApi {
 
     /**
      * Gets information on a single device, by device id.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param deviceId        Required. The device to retrieve.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: Device information.
-     *     Status code 404: The current user has no device with the given ID.
+     * @return <p>Status code 200: Device information.</p>
+     * <p>Status code 404: The current user has no device with the given ID.</p>
      */
     @ApiOperation(value = "Gets information on a single device, by device id.", response = Device.class)
     @ApiResponses( {
@@ -100,7 +100,7 @@ public interface DeviceApi {
 
     /**
      * Updates the metadata on the given device.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param deviceId            Required. The device to update.
@@ -108,8 +108,8 @@ public interface DeviceApi {
      * @param servletRequest      servlet request.
      * @param servletResponse     servlet response.
      * @param securityContext     security context.
-     * @return Status code 200: The device was successfully updated.
-     *     Status code 404: The current user has no device with the given ID.
+     * @return <p>Status code 200: The device was successfully updated.</p>
+     * <p>Status code 404: The current user has no device with the given ID.</p>
      */
     @ApiOperation(value = "Updates the metadata on the given device.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -127,9 +127,9 @@ public interface DeviceApi {
 
     /**
      * This API endpoint uses the User-Interactive Authentication API.
-     * <p/>
+     * <br>
      * Deletes the given device, and invalidates any access token associated with it.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param deviceId            Required. The device to delete.
@@ -137,8 +137,8 @@ public interface DeviceApi {
      * @param servletRequest      servlet request.
      * @param servletResponse     servlet response.
      * @param securityContext     security context.
-     * @return Status code 200: The device was successfully removed, or had been removed previously.
-     *     Status code 401: The homeserver requires additional authentication information.
+     * @return <p>Status code 200: The device was successfully removed, or had been removed previously.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
      */
     @ApiOperation(value = "Deletes the given device, and invalidates any access token associated with it.",
         notes = "This API endpoint uses the User-Interactive Authentication API.", response = EmptyResponse.class)
@@ -157,17 +157,17 @@ public interface DeviceApi {
 
     /**
      * This API endpoint uses the User-Interactive Authentication API.
-     * <p/>
+     * <br>
      * Deletes the given devices, and invalidates any access token associated with them.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param devicesDeleteRequest JSON body request.
      * @param servletRequest       servlet request.
      * @param servletResponse      servlet response.
      * @param securityContext      security context.
-     * @return Status code 200: The devices were successfully removed, or had been removed previously.
-     *     Status code 401: The homeserver requires additional authentication information.
+     * @return <p>Status code 200: The devices were successfully removed, or had been removed previously.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
      */
     @ApiOperation(value = "Deletes the given devices, and invalidates any access token associated with them.",
         notes = "This API endpoint uses the User-Interactive Authentication API.", response = EmptyResponse.class)

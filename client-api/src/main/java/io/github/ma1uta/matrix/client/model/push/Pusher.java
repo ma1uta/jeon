@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Pusher.
- * <p/>
+ * <br>
  * A pusher is a worker on the homeserver that manages the sending of HTTP notifications for a user.
  * A user can have multiple pushers: one per device.
  */

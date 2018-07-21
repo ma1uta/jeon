@@ -38,7 +38,7 @@ public interface VersionApi {
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The implementation name and version of this homeserver.
+     * @return <p>Status code 200: The implementation name and version of this homeserver.</p>
      */
     @GET
     @Path("/version")

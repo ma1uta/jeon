@@ -27,6 +27,9 @@
     <artifactId>application-api</artifactId>
     <version>0.4.1-SNAPSHOT</version>
 
+    <name>Application API</name>
+    <description>Application API</description>
+
     <properties>
         <common.api.version>0.4.1-SNAPSHOT</common.api.version>
     </properties>

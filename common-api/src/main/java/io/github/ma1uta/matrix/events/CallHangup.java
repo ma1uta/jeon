@@ -23,9 +23,10 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Message Event.
- * <p/>
+ * <p>
  * Sent by either party to signal their termination of the call. This can be sent either once the call has has been
  * established or before to abort the call.
+ * </p>
  */
 @ApiModel(description = "Sent by either party to signal their termination of the call. This can be sent either once the call has has been"
     + " established or before to abort the call.")

@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * These events are broadcast from one homeserver to any others that have joined the same room (identified by Room ID).
  * They are persisted in long-term storage and record the history of messages and state for a room.
- * <p/>
+ * <br>
  * Like email, it is the responsibility of the originating server of a PDU to deliver that event to its recipient servers.
  * However PDUs are signed using the originating server's private key so that it is possible to deliver them through third-party servers.
  */

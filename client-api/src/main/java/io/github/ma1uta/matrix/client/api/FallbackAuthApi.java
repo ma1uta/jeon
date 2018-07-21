@@ -34,8 +34,6 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * If a client does not recognize any or all login flows it can use the fallback login API.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#login-fallback">Specification.</a>
  */
 @Api(value = "FallbackAuthentication", description = "If a client does not recognize any or all login flows it can use the "
     + "fallback login API.")

@@ -27,9 +27,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Checks that an Identity server is available at this API endpopint.
- *
- * @author ma1uta
+ * Checks that an Identity server is available at this API endpoint.
  */
 @Path("/_matrix/identity/api/v1")
 @Produces(MediaType.APPLICATION_JSON)
@@ -37,12 +35,12 @@ public interface StatusApi {
 
     /**
      * To discover that an Identity server is available at a specific URL, this endpoint can be queried and will return an empty object.
-     * <p/>
+     * <br>
      * This is primarly used for auto-discovery and health check purposes by entities acting as a client for the Identity server.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code {@code 200} if an Identity server is ready to serve requests.
+     * @return <p>Status code 200: if an Identity server is ready to serve requests.</p>
      */
     @GET
     @Path("")

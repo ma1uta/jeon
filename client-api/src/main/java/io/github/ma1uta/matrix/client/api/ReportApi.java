@@ -39,7 +39,7 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * Users may encounter content which they find inappropriate and should be able to report it to the server administrators or room
  * moderators for review. This module defines a way for users to report content.
- * <p/>
+ * <br>
  * Content is reported based upon a negative score, where -100 is "most offensive" and 0 is "inoffensive".
  */
 @Api(value = "Report", description = "Users may encounter content which they find inappropriate and should be able to report it to "
@@ -51,7 +51,7 @@ public interface ReportApi {
 
     /**
      * Reports an event as inappropriate to the server, which may then notify the appropriate people.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room in which the event being reported is located.
@@ -60,7 +60,7 @@ public interface ReportApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The event has been reported successfully.
+     * @return <p>Status code 200: The event has been reported successfully.</p>
      */
     @ApiOperation(value = "Reports an event as inappropriate to the server, which may then notify the appropriate people.",
         response = EmptyResponse.class)

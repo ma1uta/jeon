@@ -40,8 +40,6 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * Filters can be created on the server and can be passed as as a parameter to APIs which return events. These filters alter the
  * data returned from those APIs. Not all APIs accept filters.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#filtering">Specification.</a>
  */
 @Api(value = "Filter", description = "Filters can be created on the server and can be passed as as a parameter to APIs which return "
     + "events. These filters alter the data returned from those APIs. Not all APIs accept filters.")
@@ -53,7 +51,7 @@ public interface FilterApi {
     /**
      * Uploads a new filter definition to the homeserver. Returns a filter ID that may be used in future requests to restrict which
      * events are returned to the client.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The id of the user uploading the filter. The access token must be authorized to make requests for
@@ -62,7 +60,7 @@ public interface FilterApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The filter was created.
+     * @return <p>Status code 200: The filter was created.</p>
      */
     @ApiOperation(value = "Ploads a new filter definition to the homeserver.",
         notes = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client.",
@@ -81,7 +79,7 @@ public interface FilterApi {
 
     /**
      * Download a filter.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user ID to download a filter for.
@@ -89,8 +87,8 @@ public interface FilterApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: "The filter defintion"
-     *     Status code 404: Unknown filter.
+     * @return <p>Status code 200: "The filter defintion".</p>
+     * <p>Status code 404: Unknown filter.</p>
      */
     @ApiOperation(value = "Download a filter.", response = FilterData.class)
     @ApiResponses( {

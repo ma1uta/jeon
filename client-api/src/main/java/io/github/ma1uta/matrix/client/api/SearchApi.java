@@ -41,8 +41,6 @@ import javax.ws.rs.core.SecurityContext;
  * The search API allows clients to perform full text search across events in all rooms that the user has been in, including those
  * that they have left. Only events that the user is allowed to see will be searched, e.g. it won't include events in rooms that
  * happened after you left.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id395">Specification.</a>
  */
 @Api(value = "Search", description = "The search API allows clients to perform full text search across events in all rooms that "
     + "the user has been in, including those that they have left. Only events that the user is allowed to see will be searched, "
@@ -54,9 +52,9 @@ public interface SearchApi {
 
     /**
      * Performs a full text search across different categories.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param nextBatch       The point to return events from. If given, this should be a next_batch result from a previous call
@@ -65,9 +63,9 @@ public interface SearchApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: Results of the search.
-     *     Status code 400: Part of the request was invalid.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: Results of the search.</p>
+     * <p>Status code 400: Part of the request was invalid.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Performs a full text search across different categories.", response = SearchResponse.class)
     @ApiResponses( {

@@ -24,8 +24,6 @@ import java.util.Map;
 
 /**
  * A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.
- * <p/>
- * Map
  */
 @ApiModel(description = "A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.")
 public class IgnoredUserList implements EventContent {

@@ -32,15 +32,11 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Gets the versions of the specification supported by the server.
- * <p/>
+ * <br>
  * Values will take the form rX.Y.Z.
- * <p/>
+ * <br>
  * Only the latest Z value will be reported for each supported X.Y value.
  * i.e. if the server implements r0.0.0, r0.0.1, and r1.2.0, it will report r0.0.1 and r1.2.0.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#get-matrix-client-versions">Specification.</a>
- *
- * @author ma1uta
  */
 @Api(value = "Version", description = "Gets the versions of the specification supported by the server.")
 @Path("/_matrix/client/versions")
@@ -52,7 +48,7 @@ public interface VersionApi {
      *
      * @param servletRequest  servlet request
      * @param servletResponse servlet response
-     * @return Status code 200: The versions supported by the server.
+     * @return <p>Status code 200: The versions supported by the server.</p>
      */
     @ApiOperation(value = "Gets the versions of the specification supported by the server.", response = VersionsResponse.class)
     @ApiResponses({

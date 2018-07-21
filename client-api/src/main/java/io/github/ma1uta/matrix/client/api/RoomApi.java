@@ -52,8 +52,6 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * Rooms apis.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#rooms">Specification.</a>
  */
 @Api(value = "Room", description = "Rooms api.")
 @Path("/_matrix/client/r0")
@@ -106,7 +104,7 @@ public interface RoomApi {
 
     /**
      * Create a new room with various configuration options.
-     * <p/>
+     * <br>
      * The server MUST apply the normal state resolution rules when creating the new room, including checking power levels for each event.
      * It MUST apply the events implied by the request in the following order:
      * <ol>
@@ -116,35 +114,34 @@ public interface RoomApi {
      * <li>Events implied by name and topic.</li>
      * <li>Invite events implied by invite and invite_3pid.</li>
      * </ol>
-     * <p/>
      * The available presets do the following with respect to room state:
-     * <table>
-     *     <tr>
-     *         <th>Preset</th>
-     *         <th>join_rules</th>
-     *         <th>history_visibility</th>
-     *         <th>guest_access</th>
-     *         <th>Other</th>
-     *     </tr>
-     *     <tr>
-     *         <td>private_chat</td>
-     *         <td>invite</td>
-     *         <td>shared</td>
-     *         <td>can_join</td>
-     *     </tr>
-     *     <tr>
-     *         <td>trusted_private_chat</td>
-     *         <td>invite</td>
-     *         <td>shared</td>
-     *         <td>can_join</td>
-     *         <td>All invitees are given the same power level as the room creator.</td>
-     *     </tr>
-     *     <tr>
-     *         <td>public_chat</td>
-     *         <td>public</td>
-     *         <td>shared</td>
-     *         <td>forbidden</td>
-     *     </tr>
+     * <table summary="Presets">
+     * <tr>
+     * <th>Preset</th>
+     * <th>join_rules</th>
+     * <th>history_visibility</th>
+     * <th>guest_access</th>
+     * <th>Other</th>
+     * </tr>
+     * <tr>
+     * <td>private_chat</td>
+     * <td>invite</td>
+     * <td>shared</td>
+     * <td>can_join</td>
+     * </tr>
+     * <tr>
+     * <td>trusted_private_chat</td>
+     * <td>invite</td>
+     * <td>shared</td>
+     * <td>can_join</td>
+     * <td>All invitees are given the same power level as the room creator.</td>
+     * </tr>
+     * <tr>
+     * <td>public_chat</td>
+     * <td>public</td>
+     * <td>shared</td>
+     * <td>forbidden</td>
+     * </tr>
      * </table>
      * <b>Requires auth</b>: Yes.
      *
@@ -152,9 +149,9 @@ public interface RoomApi {
      * @param servletRequest    servlet request.
      * @param servletResponse   servlet response.
      * @param securityContext   security context.
-     * @return Status code 200: Information about the newly created room.
-     *     Status code 400: The request is invalid. A meaningful errcode and description error text will be returned.
-     *     Example reasons for rejection include:
+     * @return <p>Status code 200: Information about the newly created room.</p>
+     * <p>Status code 400: The request is invalid. A meaningful errcode and description error text will be returned.</p>
+     * <p>Example reasons for rejection include:</p>
      * <ul>
      * <li>The request body is malformed (errcode set to M_BAD_JSON or M_NOT_JSON).</li>
      * <li>The room alias specified is already taken (errcode set to M_ROOM_IN_USE).</li>
@@ -178,7 +175,7 @@ public interface RoomApi {
 
     /**
      * Create a new mapping from room alias to room ID.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomAlias       Required. The room alias to set.
@@ -186,8 +183,8 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The mapping was created.
-     *     Status code 409: A room alias with that name already exists.
+     * @return <p>Status code 200: The mapping was created.</p>
+     * <p>Status code 409: A room alias with that name already exists.</p>
      */
     @ApiOperation(value = "Create a new mapping from room alias to room ID.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -204,15 +201,15 @@ public interface RoomApi {
 
     /**
      * Requests that the server resolve a room alias to a room ID.
-     * <p/>
+     * <br>
      * The server will use the federation API to resolve the alias if the domain part of the alias does not correspond to the server's
      * own domain.
      *
      * @param roomAlias       Required. The room alias.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The room ID and other information for this alias.
-     *     Status code 404: There is no mapped room ID for this room alias.
+     * @return <p>Status code 200: The room ID and other information for this alias.</p>
+     * <p>Status code 404: There is no mapped room ID for this room alias.</p>
      */
     @ApiOperation(value = "Requests that the server resolve a room alias to a room ID. The server will use the federation API to "
         + "resolve the alias if the domain part of the alias does not correspond to the server's own domain.",
@@ -229,17 +226,17 @@ public interface RoomApi {
 
     /**
      * Remove a mapping of room alias to room ID.
-     * <p/>
+     * <br>
      * Servers may choose to implement additional access control checks here, for instance that room aliases can only be deleted
      * by their creator or a server administrator.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomAlias       Required. The room alias to remove.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The mapping was deleted.
+     * @return <p>Status code 200: The mapping was deleted.</p>
      */
     @ApiOperation(value = "Remove a mapping of room alias to room ID.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -254,13 +251,13 @@ public interface RoomApi {
 
     /**
      * This API returns a list of the user's current rooms.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: A list of the rooms the user is in.
+     * @return <p>Status code 200: A list of the rooms the user is in.</p>
      */
     @ApiOperation(value = "This API returns a list of the user's current rooms.", response = JoinedRoomsResponse.class)
     @ApiResponses( {
@@ -275,16 +272,16 @@ public interface RoomApi {
     /**
      * Note that there are two forms of this API, which are documented separately. This version of the API requires that the inviter
      * knows the Matrix identifier of the invitee. The other is documented in the third party invites section.
-     * <p/>
+     * <br>
      * This API invites a user to participate in a particular room. They do not start participating in the room until they actually
      * join the room.
-     * <p/>
+     * <br>
      * Only users currently in a particular room can invite other users to join that room.
-     * <p/>
+     * <br>
      * If the user was invited to the room, the homeserver will append a m.room.member event to the room.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room identifier (not alias) to which to invite the user.
@@ -292,16 +289,16 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The user has been invited to join the room.
-     *     Status code 403: You do not have permission to invite the user to the room. A meaningful errcode and description error text
-     *     will be returned. Example reasons for rejections are:
+     * @return <p>Status code 200: The user has been invited to join the room.</p>
+     * <p>Status code 403: You do not have permission to invite the user to the room. A meaningful errcode and description error text
+     * will be returned. Example reasons for rejections are:</p>
      * <ul>
      * <li>The invitee has been banned from the room.</li>
      * <li>The invitee is already a member of the room.</li>
      * <li>The inviter is not currently in the room.</li>
      * <li>The inviter's power level is insufficient to invite users to the room.</li>
      * </ul>
-     *     Status code 429: This request was rate-limited.
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API invites a user to participate in a particular room. They do not start participating in the "
         + "room until they actually join the room.", response = EmptyResponse.class)
@@ -323,18 +320,18 @@ public interface RoomApi {
 
     /**
      * Note that this API requires a room ID, not alias. /join/{roomIdOrAlias} exists if you have a room alias.
-     * <p/>
+     * <br>
      * This API starts a user participating in a particular room, if that user is allowed to participate in that room.
      * After this call, the client is allowed to see all current state events in the room, and all subsequent events associated
      * with the room until the user leaves the room.
-     * <p/>
+     * <br>
      * After a user has joined a room, the room will appear as an entry in the response of the /initialSync and /sync APIs.
-     * <p/>
+     * <br>
      * If a third_party_signed was supplied, the homeserver must verify that it matches a pending m.room.third_party_invite
      * event in the room, and perform key validity checking if required by the event.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room identifier (not alias) to join.
@@ -342,14 +339,15 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The room has been joined. The joined room ID must be returned in the room_id field.
-     *     Status code 403: You do not have permission to join the room. A meaningful errcode and description error text will be returned.
-     *     Example reasons for rejection are:
+     * @return <p>Status code 200: The room has been joined. The joined room ID must be returned in the room_id field.</p>
+     * <p>Status code 403: You do not have permission to join the room. A meaningful errcode and description error text will
+     * be returned.</p>
+     * <p>Example reasons for rejection are:</p>
      * <ul>
      * <li>The room is invite-only and the user was not invited.</li>
      * <li>The user has been banned from the room.</li>
      * </ul>
-     *     Status code 429:This request was rate-limited.
+     * <p>Status code 429:This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API starts a user participating in a particular room, if that user is allowed to participate in "
         + "that room. After this call, the client is allowed to see all current state events in the room, and all subsequent "
@@ -371,18 +369,18 @@ public interface RoomApi {
 
     /**
      * Note that this API takes either a room ID or alias, unlike /room/{roomId}/join.
-     * <p/>
+     * <br>
      * This API starts a user participating in a particular room, if that user is allowed to participate in that room.
      * After this call, the client is allowed to see all current state events in the room, and all subsequent events associated
      * with the room until the user leaves the room.
-     * <p/>
+     * <br>
      * After a user has joined a room, the room will appear as an entry in the response of the /initialSync and /sync APIs.
-     * <p/>
+     * <br>
      * If a third_party_signed was supplied, the homeserver must verify that it matches a pending m.room.third_party_invite
      * event in the room, and perform key validity checking if required by the event.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomIdOrAlias   Required. The room identifier or alias to join.
@@ -391,15 +389,15 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The room has been joined. The joined room ID must be returned in the room_id field.
-     *     Status code 403:
-     *     You do not have permission to join the room. A meaningful errcode and description error text will be returned.
-     *     Example reasons for rejection are:
+     * @return <p>Status code 200: The room has been joined. The joined room ID must be returned in the room_id field.</p>
+     * <p>Status code 403: You do not have permission to join the room. A meaningful errcode and description error text will
+     * be returned.</p>
+     * <p>Example reasons for rejection are:</p>
      * <ul>
      * <li>The room is invite-only and the user was not invited.</li>
      * <li>The user has been banned from the room.</li>
      * </ul>
-     *     Status code 429: This request was rate-limited.
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API starts a user participating in a particular room, if that user is allowed to participate in "
         + "that room. After this call, the client is allowed to see all current state events in the room, and all subsequent "
@@ -423,24 +421,24 @@ public interface RoomApi {
 
     /**
      * This API stops a user participating in a particular room.
-     * <p/>
+     * <br>
      * If the user was already in the room, they will no longer be able to see new events in the room.
      * If the room requires an invite to join, they will need to be re-invited before they can re-join.
-     * <p/>
+     * <br>
      * If the user was invited to the room, but had not joined, this call serves to reject the invite.
-     * <p/>
+     * <br>
      * The user will still be allowed to retrieve history from the room which they were previously allowed to see.
-     * <p/>
+     * <br>
      * Rate-limited: Yes.
-     * <p/>
+     * <br>
      * Requires auth: Yes.
      *
      * @param roomId          Required. The room identifier to leave.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The room has been left.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The room has been left.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API stops a user participating in a particular room. If the user was already in the room, "
         + "they will no longer be able to see new events in the room. If the room requires an invite to join, they will need "
@@ -461,24 +459,24 @@ public interface RoomApi {
 
     /**
      * This API stops a user remembering about a particular room.
-     * <p/>
+     * <br>
      * In general, history is a first class citizen in Matrix. After this API is called, however, a user will no longer be
      * able to retrieve history for this room. If all users on a homeserver forget a room, the room is eligible for deletion
      * from that homeserver.
-     * <p/>
+     * <br>
      * If the user is currently joined to the room, they must leave the room before calling this API.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room identifier to forget.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The room has been forgotten.
-     *     Status code 400: The user has not left the room.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The room has been forgotten.</p>
+     * <p>Status code 400: The user has not left the room.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API stops a user remembering about a particular room. In general, history is a first class "
         + "citizen in Matrix. After this API is called, however, a user will no longer be able to retrieve history for this "
@@ -499,13 +497,13 @@ public interface RoomApi {
 
     /**
      * Kick a user from the room.
-     * <p/>
+     * <br>
      * The caller must have the required power level in order to perform this operation.
-     * <p/>
+     * <br>
      * Kicking a user adjusts the target member's membership state to be ``leave`` with an
      * optional ``reason``. Like with other membership changes, a user can directly adjust
      * the target member's state by making a request to ``/rooms/&lt;room id&gt;/state/m.room.member/&lt;user id&gt;``.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room identifier (not alias) from which the user should be kicked.
@@ -513,9 +511,9 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The user has been kicked from the room.
-     *     Status code 403: You do not have permission to kick the user from the room. A meaningful errcode and description error
-     *     text will be returned. Example reasons for rejections are:
+     * @return <p>Status code 200: The user has been kicked from the room.</p>
+     * <p>Status code 403: You do not have permission to kick the user from the room. A meaningful errcode and description error
+     * text will be returned. Example reasons for rejections are:</p>
      * <ul>
      * <li>The kicker is not currently in the room.</li>
      * <li>The kickee is not currently in the room.</li>
@@ -539,11 +537,11 @@ public interface RoomApi {
 
     /**
      * Ban a user in the room. If the user is currently in the room, also kick them.
-     * <p/>
+     * <br>
      * When a user is banned from a room, they may not join it or be invited to it until they are unbanned.
-     * <p/>
+     * <br>
      * The caller must have the required power level in order to perform this operation.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room identifier (not alias) from which the user should be banned.
@@ -551,9 +549,9 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The user has been kicked and banned from the room.
-     *     Status code 403: You do not have permission to ban the user from the room. A meaningful errcode and description error
-     *     text will be returned. Example reasons for rejections are:
+     * @return <p>Status code 200: The user has been kicked and banned from the room.</p>
+     * <p>Status code 403: You do not have permission to ban the user from the room. A meaningful errcode and description error
+     * text will be returned. Example reasons for rejections are:</p>
      * <ul>
      * <li>The banner is not currently in the room.</li>
      * <li>The banner's power level is insufficient to ban users from the room.</li>
@@ -577,9 +575,9 @@ public interface RoomApi {
     /**
      * Unban a user from the room. This allows them to be invited to the room, and join if they would otherwise be allowed to join
      * according to its join rules.
-     * <p/>
+     * <br>
      * The caller must have the required power level in order to perform this operation.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room identifier (not alias) from which the user should be unbanned.
@@ -587,9 +585,9 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The user has been unbanned from the room.
-     *     Status code 403: You do not have permission to unban the user from the room. A meaningful errcode and description error
-     *     text will be returned. Example reasons for rejections are:
+     * @return <p>Status code 200: The user has been unbanned from the room.</p>
+     * <p>Status code 403: You do not have permission to unban the user from the room. A meaningful errcode and description error
+     * text will be returned. Example reasons for rejections are:</p>
      * <ul>
      * <li>The unbanner's power level is insufficient to unban users from the room.</li>
      * </ul>
@@ -616,8 +614,8 @@ public interface RoomApi {
      * @param roomId          Required. The room ID.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The visibility of the room in the directory
-     *     Status code 404: The room is not known to the server
+     * @return <p>Status code 200: The visibility of the room in the directory.</p>
+     * <p>Status code 404: The room is not known to the server.</p>
      */
     @ApiOperation(value = "Gets the visibility of a given room on the server's public room directory.", response = RoomVisibility.class)
     @ApiResponses( {
@@ -631,10 +629,10 @@ public interface RoomApi {
 
     /**
      * Sets the visibility of a given room in the server's public room directory.
-     * <p/>
+     * <br>
      * Servers may choose to implement additional access control checks here, for instance that room visibility can only be
      * changed by the room creator or a server administrator.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room ID.
@@ -642,8 +640,8 @@ public interface RoomApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The visibility was updated, or no change was needed.
-     *     Status code 404: The room is not known to the server.
+     * @return <p>Status code 200: The visibility was updated, or no change was needed.</p>
+     * <p>Status code 404: The room is not known to the server.</p>
      */
     @ApiOperation(value = "Sets the visibility of a given room in the server's public room directory.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -660,7 +658,7 @@ public interface RoomApi {
 
     /**
      * Lists the public rooms on the server.
-     * <p/>
+     * <br>
      * This API returns paginated responses. The rooms are ordered by the number of joined members, with the largest rooms first.
      *
      * @param limit           Limit the number of results returned.
@@ -669,7 +667,7 @@ public interface RoomApi {
      * @param server          The server to fetch the public room lists from. Defaults to the local server.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: A list of the rooms on the server.
+     * @return <p>Status code 200: A list of the rooms on the server.</p>
      */
     @ApiOperation(value = "Lists the public rooms on the server. This API returns paginated responses. The rooms are ordered "
         + "by the number of joined members, with the largest rooms first.", response = PublicRoomsResponse.class)
@@ -688,9 +686,9 @@ public interface RoomApi {
 
     /**
      * Lists the public rooms on the server, with optional filter.
-     * <p/>
+     * <br>
      * This API returns paginated responses. The rooms are ordered by the number of joined members, with the largest rooms first.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param server             The server to fetch the public room lists from. Defaults to the local server.
@@ -698,7 +696,7 @@ public interface RoomApi {
      * @param servletRequest     servlet request.
      * @param servletResponse    servlet response.
      * @param securityContext    security context.
-     * @return Status code 200: A list of the rooms on the server.
+     * @return <p>Status code 200: A list of the rooms on the server.</p>
      */
     @ApiOperation(value = "Lists the public rooms on the server, with optional filter. This API returns paginated responses. "
         + "The rooms are ordered by the number of joined members, with the largest rooms first.", response = PublicRoomsResponse.class)

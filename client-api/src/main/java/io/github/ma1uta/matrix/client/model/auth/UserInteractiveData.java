@@ -22,10 +22,8 @@ import io.github.ma1uta.matrix.client.model.account.AuthenticationData;
  * In the REST API described in this specification, authentication works by the client and server exchanging JSON dictionaries.
  * The server indicates what authentication data it requires via the body of an HTTP 401 response, and the client submits that
  * authentication data via the auth request parameter.
- * <p/>
+ * <br>
  * Indicate that this object need user interactive session.
- *
- * @author ma1uta
  */
 public abstract class UserInteractiveData {
 

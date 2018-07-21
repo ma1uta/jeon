@@ -55,8 +55,9 @@ public abstract class RoomMessage implements EventContent {
 
     /**
      * Message type.
-     * <p/>
+     * <p>
      * Read-only.
+     * </p>
      *
      * @return message type.
      */

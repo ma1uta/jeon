@@ -32,8 +32,6 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Checking non-published 3pid ownership.
- *
- * @author ma1uta.
  */
 @Path("/_matrix/identity/api/v1/3pid")
 public interface ValidationApi {
@@ -45,7 +43,7 @@ public interface ValidationApi {
      * @param clientSecret    client secret from the requestToken call.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return validation data.
+     * @return <p>Status code 200: validation data.</p>
      */
     @GET
     @Path("/getValidated3pid")
@@ -61,7 +59,7 @@ public interface ValidationApi {
      * @param mxid            matrix id.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return publish result.
+     * @return <p>Status code 200: publish result.</p>
      */
     @POST
     @Path("/bind")

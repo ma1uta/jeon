@@ -24,7 +24,7 @@ import java.util.List;
  * The transfer of EDUs and PDUs between homeservers is performed by an exchange of Transaction messages, which are encoded as
  * JSON objects, passed over an HTTP PUT request. A Transaction is meaningful only to the pair of homeservers that exchanged it;
  * they are not globally-meaningful.
- * <p/>
+ * <br>
  * Each transaction has:
  * <ul>
  * <li>An opaque transaction ID, unique among transactions from the same origin.</li>

@@ -21,7 +21,7 @@ import io.github.ma1uta.matrix.Signed;
 
 /**
  * Invitation.
- * <p/>
+ * <br>
  * Sends when the association between mxid and pair medium-address is validated.
  */
 public class Invite {

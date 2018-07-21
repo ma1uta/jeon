@@ -4330,36 +4330,35 @@
       "properties" : {
         "start" : {
           "type" : "string",
-          "description" : "A token that can be used to paginate backwards with."
+          "description" : "Pagination token for the start of the chunk."
         },
         "end" : {
           "type" : "string",
-          "description" : "A token that can be used to paginate forwards with."
+          "description" : "Pagination token for the end of the chunk."
         },
-        "event" : {
-          "description" : "Details of the requested event.",
-          "$ref" : "#/definitions/Event"
-        },
-        "state" : {
-          "description" : "The state of the room at the last event returned.",
-          "$ref" : "#/definitions/Event"
+        "profile_info" : {
+          "type" : "object",
+          "description" : "The historic profile information of the users that sent the events returned.",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/Profile"
+          }
         },
         "events_before" : {
           "type" : "array",
-          "description" : "A list of room events that happened just before the requested event, in reverse-chronological order.",
+          "description" : "Events just before the result.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         },
         "events_after" : {
           "type" : "array",
-          "description" : "A list of room events that happened just after the requested event, in chronological order.",
+          "description" : "Events just after the result.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         }
       },
-      "description" : "Events that happened just before and after the specified event."
+      "description" : "Event context."
     },
     "FieldMetadata" : {
       "type" : "object",
@@ -6085,7 +6084,8 @@
         "type" : "object",
         "properties" : {
           "body" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "The textual representation of this message."
           },
           "msgtype" : {
             "type" : "string",

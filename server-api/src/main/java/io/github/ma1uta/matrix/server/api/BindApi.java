@@ -40,7 +40,7 @@ public interface BindApi {
      * @param onBindRequest   request.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: success.
+     * @return <p>Status code 200: success.</p>
      */
     @Path("/onbind")
     @Consumes(MediaType.APPLICATION_JSON)

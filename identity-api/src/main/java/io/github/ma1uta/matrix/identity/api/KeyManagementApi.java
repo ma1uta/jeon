@@ -33,14 +33,12 @@ import javax.ws.rs.core.MediaType;
  * An identity service has some long-term public-private keypairs. These are named in a scheme algorithm:identifier, e.g. ed25519:0.
  * When signing an association, the Matrix standard JSON signing format is used, as specified in the server-server
  * API specification under the heading "Signing Events".
- * <p/>
+ * <br>
  * In the event of key compromise, the identity service may revoke any of its keys. An HTTP API is offered to get public keys,
  * and check whether a particular key is valid.
- * <p/>
+ * <br>
  * The identity server may also keep track of some short-term public-private keypairs, which may have different usage
  * and lifetime characteristics than the service's long-term keys.
- *
- * @author ma1uta
  */
 @Path("/_matrix/identity/api/v1/pubkey")
 @Produces(MediaType.APPLICATION_JSON)
@@ -53,7 +51,7 @@ public interface KeyManagementApi {
      *                        identifies the signing algorithm, and the identifier is an opaque string.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return The public key exists.
+     * @return <p>Status code 200: The public key exists.</p>
      */
     @GET
     @Path("/{keyId}")
@@ -66,7 +64,7 @@ public interface KeyManagementApi {
      * @param publicKey       Required. The unpadded base64-encoded public key to check.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Whether the public key is recognised and is currently valid.
+     * @return <p>Status code 200: Whether the public key is recognised and is currently valid.</p>
      */
     @GET
     @Path("/isvalid")
@@ -79,7 +77,7 @@ public interface KeyManagementApi {
      * @param publicKey       Required. The unpadded base64-encoded public key to check.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Whether the public key is recognised and is currently valid.
+     * @return <p>Status code 200: Whether the public key is recognised and is currently valid.</p>
      */
     @GET
     @Path("/ephemeral/isvalid")

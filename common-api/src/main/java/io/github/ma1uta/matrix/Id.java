@@ -127,8 +127,9 @@ public final class Id {
 
     /**
      * Return localpart of the MXID.
-     * <p/>
+     * <p>
      * Localpart contains only 'a'-'z', 'A'-'Z', 0-9, '.', '_', '=', '-', '/' characters.
+     * </p>
      *
      * @param id MXID.
      * @return localpart.

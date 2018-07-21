@@ -49,8 +49,6 @@ import javax.ws.rs.core.SecurityContext;
  * This module adds support for push notifications. Homeservers send notifications of events to user-configured HTTP endpoints.
  * Users may also configure a number of rules that determine which events generate notifications. These are all stored and managed
  * by the user's homeserver. This allows user-specific push settings to be reused between client applications.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id82">Specification.</a>
  */
 @Api(value = "Push", description = "This module adds support for push notifications. Homeservers send notifications of "
     + "events to user-configured HTTP endpoints. Users may also configure a number of rules that determine which events "
@@ -241,8 +239,9 @@ public interface PushApi {
         /**
          * This matches the current number of members in the room. Parameters:
          * <ul>
-         * <li>is: A decimal integer optionally prefixed by one of, ==, <, >, >= or <=. A prefix of < matches rooms where the member
-         * count is strictly less than the given number and so forth. If no prefix is present, this parameter defaults to ==.</li>
+         * <li>is: A decimal integer optionally prefixed by one of, ==, &lt;, &gt;, &gt;= or &lt;=. A prefix of &lt; matches rooms where
+         * the member count is strictly less than the given number and so forth.
+         * If no prefix is present, this parameter defaults to ==.</li>
          * </ul>
          */
         public static final String ROOM_MEMBER_COUNT = "room_member_count";
@@ -251,13 +250,13 @@ public interface PushApi {
 
     /**
      * Gets all currently active pushers for the authenticated user.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The pushers for this user.
+     * @return <p>Status code 200: The pushers for this user.</p>
      */
     @ApiOperation(value = "Gets all currently active pushers for the authenticated user.", response = PushersResponse.class)
     @ApiResponses( {
@@ -272,18 +271,18 @@ public interface PushApi {
     /**
      * This endpoint allows the creation, modification and deletion of pushers for this user ID. The behaviour of this endpoint
      * varies depending on the values in the JSON body.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param pushersRequest  JSON body request.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The pusher was set.
-     *     Status code 400: One or more of the pusher values were invalid.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The pusher was set.</p>
+     * <p>Status code 400: One or more of the pusher values were invalid.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. "
         + "The behaviour of this endpoint varies depending on the values in the JSON body.", response = EmptyResponse.class)
@@ -302,7 +301,7 @@ public interface PushApi {
 
     /**
      * This API is used to paginate through the list of events that the user has been, or would have been notified about.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param from            Pagination token given to retrieve the next set of events.
@@ -312,7 +311,7 @@ public interface PushApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: A batch of events is being returned.
+     * @return <p>Status code 200: A batch of events is being returned.</p>
      */
     @ApiOperation(value = "This API is used to paginate through the list of events that the user has been, or would have been "
         + "notified about.", response = NotificationResponse.class)
@@ -331,13 +330,13 @@ public interface PushApi {
     /**
      * Retrieve all push rulesets for this user. Clients can "drill-down" on the rulesets by suffixing a scope to this path e.g.
      * /pushrules/global/. This will return a subset of this data under the specified key e.g. the global key.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: All the push rulesets for this user.
+     * @return <p>Status code 200: All the push rulesets for this user.</p>
      */
     @ApiOperation(value = "Retrieve all push rulesets for this user. Clients can \"drill-down]\"on the rulesets by suffixing "
         + "a scope to this path e.g. /pushrules/global/. This will return a subset of this data under the specified key e.g. "
@@ -353,7 +352,7 @@ public interface PushApi {
 
     /**
      * Retrieve a single specified push rule.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param scope           Required. Global to specify global rules.
@@ -362,8 +361,8 @@ public interface PushApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The specific push rule. This will also include keys specific to the rule itself such as the rule's
-     *     actions and conditions if set.
+     * @return <p>Status code 200: The specific push rule. This will also include keys specific to the rule itself such as the rule's
+     * actions and conditions if set.</p>
      */
     @ApiOperation(value = "Retrieve a single specified push rule.", response = PushRule.class)
     @ApiResponses( {
@@ -382,7 +381,7 @@ public interface PushApi {
 
     /**
      * This endpoint removes the push rule defined in the path.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param scope           Required. Global to specify global rules.
@@ -391,7 +390,7 @@ public interface PushApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The push rule was deleted.
+     * @return <p>Status code 200: The push rule was deleted.</p>
      */
     @ApiOperation(value = "This endpoint removes the push rule defined in the path.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -410,9 +409,9 @@ public interface PushApi {
     /**
      * This endpoint allows the creation, modification and deletion of pushers for this user ID. The behaviour of this endpoint
      * varies depending on the values in the JSON body.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param scope             Required. Global to specify global rules.
@@ -426,9 +425,9 @@ public interface PushApi {
      * @param servletRequest    servlet request.
      * @param servletResponse   servlet response.
      * @param securityContext   security context.
-     * @return Status code 200: The pusher was set.
-     *     Status code 400: There was a problem configuring this push rule.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The pusher was set.</p>
+     * <p>Status code 400: There was a problem configuring this push rule.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. The "
         + "behaviour of this endpoint varies depending on the values in the JSON body.", response = EmptyResponse.class)
@@ -456,7 +455,7 @@ public interface PushApi {
 
     /**
      * This endpoint gets whether the specified push rule is enabled.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param scope           Required. Either global or device/&lt;profile_tag&gt; to specify global rules or device rules for the given
@@ -466,7 +465,7 @@ public interface PushApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: Whether the push rule is enabled.
+     * @return <p>Status code 200: Whether the push rule is enabled.</p>
      */
     @ApiOperation(value = "This endpoint gets whether the specified push rule is enabled.", response = PushEnable.class)
     @ApiResponses( {
@@ -485,7 +484,7 @@ public interface PushApi {
 
     /**
      * This endpoint allows clients to enable or disable the specified push rule.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param scope           Required. Global to specify global rules.
@@ -495,7 +494,7 @@ public interface PushApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The push rule was enabled or disabled.
+     * @return <p>Status code 200: The push rule was enabled or disabled.</p>
      */
     @ApiOperation(value = "his endpoint allows clients to enable or disable the specified push rule.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -514,7 +513,7 @@ public interface PushApi {
 
     /**
      * This endpoint get the actions for the specified push rule.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param scope           Required. Either global or device/&lt;profile_tag&gt; to specify global rules or device rules for the given
@@ -524,7 +523,7 @@ public interface PushApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The actions for this push rule.
+     * @return <p>Status code 200: The actions for this push rule.</p>
      */
     @ApiOperation(value = "This endpoint get the actions for the specified push rule.", response = PushActions.class)
     @ApiResponses( {
@@ -543,7 +542,7 @@ public interface PushApi {
 
     /**
      * This endpoint allows clients to change the actions of a push rule. This can be used to change the actions of builtin rules.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param scope           Required. Global to specify global rules.
@@ -553,7 +552,7 @@ public interface PushApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The actions for the push rule were set.
+     * @return <p>Status code 200: The actions for the push rule were set.</p>
      */
     @ApiOperation(value = "This endpoint allows clients to change the actions of a push rule. This can be used to "
         + "change the actions of builtin rules.", response = EmptyResponse.class)

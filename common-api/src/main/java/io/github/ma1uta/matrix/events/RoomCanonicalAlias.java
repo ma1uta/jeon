@@ -23,9 +23,10 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * This event is used to inform the room about which alias should be considered the canonical one. This could be for display purposes
  * or as suggestion to users which alias to use to advertise the room.
- * <p/>
+ * <p>
  * A room with an m.room.canonical_alias event with an absent, null, or empty alias field should be treated the same as a room
  * with no m.room.canonical_alias event.
+ * </p>
  */
 @ApiModel(description = "This event is used to inform the room about which alias should be considered the canonical one."
     + " This could be for display purposes or as suggestion to users which alias to use to advertise the room."

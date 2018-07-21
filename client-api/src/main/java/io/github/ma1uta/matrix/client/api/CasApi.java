@@ -32,7 +32,7 @@ import javax.ws.rs.core.Context;
 
 /**
  * Central Authentication Service (CAS) is a web-based single sign-on protocol.
- * <p/>
+ * <br>
  * An overview of the process, as used in Matrix, is as follows:
  * <ul>
  * <li>The Matrix client instructs the user's browser to navigate to the /login/cas/redirect endpoint on the user's homeserver.</li>
@@ -45,8 +45,6 @@ import javax.ws.rs.core.Context;
  * client application. A login token is passed as a query parameter in the redirect.</li>
  * <li>The Matrix client receives the login token and passes it to the /login API.</li>
  * </ul>
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#cas-based-client-login">Specification.</a>
  */
 @Api(value = "CAS", description = "Central Authentication Service (CAS) is a web-based single sign-on protocol.")
 @Path("/_matrix/client/r0/login/cas")
@@ -54,10 +52,10 @@ public interface CasApi {
 
     /**
      * A web-based Matrix client should instruct the user's browser to navigate to this endpoint in order to log in via CAS.
-     * <p/>
+     * <br>
      * The server MUST respond with an HTTP redirect to the CAS interface. The URI MUST include a service parameter giving the path
      * of the /login/cas/ticket endpoint (including the redirectUrl query parameter).
-     * <p/>
+     * <br>
      * For example, if the endpoint is called with redirectUrl=https://client.example.com/?q=p, it might redirect to
      * {@code https://cas.example.com/?service=https%3A%2F%2Fserver.example.com%2F_matrix%2Fclient%2Fr0%2Flogin%2Fcas%2Fticket%3Fredirect
      * Url%3Dhttps%253A%252F%252Fclient.example.com%252F%253Fq%253Dp}.
@@ -83,12 +81,12 @@ public interface CasApi {
     /**
      * Once the CAS server has authenticated the user, it will redirect the browser to this endpoint (assuming /login/cas/redirect
      * gave it the correct service parameter).
-     * <p/>
+     * <br>
      * The server MUST call /proxyValidate on the CAS server, to validate the ticket supplied by the browser.
-     * <p/>
+     * <br>
      * If validation is successful, the server must generate a Matrix login token. It must then respond with an HTTP redirect to the
      * URI given in the redirectUrl parameter, adding a loginToken query parameter giving the generated token.
-     * <p/>
+     * <br>
      * If validation is unsuccessful, the server should respond with a 401 Unauthorized error, the body of which will be displayed
      * to the user.
      *
@@ -96,10 +94,8 @@ public interface CasApi {
      * @param ticket          Required. CAS authentication ticket.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return <ul>
-     * <li>Status code 302: A redirect to the Matrix client.</li>
-     * <li>Status code 401: The server was unable to validate the CAS ticket.</li>
-     * </ul>
+     * @return <p>Status code 302: A redirect to the Matrix client.</p>
+     * <p>Status code 401: The server was unable to validate the CAS ticket.</p>
      */
     @ApiOperation(value = "Once the CAS server has authenticated the user, it will redirect the browser to this endpoint "
         + "(assuming /login/cas/redirect gave it the correct service parameter).",

@@ -38,13 +38,11 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * This module adds in support for receipts. These receipts are a form of acknowledgement of an event. This module defines a single
  * acknowledgement: m.read which indicates that the user has read up to a given event.
- * <p/>
+ * <br>
  * Sending a receipt for each event can result in sending large amounts of traffic to a homeserver. To prevent this from becoming
  * a problem, receipts are implemented using "up to" markers. This marker indicates that the acknowledgement applies to all events
  * "up to and including" the event specified. For example, marking an event as "read" would indicate that the user had read all
  * events up to the referenced event.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id288">Specification.</a>
  */
 @Api(value = "Receipt", description = "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. "
     + "This module defines a single acknowledgement: m.read which indicates that the user has read up to a given event.")
@@ -68,9 +66,9 @@ public interface ReceiptApi {
 
     /**
      * This API updates the marker for the given receipt type to the event ID specified.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room in which to send the event.
@@ -79,8 +77,8 @@ public interface ReceiptApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The receipt was sent.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The receipt was sent.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API updates the marker for the given receipt type to the event ID specified.",
         response = EmptyResponse.class)

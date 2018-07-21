@@ -48,10 +48,6 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * Account registration and management.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#account-registration-and-management">Specification.</a>
- *
- * @author ma1uta
  */
 @Api(value = "Account", description = "Account registration and management")
 @Path("/_matrix/client/r0")
@@ -80,19 +76,20 @@ public interface AccountApi {
 
     /**
      * Register for an account on this homeserver.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param kind            The kind of account to register. Defaults to user. One of: ["guest", "user"].
      * @param registerRequest JSON body parameters.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return <p>Status code 200: The account has been registered.</p>
-     * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:
+     * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:</p>
      * <ul>
      * <li>M_USER_IN_USE : The desired user ID is already taken.</li>
      * <li>M_INVALID_USERNAME : The desired user ID is not a valid user name.</li>
      * <li>M_EXCLUSIVE : The desired user ID is in the exclusive namespace claimed by an application service.</li>
      * </ul>
-     * </p>
      * <p>
      * These errors may be returned at any stage of the registration process, including after authentication
      * if the requested user ID was registered whilst the client was performing authentication.
@@ -104,7 +101,6 @@ public interface AccountApi {
      * </p>
      * <p>Status code 401: The homeserver requires additional authentication information.</p>
      * <p>Status code 429: This request was rate-limited.</p>
-     * @see <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id147">Register for an account on this homeserver.</a>
      */
     @ApiOperation(value = "Register for an account on this homeserver.", response = LoginResponse.class)
     @ApiResponses(value = {
@@ -132,7 +128,7 @@ public interface AccountApi {
      * @param servletResponse servlet response.
      * @return <p>Status code 200: An email has been sent to the specified address. Note that this may be an email containing the
      * validation token or it may be informing the user of an error.</p>
-     * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:
+     * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:</p>
      * <ul>
      * <li>M_THREEPID_IN_USE : The email address is already registered to an account on this server.
      * However, if the home server has the ability to send email, it is recommended that the server instead send an email to
@@ -140,7 +136,6 @@ public interface AccountApi {
      * if a given email address has an account on the Home Server in question.</li>
      * <li>M_SERVER_NOT_TRUSTED : The id_server parameter refers to an ID server that is not trusted by this Home Server.</li>
      * </ul>
-     * </p>
      */
     @ApiOperation(value = "Request token.",
         notes = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not"
@@ -158,12 +153,16 @@ public interface AccountApi {
 
     /**
      * Changes the password for an account on this homeserver.
-     * <p/>
+     * <br>
      * This API endpoint uses the User-Interactive Authentication API.
-     * <p/>
+     * <br>
      * An access token should be submitted to this endpoint if the client has an active session.
-     * <p/>
+     * <br>
      * The homeserver may change the flows available depending on whether a valid access token is provided.
+     * <br>
+     * <b>Rate-limited</b>: Yes.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param passwordRequest password.
      * @param servletRequest  servlet request.
@@ -201,7 +200,7 @@ public interface AccountApi {
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: An email was sent to the given address.
+     * @return <p>Status code 200: An email was sent to the given address.</p>
      */
     @ApiOperation(value = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address"
         + " is associated with an account on this Home Server.",
@@ -220,12 +219,16 @@ public interface AccountApi {
 
     /**
      * Deactivate the user's account, removing all ability for the user to login again.
-     * <p/>
+     * <br>
      * This API endpoint uses the User-Interactive Authentication API.
-     * <p/>
+     * <br>
      * An access token should be submitted to this endpoint if the client has an active session.
-     * <p/>
+     * <br>
      * The homeserver may change the flows available depending on whether a valid access token is provided.
+     * <br>
+     * <b>Rate-limited</b>: Yes.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param deactivateRequest request.
      * @param servletRequest    servlet request.
@@ -254,29 +257,29 @@ public interface AccountApi {
 
     /**
      * Checks to see if a username is available, and valid, for the server.
-     * <p/>
+     * <br>
      * The server should check to ensure that, at the time of the request, the username requested is available for use.
      * This includes verifying that an application service has not claimed the username and that the username fits the server's
      * desired requirements (for example, a server could dictate that it does not permit usernames with underscores).
-     * <p/>
+     * <br>
      * Matrix clients may wish to use this API prior to attempting registration, however the clients must also be aware
      * that using this API does not normally reserve the username. This can mean that the username becomes unavailable
      * between checking its availability and attempting to register it.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
      *
      * @param username        Required. The username to check the availability of.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: The username is available.
-     *     Status code 400: Part of the request was invalid or the username is not available. This may include one of the following error
-     *     codes:
-     *     <ul>
-     *     <li>M_USER_IN_USE : The desired username is already taken.</li>
-     *     <li>M_INVALID_USERNAME : The desired username is not a valid user name.</li>
-     *     <li>M_EXCLUSIVE : The desired username is in the exclusive namespace claimed by an application service.</li>
-     *     </ul>
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The username is available.</p>
+     * <p>Status code 400: Part of the request was invalid or the username is not available. This may include one of the following error
+     * codes:</p>
+     * <ul>
+     * <li>M_USER_IN_USE : The desired username is already taken.</li>
+     * <li>M_INVALID_USERNAME : The desired username is not a valid user name.</li>
+     * <li>M_EXCLUSIVE : The desired username is in the exclusive namespace claimed by an application service.</li>
+     * </ul>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Checks to see if a username is available, and valid, for the server.",
         notes = "he server should check to ensure that, at the time of the request, the username requested is available for use."
@@ -300,16 +303,18 @@ public interface AccountApi {
 
     /**
      * Gets a list of the third party identifiers that the homeserver has associated with the user's account.
-     * <p/>
+     * <br>
      * This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers.
-     * <p/>
+     * <br>
      * Identifiers in this list may be used by the homeserver as, for example, identifiers that it will accept to reset the user's
      * account password.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The lookup was successful.
+     * @return <p>Status code 200: The lookup was successful.</p>
      */
     @ApiOperation(value = "Gets a list of the third party identifiers that the homeserver has associated with the user's account",
         notes = "This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers. "
@@ -327,6 +332,8 @@ public interface AccountApi {
 
     /**
      * Adds contact information to the user's account.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param threePidRequest new contact information.
      * @param servletRequest  servlet request.
@@ -354,7 +361,7 @@ public interface AccountApi {
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: An email was sent to the given address.
+     * @return <p>Status code 200: An email was sent to the given address.</p>
      */
     @ApiOperation(value = "Proxies the identity server API validate/email/requestToken",
         notes = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not already "
@@ -370,18 +377,22 @@ public interface AccountApi {
 
     /**
      * Gets information about the owner of a given access token.
-     * <p/>
+     * <br>
      * Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their namespace
      * by giving a user_id query parameter. In this situation, the server should verify that the given user_id is registered by
      * the appservice, and return it in the response body.
+     * <br>
+     * <b>Rate-limited</b>: Yes.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The token belongs to a known user.
-     *     Status code 401: The token is not recognised.
-     *     Status code 403: The appservice cannot masquerade as the user or has not registered them.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The token belongs to a known user.</p>
+     * <p>Status code 401: The token is not recognised.</p>
+     * <p>Status code 403: The appservice cannot masquerade as the user or has not registered them.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Gets information about the owner of a given access token",
         notes = "Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their namespace "

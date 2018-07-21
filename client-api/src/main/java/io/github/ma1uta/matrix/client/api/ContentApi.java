@@ -56,8 +56,6 @@ import javax.ws.rs.core.SecurityContext;
  * Uploads are POSTed to a resource on the user's local homeserver which returns a token which is used to GET the download.
  * Key is downloaded from the recipient's local homeserver, which must first transfer the content from the origin homeserver
  * using the same API (unless the origin and destination homeservers are the same).
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id307">Specification.</a>
  */
 @Api(value = "Content", description = "This module allows users to upload content to their homeserver which is retrievable from other "
     + "homeservers. Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs.")
@@ -85,8 +83,9 @@ public interface ContentApi {
 
     /**
      * Upload some content to the content repository.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param inputStream     The file content.
@@ -96,8 +95,8 @@ public interface ContentApi {
      * @param servletResponse servlet response.
      * @param securityContext security context.
      * @return <b>Required</b>. The MXC URI to the uploaded content.
-     *     Status code 200: The MXC URI for the uploaded content.
-     *     Status code 429: This request was rate-limited.
+     * <p>Status code 200: The MXC URI for the uploaded content.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Upload some content to the content repository.", response = ContentUri.class)
     @ApiResponses( {
@@ -118,7 +117,7 @@ public interface ContentApi {
 
     /**
      * Download content from the content repository.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
      *
      * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
@@ -127,8 +126,8 @@ public interface ContentApi {
      *                        This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Response headers:
-     * <table border="1">
+     * @return <p>Response headers:</p>
+     * <table summary="Response header">
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
@@ -145,8 +144,8 @@ public interface ContentApi {
      * <td>The name of the file that was previously uploaded, if set.</td>
      * </tr>
      * </table>
-     *     Status code 200: The content that was previously uploaded.
-     *     Status code 429: This request was rate-limited.
+     * <p>Status code 200: The content that was previously uploaded.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Download content from the content repository.", response = OutputStream.class)
     @ApiResponses( {
@@ -167,6 +166,8 @@ public interface ContentApi {
 
     /**
      * Download content from the content repository as a given filename.
+     * <br>
+     * <b>Rate-limited</b>: Yes.
      *
      * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
      * @param mediaId         Required. The media ID from the mxc:// URI (the path component).
@@ -175,8 +176,8 @@ public interface ContentApi {
      *                        This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Response headers:
-     * <table border="1">
+     * @return <p>Response headers:</p>
+     * <table summary="Response headers">
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
@@ -193,8 +194,8 @@ public interface ContentApi {
      * <td>The name of the file that was previously uploaded, if set.</td>
      * </tr>
      * </table>
-     *     Status code 200: The content that was previously uploaded.
-     *     Status code 429: This request was rate-limited.
+     * <p>Status code 200: The content that was previously uploaded.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Download content from the content repository as a given filename.", response = OutputStream.class)
     @ApiResponses( {
@@ -217,6 +218,8 @@ public interface ContentApi {
 
     /**
      * Download a thumbnail of the content from the content repository.
+     * <br>
+     * <b>Rate-limited</b>: Yes.
      *
      * @param serverName      Required. The server name from the mxc:// URI (the authoritory component).
      * @param mediaId         Required. The media ID from the mxc:// URI (the path component)
@@ -227,8 +230,8 @@ public interface ContentApi {
      *                        This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Response headers:
-     * <table border="1">
+     * @return <p>Response headers:</p>
+     * <table summary="Response headers">
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
@@ -240,8 +243,8 @@ public interface ContentApi {
      * <td>The content type of the file that was previously uploaded.</td>
      * </tr>
      * </table>
-     *     Status code 200: The content that was previously uploaded.
-     *     Status code 429: This request was rate-limited.
+     * <p>Status code 200: The content that was previously uploaded.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Download a thumbnail of the content from the content repository.", response = OutputStream.class)
     @ApiResponses( {
@@ -268,6 +271,10 @@ public interface ContentApi {
 
     /**
      * Get information about a PATH for a client.
+     * <br>
+     * <b>Rate-limited</b>: Yes.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param url             Required. The PATH to get a preview of.
      * @param ts              The preferred point in time to return a preview for. The server may return a newer version if it does not
@@ -275,8 +282,8 @@ public interface ContentApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Response headers:
-     * <table border="1">
+     * @return <p>Response headers:</p>
+     * <table summary="Response headers">
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
@@ -293,8 +300,8 @@ public interface ContentApi {
      * <td>An MXC URI to the image. Omitted if there is no image.</td>
      * </tr>
      * </table>
-     *     Status code 200: The content that was previously uploaded.
-     *     Status code 429: This request was rate-limited.
+     * <p>Status code 200: The content that was previously uploaded.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Get information about a PATH for a client.", response = Map.class)
     @ApiResponses( {
@@ -316,19 +323,19 @@ public interface ContentApi {
      * This endpoint allows clients to retrieve the configuration of the content repository, such as upload limitations.
      * Clients SHOULD use this as a guide when using content repository endpoints. All values are intentionally left optional.
      * Clients SHOULD follow the advice given in the field description when the field is not available.
-     * <p/>
+     * <br>
      * NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect
      * the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is
      * advertised by the server on this endpoint.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
      * <b>Requires auth</b>: Yes.
      *
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The public content repository configuration for the matrix server.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The public content repository configuration for the matrix server.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "his endpoint allows clients to retrieve the configuration of the content repository, such"
         + "as upload limitations.",
@@ -337,7 +344,7 @@ public interface ContentApi {
             + " NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect"
             + " the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is"
             + " advertised by the server on this endpoint.", response = ContentConfig.class)
-    @ApiResponses({
+    @ApiResponses( {
         @ApiResponse(code = 200, message = "The public content repository configuration for the matrix server."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
     })

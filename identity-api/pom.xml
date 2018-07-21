@@ -27,6 +27,9 @@
     <artifactId>identity-api</artifactId>
     <version>0.4</version>
 
+    <name>Identity API</name>
+    <description>Identity API</description>
+
     <properties>
         <common.api.version>0.4.1-SNAPSHOT</common.api.version>
     </properties>

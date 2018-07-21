@@ -38,8 +38,6 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * This API returns a number of events that happened just before and after the specified event. This allows clients to get the context
  * surrounding an event.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id114">Specification.</a>
  */
 @Api(value = "EventContext", description = "This API returns a number of events that happened just before and after the specified event. "
     + "This allows clients to get the context surrounding an event.")
@@ -50,7 +48,7 @@ public interface EventContextApi {
     /**
      * This API returns a number of events that happened just before and after the specified event. This allows clients to get the
      * context surrounding an event.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param roomId          Required. The room to get events from.
@@ -59,7 +57,7 @@ public interface EventContextApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The events and state surrounding the requested event.
+     * @return <p>Status code 200: The events and state surrounding the requested event.</p>
      */
     @ApiOperation(value = "This API returns a number of events that happened just before and after the specified event.",
         notes = "This allows clients to get the context surrounding an event.")

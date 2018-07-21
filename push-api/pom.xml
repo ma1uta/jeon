@@ -27,6 +27,9 @@
     <artifactId>push-api</artifactId>
     <version>0.4.1-SNAPSHOT</version>
 
+    <name>Push API</name>
+    <description>Push API</description>
+
     <properties>
         <common.api.version>0.4.1-SNAPSHOT</common.api.version>
     </properties>

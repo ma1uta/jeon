@@ -42,8 +42,6 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * Users can add tags to rooms. Tags are short strings used to label rooms, e.g. "work", "family". A room may have multiple tags.
  * Tags are only visible to the user that set them but are shared across all their devices.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#room-tagging">Specification.</a>
  */
 @Api(value = "TagInfo", description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
     + "A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices.")
@@ -73,7 +71,7 @@ public interface TagApi {
 
     /**
      * List the tags set by a user on a room.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The id of the user to get tags for. The access token must be authorized to make requests for this
@@ -82,7 +80,7 @@ public interface TagApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The list of tags for the user for the room.
+     * @return <p>Status code 200: The list of tags for the user for the room.</p>
      */
     @ApiOperation(value = "List the tags set by a user on a room.", response = Tags.class)
     @ApiResponses( {
@@ -99,7 +97,7 @@ public interface TagApi {
 
     /**
      * Add a tag to the room.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The id of the user to add a tag for. The access token must be authorized to make requests for this
@@ -110,7 +108,7 @@ public interface TagApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The tag was successfully added.
+     * @return <p>Status code 200: The tag was successfully added.</p>
      */
     @ApiOperation(value = "Add a tag to the room.", response = EmptyResponse.class)
     @ApiResponses( {
@@ -129,7 +127,7 @@ public interface TagApi {
 
     /**
      * Remove a tag from the room.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The id of the user to remove a tag for. The access token must be authorized to make requests
@@ -139,7 +137,7 @@ public interface TagApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The tag was successfully removed.
+     * @return <p>Status code 200: The tag was successfully removed.</p>
      */
     @ApiOperation(value = "Remove a tag from the room.", response = EmptyResponse.class)
     @ApiResponses( {

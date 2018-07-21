@@ -38,7 +38,7 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * User directory.
- * <p/>
+ * <br>
  * Provides search over all users.
  */
 @Api(value = "UserDirectory", description = "User directory.")
@@ -50,17 +50,17 @@ public interface UserDirectoryApi {
     /**
      * This API performs a server-side search over all users registered on the server. It searches user ID and displayname
      * case-insensitively for users that you share a room with or that are in public rooms.
-     * <p/>
+     * <br>
      * <b>Rate-limited</b>: Yes.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param request         json body request.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The results of the search.
-     *     Status code 429: This request was rate-limited.
+     * @return <p>Status code 200: The results of the search.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "This API performs a server-side search over all users registered on the server. It searches user ID "
         + "and displayname case-insensitively for users that you share a room with or that are in public rooms.",

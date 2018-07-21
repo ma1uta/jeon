@@ -39,12 +39,10 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * This module provides a means by which clients can exchange signalling messages without them being stored permanently as part of
  * a shared communication history. A message is delivered exactly once to each client device.
- * <p/>
+ * <br>
  * The primary motivation for this API is exchanging data that is meaningless or undesirable to persist in the room DAG - for example,
  * one-time authentication tokens or key data. It is not intended for conversational data, which should be sent using the normal
  * /rooms/&lt;room_id&gt;/send API for consistency throughout Matrix.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id317">Specification.</a>
  */
 @Api(value = "SendToDevice", description = "This module provides a means by which clients can exchange signalling messages without them "
     + "being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device.")
@@ -55,7 +53,7 @@ public interface SendToDeviceApi {
 
     /**
      * This endpoint is used to send send-to-device events to a set of client devices.
-     * <p/>
+     * <br>
      * <b>Requires auth</b>: Yes.
      *
      * @param eventType           Required. The type of event to send.
@@ -65,7 +63,7 @@ public interface SendToDeviceApi {
      * @param servletRequest      servlet requet.
      * @param servletResponse     servlet response.
      * @param securityContext     security context.
-     * @return Status code 200: The message was successfully sent.
+     * @return <p>Status code 200: The message was successfully sent.</p>
      */
     @ApiOperation(value = "This endpoint is used to send send-to-device events to a set of client devices.", response = EmptyResponse.class)
     @ApiResponses( {

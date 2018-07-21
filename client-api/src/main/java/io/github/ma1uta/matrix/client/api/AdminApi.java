@@ -36,8 +36,6 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * Gets information about a particular user.
- * <p/>
- * <a href="https://matrix.org/docs/spec/client_server/r0.3.0.html#id112">Specification.</a>
  */
 @Api(value = "Admin", description = "Gets information about a particular user")
 @Path("/_matrix/client/r0/admin")
@@ -47,12 +45,14 @@ public interface AdminApi {
     /**
      * This API may be restricted to only be called by the user being looked up, or by a server admin. Server-local administrator
      * privileges are not specified in this document.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user to look up.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @param securityContext security context.
-     * @return Status code 200: The lookup was successful.
+     * @return <p>Status code 200: The lookup was successful.</p>
      */
     @ApiOperation(value = "his API may be restricted to only be called by the user being looked up, or by a server admin. "
         + "Server-local administrator privileges are not specified in this document.", response = AdminResponse.class)
