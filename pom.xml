@@ -36,7 +36,9 @@
     <url>https://github.com/ma1uta/jeon</url>
 
     <scm>
-        <url>https://github.com/ma1uta/jeon</url>
+        <connection>scm:git:git://github.com/ma1uta/jeon</connection>
+        <developerConnection>scm:git:ssh://github.com:ma1uta/jeon</developerConnection>
+        <url>https://github.com/ma1uta/jeon/tree/master</url>
     </scm>
 
     <developers>
