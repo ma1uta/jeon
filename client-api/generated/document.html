@@ -13012,21 +13012,6 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
         <th>example</th>
     </tr>
 
-        <tr>
-            <td>events</td>
-            <td>
-
-
-                        array[<a href="#/definitions/Event">Event</a>]
-
-
-
-            </td>
-            <td>optional</td>
-            <td>List of events.</td>
-            <td></td>
-        </tr>
-
 </table>
 
 ## <a name="/definitions/PresenceList">PresenceList</a>
@@ -14495,6 +14480,58 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
 
 </table>
 
+## <a name="/definitions/Relates">Relates</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>m.in_reply_to</td>
+            <td>
+
+                    <a href="#/definitions/Reply">Reply</a>
+
+
+            </td>
+            <td>optional</td>
+            <td>Reply.</td>
+            <td></td>
+        </tr>
+
+</table>
+
+## <a name="/definitions/Reply">Reply</a>
+
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        <th>example</th>
+    </tr>
+
+        <tr>
+            <td>event_id</td>
+            <td>
+
+
+                    string
+
+            </td>
+            <td>required</td>
+            <td>The origin event id.</td>
+            <td></td>
+        </tr>
+
+</table>
+
 ## <a name="/definitions/ReportRequest">ReportRequest</a>
 
 <table border="1">
@@ -15533,28 +15570,15 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
     </tr>
 
         <tr>
-            <td>limit</td>
+            <td>search_categories</td>
             <td>
 
+                    <a href="#/definitions/RequestCategories">RequestCategories</a>
 
-                    integer (int64)
-
-            </td>
-            <td>optional</td>
-            <td>The maximum number of results to return (Defaults to 10).</td>
-            <td></td>
-        </tr>
-
-        <tr>
-            <td>search_term</td>
-            <td>
-
-
-                    string
 
             </td>
             <td>required</td>
-            <td>The term to search for.</td>
+            <td>Describes which categories to search in and their criteria.</td>
             <td></td>
         </tr>
 
@@ -15572,30 +15596,15 @@ Clients SHOULD use this as a guide when using content repository endpoints. All 
     </tr>
 
         <tr>
-            <td>results</td>
+            <td>search_categories</td>
             <td>
 
-
-                        array[<a href="#/definitions/User">User</a>]
-
+                    <a href="#/definitions/ResponseCategories">ResponseCategories</a>
 
 
             </td>
             <td>required</td>
-            <td>Ordered by rank and then whether or not profile info is available.</td>
-            <td></td>
-        </tr>
-
-        <tr>
-            <td>limit</td>
-            <td>
-
-
-                    boolean
-
-            </td>
-            <td>required</td>
-            <td>Indicates if the result list has been truncated by the limit.</td>
+            <td>Describes which categories to search in and their criteria.</td>
             <td></td>
         </tr>
 

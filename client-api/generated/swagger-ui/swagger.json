@@ -5052,17 +5052,37 @@
       "description" : "Request for changes the password for an account on this homeserver."
     },
     "Presence" : {
-      "type" : "object",
-      "properties" : {
-        "events" : {
-          "type" : "array",
-          "description" : "List of events.",
-          "items" : {
-            "$ref" : "#/definitions/Event"
+      "allOf" : [ {
+        "$ref" : "#/definitions/EventContent"
+      }, {
+        "type" : "object",
+        "required" : [ "presence" ],
+        "properties" : {
+          "displayname" : {
+            "type" : "string",
+            "description" : "The current display name for this user, if any."
+          },
+          "presence" : {
+            "type" : "string",
+            "description" : "The presence state for this user.",
+            "enum" : [ "online", "offline", "unavailable" ]
+          },
+          "avatar_url" : {
+            "type" : "string",
+            "description" : "The current avatar URL for this user, if any."
+          },
+          "last_active_ago" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "The last time since this used performed some action, in milliseconds."
+          },
+          "currently_active" : {
+            "type" : "boolean",
+            "description" : "Whether the user is currently active."
           }
-        }
-      },
-      "description" : "Presence."
+        },
+        "description" : "Informs the client of a user's presence state change."
+      } ]
     },
     "PresenceList" : {
       "type" : "object",
@@ -5645,6 +5665,27 @@
       },
       "description" : "Request for register for an account on this homeserver."
     },
+    "Relates" : {
+      "type" : "object",
+      "properties" : {
+        "m.in_reply_to" : {
+          "description" : "Reply.",
+          "$ref" : "#/definitions/Reply"
+        }
+      },
+      "description" : "Related data"
+    },
+    "Reply" : {
+      "type" : "object",
+      "required" : [ "event_id" ],
+      "properties" : {
+        "event_id" : {
+          "type" : "string",
+          "description" : "The origin event id."
+        }
+      },
+      "description" : "Reply model."
+    },
     "ReportRequest" : {
       "type" : "object",
       "required" : [ "reason", "score" ],
@@ -6087,6 +6128,10 @@
             "type" : "string",
             "description" : "The textual representation of this message."
           },
+          "m.relates_to" : {
+            "description" : "Relates (reply, ...).",
+            "$ref" : "#/definitions/Relates"
+          },
           "msgtype" : {
             "type" : "string",
             "description" : "Message type.",
@@ -6329,37 +6374,25 @@
     },
     "SearchRequest" : {
       "type" : "object",
-      "required" : [ "search_term" ],
+      "required" : [ "search_categories" ],
       "properties" : {
-        "limit" : {
-          "type" : "integer",
-          "format" : "int64",
-          "description" : "The maximum number of results to return (Defaults to 10)."
-        },
-        "search_term" : {
-          "type" : "string",
-          "description" : "The term to search for."
+        "search_categories" : {
+          "description" : "Describes which categories to search in and their criteria.",
+          "$ref" : "#/definitions/RequestCategories"
         }
       },
-      "description" : "JSON body request for user directory api (search)."
+      "description" : "JSON body request for search api."
     },
     "SearchResponse" : {
       "type" : "object",
-      "required" : [ "limit", "results" ],
+      "required" : [ "search_categories" ],
       "properties" : {
-        "results" : {
-          "type" : "array",
-          "description" : "Ordered by rank and then whether or not profile info is available.",
-          "items" : {
-            "$ref" : "#/definitions/User"
-          }
-        },
-        "limit" : {
-          "type" : "boolean",
-          "description" : "Indicates if the result list has been truncated by the limit."
+        "search_categories" : {
+          "description" : "Describes which categories to search in and their criteria.",
+          "$ref" : "#/definitions/ResponseCategories"
         }
       },
-      "description" : "JSON body response for user directory api (search result)."
+      "description" : "JSON body response for search api."
     },
     "SendEventResponse" : {
       "type" : "object",

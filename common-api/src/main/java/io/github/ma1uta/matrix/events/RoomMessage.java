@@ -27,6 +27,7 @@ import io.github.ma1uta.matrix.events.messages.Location;
 import io.github.ma1uta.matrix.events.messages.Notice;
 import io.github.ma1uta.matrix.events.messages.Text;
 import io.github.ma1uta.matrix.events.messages.Video;
+import io.github.ma1uta.matrix.events.nested.Relates;
 import io.github.ma1uta.matrix.jackson.RoomMessageDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -55,9 +56,8 @@ public abstract class RoomMessage implements EventContent {
 
     /**
      * Message type.
-     * <p>
+     * <br>
      * Read-only.
-     * </p>
      *
      * @return message type.
      */
@@ -71,11 +71,26 @@ public abstract class RoomMessage implements EventContent {
     @ApiModelProperty("The textual representation of this message.")
     private String body;
 
+    /**
+     * Relates (reply, ...).
+     */
+    @ApiModelProperty(name = "m.relates_to", value = "Relates (reply, ...).")
+    @JsonProperty("m.relates_to")
+    private Relates relatesTo;
+
     public String getBody() {
         return body;
     }
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public Relates getRelatesTo() {
+        return relatesTo;
+    }
+
+    public void setRelatesTo(Relates relatesTo) {
+        this.relatesTo = relatesTo;
     }
 }
