@@ -4330,35 +4330,36 @@
       "properties" : {
         "start" : {
           "type" : "string",
-          "description" : "Pagination token for the start of the chunk."
+          "description" : "A token that can be used to paginate backwards with."
         },
         "end" : {
           "type" : "string",
-          "description" : "Pagination token for the end of the chunk."
+          "description" : "A token that can be used to paginate forwards with."
         },
-        "profile_info" : {
-          "type" : "object",
-          "description" : "The historic profile information of the users that sent the events returned.",
-          "additionalProperties" : {
-            "$ref" : "#/definitions/Profile"
-          }
+        "event" : {
+          "description" : "Details of the requested event.",
+          "$ref" : "#/definitions/Event"
+        },
+        "state" : {
+          "description" : "The state of the room at the last event returned.",
+          "$ref" : "#/definitions/Event"
         },
         "events_before" : {
           "type" : "array",
-          "description" : "Events just before the result.",
+          "description" : "A list of room events that happened just before the requested event, in reverse-chronological order.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         },
         "events_after" : {
           "type" : "array",
-          "description" : "Events just after the result.",
+          "description" : "A list of room events that happened just after the requested event, in chronological order.",
           "items" : {
             "$ref" : "#/definitions/Event"
           }
         }
       },
-      "description" : "Event context."
+      "description" : "Events that happened just before and after the specified event."
     },
     "FieldMetadata" : {
       "type" : "object",
@@ -6374,25 +6375,37 @@
     },
     "SearchRequest" : {
       "type" : "object",
-      "required" : [ "search_categories" ],
+      "required" : [ "search_term" ],
       "properties" : {
-        "search_categories" : {
-          "description" : "Describes which categories to search in and their criteria.",
-          "$ref" : "#/definitions/RequestCategories"
+        "limit" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The maximum number of results to return (Defaults to 10)."
+        },
+        "search_term" : {
+          "type" : "string",
+          "description" : "The term to search for."
         }
       },
-      "description" : "JSON body request for search api."
+      "description" : "JSON body request for user directory api (search)."
     },
     "SearchResponse" : {
       "type" : "object",
-      "required" : [ "search_categories" ],
+      "required" : [ "limit", "results" ],
       "properties" : {
-        "search_categories" : {
-          "description" : "Describes which categories to search in and their criteria.",
-          "$ref" : "#/definitions/ResponseCategories"
+        "results" : {
+          "type" : "array",
+          "description" : "Ordered by rank and then whether or not profile info is available.",
+          "items" : {
+            "$ref" : "#/definitions/User"
+          }
+        },
+        "limit" : {
+          "type" : "boolean",
+          "description" : "Indicates if the result list has been truncated by the limit."
         }
       },
-      "description" : "JSON body response for search api."
+      "description" : "JSON body response for user directory api (search result)."
     },
     "SendEventResponse" : {
       "type" : "object",
