@@ -60,6 +60,9 @@ public interface ProtocolApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return <p>Status code 200: The protocol was found and metadata returned.</p>
+     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
+     * be included in the body of this response.</p>
+     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: The protocol is unknown.</p>
      */
     @ApiOperation(value = "Fetches the metadata from the homeserver about a particular third party protocol.", response = Protocol.class)
@@ -81,10 +84,13 @@ public interface ProtocolApi {
      * as much as reasonably possible given the network type.
      *
      * @param protocol        Required. The protocol used to communicate to the third party network.
-     * @param searchFields    One or more custom fields to help identify the third party location.
+     * @param uriInfo         One or more custom fields to help identify the third party location.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return <p>Status code 200: At least one portal room was found.</p>
+     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
+     * be included in the body of this response.</p>
+     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: No portal rooms were found.</p>
      */
     @ApiOperation(value = "Requesting this endpoint with a valid protocol name results in a list of successful mapping results"
@@ -102,8 +108,7 @@ public interface ProtocolApi {
     List<ProtocolLocation> locationProtocol(
         @ApiParam(value = "The protocol used to communicate to the third party network.", required = true)
         @PathParam("protocol") String protocol,
-        @ApiParam("One or more custom fields to help identify the third party location.") @QueryParam("searchFields") String searchFields,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.
@@ -113,6 +118,9 @@ public interface ProtocolApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
+     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
+     * be included in the body of this response.</p>
+     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: The Matrix User ID was not found.</p>
      */
     @ApiOperation("Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.")
@@ -127,12 +135,15 @@ public interface ProtocolApi {
         @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
-     * Retreive an array of third party network locations from a Matrix room alias.
+     * Retrieve an array of third party network locations from a Matrix room alias.
      *
      * @param alias           Required. The Matrix room alias to look up.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return <p>Status code 200: At least one portal room was found.</p>
+     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
+     * be included in the body of this response.</p>
+     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: No portal rooms were found.</p>
      */
     @ApiOperation("Retreive an array of third party network locations from a Matrix room alias.")
@@ -153,6 +164,9 @@ public interface ProtocolApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
+     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
+     * be included in the body of this response.</p>
+     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: The Matrix User ID was not found.</p>
      */
     @ApiOperation("Retreive an array of third party users from a Matrix User ID.")
