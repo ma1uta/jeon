@@ -37,7 +37,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.ma1uta</groupId>
+            <groupId>io.github.ma1uta.matrix</groupId>
             <artifactId>common-api</artifactId>
             <version>${common.api.version}</version>
         </dependency>
