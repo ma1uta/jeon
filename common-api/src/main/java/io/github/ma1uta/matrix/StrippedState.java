@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.ma1uta.matrix.jackson.StrippedDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.util.Map;
 
 /**
  * Provides information on a subset of state events such as the room name.
  */
 @ApiModel(description = "Provides information on a subset of state events such as the room name.")
+@JsonDeserialize(using = StrippedDeserializer.class)
 public class StrippedState {
 
     /**
      * Required. The content for the event.
      */
     @ApiModelProperty(value = "The content for the event.", required = true)
-    private Map<String, Object> content;
+    private EventContent content;
 
     /**
      * Required. The state_key for the event.
@@ -47,11 +48,11 @@ public class StrippedState {
     @ApiModelProperty(value = "The type for the event.", required = true)
     private String type;
 
-    public Map<String, Object> getContent() {
+    public EventContent getContent() {
         return content;
     }
 
-    public void setContent(Map<String, Object> content) {
+    public void setContent(EventContent content) {
         this.content = content;
     }
 
