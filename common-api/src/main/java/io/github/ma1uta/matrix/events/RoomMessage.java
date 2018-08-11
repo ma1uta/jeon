@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.messages.Audio;
 import io.github.ma1uta.matrix.events.messages.Emote;
@@ -28,7 +27,6 @@ import io.github.ma1uta.matrix.events.messages.Notice;
 import io.github.ma1uta.matrix.events.messages.Text;
 import io.github.ma1uta.matrix.events.messages.Video;
 import io.github.ma1uta.matrix.events.nested.Relates;
-import io.github.ma1uta.matrix.jackson.RoomMessageDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -51,7 +49,6 @@ import io.swagger.annotations.ApiModelProperty;
         Text.class,
         Video.class
     })
-@JsonDeserialize(using = RoomMessageDeserializer.class)
 public abstract class RoomMessage implements EventContent {
 
     /**
@@ -62,7 +59,7 @@ public abstract class RoomMessage implements EventContent {
      * @return message type.
      */
     @ApiModelProperty(value = "Message type.", readOnly = true)
-    @JsonProperty("msgtype")
+    @JsonProperty(value = "msgtype", access = JsonProperty.Access.READ_ONLY)
     public abstract String getMsgtype();
 
     /**

@@ -65,7 +65,6 @@ import io.github.ma1uta.matrix.events.RoomGuestAccess;
 import io.github.ma1uta.matrix.events.RoomHistoryVisibility;
 import io.github.ma1uta.matrix.events.RoomJoinRules;
 import io.github.ma1uta.matrix.events.RoomMember;
-import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.RoomMessageFeedback;
 import io.github.ma1uta.matrix.events.RoomName;
 import io.github.ma1uta.matrix.events.RoomPinned;
@@ -130,7 +129,7 @@ public class EventContentDeserializer {
             case ROOM_MEMBER:
                 return codec.treeToValue(node, RoomMember.class);
             case ROOM_MESSAGE:
-                return codec.treeToValue(node, RoomMessage.class);
+                return new RoomMessageDeserializer().deserialize(node, codec);
             case ROOM_MESSAGE_FEEDBACK:
                 return codec.treeToValue(node, RoomMessageFeedback.class);
             case ROOM_NAME:

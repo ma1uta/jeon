@@ -25,12 +25,8 @@ import static io.github.ma1uta.matrix.Event.MessageType.NOTICE;
 import static io.github.ma1uta.matrix.Event.MessageType.TEXT;
 import static io.github.ma1uta.matrix.Event.MessageType.VIDEO;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.messages.Audio;
@@ -43,21 +39,27 @@ import io.github.ma1uta.matrix.events.messages.RawMessage;
 import io.github.ma1uta.matrix.events.messages.Text;
 import io.github.ma1uta.matrix.events.messages.Video;
 
-import java.io.IOException;
-
 /**
  * The room message deserializer.
  */
-public class RoomMessageDeserializer extends JsonDeserializer<RoomMessage> {
+public class RoomMessageDeserializer {
 
-    @Override
-    public RoomMessage deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        ObjectCodec codec = parser.getCodec();
-        JsonNode node = codec.readTree(parser);
+    /**
+     * Deserialize the room message.
+     *
+     * @param node  the json node with the message.
+     * @param codec the json codec.
+     * @return deserialized value or null.
+     * @throws JsonProcessingException when cannot deserialize the room message.
+     */
+    public RoomMessage deserialize(JsonNode node, ObjectCodec codec) throws JsonProcessingException {
+        if (node == null) {
+            return null;
+        }
 
         JsonNode typeNode = node.get("msgtype");
         if (typeNode == null || !typeNode.isTextual()) {
-            throw new JsonParseException(parser, "Missing required msgtype");
+            return new RawMessage(node, null);
         }
         String msgtype = typeNode.asText();
 

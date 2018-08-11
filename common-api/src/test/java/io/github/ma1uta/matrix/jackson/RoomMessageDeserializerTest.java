@@ -16,15 +16,16 @@
 
 package io.github.ma1uta.matrix.jackson;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.messages.Notice;
+import io.github.ma1uta.matrix.events.messages.RawMessage;
 import io.github.ma1uta.matrix.events.messages.Text;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,9 +35,16 @@ public class RoomMessageDeserializerTest {
 
     private ObjectMapper mapper = new ObjectMapper();
 
+    private RoomMessageDeserializer roomMessageDeserializer = new RoomMessageDeserializer();
+
     @Test
-    public void msgtype() {
-        assertThrows(JsonMappingException.class, () -> mapper.readValue("{\"body\":\"exception\"}", RoomMessage.class));
+    public void msgtype() throws Exception {
+        JsonParser parser = mapper.getFactory().createParser("{\"body\":\"exception\"}");
+        ObjectCodec codec = parser.getCodec();
+        RoomMessage message = roomMessageDeserializer.deserialize(codec.readTree(parser), codec);
+
+        assertNotNull(message);
+        assertTrue(message instanceof RawMessage);
     }
 
     @ParameterizedTest
@@ -45,7 +53,9 @@ public class RoomMessageDeserializerTest {
         "{\"msgtype\":\"m.text\"};"
     }, delimiter = ';')
     public void text(String event, String body) throws Exception {
-        RoomMessage message = mapper.readValue(event, RoomMessage.class);
+        JsonParser parser = mapper.getFactory().createParser(event);
+        ObjectCodec codec = parser.getCodec();
+        RoomMessage message = roomMessageDeserializer.deserialize(codec.readTree(parser), codec);
 
         assertTrue(message instanceof Text);
 
@@ -59,7 +69,9 @@ public class RoomMessageDeserializerTest {
         "{\"msgtype\":\"m.notice\"};"
     }, delimiter = ';')
     public void notice(String event, String body) throws Exception {
-        RoomMessage message = mapper.readValue(event, RoomMessage.class);
+        JsonParser parser = mapper.getFactory().createParser(event);
+        ObjectCodec codec = parser.getCodec();
+        RoomMessage message = roomMessageDeserializer.deserialize(codec.readTree(parser), codec);
 
         assertTrue(message instanceof Notice);
 
