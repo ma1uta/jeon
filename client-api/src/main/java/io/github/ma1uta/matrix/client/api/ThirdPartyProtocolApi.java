@@ -99,7 +99,7 @@ public interface ThirdPartyProtocolApi {
      * as much as reasonably possible given the network type.
      *
      * @param protocol        Required. The protocol used to communicate to the third party network.
-     * @param searchFields    One or more custom fields to help identify the third party location.
+     * @param uriInfo         uri info to retrieve all query params.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return <p>Status code 200: At least one portal room was found.</p>
@@ -120,8 +120,7 @@ public interface ThirdPartyProtocolApi {
     List<ProtocolLocation> locationProtocol(
         @ApiParam(value = "The protocol used to communicate to the third party network.", required = true)
         @PathParam("protocol") String protocol,
-        @ApiParam("One or more custom fields to help identify the third party location.") @QueryParam("searchFields") String searchFields,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
      * Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.
@@ -145,7 +144,7 @@ public interface ThirdPartyProtocolApi {
         @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
 
     /**
-     * Retreive an array of third party network locations from a Matrix room alias.
+     * Retrieve an array of third party network locations from a Matrix room alias.
      *
      * @param alias           Required. The Matrix room alias to look up.
      * @param servletRequest  servlet request.
