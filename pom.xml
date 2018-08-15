@@ -276,6 +276,70 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>all</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>common-api</module>
+                <module>client-api</module>
+                <module>identity-api</module>
+                <module>server-api</module>
+                <module>application-api</module>
+                <module>push-api</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>c2s</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>common-api</module>
+                <module>client-api</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>s2s</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>common-api</module>
+                <module>server-api</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>id</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>common-api</module>
+                <module>identity-api</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>app</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>common-api</module>
+                <module>application-api</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>push</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>common-api</module>
+                <module>push-api</module>
+            </modules>
+        </profile>
     </profiles>
 
     <dependencyManagement>
@@ -326,13 +390,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <modules>
-        <module>common-api</module>
-        <module>client-api</module>
-        <module>identity-api</module>
-        <module>server-api</module>
-        <module>application-api</module>
-        <module>push-api</module>
-    </modules>
 </project>
