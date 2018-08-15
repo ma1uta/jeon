@@ -22,17 +22,17 @@
     <parent>
         <groupId>io.github.ma1uta.matrix</groupId>
         <artifactId>jeon</artifactId>
-        <version>0.4.1-SNAPSHOT</version>
+        <version>0.4.1</version>
     </parent>
     <artifactId>client-api</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
+    <version>0.4.1</version>
 
     <name>Client-Server API</name>
     <description>Client-Server API</description>
 
     <properties>
         <swagger-maven-plugin-version>3.1.7</swagger-maven-plugin-version>
-        <common.api.version>0.4.1-SNAPSHOT</common.api.version>
+        <common.api.version>0.4.1</common.api.version>
     </properties>
 
     <dependencies>

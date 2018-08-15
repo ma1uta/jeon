@@ -22,16 +22,16 @@
     <parent>
         <groupId>io.github.ma1uta.matrix</groupId>
         <artifactId>jeon</artifactId>
-        <version>0.4.1-SNAPSHOT</version>
+        <version>0.4.1</version>
     </parent>
     <artifactId>push-api</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
+    <version>0.4.1</version>
 
     <name>Push API</name>
     <description>Push API</description>
 
     <properties>
-        <common.api.version>0.4.1-SNAPSHOT</common.api.version>
+        <common.api.version>0.4.1</common.api.version>
     </properties>
 
     <dependencies>
