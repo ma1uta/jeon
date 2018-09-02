@@ -88,9 +88,6 @@ public interface ValidationApi {
      * Publish an association between a session and a Matrix user ID.
      * <br>
      * Future calls to /lookup for any of the session's 3pids will return this association.
-     * <br>
-     * Note: for backwards compatibility with previous drafts of this specification, the parameters may also be specified
-     * as application/x-form-www-urlencoded data. However, this usage is deprecated.
      *
      * @param request         JSON body request.
      * @param servletRequest  Servlet request.
@@ -102,9 +99,7 @@ public interface ValidationApi {
      */
     @ApiOperation(
         value = "Publish an association between a session and a Matrix user ID.",
-        notes = "Future calls to /lookup for any of the session's 3pids will return this association.\nNote: for backwards compatibility"
-            + " with previous drafts of this specification, the parameters may also be specified as application/x-form-www-urlencoded data."
-            + " However, this usage is deprecated."
+        notes = "Future calls to /lookup for any of the session's 3pids will return this association."
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The association was published."),
