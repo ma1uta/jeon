@@ -31,8 +31,7 @@ public class ErrorResponse {
      */
     public static class Code {
 
-        private Code() {
-            // singleton
+        protected Code() {
         }
 
         /**
@@ -101,11 +100,6 @@ public class ErrorResponse {
         public static final String M_THREEPID_IN_USE = "M_THREEPID_IN_USE";
 
         /**
-         * Sent when a threepid given to an API cannot be used because no record matching the threepid was found.
-         */
-        public static final String M_THREEPID_NOT_FOUND = "M_THREEPID_NOT_FOUND";
-
-        /**
          * The client's request used a third party server, eg. ID server, that this server does not trust.
          */
         public static final String M_SERVER_NOT_TRUSTED = "M_SERVER_NOT_TRUSTED";
@@ -114,6 +108,56 @@ public class ErrorResponse {
          * The session of the identity server not found or not validated.
          */
         public static final String M_SESSION_NOT_VALIDATED = "M_SESSION_NOT_VALIDATED";
+
+        /**
+         * The request was missing one or more parameters.
+         */
+        public static final String M_MISSING_PARAMS = "M_MISSING_PARAMS";
+
+        /**
+         * The request contained one or more invalid parameters.
+         */
+        public static final String M_INVALID_PARAM = "M_INVALID_PARAM";
+
+        /**
+         * A session could not be located for the given parameters.
+         */
+        public static final String M_NO_VALID_SESSION = "M_NO_VALID_SESSION";
+
+        /**
+         * The session has expired and must be renewed.
+         */
+        public static final String M_SESSION_EXPIRED = "M_SESSION_EXPIRED";
+
+        /**
+         * The email address provided was not valid.
+         */
+        public static final String M_INVALID_EMAIL = "M_INVALID_EMAIL";
+
+        /**
+         * There was an error sending an email. Typically seen when attempting to verify ownership of a given email address.
+         */
+        public static final String M_EMAIL_SEND_ERROR = "M_EMAIL_SEND_ERROR";
+
+        /**
+         * The provided third party address was not valid.
+         */
+        public static final String M_INVALID_ADDRESS = "M_INVALID_ADDRESS";
+
+        /**
+         * There was an error sending a notification. Typically seen when attempting to verify ownership of a given third party address.
+         */
+        public static final String M_SEND_ERROR = "M_SEND_ERROR";
+
+        /**
+         * The request contained an unrecognised value, such as an unknown token or medium.
+         */
+        public static final String M_UNRECOGNIZED = "M_UNRECOGNIZED";
+
+        /**
+         * An unknown error has occurred.
+         */
+        public static final String M_UNKNOWN = "M_UNKNOWN";
     }
 
     /**
