@@ -87,6 +87,8 @@ public interface PushApi {
             value = "Information about the push notification.",
             required = true
         ) Notification notification,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
     );
 }
