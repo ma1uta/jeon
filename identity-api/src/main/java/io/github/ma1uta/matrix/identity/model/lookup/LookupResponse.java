@@ -17,52 +17,84 @@
 package io.github.ma1uta.matrix.identity.model.lookup;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Map;
 
 /**
  * Look up response the Matrix user ID for a 3pid.
- *
- * @author ma1uta
  */
+@ApiModel(description = "Look up response the Matrix user ID for a 3pid.")
 public class LookupResponse {
 
     /**
-     * The 3pid address of the user being looked up.
+     * Required. The 3pid address of the user being looked up, matching the address requested.
      */
+    @ApiModelProperty(
+        value = "The 3pid address of the user being looked up, matching the address requested.",
+        required = true
+    )
     private String address;
 
     /**
-     * The literal string "email" or "msisdn".
+     * Required. A medium from the 3PID Types Appendix, matching the medium requested.
      */
+    @ApiModelProperty(
+        value = "A medium from the 3PID Types Appendix, matching the medium requested.",
+        required = true
+    )
     private String medium;
 
     /**
-     * The Matrix user ID associated with the 3pid.
+     * Required. The Matrix user ID associated with the 3pid.
      */
+    @ApiModelProperty(
+        value = "The Matrix user ID associated with the 3pid.",
+        required = true
+    )
     private String mxid;
 
     /**
-     * A unix timestamp before which the association is not known to be valid.
+     * Required. A unix timestamp before which the association is not known to be valid.
      */
+    @ApiModelProperty(
+        name = "not_before",
+        value = "A unix timestamp before which the association is not known to be valid.",
+        required = true
+    )
     @JsonProperty("not_before")
     private Long notBefore;
 
     /**
-     * A unix timestamp after which the association is not known to be valid.
+     * Required. A unix timestamp after which the association is not known to be valid.
      */
+    @ApiModelProperty(
+        name = "not_after",
+        value = "A unix timestamp after which the association is not known to be valid.",
+        required = true
+    )
     @JsonProperty("not_after")
     private Long notAfter;
 
     /**
-     * The unix timestamp at which the association was verified.
+     * Required. The unix timestamp at which the association was verified.
      */
+    @ApiModelProperty(
+        value = "The unix timestamp at which the association was verified.",
+        required = true
+    )
     private Long ts;
 
     /**
-     * The signatures of the verifying identity services which show that the association should be trusted,
+     * Required. The signatures of the verifying identity services which show that the association should be trusted,
      * if you trust the verifying identity services.
      */
+    @ApiModelProperty(
+        value = "The signatures of the verifying identity services which show that the association should be trusted, if you trust"
+            + " the verifying identity services.",
+        required = true
+    )
     private Map<String, Map<String, String>> signatures;
 
     public String getAddress() {

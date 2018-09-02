@@ -16,19 +16,26 @@
 
 package io.github.ma1uta.matrix.identity.model.lookup;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
- * Request of the lookup Matrix user IDs for a list of 3pids.
- *
- * @author ma1uta
+ * Response of the lookup Matrix user IDs for a list of 3pids.
  */
+@ApiModel(description = "Response of the lookup Matrix user IDs for a list of 3pids.")
 public class BulkLookupResponse {
 
     /**
-     * Required. an array of array containing the 3PID Types with the medium in first position, the address in second position
+     * Required. An array of array containing the 3PID Types with the medium in first position, the address in second position
      * and Matrix ID in third position.
      */
+    @ApiModelProperty(
+        value = "An array of array containing the 3PID Types with the medium in first position, the address in second"
+            + " position and Matrix user ID in third position.",
+        required = true
+    )
     private List<List<String>> threepids;
 
     public List<List<String>> getThreepids() {

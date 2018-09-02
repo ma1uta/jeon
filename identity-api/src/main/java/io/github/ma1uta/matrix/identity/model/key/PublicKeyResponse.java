@@ -17,17 +17,23 @@
 package io.github.ma1uta.matrix.identity.model.key;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * The public key exists.
- *
- * @author ma1uta
  */
+@ApiModel(description = "The public key exists.")
 public class PublicKeyResponse {
 
     /**
-     * Public key.
+     * Required. Unpadded Base64 encoded public key.
      */
+    @ApiModelProperty(
+        name = "public_key",
+        value = "Unpadded Base64 encoded public key.",
+        required = true
+    )
     @JsonProperty("public_key")
     private String publicKey;
 

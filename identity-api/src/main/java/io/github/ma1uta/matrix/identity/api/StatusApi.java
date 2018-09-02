@@ -17,6 +17,10 @@
 package io.github.ma1uta.matrix.identity.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +33,9 @@ import javax.ws.rs.core.MediaType;
 /**
  * Checks that an Identity server is available at this API endpoint.
  */
+@Api(
+    "Checks that an Identity server is available at this API endpoint."
+)
 @Path("/_matrix/identity/api/v1")
 @Produces(MediaType.APPLICATION_JSON)
 public interface StatusApi {
@@ -38,11 +45,22 @@ public interface StatusApi {
      * <br>
      * This is primarly used for auto-discovery and health check purposes by entities acting as a client for the Identity server.
      *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: if an Identity server is ready to serve requests.</p>
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @return <p>Status code 200: An identity server is ready to serve requests.</p>
      */
+    @ApiOperation(
+        value = "To discover that an Identity server is available at a specific URL, this endpoint can be queried and will return an"
+            + " empty object.",
+        notes = "This is primarly used for auto-discovery and health check purposes by entities acting as a client for the Identity server."
+    )
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "An identity server is ready to serve requests.")
+    })
     @GET
     @Path("")
-    EmptyResponse v1Status(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    EmptyResponse v1Status(
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 }
