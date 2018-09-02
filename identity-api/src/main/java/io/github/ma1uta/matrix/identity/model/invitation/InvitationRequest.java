@@ -14,46 +14,52 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.identity.model.validation;
+package io.github.ma1uta.matrix.identity.model.invitation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Validation result.
+ * JSON body request of the invitation api.
  */
-@ApiModel(description = "Validation result.")
-public class ValidationResponse {
+@ApiModel(description = "JSON boy requesst of the invitation api.")
+public class InvitationRequest {
 
     /**
-     * Required. The medium type of the 3pid.
+     * Required. The literal string email.
      */
     @ApiModelProperty(
-        value = "The medium type of the 3pid.",
+        value = "The literal string email",
         required = true
     )
     private String medium;
 
     /**
-     * Required. The address of the 3pid being looked up.
+     * Required. The email address of the invited user.
      */
     @ApiModelProperty(
-        value = "The address of the 3pid being looked up.",
+        value = "The email address of the invited user.",
         required = true
     )
     private String address;
 
     /**
-     * Required. Timestamp, in milliseconds, indicating the time that the 3pid was validated.
+     * Required. The Matrix room ID to which the user is invited.
      */
     @ApiModelProperty(
-        name = "validated_at",
-        value = "Timestamp, in milliseconds, indicating the time that the 3pid was validated.",
+        value = "The Matrix room ID to which the user is invited.",
         required = true
     )
-    @JsonProperty("validated_at")
-    private Long validatedAt;
+    private String roomId;
+
+    /**
+     * Required. The Matrix user ID of the inviting user.
+     */
+    @ApiModelProperty(
+        value = "The Matrix user ID of the inviting user.",
+        required = true
+    )
+    private String sender;
 
     public String getMedium() {
         return medium;
@@ -63,19 +69,27 @@ public class ValidationResponse {
         this.medium = medium;
     }
 
-    public Long getValidatedAt() {
-        return validatedAt;
-    }
-
-    public void setValidatedAt(Long validatedAt) {
-        this.validatedAt = validatedAt;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

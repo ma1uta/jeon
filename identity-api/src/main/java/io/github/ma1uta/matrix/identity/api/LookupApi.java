@@ -43,6 +43,8 @@ import javax.ws.rs.core.MediaType;
     value = "Association lookup."
 )
 @Path("/_matrix/identity/api/v1")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface LookupApi {
 
     /**
@@ -62,7 +64,6 @@ public interface LookupApi {
     })
     @GET
     @Path("/lookup")
-    @Produces(MediaType.APPLICATION_JSON)
     LookupResponse lookup(
         @ApiParam(
             name = "medium",
@@ -96,8 +97,6 @@ public interface LookupApi {
     })
     @POST
     @Path("/bulk_lookup")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     BulkLookupResponse bulkLookup(
         @ApiParam(
             value = "An array of arrays containing the 3PID Types with the medium in first position and the address in second position.",

@@ -16,23 +16,140 @@
 
 package io.github.ma1uta.matrix.identity.model.validation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Map;
+
 /**
  * Result of the publishing association.
- *
- * @author ma1uta
  */
+@ApiModel(description = "Result of the publishing association.")
 public class PublishResponse {
 
     /**
-     * Publishing result.
+     * Required. The 3pid address of the user being looked up.
      */
-    private Boolean published;
+    @ApiModelProperty(
+        value = "The 3pid address of the user being looked up.",
+        required = true
+    )
+    private String address;
 
-    public Boolean getPublished() {
-        return published;
+    /**
+     * Required. The medium type of the 3pid.
+     */
+    @ApiModelProperty(
+        value = "The medium type of the 3pid.",
+        required = true
+    )
+    private String medium;
+
+    /**
+     * Required. The Matrix user ID associated with the 3pid.
+     */
+    @ApiModelProperty(
+        value = "The Matrix user ID associated with the 3pid.",
+        required = true
+    )
+    private String mxid;
+
+    /**
+     * Required. A unix timestamp before which the association is not known to be valid.
+     */
+    @ApiModelProperty(
+        name = "not_before",
+        value = "A unix timestamp before which the association is not known to be valid.",
+        required = true
+    )
+    @JsonProperty("not_before")
+    private Long notBefore;
+
+    /**
+     * Required. A unix timestamp after which the association is not known to be valid.
+     */
+    @ApiModelProperty(
+        name = "not_after",
+        value = "A unix timestamp after which the association is not known to be valid.",
+        required = true
+    )
+    @JsonProperty("not_after")
+    private Long notAfter;
+
+    /**
+     * Required. The unix timestamp at which the association was verified.
+     */
+    @ApiModelProperty(
+        value = "The unix timestamp at which the association was verified.",
+        required = true
+    )
+    private Long ts;
+
+    /**
+     * Required. The signatures of the verifying identity servers which show that the association should be trusted, if you trust
+     * the verifying identity services.
+     */
+    @ApiModelProperty(
+        value = "The signatures of the verifying identity servers which show that the association should be trusted, if you trust"
+            + " the verifying identity services.",
+        required = true
+    )
+    private Map<String, Map<String, String>> signatures;
+
+    public String getAddress() {
+        return address;
     }
 
-    public void setPublished(Boolean published) {
-        this.published = published;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getMedium() {
+        return medium;
+    }
+
+    public void setMedium(String medium) {
+        this.medium = medium;
+    }
+
+    public String getMxid() {
+        return mxid;
+    }
+
+    public void setMxid(String mxid) {
+        this.mxid = mxid;
+    }
+
+    public Long getNotBefore() {
+        return notBefore;
+    }
+
+    public void setNotBefore(Long notBefore) {
+        this.notBefore = notBefore;
+    }
+
+    public Long getNotAfter() {
+        return notAfter;
+    }
+
+    public void setNotAfter(Long notAfter) {
+        this.notAfter = notAfter;
+    }
+
+    public Long getTs() {
+        return ts;
+    }
+
+    public void setTs(Long ts) {
+        this.ts = ts;
+    }
+
+    public Map<String, Map<String, String>> getSignatures() {
+        return signatures;
+    }
+
+    public void setSignatures(Map<String, Map<String, String>> signatures) {
+        this.signatures = signatures;
     }
 }
