@@ -16,12 +16,19 @@
 
 package io.github.ma1uta.matrix.identity.api;
 
+import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.identity.model.associations.SessionResponse;
 import io.github.ma1uta.matrix.identity.model.associations.ValidationResponse;
+import io.github.ma1uta.matrix.identity.model.session.EmailRequestToken;
+import io.github.ma1uta.matrix.identity.model.session.EmailSubmitToken;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,92 +40,159 @@ import javax.ws.rs.core.MediaType;
 /**
  * The flow for creating an association is session-based.
  */
+@Api(
+    value = "The flow for creating an association is session-based."
+)
 @Path("/_matrix/identity/api/v1")
 public interface SessionApi {
 
     /**
-     * The flow for creating an association is session-based.
+     * Create a session for validating an email address.
      * <br>
-     * Within a session, one may prove that one has ownership of a 3pid. Once this has been established, the user can form
-     * an association between that 3pid and a Matrix user ID. Note that this association is only proved one way; a user can
-     * associate any Matrix user ID with a validated 3pid, i.e. I can claim that any email address I own is associated
-     * with @billg:microsoft.com.
+     * The identity server will send an email containing a token. If that token is presented to the identity server in the future,
+     * it indicates that that user was able to read the email for that email address, and so we validate ownership of the email address.
      * <br>
-     * Sessions are time-limited; a session is considered to have been modified when it was created, and then when a validation
-     * is performed within it. A session can only be checked for validation, and validation can only be performed within
-     * a session, within a 24 hour period since its most recent modification. Any attempts to perform these actions after
-     * the expiry will be rejected, and a new session should be created and used instead.
+     * Note that homeservers offer APIs that proxy this API, adding additional behaviour on top, for example,
+     * /register/email/requestToken is designed specifically for use when registering an account and therefore will inform the user
+     * if the email address given is already registered on the server.
+     * <br>
+     * Note: for backwards compatibility with previous drafts of this specification, the parameters may also be specified
+     * as application/x-form-www-urlencoded data. However, this usage is deprecated.
      *
-     * @param clientSecret    client secret code.
-     * @param email           email.
-     * @param sendAttempt     sending attempts.
-     * @param nextLink        when the validation is completed, the identity service will redirect the user to that URL.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p> Status code 200: the sid generated for this session to the caller, in a JSON object containing the sid key.</p>
+     * @param request         JSON body request.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @return <p> Status code 200: Session created.</p>
+     * <p>Status code 400: An error ocurred. Some possible errors are:</p>
+     * <ul>
+     * <li>M_INVALID_EMAIL: The email address provided was invalid.</li>
+     * <li>M_EMAIL_SEND_ERROR: The validation email could not be sent.</li>
+     * </ul>
      */
+    @ApiOperation(
+        value = "Create a session for validating an email address.",
+        notes = "The identity server will send an email containing a token. If that token is presented to the identity server in"
+            + " the future, it indicates that that user was able to read the email for that email address, and so we validate ownership"
+            + " of the email address.\nNote that homeservers offer APIs that proxy this API, adding additional behaviour on top,"
+            + " for example,/register/email/requestToken is designed specifically for use when registering an account and therefore will"
+            + " inform the user if the email address given is already registered on the server.\nNote: for backwards compatibility"
+            + " with previous drafts of this specification, the parameters may also be specified as application/x-form-www-urlencoded data."
+            + " However, this usage is deprecated."
+    )
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "Session created."),
+        @ApiResponse(code = 400, message = "An error ocurred.")
+    })
     @POST
     @Path("/validate/email/requestToken")
     @Produces(MediaType.APPLICATION_JSON)
-    SessionResponse create(@FormParam("client_secret") String clientSecret, @FormParam("email") String email,
-                           @FormParam("send_attempt") Long sendAttempt, @FormParam("next_link") String nextLink,
-                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    SessionResponse create(
+        @ApiParam(
+            value = "JSON body request."
+        ) EmailRequestToken request,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
-     * A user may make a GET  request to /_matrix/identity/api/v1/validate/email/submitToken with the following
-     * parameters (either as query parameters or URL-encoded POST parameters):
-     * <ul>
-     * <li>sid the sid for the session, generated by the requestToken call.</li>
-     * <li>client_secret the client secret which was supplied to the requestToken call.</li>
-     * <li>token the token generated by the requestToken call, and emailed to the user.</li>
-     * </ul>
+     * Validate ownership of an email address.
      * <br>
-     * If these three values are consistent with a set generated by a requestToken call, ownership of the email address is
-     * considered to have been validated. This does not publish any information publicly, or associate the email address
-     * with any Matrix user ID. Specifically, calls to /lookup will not show a binding.
+     * If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is
+     * considered to have been validated. This does not publish any information publicly, or associate the email address with any
+     * Matrix user ID. Specifically, calls to /lookup will not show a binding.
      * <br>
-     * Otherwise, an error will be returned.
+     * The identity server is free to match the token case-insensitively, or carry out other mapping operations such as unicode
+     * normalisation. Whether to do so is an implementation detail for the identity server. Clients must always pass on the token
+     * without modification.
+     * <br>
+     * Note: for backwards compatibility with previous drafts of this specification, the parameters may also be specified
+     * as application/x-form-www-urlencoded data. However, this usage is deprecated.
      *
-     * @param sid             the sid for the session, generated by the requestToken call.
-     * @param clientSecret    the client secret which was supplied to the requestToken call.
-     * @param token           the token generated by the requestToken call, and emailed to the user.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: result of the validation or error.</p>
+     * @param request         JSON body request.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @return <p>Status code 200: The success of the validation.</p>
      */
-    @GET
-    @Path("/validate/email/submitToken")
-    @Produces(MediaType.APPLICATION_JSON)
-    ValidationResponse getValidate(@QueryParam("sid") String sid, @QueryParam("client_secret") String clientSecret,
-                                   @QueryParam("token") String token, @Context HttpServletRequest servletRequest,
-                                   @Context HttpServletResponse servletResponse);
-
-    /**
-     * A user may make a POST request to /_matrix/identity/api/v1/validate/email/submitToken with the following
-     * parameters (either as query parameters or URL-encoded POST parameters):
-     * <ul>
-     * <li>sid the sid for the session, generated by the requestToken call.</li>
-     * <li>client_secret the client secret which was supplied to the requestToken call.</li>
-     * <li>token the token generated by the requestToken call, and emailed to the user.</li>
-     * </ul>
-     * <br>
-     * If these three values are consistent with a set generated by a requestToken call, ownership of the email address is
-     * considered to have been validated. This does not publish any information publicly, or associate the email address
-     * with any Matrix user ID. Specifically, calls to /lookup will not show a binding.
-     * <br>
-     * Otherwise, an error will be returned.
-     *
-     * @param sid             the sid for the session, generated by the requestToken call.
-     * @param clientSecret    the client secret which was supplied to the requestToken call.
-     * @param token           the token generated by the requestToken call, and emailed to the user.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: result of the validation or error.</p>
-     */
+    @ApiOperation(
+        value = "Validate ownership of an email address.",
+        notes = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is"
+            + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
+            + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
+            + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
+            + " an implementation detail for the identity server. Clients must always pass on the token without modification.\n"
+            + " Note: for backwards compatibility with previous drafts of this specification, the parameters may also be specified"
+            + "as application/x-form-www-urlencoded data. However, this usage is deprecated."
+    )
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The success of the validation.")
+    })
     @POST
     @Path("/validate/email/submitToken")
     @Produces(MediaType.APPLICATION_JSON)
-    ValidationResponse postValidate(@FormParam("sid") String sid, @FormParam("client_secret") String clientSecret,
-                                    @FormParam("token") String token, @Context HttpServletRequest servletRequest,
-                                    @Context HttpServletResponse servletResponse);
+    ValidationResponse postValidate(
+        @ApiParam(
+            value = "JSON body request.",
+            required = true
+        ) EmailSubmitToken request,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
+
+    /**
+     * Validate ownership of an email address.
+     * <br>
+     * If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is
+     * considered to have been validated. This does not publish any information publicly, or associate the email address with
+     * any Matrix user ID. Specifically, calls to /lookup will not show a binding.
+     * <br>
+     * Note that, in contrast with the POST version, this endpoint will be used by end-users, and so the response should be human-readable.
+     *
+     * @param sid             Required. The session ID, generated by the requestToken call.
+     * @param clientSecret    Required. The client secret that was supplied to the requestToken call.
+     * @param token           Required. The token generated by the requestToken call and emailed to the user.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @return <p>Status code 200: Email address is validated.</p>
+     * <p>Status code 3xx: Email address is validated, and the next_link parameter was provided to the requestToken call.
+     * The user must be redirected to the URL provided by the next_link parameter.</p>
+     * <p>Status code 4xx: Validation failed.</p>
+     */
+    @ApiOperation(
+        value = "Validate ownership of an email address.",
+        notes = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is"
+            + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
+            + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
+            + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
+            + " an implementation detail for the identity server. Clients must always pass on the token without modification.\n"
+            + " Note: for backwards compatibility with previous drafts of this specification, the parameters may also be specified"
+            + "as application/x-form-www-urlencoded data. However, this usage is deprecated."
+    )
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "Email address is validated."),
+        @ApiResponse(code = 302, message = "Email address is validated, and the next_link parameter was provided to the requestToken call."
+            + " The user must be redirected to the URL provided by the next_link parameter."),
+        @ApiResponse(code = 400, message = "Validation failed.")
+    })
+    @GET
+    @Path("/validate/email/submitToken")
+    @Produces(MediaType.APPLICATION_JSON)
+    EmptyResponse getValidate(
+        @ApiParam(
+            value = "The session ID, generated by the requestToken call.",
+            required = true
+        ) @QueryParam("sid") String sid,
+        @ApiParam(
+            value = "The client secret that was supplied to the requestToken call.",
+            required = true
+        ) @QueryParam("client_secret") String clientSecret,
+        @ApiParam(
+            value = "The token generated by the requestToken call and emailed to the user.",
+            required = true
+        ) @QueryParam("token") String token,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 }
