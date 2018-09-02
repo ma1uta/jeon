@@ -18,29 +18,46 @@ package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.PusherData;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Map;
 
 /**
  * Device.
  */
+@ApiModel(description = "Device.")
 public class Device {
 
     /**
-     * The app_id given when the pusher was created.
+     * Required. The app_id given when the pusher was created.
      */
+    @ApiModelProperty(
+        name = "app_id",
+        value = "The app_id given when the pusher was created.",
+        required = true
+    )
     @JsonProperty("app_id")
     private String appId;
 
     /**
-     * The pushkey given when the pusher was created.
+     * Required. The pushkey given when the pusher was created.
      */
+    @ApiModelProperty(
+        name = "pushkey",
+        value = "The pushkey given when the pusher was created.",
+        required = true
+    )
     @JsonProperty("pushkey")
     private String pushKey;
 
     /**
      * The unix timestamp (in seconds) when the pushkey was last updated.
      */
+    @ApiModelProperty(
+        name = "pushkey_ts",
+        value = "The unix timestamp (in seconds) when the pushkey was last updated."
+    )
     @JsonProperty("pushkey_ts")
     private Long pushKeyTs;
 
@@ -48,11 +65,18 @@ public class Device {
      * A dictionary of additional pusher-specific data. For 'http' pushers, this is the data dictionary passed in at pusher creation
      * minus the url key.
      */
+    @ApiModelProperty(
+        value = "A dictionary of additional pusher-specific data. For 'http' pushers, this is the data dictionary passed in at"
+            + " pusher creation minus the url key."
+    )
     private PusherData data;
 
     /**
      * A dictionary of customisations made to the way this notification is to be presented. These are added by push rules.
      */
+    @ApiModelProperty(
+        value = "A dictionary of customisations made to the way this notification is to be presented. These are added by push rules."
+    )
     private Map<String, String> tweaks;
 
     public String getAppId() {

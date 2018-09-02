@@ -28,7 +28,9 @@ public class PusherData {
     /**
      * Required if kind is http. The URL to use to send notifications to.
      */
-    @ApiModelProperty("Required if kind is http. The URL to use to send notifications to.")
+    @ApiModelProperty(
+        value = "Required if kind is http. The URL to use to send notifications to."
+    )
     private String url;
 
     public String getUrl() {
