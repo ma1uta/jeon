@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta.matrix</groupId>
     <artifactId>jeon</artifactId>
-    <version>0.4.1</version>
+    <version>0.5.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -66,17 +66,18 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
         <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
-        <checkstyle.version>8.11</checkstyle.version>
-        <jacoco.maven.plugin.version>0.8.1</jacoco.maven.plugin.version>
+        <checkstyle.version>8.12</checkstyle.version>
+        <jacoco.maven.plugin.version>0.8.2</jacoco.maven.plugin.version>
         <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
         <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
         <maven.project.info.plugin.version>3.0.0</maven.project.info.plugin.version>
-        <maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
-        <nexus.staging.maven.plugin.version>1.6.7</nexus.staging.maven.plugin.version>
+        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+        <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
+        <swagger.maven.plugin.version>3.1.7</swagger.maven.plugin.version>
 
         <slf4j.api.version>1.7.25</slf4j.api.version>
         <javax.ws.rs.api.version>2.0.1</javax.ws.rs.api.version>
@@ -209,6 +210,50 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>${maven.project.info.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.kongchen</groupId>
+                    <artifactId>swagger-maven-plugin</artifactId>
+                    <version>${swagger.maven.plugin.version}</version>
+                    <configuration>
+                        <apiSources>
+                            <apiSource>
+                                <springmvc>false</springmvc>
+                                <schemes>
+                                    <schema>https</schema>
+                                </schemes>
+                                <host>matrix.org:8448</host>
+                                <basePath/>
+                                <info>
+                                    <title>${project.name}</title>
+                                    <version>${project.version}</version>
+                                    <description>${project.description}</description>
+                                    <termsOfService>http://www.github.com/kongchen/swagger-maven-plugin</termsOfService>
+                                    <contact>
+                                        <email>sablintolya@gmail.com</email>
+                                        <name>Anatoly</name>
+                                        <url>https://github.com/ma1uta/jeon</url>
+                                    </contact>
+                                    <license>
+                                        <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+                                        <name>Apache 2.0</name>
+                                    </license>
+                                </info>
+                                <templatePath>config/swagger/strapdown.html.hbs</templatePath>
+                                <outputPath>${basedir}/target/generated/document.html</outputPath>
+                                <swaggerDirectory>${basedir}/target/generated/swagger-ui</swaggerDirectory>
+                                <attachSwaggerArtifact>true</attachSwaggerArtifact>
+                            </apiSource>
+                        </apiSources>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
