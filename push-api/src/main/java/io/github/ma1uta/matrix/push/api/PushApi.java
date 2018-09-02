@@ -37,8 +37,11 @@ import javax.ws.rs.core.MediaType;
  * This describes the format used by "HTTP" pushers to send notifications of events to Push Gateways. If the endpoint returns an HTTP
  * error code, the homeserver SHOULD retry for a reasonable amount of time using exponential backoff.
  */
-@Api(value = "Push", description = "This describes the format used by \"HTTP\" pushers to send notifications of events to Push Gateways."
-    + " If the endpoint returns an HTTP error code, the homeserver SHOULD retry for a reasonable amount of time using exponential backoff.")
+@Api(
+    value = "Push",
+    description = "This describes the format used by \"HTTP\" pushers to send notifications of events to Push Gateways. If the endpoint"
+        + " returns an HTTP error code, the homeserver SHOULD retry for a reasonable amount of time using exponential backoff."
+)
 @Path("/_matrix/push/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
