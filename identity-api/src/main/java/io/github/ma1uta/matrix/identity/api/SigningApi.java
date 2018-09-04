@@ -38,7 +38,7 @@ import javax.ws.rs.core.MediaType;
  * in accepting invitations. This is less secure than the client doing it itself, but may be useful where this isn't possible.
  */
 @Api(
-    value = "Ephemeral invitation signing",
+    value = "Ephemeral invitation signing API",
     description = "To aid clients who may not be able to perform crypto themselves, the identity server offers some crypto functionality"
         + " to help in accepting invitations. This is less secure than the client doing it itself, but may be useful where this"
         + " isn't possible."

@@ -42,7 +42,7 @@ import javax.ws.rs.core.MediaType;
  * and lifetime characteristics than the service's long-term keys.
  */
 @Api(
-    value = "Key management.",
+    value = "Key management API.",
     description = "An identity service has some long-term public-private keypairs. These are named in a scheme algorithm:identifier,"
         + " e.g. ed25519:0. When signing an association, the standard Signing JSON algorithm applies.\nThe identity server may also keep"
         + " track of some short-term public-private keypairs, which may have different usage and lifetime characteristics than"

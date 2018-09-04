@@ -34,7 +34,8 @@ import javax.ws.rs.core.MediaType;
  * Checks that an Identity server is available at this API endpoint.
  */
 @Api(
-    "Checks that an Identity server is available at this API endpoint."
+    value = "Status API",
+    description = "Checks that an Identity server is available at this API endpoint."
 )
 @Path("/_matrix/identity/api/v1")
 @Produces(MediaType.APPLICATION_JSON)

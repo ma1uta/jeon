@@ -43,7 +43,7 @@ import javax.ws.rs.core.MediaType;
  * The flow for creating an association is session-based.
  */
 @Api(
-    value = "The flow for creating an association is session-based."
+    value = "Session API."
 )
 @Path("/_matrix/identity/api/v1")
 @Consumes(MediaType.APPLICATION_JSON)
