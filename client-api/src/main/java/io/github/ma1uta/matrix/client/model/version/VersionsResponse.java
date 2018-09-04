@@ -30,7 +30,9 @@ public class VersionsResponse {
     /**
      * The supported versions.
      */
-    @ApiModelProperty("The supported versions.")
+    @ApiModelProperty(
+        value = "The supported versions."
+    )
     private String[] versions;
 
     public String[] getVersions() {

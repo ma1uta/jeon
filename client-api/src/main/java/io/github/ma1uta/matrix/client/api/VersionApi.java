@@ -38,7 +38,10 @@ import javax.ws.rs.core.MediaType;
  * Only the latest Z value will be reported for each supported X.Y value.
  * i.e. if the server implements r0.0.0, r0.0.1, and r1.2.0, it will report r0.0.1 and r1.2.0.
  */
-@Api(value = "Version", description = "Gets the versions of the specification supported by the server.")
+@Api(
+    value = "Version API",
+    description = "Gets the versions of the specification supported by the server."
+)
 @Path("/_matrix/client/versions")
 @Produces(MediaType.APPLICATION_JSON)
 public interface VersionApi {
@@ -46,14 +49,20 @@ public interface VersionApi {
     /**
      * Gets the versions of the specification supported by the server.
      *
-     * @param servletRequest  servlet request
-     * @param servletResponse servlet response
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The versions supported by the server.</p>
      */
-    @ApiOperation(value = "Gets the versions of the specification supported by the server.", response = VersionsResponse.class)
-    @ApiResponses({
+    @ApiOperation(
+        value = "Gets the versions of the specification supported by the server."
+    )
+    @ApiResponses( {
         @ApiResponse(code = 200, message = "The versions supported by the server.")
     })
     @GET
-    VersionsResponse versions(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    @Path("/")
+    VersionsResponse versions(
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 }
