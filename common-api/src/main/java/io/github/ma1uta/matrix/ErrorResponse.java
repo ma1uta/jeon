@@ -77,6 +77,11 @@ public class ErrorResponse {
         /**
          * Encountered when trying to register a user ID which is not valid.
          */
+        public static final String M_INVALID_USERNAME = "M_INVALID_USERNAME";
+
+        /**
+         * Encountered when trying to register a user ID which is not valid.
+         */
         public static final String M_INVALID_PASSWORD = "M_INVALID_PASSWORD";
 
         /**
@@ -100,6 +105,53 @@ public class ErrorResponse {
         public static final String M_THREEPID_IN_USE = "M_THREEPID_IN_USE";
 
         /**
+         * Sent when a threepid given to an API cannot be used because no record matching the threepid was found.
+         */
+        public static final String M_THREEPID_NOT_FOUND = "M_THREEPID_NOT_FOUND";
+
+        /**
+         * Authentication could not be performed on the third party identifier.
+         */
+        public static final String M_THREEPID_AUTH_FAILED = "M_THREEPID_AUTH_FAILED";
+
+        /**
+         * The server does not permit this third party identifier. This may happen if the server only permits, for example, email
+         * addresses from a particular domain.
+         */
+        public static final String M_THREEPID_DENIED = "M_THREEPID_DENIED";
+
+        /**
+         * The client's request to create a room used a room version that the server does not support.
+         */
+        public static final String M_UNSUPPORTED_ROOM_VERSION = "M_UNSUPPORTED_ROOM_VERSION";
+
+        /**
+         * The client attempted to join a room that has a version the server does not support.
+         * Inspect the room_version property of the error response for the room's version.
+         */
+        public static final String M_INCOMPATIBLE_ROOM_VERSION = "M_INCOMPATIBLE_ROOM_VERSION";
+
+        /**
+         * The state change requested cannot be performed, such as attempting to unban a user who is not banned.
+         */
+        public static final String M_BAD_STATE = "M_BAD_STATE";
+
+        /**
+         * The room or resource does not permit guests to access it.
+         */
+        public static final String M_GUEST_ACCESS_FORBIDDEN = "M_GUEST_ACCESS_FORBIDDEN";
+
+        /**
+         * A Captcha is required to complete the request.
+         */
+        public static final String M_CAPTCHA_NEEDED = "M_CAPTCHA_NEEDED";
+
+        /**
+         * The Captcha provided did not match what was expected.
+         */
+        public static final String M_CAPTCHA_INVALID = "M_CAPTCHA_INVALID";
+
+        /**
          * The client's request used a third party server, eg. ID server, that this server does not trust.
          */
         public static final String M_SERVER_NOT_TRUSTED = "M_SERVER_NOT_TRUSTED";
@@ -110,9 +162,20 @@ public class ErrorResponse {
         public static final String M_SESSION_NOT_VALIDATED = "M_SESSION_NOT_VALIDATED";
 
         /**
-         * The request was missing one or more parameters.
+         * A required parameter was missing from the request.
          */
-        public static final String M_MISSING_PARAMS = "M_MISSING_PARAMS";
+        public static final String M_MISSING_PARAM = "M_MISSING_PARAM";
+
+        /**
+         * The request or entity was too large.
+         */
+        public static final String M_TOO_LARGE = "M_TOO_LARGE";
+
+        /**
+         * The resource being requested is reserved by an application service, or the application service making the request
+         * has not created the resource.
+         */
+        public static final String M_EXCLUSIVE = "M_EXCLUSIVE";
 
         /**
          * The request contained one or more invalid parameters.
