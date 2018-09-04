@@ -1721,58 +1721,81 @@ public class Event {
     /**
      * The fields in this object will vary depending on the type of event. When interacting with the REST API, this is the HTTP body.
      */
-    @ApiModelProperty("The fields in this object will vary depending on the type of event. When interacting with the REST API, this "
-        + "is the HTTP body.")
+    @ApiModelProperty(
+        value = "The fields in this object will vary depending on the type of event. When interacting with the REST API, this "
+            + "is the HTTP body."
+    )
     private EventContent content;
 
     /**
      * Required. The type of event. This SHOULD be namespaced similar to Java package naming conventions e.g.
      * 'com.example.subdomain.event.type'
      */
-    @ApiModelProperty(value = "The type of event. This SHOULD be namespaced similar to Java package naming conventions.", required = true)
+    @ApiModelProperty(
+        value = "The type of event. This SHOULD be namespaced similar to Java package naming conventions.",
+        required = true
+    )
     private String type;
 
     // ---- Room events ----
     /**
      * Required. The globally unique event identifier.
      */
-    @ApiModelProperty(name = "event_id", value = "The globally unique event identifier.", required = true)
+    @ApiModelProperty(
+        name = "event_id",
+        value = "The globally unique event identifier.",
+        required = true
+    )
     @JsonProperty("event_id")
     private String eventId;
 
     /**
      * Required. The ID of the room associated with this event.
      */
-    @ApiModelProperty(name = "room_id", value = "The ID of the room associated with this event.", required = true)
+    @ApiModelProperty(
+        name = "room_id",
+        value = "The ID of the room associated with this event.",
+        required = true
+    )
     @JsonProperty("room_id")
     private String roomId;
 
     /**
      * Required. Contains the fully-qualified ID of the user who sent this event.
      */
-    @ApiModelProperty(value = "Contains the fully-qualified ID of the user who sent this event.", required = true)
+    @ApiModelProperty(
+        value = "Contains the fully-qualified ID of the user who sent this event.",
+        required = true
+    )
     private String sender;
 
     /**
      * Required. Timestamp in milliseconds on originating homeserver when this event was sent.
      */
-    @ApiModelProperty(name = "origin_server_ts", value = "Timestamp in milliseconds on originating homeserver when this event was sent.",
-        required = true)
+    @ApiModelProperty(
+        name = "origin_server_ts",
+        value = "Timestamp in milliseconds on originating homeserver when this event was sent.",
+        required = true
+    )
     @JsonProperty("origin_server_ts")
     private Long originServerTs;
 
     /**
      * Contains optional extra information about the event.
      */
-    @ApiModelProperty("Contains optional extra information about the event.")
+    @ApiModelProperty(
+        value = "Contains optional extra information about the event."
+    )
     private Unsigned unsigned;
 
     // ---- State events ----
     /**
      * Optional. The previous content for this event. If there is no previous content, this key will be missing.
      */
-    @ApiModelProperty(name = "prev_content", value = "The previous content for this event. If there is no previous content, this key "
-        + "will be missing.")
+    @ApiModelProperty(
+        name = "prev_content",
+        value = "The previous content for this event. If there is no previous content, this key will be missing."
+    )
     @JsonProperty("prev_content")
     private EventContent prevContent;
 
@@ -1780,17 +1803,24 @@ public class Event {
      * Required. A unique key which defines the overwriting semantics for this piece of room state. This value is often a
      * zero-length string. The presence of this key makes this event a State Event. The key MUST NOT start with '_'.
      */
-    @ApiModelProperty(name = "state_key", value = " A unique key which defines the overwriting semantics for this piece of room "
-        + "state. This value is often a zero-length string. The presence of this key makes this event a State Event. The key MUST "
-        + "NOT start with '_'.", required = true)
+    @ApiModelProperty(
+        name = "state_key",
+        value = " A unique key which defines the overwriting semantics for this piece of room "
+            + "state. This value is often a zero-length string. The presence of this key makes this event a State Event. The key MUST "
+            + "NOT start with '_'.",
+        required = true
+    )
     @JsonProperty("state_key")
     private String stateKey;
 
     /**
      * This contains an array of StrippedState Events. These events provide information on a subset of state events such as the room name.
      */
-    @ApiModelProperty(name = "invite_room_state", value = "This contains an array of StrippedState Events. These events provide "
-        + "information on a subset of state events such as the room name.")
+    @ApiModelProperty(
+        name = "invite_room_state",
+        value = "This contains an array of StrippedState Events. These events provide information on a subset of state events"
+            + " such as the room name."
+    )
     @JsonProperty("invite_room_state")
     private List<StrippedState> inviteRoomState;
 

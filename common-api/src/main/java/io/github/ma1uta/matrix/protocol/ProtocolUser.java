@@ -28,21 +28,30 @@ import java.util.Map;
 public class ProtocolUser {
 
     /**
-     * A Matrix User ID represting a third party user.
+     * Required. A Matrix User ID represting a third party user.
      */
-    @ApiModelProperty("A Matrix User ID represting a third party user.")
+    @ApiModelProperty(
+        value = "A Matrix User ID represting a third party user.",
+        required = true
+    )
     private String userid;
 
     /**
-     * The protocol ID that the third party location is a part of.
+     * Required. The protocol ID that the third party location is a part of.
      */
-    @ApiModelProperty("The protocol ID that the third party location is a part of.")
+    @ApiModelProperty(
+        value = "The protocol ID that the third party location is a part of.",
+        required = true
+    )
     private String protocol;
 
     /**
-     * Information used to identify this third party location.
+     * Required. Information used to identify this third party location.
      */
-    @ApiModelProperty("Information used to identify this third party location.")
+    @ApiModelProperty(
+        value = "Information used to identify this third party location.",
+        required = true
+    )
     private Map<String, String> fields;
 
     public String getUserid() {

@@ -28,21 +28,30 @@ import java.util.Map;
 public class ProtocolLocation {
 
     /**
-     * An alias for a matrix room.
+     * Required. An alias for a matrix room.
      */
-    @ApiModelProperty("An alias for a matrix room.")
+    @ApiModelProperty(
+        value = "An alias for a matrix room.",
+        required = true
+    )
     private String alias;
 
     /**
-     * The protocol ID that the third party location is a part of.
+     * Required. The protocol ID that the third party location is a part of.
      */
-    @ApiModelProperty("The protocol ID that the third party location is a part of.")
+    @ApiModelProperty(
+        value = "The protocol ID that the third party location is a part of.",
+        required = true
+    )
     private String protocol;
 
     /**
-     * Information used to identify this third party location.
+     * Required. Information used to identify this third party location.
      */
-    @ApiModelProperty("Information used to identify this third party location.")
+    @ApiModelProperty(
+        value = "Information used to identify this third party location.",
+        required = true
+    )
     private Map<String, String> fields;
 
     public String getAlias() {

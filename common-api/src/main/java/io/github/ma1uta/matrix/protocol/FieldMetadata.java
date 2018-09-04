@@ -26,15 +26,21 @@ import io.swagger.annotations.ApiModelProperty;
 public class FieldMetadata {
 
     /**
-     * A regular expression for validation of a field's value.
+     * Required. A regular expression for validation of a field's value.
      */
-    @ApiModelProperty("A regular expression for validation of a field's value.")
+    @ApiModelProperty(
+        value = "A regular expression for validation of a field's value.",
+        required = true
+    )
     private String regexp;
 
     /**
-     * An placeholder serving as a valid example of the field value.
+     * Required. An placeholder serving as a valid example of the field value.
      */
-    @ApiModelProperty("An placeholder serving as a valid example of the field value.")
+    @ApiModelProperty(
+        value = "An placeholder serving as a valid example of the field value.",
+        required = true
+    )
     private String placeholder;
 
     public String getRegexp() {

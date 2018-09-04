@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.protocol;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,22 +29,41 @@ import java.util.Map;
 public class Instance {
 
     /**
-     * Description.
+     * Required. A human-readable description for the protocol, such as the name.
      */
-    @ApiModelProperty(value = "Description.")
+    @ApiModelProperty(
+        value = "Description.",
+        required = true
+    )
     private String desc;
 
     /**
-     * Icon.
+     * An optional content URI representing the protocol. Overrides the one provided at the higher level Protocol object.
      */
-    @ApiModelProperty("Icon.")
+    @ApiModelProperty(
+        value = "An optional content URI representing the protocol. Overrides the one provided at the higher level Protocol object."
+    )
     private String icon;
 
     /**
-     * Fields.
+     * Required. Preset values for fields the client may use to search by.
      */
-    @ApiModelProperty("fields")
+    @ApiModelProperty(
+        value = "Preset values for fields the client may use to search by.",
+        required = true
+    )
     private Map<String, String> fields;
+
+    /**
+     * Required. A unique identifier across all instances.
+     */
+    @ApiModelProperty(
+        name = "network_id",
+        value = "A unique identifier across all instances.",
+        required = true
+    )
+    @JsonProperty("network_id")
+    private String networkId;
 
     public String getDesc() {
         return desc;
@@ -67,5 +87,13 @@ public class Instance {
 
     public void setFields(Map<String, String> fields) {
         this.fields = fields;
+    }
+
+    public String getNetworkId() {
+        return networkId;
+    }
+
+    public void setNetworkId(String networkId) {
+        this.networkId = networkId;
     }
 }

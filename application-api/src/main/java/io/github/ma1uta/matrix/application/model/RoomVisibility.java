@@ -16,32 +16,30 @@
 
 package io.github.ma1uta.matrix.application.model;
 
-import io.github.ma1uta.matrix.Event;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 /**
- * JSON body request of the transaction api.
+ * JSON body request of the room service api.
  */
-@ApiModel(description = "JSON body request of the transaction api.")
-public class TransactionRequest {
+@ApiModel(description = "JSON body request of the room service api.")
+public class RoomVisibility {
 
     /**
-     * Required. A list of events, formatted as per the Client-Server API.
+     * Required. Whether the room should be visible (public) in the directory or not (private). One of: ["public", "private"].
      */
     @ApiModelProperty(
-        value = "A list of events, formatted as per the Client-Server API.",
-        required = true
+        value = "Whether the room should be visible (public) in the directory or not (private).",
+        required = true,
+        allowableValues = "public, private"
     )
-    private List<Event> events;
+    private String visibility;
 
-    public List<Event> getEvents() {
-        return events;
+    public String getVisibility() {
+        return visibility;
     }
 
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
     }
 }

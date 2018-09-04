@@ -30,38 +30,56 @@ import java.util.Map;
 public class Protocol {
 
     /**
-     * Fields used to identify a third party user.
+     * Required. Fields used to identify a third party user.
      */
-    @ApiModelProperty(name = "user_fields", value = "Fields used to identify a third party user.")
+    @ApiModelProperty(
+        name = "user_fields",
+        value = "Fields used to identify a third party user.",
+        required = true
+    )
     @JsonProperty("user_fields")
     private List<String> userFields;
 
     /**
-     * Fields used to identify a third party location.
+     * Required. Fields used to identify a third party location.
      */
-    @ApiModelProperty(name = "location_fields", value = "Fields used to identify a third party location.")
+    @ApiModelProperty(
+        name = "location_fields",
+        value = "Fields used to identify a third party location.",
+        required = true
+    )
     @JsonProperty("location_fields")
     private List<String> locationFields;
 
     /**
-     * An icon representing the third party protocol.
+     * Required. An icon representing the third party protocol.
      */
-    @ApiModelProperty("An icon representing the third party protocol.")
+    @ApiModelProperty(
+        value = "An icon representing the third party protocol.",
+        required = true
+    )
     private String icon;
 
     /**
-     * All location or user fields should have an entry here.
+     * Required. All location or user fields should have an entry here.
      */
-    @ApiModelProperty(name = "field_types", value = "All location or user fields should have an entry here.")
+    @ApiModelProperty(
+        name = "field_types",
+        value = "All location or user fields should have an entry here.",
+        required = true
+    )
     @JsonProperty("field_types")
     private Map<String, FieldMetadata> fieldTypes;
 
     /**
-     * A list of objects representing independent instances of configuration.
+     * Required. A list of objects representing independent instances of configuration.
      * For instance multiple networks on IRC if multiple are bridged by the same bridge.
      */
-    @ApiModelProperty("A list of objects representing independent instances of configuration. For instance multiple networks"
-        + "on IRC if multiple are bridged by the same bridge.")
+    @ApiModelProperty(
+        value = "A list of objects representing independent instances of configuration. For instance multiple networks"
+            + "on IRC if multiple are bridged by the same bridge.",
+        required = true
+    )
     private List<Instance> instances;
 
     public List<String> getUserFields() {
