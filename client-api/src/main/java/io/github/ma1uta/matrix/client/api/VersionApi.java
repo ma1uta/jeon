@@ -39,7 +39,7 @@ import javax.ws.rs.core.MediaType;
  * i.e. if the server implements r0.0.0, r0.0.1, and r1.2.0, it will report r0.0.1 and r1.2.0.
  */
 @Api(
-    value = "Version API",
+    value = "Version API.",
     description = "Gets the versions of the specification supported by the server."
 )
 @Path("/_matrix/client/versions")

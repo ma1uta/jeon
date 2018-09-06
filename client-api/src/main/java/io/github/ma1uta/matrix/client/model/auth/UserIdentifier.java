@@ -19,27 +19,28 @@ package io.github.ma1uta.matrix.client.model.auth;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 /**
- * Supported login types.
+ * The user is identified by their Matrix ID.
  */
-@ApiModel(description = "Supported login types.")
-public class SupportedLoginResponse {
+@ApiModel(description = "The user is identified by their Matrix ID.")
+public class UserIdentifier extends Identifier {
 
     /**
-     * Supported login types.
+     * A client can identify a user using their Matrix ID. This can either be the fully qualified Matrix user ID,
+     * or just the localpart of the user ID.
      */
     @ApiModelProperty(
-        value = "Supported login types."
+        value = "A client can identify a user using their Matrix ID. This can either be the fully qualified Matrix user ID,"
+            + " or just the localpart of the user ID.",
+        required = true
     )
-    private List<LoginType> flows;
+    private String user;
 
-    public List<LoginType> getFlows() {
-        return flows;
+    public String getUser() {
+        return user;
     }
 
-    public void setFlows(List<LoginType> flows) {
-        this.flows = flows;
+    public void setUser(String user) {
+        this.user = user;
     }
 }

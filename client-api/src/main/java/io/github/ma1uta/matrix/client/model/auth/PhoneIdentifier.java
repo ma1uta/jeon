@@ -19,27 +19,43 @@ package io.github.ma1uta.matrix.client.model.auth;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 /**
- * Supported login types.
+ * The user is identified by a phone number.
  */
-@ApiModel(description = "Supported login types.")
-public class SupportedLoginResponse {
+@ApiModel(description = "The user is identified by a phone number.")
+public class PhoneIdentifier extends Identifier {
 
     /**
-     * Supported login types.
+     * The country that the phone number is from.
      */
     @ApiModelProperty(
-        value = "Supported login types."
+        value = "The country that the phone number is from.",
+        required = true
     )
-    private List<LoginType> flows;
+    private String country;
 
-    public List<LoginType> getFlows() {
-        return flows;
+    /**
+     * The phone number.
+     */
+    @ApiModelProperty(
+        value = "The phone number.",
+        required = true
+    )
+    private String phone;
+
+    public String getCountry() {
+        return country;
     }
 
-    public void setFlows(List<LoginType> flows) {
-        this.flows = flows;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

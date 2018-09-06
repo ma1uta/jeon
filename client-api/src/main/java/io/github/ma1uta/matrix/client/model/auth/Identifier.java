@@ -16,20 +16,34 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Login type.
+ * Some authentication mechanisms use a user identifier object to identify a user. The user identifier object has a type field
+ * to indicate the type of identifier being used, and depending on the type, has other fields giving the information required
+ * to identify the user.
  */
-@ApiModel(description = "Login type.")
-public class LoginType {
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type"
+)
+@JsonSubTypes( {
+    @JsonSubTypes.Type(name = "m.id.user", value = UserIdentifier.class),
+    @JsonSubTypes.Type(name = "m.id.thirdparty", value = ThirdpartyIdentifier.class),
+    @JsonSubTypes.Type(name = "m.id.phone", value = PhoneIdentifier.class)
+})
+@ApiModel(description = "Identifier types.")
+public abstract class Identifier {
 
     /**
-     * Type of the authentication stage.
+     * Identifier type.
      */
     @ApiModelProperty(
-        value = "Type of the authentication stage."
+        value = "Identifier type.",
+        required = true
     )
     private String type;
 

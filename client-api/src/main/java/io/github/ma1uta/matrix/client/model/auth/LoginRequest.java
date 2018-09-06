@@ -22,8 +22,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests.
- *
- * @author ma1uta
  */
 @ApiModel(description = "Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests")
 public class LoginRequest {
@@ -31,53 +29,90 @@ public class LoginRequest {
     /**
      * Required. The login type being used. One of: ["m.login.password", "m.login.token"].
      */
-    @ApiModelProperty(value = "The login type being used", required = true, allowableValues = "['m.login.password', 'm.login.token']")
+    @ApiModelProperty(
+        value = "The login type being used",
+        required = true,
+        allowableValues = "m.login.password, m.login.token"
+    )
     private String type;
 
     /**
-     * The fully qualified user ID or just local part of the user ID, to log in.
+     * Identification information for the user.
      */
-    @ApiModelProperty("he fully qualified user ID or just local part of the user ID, to log in.")
+    @ApiModelProperty(
+        value = "Identification information for the user.",
+        required = true
+    )
+    private Identifier identifier;
+
+    /**
+     * The fully qualified user ID or just local part of the user ID, to log in.
+     * <br>
+     * Deprecated in favour of identifier.
+     */
+    @ApiModelProperty(
+        value = "he fully qualified user ID or just local part of the user ID, to log in."
+    )
+    @Deprecated
     private String user;
 
     /**
      * When logging in using a third party identifier, the medium of the identifier. Must be 'email'.
+     * <br>
+     * Deprecated in favour of identifier.
      */
-    @ApiModelProperty("When logging in using a third party identifier, the medium of the identifier. Must be 'email'.")
+    @ApiModelProperty(
+        value = "When logging in using a third party identifier, the medium of the identifier. Must be 'email'."
+    )
+    @Deprecated
     private String medium;
 
     /**
      * Third party identifier for the user.
+     * <br>
+     * Deprecated in favour of identifier.
      */
-    @ApiModelProperty("Third party identifier for the user")
+    @ApiModelProperty(
+        value = "Third party identifier for the user"
+    )
+    @Deprecated
     private String address;
 
     /**
      * Required when type is m.login.password. The user's password.
      */
-    @ApiModelProperty("Required when type is m.login.password. The user's password.")
+    @ApiModelProperty(
+        value = "Required when type is m.login.password. The user's password."
+    )
     private CharSequence password;
 
     /**
      * Required when type is m.login.token. The login token.
      */
-    @ApiModelProperty("Required when type is m.login.token. The login token")
+    @ApiModelProperty(
+        value = "Required when type is m.login.token. The login token"
+    )
     private String token;
 
     /**
      * ID of the client device. If this does not correspond to a known client device, a new device will be created.
      * The server will auto-generate a device_id if this is not specified.
      */
-    @ApiModelProperty(name = "device_id", value = "ID of the client device. If this does not correspond to a known client device, a "
-        + "new device will be created. The server will auto-generate a device_id if this is not specified")
+    @ApiModelProperty(
+        name = "device_id",
+        value = "ID of the client device. If this does not correspond to a known client device, a "
+            + "new device will be created. The server will auto-generate a device_id if this is not specified"
+    )
     @JsonProperty("device_id")
     private String deviceId;
 
     /**
      * A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device.
      */
-    @ApiModelProperty(name = "initial_device_display_name", value = "A display name to assign to the newly-created device. Ignored "
-        + "if device_id corresponds to a known device.")
+    @ApiModelProperty(
+        name = "initial_device_display_name",
+        value = "A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device."
+    )
     @JsonProperty("initial_device_display_name")
     private String initialDeviceDisplayName;
 
@@ -87,6 +122,14 @@ public class LoginRequest {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Identifier getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(Identifier identifier) {
+        this.identifier = identifier;
     }
 
     public String getUser() {
