@@ -54,6 +54,11 @@ public class StrippedDeserializer extends JsonDeserializer<StrippedState> {
             strippedState.setStateKey(stateKey.asText());
         }
 
+        JsonNode sender = node.get("sender");
+        if (sender != null && sender.isTextual()) {
+            strippedState.setSender(sender.asText());
+        }
+
         return strippedState;
     }
 }

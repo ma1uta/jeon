@@ -29,14 +29,20 @@ public class UnreadNotificationCounts {
     /**
      * The number of unread notifications for this room with the highlight flag set.
      */
-    @ApiModelProperty(name = "highlight_count", value = "The number of unread notifications for this room with the highlight flag set.")
+    @ApiModelProperty(
+        name = "highlight_count",
+        value = "The number of unread notifications for this room with the highlight flag set."
+    )
     @JsonProperty("highlight_count")
     private Long highlightCount;
 
     /**
      * The total number of unread notifications for this room.
      */
-    @ApiModelProperty(name = "notification_count", value = "The total number of unread notifications for this room.")
+    @ApiModelProperty(
+        name = "notification_count",
+        value = "The total number of unread notifications for this room."
+    )
     @JsonProperty("notification_count")
     private Long notificationCount;
 

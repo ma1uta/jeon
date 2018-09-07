@@ -31,7 +31,9 @@ public class Ephemeral {
     /**
      * List of events.
      */
-    @ApiModelProperty("List of events.")
+    @ApiModelProperty(
+        value = "List of events."
+    )
     private List<Event> events;
 
     public List<Event> getEvents() {

@@ -30,7 +30,9 @@ public class DeviceLists {
     /**
      * List of users who have updated their device identity keys since the previous sync response.
      */
-    @ApiModelProperty("List of users who have updated their device identity keys since the previous sync response.")
+    @ApiModelProperty(
+        value = "List of users who have updated their device identity keys since the previous sync response."
+    )
     private List<String> changed;
 
     public List<String> getChanged() {

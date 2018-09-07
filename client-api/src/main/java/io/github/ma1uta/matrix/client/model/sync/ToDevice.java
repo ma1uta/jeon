@@ -29,9 +29,11 @@ import java.util.List;
 public class ToDevice {
 
     /**
-     * List of events.
+     * List of sent-to-device messages.
      */
-    @ApiModelProperty("List of events.")
+    @ApiModelProperty(
+        value = "List of send-to-device messages."
+    )
     private List<Event> events;
 
     public List<Event> getEvents() {

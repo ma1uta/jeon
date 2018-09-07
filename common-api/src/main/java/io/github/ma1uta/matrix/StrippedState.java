@@ -32,21 +32,40 @@ public class StrippedState {
     /**
      * Required. The content for the event.
      */
-    @ApiModelProperty(value = "The content for the event.", required = true)
+    @ApiModelProperty(
+        value = "The content for the event.",
+        required = true
+    )
     private EventContent content;
 
     /**
      * Required. The state_key for the event.
      */
-    @ApiModelProperty(name = "state_key", value = "The state_key for the event.", required = true)
+    @ApiModelProperty(
+        name = "state_key",
+        value = "The state_key for the event.",
+        required = true
+    )
     @JsonProperty("state_key")
     private String stateKey;
 
     /**
      * Required. The type for the event.
      */
-    @ApiModelProperty(value = "The type for the event.", required = true)
+    @ApiModelProperty(
+        value = "The type for the event.",
+        required = true
+    )
     private String type;
+
+    /**
+     * Required. The sender for the event.
+     */
+    @ApiModelProperty(
+        value = "The sender for the event.",
+        required = true
+    )
+    private String sender;
 
     public EventContent getContent() {
         return content;
@@ -70,5 +89,13 @@ public class StrippedState {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

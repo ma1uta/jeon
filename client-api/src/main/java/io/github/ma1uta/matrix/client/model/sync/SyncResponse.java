@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Map;
+
 /**
  * JSON body response for sync api.
  */
@@ -27,45 +29,71 @@ import io.swagger.annotations.ApiModelProperty;
 public class SyncResponse {
 
     /**
-     * The batch token to supply in the since param of the next /sync request.
+     * Required. The batch token to supply in the since param of the next /sync request.
      */
-    @ApiModelProperty(name = "next_batch", value = "The batch token to supply in the since param of the next /sync request.")
+    @ApiModelProperty(
+        name = "next_batch",
+        value = "The batch token to supply in the since param of the next /sync request.",
+        required = true
+    )
     @JsonProperty("next_batch")
     private String nextBatch;
 
     /**
      * Updates to rooms.
      */
-    @ApiModelProperty("Updates to rooms.")
+    @ApiModelProperty(
+        value = "Updates to rooms."
+    )
     private Rooms rooms;
 
     /**
      * The updates to the presence status of other users.
      */
-    @ApiModelProperty("The updates to the presence status of other users.")
+    @ApiModelProperty(
+        value = "The updates to the presence status of other users."
+    )
     private Presence presence;
 
     /**
      * The global private data created by this user.
      */
-    @ApiModelProperty(name = "account_data", value = "The global private data created by this user.")
+    @ApiModelProperty(
+        name = "account_data",
+        value = "The global private data created by this user."
+    )
     @JsonProperty("account_data")
     private AccountData accountData;
 
     /**
      * Information on the send-to-device messages for the client device, as defined in Send-to-Device messaging.
      */
-    @ApiModelProperty(name = "to_device", value = "Information on the send-to-device messages for the client device, as defined "
-        + "in Send-to-Device messaging.")
+    @ApiModelProperty(
+        name = "to_device",
+        value = "Information on the send-to-device messages for the client device, as defined in Send-to-Device messaging."
+    )
     @JsonProperty("to_device")
     private ToDevice toDevice;
 
     /**
      * Information on end-to-end device updates, as specified in End-to-end encryption.
      */
-    @ApiModelProperty(name = "device_lists", value = "Information on end-to-end device updates, as specified in End-to-end encryption.")
+    @ApiModelProperty(
+        name = "device_lists",
+        value = "Information on end-to-end device updates, as specified in End-to-end encryption."
+    )
     @JsonProperty("device_lists")
     private DeviceLists deviceLists;
+
+    /**
+     * Information on end-to-end encryption keys, as specified in End-to-end encryption.
+     */
+    @ApiModelProperty(
+        name = "device_one_time_keys_count",
+        value = "Information on end-to-end encryption keys, as specified in End-to-end encryption."
+    )
+    @JsonProperty("device_one_time_keys_count")
+    private Map<String, Long> deviceOneTimeKeysCount;
 
     public String getNextBatch() {
         return nextBatch;

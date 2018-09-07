@@ -30,19 +30,25 @@ public class Rooms {
     /**
      * The rooms that the user has joined.
      */
-    @ApiModelProperty("The rooms that the user has joined.")
+    @ApiModelProperty(
+        value = "The rooms that the user has joined."
+    )
     private Map<String, JoinedRoom> join;
 
     /**
      * The rooms that the user has been invited to.
      */
-    @ApiModelProperty("The rooms that the user has been invited to.")
+    @ApiModelProperty(
+        value = "The rooms that the user has been invited to."
+    )
     private Map<String, InvitedRoom> invite;
 
     /**
      * The rooms that the user has left or been banned from.
      */
-    @ApiModelProperty("The rooms that the user has left or been banned from.")
+    @ApiModelProperty(
+        value = "The rooms that the user has left or been banned from."
+    )
     private Map<String, LeftRoom> leave;
 
     public Map<String, JoinedRoom> getJoin() {

@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.StrippedState;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -31,14 +31,16 @@ public class InviteState {
     /**
      * List of events.
      */
-    @ApiModelProperty("List of events.")
-    private List<Event> events;
+    @ApiModelProperty(
+        value = "List of events."
+    )
+    private List<StrippedState> events;
 
-    public List<Event> getEvents() {
+    public List<StrippedState> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event> events) {
+    public void setEvents(List<StrippedState> events) {
         this.events = events;
     }
 }
