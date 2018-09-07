@@ -62,19 +62,25 @@ public class Page<T> {
     /**
      * The token the pagination starts from. If dir=b this will be the token supplied in from.
      */
-    @ApiModelProperty("The token the pagination starts from. If dir=b this will be the token supplied in from.")
+    @ApiModelProperty(
+        value = "The token the pagination starts from. If dir=b this will be the token supplied in from."
+    )
     private String start;
 
     /**
      * The token the pagination ends at. If dir=b this token should be used again to request even earlier events.
      */
-    @ApiModelProperty("The token the pagination ends at. If dir=b this token should be used again to request even earlier events.")
+    @ApiModelProperty(
+        value = "The token the pagination ends at. If dir=b this token should be used again to request even earlier events."
+    )
     private String end;
 
     /**
      * A list of room events.
      */
-    @ApiModelProperty("A list of room events.")
+    @ApiModelProperty(
+        value = "A list of room events."
+    )
     private List<T> chunk;
 
     public String getStart() {
