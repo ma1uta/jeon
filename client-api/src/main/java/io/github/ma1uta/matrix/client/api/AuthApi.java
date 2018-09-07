@@ -161,7 +161,7 @@ public interface AuthApi {
     @Path("/login")
     LoginResponse login(
         @ApiParam(
-            value = "login request"
+            value = "login request."
         ) LoginRequest loginRequest,
 
         @Context HttpServletRequest servletRequest,

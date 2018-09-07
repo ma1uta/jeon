@@ -29,7 +29,9 @@ public class ThreePidResponse {
     /**
      * All 3Pids.
      */
-    @ApiModelProperty("All 3pids")
+    @ApiModelProperty(
+        value = "All 3pids"
+    )
     private ThirdPartyIdentifier[] threepids;
 
     public ThirdPartyIdentifier[] getThreepids() {

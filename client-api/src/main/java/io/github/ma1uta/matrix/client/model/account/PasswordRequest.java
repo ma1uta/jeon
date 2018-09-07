@@ -29,14 +29,20 @@ public class PasswordRequest {
     /**
      * Required. The new password for the account.
      */
-    @ApiModelProperty(name = "new_password", notes = "The new password for the account.", required = true)
+    @ApiModelProperty(
+        name = "new_password",
+        value = "The new password for the account.",
+        required = true
+    )
     @JsonProperty("new_password")
     private String newPassword;
 
     /**
      * Additional authentication information for the user-interactive authentication API.
      */
-    @ApiModelProperty("Additional authentication information for the user-interactive authentication API.")
+    @ApiModelProperty(
+        value = "Additional authentication information for the user-interactive authentication API."
+    )
     private AuthenticationData auth;
 
     public String getNewPassword() {

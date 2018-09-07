@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -27,16 +28,45 @@ import io.swagger.annotations.ApiModelProperty;
 public class ThirdPartyIdentifier {
 
     /**
-     * The medium of the third party identifier. Must be 'email'.
+     * Required. The medium of the third party identifier. One of: ['email', 'msisdn'].
      */
-    @ApiModelProperty("The medium of the third party identifier. Must be 'email'")
+    @ApiModelProperty(
+        value = "The medium of the third party identifier. Must be 'email'",
+        required = true,
+        allowableValues = "email, msisdn"
+    )
     private String medium;
 
     /**
-     * The third party identifier address.
+     * Required. The third party identifier address.
      */
-    @ApiModelProperty("The third party identifier address")
+    @ApiModelProperty(
+        value = "The third party identifier address",
+        required = true
+    )
     private String address;
+
+    /**
+     * Required. The timestamp, in milliseconds, when the identifier was validated by the identity server.
+     */
+    @ApiModelProperty(
+        notes = "validated_at",
+        value = "The timestamp, in milliseconds, when the identifier was validated by the identity server.",
+        required = true
+    )
+    @JsonProperty("validated_at")
+    private Long validatedAt;
+
+    /**
+     * Required. The timestamp, in milliseconds, when the homeserver associated the third party identifier with the user.
+     */
+    @ApiModelProperty(
+        name = "added_at",
+        value = "The timestamp, in milliseconds, when the homeserver associated the third party identifier with the user.",
+        required = true
+    )
+    @JsonProperty("added_at")
+    private Long addedAt;
 
     public String getMedium() {
         return medium;
@@ -52,5 +82,21 @@ public class ThirdPartyIdentifier {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Long getValidatedAt() {
+        return validatedAt;
+    }
+
+    public void setValidatedAt(Long validatedAt) {
+        this.validatedAt = validatedAt;
+    }
+
+    public Long getAddedAt() {
+        return addedAt;
+    }
+
+    public void setAddedAt(Long addedAt) {
+        this.addedAt = addedAt;
     }
 }

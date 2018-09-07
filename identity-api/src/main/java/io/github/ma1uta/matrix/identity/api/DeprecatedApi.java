@@ -16,9 +16,9 @@
 
 package io.github.ma1uta.matrix.identity.api;
 
-import io.github.ma1uta.matrix.identity.model.associations.SessionResponse;
 import io.github.ma1uta.matrix.identity.model.associations.ValidationResponse;
 import io.github.ma1uta.matrix.identity.model.validation.PublishResponse;
+import io.github.ma1uta.matrix.thirdpid.SessionResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

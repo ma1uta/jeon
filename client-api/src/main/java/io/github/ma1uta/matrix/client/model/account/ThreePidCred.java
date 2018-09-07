@@ -27,22 +27,33 @@ import io.swagger.annotations.ApiModelProperty;
 public class ThreePidCred {
 
     /**
-     * Identity server id.
+     * Required. The session identifier given by the identity server.
      */
-    @ApiModelProperty("Identity server id.")
+    @ApiModelProperty(
+        value = "The session identifier given by the identity server.",
+        required = true
+    )
     private String sid;
 
     /**
-     * Identity server client secret.
+     * Required. The client secret used in the session with the identity server.
      */
-    @ApiModelProperty(name = "client_secret", value = "Identity server client secret.")
+    @ApiModelProperty(
+        name = "client_secret",
+        value = "The client secret used in the session with the identity server.",
+        required = true
+    )
     @JsonProperty("client_secret")
     private String clientSecret;
 
     /**
-     * Url of identity server auth with.
+     * The identity server to use.
      */
-    @ApiModelProperty(name = "id_server", value = "Url of identity server auth with.")
+    @ApiModelProperty(
+        name = "id_server",
+        value = "The identity server to use.",
+        required = true
+    )
     @JsonProperty("id_server")
     private String idServer;
 

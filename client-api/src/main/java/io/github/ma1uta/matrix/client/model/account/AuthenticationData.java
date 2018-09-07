@@ -29,68 +29,91 @@ public class AuthenticationData {
     /**
      * AuthType.
      */
-    @ApiModelProperty("Auth type.")
+    @ApiModelProperty(
+        value = "Auth type."
+    )
     private String type;
 
     /**
      * Session.
      */
-    @ApiModelProperty("Session.")
+    @ApiModelProperty(
+        value = "Session."
+    )
     private String session;
 
     /**
      * User id.
      */
-    @ApiModelProperty("user id.")
+    @ApiModelProperty(
+        value = "user id."
+    )
     private String user;
 
     /**
      * Password.
      */
-    @ApiModelProperty("password.")
+    @ApiModelProperty(
+        value = "password."
+    )
     private String password;
 
     /**
      * 3Pid address type.
      */
-    @ApiModelProperty("3pid address type.")
+    @ApiModelProperty(
+        value = "3pid address type."
+    )
     private String medium;
 
     /**
      * 3Pid address.
      */
-    @ApiModelProperty("3pid address.")
+    @ApiModelProperty(
+        value = "3pid address."
+    )
     private String address;
 
     /**
      * Capthca response.
      */
-    @ApiModelProperty("Captcha response.")
+    @ApiModelProperty(
+        value = "Captcha response."
+    )
     private String response;
 
     /**
      * Auth token.
      */
-    @ApiModelProperty("Auth token.")
+    @ApiModelProperty(
+        value = "Auth token."
+    )
     private String token;
 
     /**
      * Transaction id.
      */
-    @ApiModelProperty("transaction id.")
+    @ApiModelProperty(
+        name = "txn_id",
+        value = "transaction id."
+    )
     @JsonProperty("txn_id")
     private String txnId;
 
     /**
      * OAuth uri.
      */
-    @ApiModelProperty("OAuth uri.")
+    @ApiModelProperty(
+        value = "OAuth uri."
+    )
     private String uri;
 
     /**
      * 3Pids credentials.
      */
-    @ApiModelProperty("3pids credentials.")
+    @ApiModelProperty(
+        value = "3pids credentials."
+    )
     private ThreePidCred[] threepidCreds;
 
     public String getType() {

@@ -31,10 +31,12 @@ public class RegisterRequest {
      * to define how the registered user should be authenticated, but is instead used to authenticate the register call itself.
      * It should be left empty, or omitted, unless an earlier call returned an response with status code 401.
      */
-    @ApiModelProperty("Additional authentication information for the user-interactive authentication API."
-        + " Note that this information is not used to define how the registered user should be authenticated, but"
-        + " is instead used to authenticate the register call itself. It should be left empty, or omitted, unless"
-        + " an earlier call returned an response with status code 401.")
+    @ApiModelProperty(
+        value = "Additional authentication information for the user-interactive authentication API."
+            + " Note that this information is not used to define how the registered user should be authenticated, but"
+            + " is instead used to authenticate the register call itself. It should be left empty, or omitted, unless"
+            + " an earlier call returned an response with status code 401."
+    )
     private AuthenticationData auth;
 
     /**

@@ -28,7 +28,9 @@ public class AvailableResponse {
     /**
      * A flag to indicate that the username is available. This should always be true when the server replies with 200 OK.
      */
-    @ApiModelProperty("A flag to indicate that the username is available. This should always be true when the server replies with 200 OK.")
+    @ApiModelProperty(
+        value = "A flag to indicate that the username is available. This should always be true when the server replies with 200 OK."
+    )
     private Boolean available;
 
     public Boolean getAvailable() {

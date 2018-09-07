@@ -29,7 +29,11 @@ public class ThreePidRequest {
     /**
      * Required. The third party credentials to associate with the account.
      */
-    @ApiModelProperty(value = "The third party credentials to associate with the account", required = true)
+    @ApiModelProperty(
+        name = "three_pid_creds",
+        value = "The third party credentials to associate with the account",
+        required = true
+    )
     @JsonProperty("three_pid_creds")
     private ThreePidCred[] threePidCreds;
 
@@ -37,8 +41,10 @@ public class ThreePidRequest {
      * Whether the homeserver should also bind this third party identifier to the account's Matrix ID with the passed identity server.
      * Default: false.
      */
-    @ApiModelProperty("Whether the homeserver should also bind this third party identifier to the account's Matrix ID with "
-        + "the passed identity server")
+    @ApiModelProperty(
+        value = "Whether the homeserver should also bind this third party identifier to the account's Matrix ID with the passed"
+            + " identity server"
+    )
     private Boolean bind;
 
     public ThreePidCred[] getThreePidCreds() {
