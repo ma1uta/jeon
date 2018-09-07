@@ -41,8 +41,11 @@ import javax.ws.rs.core.SecurityContext;
  * Filters can be created on the server and can be passed as as a parameter to APIs which return events. These filters alter the
  * data returned from those APIs. Not all APIs accept filters.
  */
-@Api(value = "Filter", description = "Filters can be created on the server and can be passed as as a parameter to APIs which return "
-    + "events. These filters alter the data returned from those APIs. Not all APIs accept filters.")
+@Api(
+    value = "Filter",
+    description = "Filters can be created on the server and can be passed as as a parameter to APIs which return "
+        + "events. These filters alter the data returned from those APIs. Not all APIs accept filters."
+)
 @Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,14 +60,15 @@ public interface FilterApi {
      * @param userId          Required. The id of the user uploading the filter. The access token must be authorized to make requests for
      *                        this user id.
      * @param filterData      JSON body parameters.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The filter was created.</p>
      */
-    @ApiOperation(value = "Ploads a new filter definition to the homeserver.",
-        notes = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client.",
-        response = FilterResponse.class)
+    @ApiOperation(
+        value = "Uploads a new filter definition to the homeserver.",
+        notes = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The filter was created.")
     })
@@ -72,10 +76,16 @@ public interface FilterApi {
     @Secured
     @Path("/{userId}/filter")
     FilterResponse uploadFilter(
-        @ApiParam(value = "The id of the user uploading the filter. The access token must be authorized to make requests "
-            + "for this user id.", required = true) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "The id of the user uploading the filter. The access token must be authorized to make requests for this user id.",
+            required = true
+        ) @PathParam("userId") String userId,
         @ApiParam("JSON body parameters") FilterData filterData,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Download a filter.
@@ -90,7 +100,9 @@ public interface FilterApi {
      * @return <p>Status code 200: "The filter defintion".</p>
      * <p>Status code 404: Unknown filter.</p>
      */
-    @ApiOperation(value = "Download a filter.", response = FilterData.class)
+    @ApiOperation(
+        value = "Download a filter."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The filter definition."),
         @ApiResponse(code = 404, message = "Unknown filter.")
@@ -99,7 +111,17 @@ public interface FilterApi {
     @Secured
     @Path("/{userId}/filter/{filterId}")
     FilterData getFilter(
-        @ApiParam(value = "The user ID to download a filter for.", required = true) @PathParam("userId") String userId,
-        @ApiParam(value = "The filter ID to download.", required = true) @PathParam("filterId") String filterId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The user ID to download a filter for.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "The filter ID to download.",
+            required = true
+        ) @PathParam("filterId") String filterId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }

@@ -52,10 +52,13 @@ public class FilterData {
      * to indicate sub-fields. So ['content.body'] will include the 'body' field of the 'content' object. A literal '.' character
      * in a field name may be escaped using a '\'. A server may include more fields than were requested.
      */
-    @ApiModelProperty(name = "event_fields", value = "List of event fields to include. If this list is absent then all fields are "
-        + "included. The entries may include '.' charaters to indicate sub-fields. So ['content.body'] will include the 'body' "
-        + "field of the 'content' object. A literal '.' character in a field name may be escaped using a '\'. A server may include "
-        + "more fields than were requested.")
+    @ApiModelProperty(
+        name = "event_fields",
+        value = "List of event fields to include. If this list is absent then all fields are "
+            + "included. The entries may include '.' charaters to indicate sub-fields. So ['content.body'] will include the 'body' "
+            + "field of the 'content' object. A literal '.' character in a field name may be escaped using a '\'. A server may include "
+            + "more fields than were requested."
+    )
     @JsonProperty("event_fields")
     private List<String> eventFields;
 
@@ -63,29 +66,39 @@ public class FilterData {
      * The format to use for events. 'client' will return the events in a format suitable for clients. 'federation' will return the
      * raw event as receieved over federation. The default is 'client'. One of: ["client", "federation"]
      */
-    @ApiModelProperty(name = "event_format", value = "The format to use for events. 'client' will return the events in a format "
-        + "suitable for clients. 'federation' will return the raw event as receieved over federation. The default is 'client'.",
-        allowableValues = "['client', 'federation']")
+    @ApiModelProperty(
+        name = "event_format",
+        value = "The format to use for events. 'client' will return the events in a format "
+            + "suitable for clients. 'federation' will return the raw event as receieved over federation. The default is 'client'.",
+        allowableValues = "client, federation"
+    )
     @JsonProperty("event_format")
     private String eventFormat;
 
     /**
      * The presence updates to include.
      */
-    @ApiModelProperty("The presence updates to include.")
-    private Filter presence;
+    @ApiModelProperty(
+        value = "The presence updates to include."
+    )
+    private EventFilter presence;
 
     /**
      * The user account data that isn't associated with rooms to include.
      */
-    @ApiModelProperty(name = "account_data", value = "The user account data that isn't associated with rooms to include.")
+    @ApiModelProperty(
+        name = "account_data",
+        value = "The user account data that isn't associated with rooms to include."
+    )
     @JsonProperty("account_data")
-    private Filter accountData;
+    private EventFilter accountData;
 
     /**
      * Filters to be applied to room data.
      */
-    @ApiModelProperty("Filters to be applied to room data.")
+    @ApiModelProperty(
+        value = "Filters to be applied to room data."
+    )
     private RoomFilter room;
 
     public List<String> getEventFields() {
@@ -104,19 +117,19 @@ public class FilterData {
         this.eventFormat = eventFormat;
     }
 
-    public Filter getPresence() {
+    public EventFilter getPresence() {
         return presence;
     }
 
-    public void setPresence(Filter presence) {
+    public void setPresence(EventFilter presence) {
         this.presence = presence;
     }
 
-    public Filter getAccountData() {
+    public EventFilter getAccountData() {
         return accountData;
     }
 
-    public void setAccountData(Filter accountData) {
+    public void setAccountData(EventFilter accountData) {
         this.accountData = accountData;
     }
 

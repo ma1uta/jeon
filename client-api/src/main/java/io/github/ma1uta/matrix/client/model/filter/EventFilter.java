@@ -26,20 +26,25 @@ import java.util.List;
  * Filter.
  */
 @ApiModel(description = "Filter.")
-public class Filter {
+public class EventFilter {
 
     /**
      * The maximum number of events to return.
      */
-    @ApiModelProperty("The maximum number of events to return.")
+    @ApiModelProperty(
+        value = "The maximum number of events to return."
+    )
     private Long limit;
 
     /**
      * A list of sender IDs to exclude. If this list is absent then no senders are excluded. A matching sender will be excluded even
      * if it is listed in the 'senders' filter.
      */
-    @ApiModelProperty(name = "not_senders", value = "A list of sender IDs to exclude. If this list is absent then no senders are "
-        + "excluded. A matching sender will be excluded even if it is listed in the 'senders' filter.")
+    @ApiModelProperty(
+        name = "not_senders",
+        value = "A list of sender IDs to exclude. If this list is absent then no senders are "
+            + "excluded. A matching sender will be excluded even if it is listed in the 'senders' filter."
+    )
     @JsonProperty("not_senders")
     private List<String> notSenders;
 
@@ -47,24 +52,31 @@ public class Filter {
      * A list of event types to exclude. If this list is absent then no event types are excluded. A matching type will be excluded
      * even if it is listed in the 'types' filter. A '*' can be used as a wildcard to match any sequence of characters.
      */
-    @ApiModelProperty(name = "not_types", value = "A list of event types to exclude. If this list is absent then no event types "
-        + "are excluded. A matching type will be excluded even if it is listed in the 'types' filter. A '*' can be used as a "
-        + "wildcard to match any sequence of characters.")
+    @ApiModelProperty(
+        name = "not_types",
+        value = "A list of event types to exclude. If this list is absent then no event types "
+            + "are excluded. A matching type will be excluded even if it is listed in the 'types' filter. A '*' can be used as a "
+            + "wildcard to match any sequence of characters."
+    )
     @JsonProperty("not_types")
     private List<String> notTypes;
 
     /**
      * A list of senders IDs to include. If this list is absent then all senders are included.
      */
-    @ApiModelProperty("A list of senders IDs to include. If this list is absent then all senders are included.")
+    @ApiModelProperty(
+        value = "A list of senders IDs to include. If this list is absent then all senders are included."
+    )
     private List<String> senders;
 
     /**
      * A list of event types to include. If this list is absent then all event types are included. A '*' can be used as a wildcard to
      * match any sequence of characters.
      */
-    @ApiModelProperty("A list of event types to include. If this list is absent then all event types are included. A '*' can "
-        + "be used as a wildcard to match any sequence of characters.")
+    @ApiModelProperty(
+        value = "A list of event types to include. If this list is absent then all event types are included. A '*' can "
+            + "be used as a wildcard to match any sequence of characters."
+    )
     private List<String> types;
 
     public Long getLimit() {
