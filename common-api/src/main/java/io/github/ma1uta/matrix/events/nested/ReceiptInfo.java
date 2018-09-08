@@ -16,28 +16,33 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Map;
+
 /**
- * Receipt timestamps.
+ * Receipts.
  */
-@ApiModel(description = "Receipt timestamps.")
-public class ReceiptTs {
+@ApiModel(description = "Receipts.")
+public class ReceiptInfo {
 
     /**
-     * The timestamp the receipt was sent at.
+     * A collection of users who have sent m.read receipts for this event.
      */
     @ApiModelProperty(
-        value = "The timestamp the receipt was sent at."
+        name = "m.read",
+        value = "A collection of users who have sent m.read receipts for this event."
     )
-    private Long ts;
+    @JsonProperty("m.read")
+    private Map<String, ReceiptTs> read;
 
-    public Long getTs() {
-        return ts;
+    public Map<String, ReceiptTs> getRead() {
+        return read;
     }
 
-    public void setTs(Long ts) {
-        this.ts = ts;
+    public void setRead(Map<String, ReceiptTs> read) {
+        this.read = read;
     }
 }

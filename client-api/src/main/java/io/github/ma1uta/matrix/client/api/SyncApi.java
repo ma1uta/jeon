@@ -100,9 +100,9 @@ public interface SyncApi {
      *                        available before this time elapses, the server will return a response with empty fields.
      *                        <br>
      *                        By default, this is 0, so the server will return immediately even if the response is empty.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The initial snapshot or delta for the client to use to update their state.</p>
      */
     @ApiOperation(
@@ -160,9 +160,9 @@ public interface SyncApi {
      *                        API.
      * @param timeout         The maximum time in milliseconds to wait for an event.
      * @param roomId          The room ID for which events should be returned.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The events received, which may be none.</p>
      * <p>Status code 400: Bad pagination from parameter.</p>
      */

@@ -70,10 +70,10 @@ public interface TypingApi {
      *
      * @param roomId          Required. The user who has started to type.
      * @param userId          Required. The room in which the user is typing.
-     * @param request         json body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param request         JSON body request.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The new typing state was set.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */

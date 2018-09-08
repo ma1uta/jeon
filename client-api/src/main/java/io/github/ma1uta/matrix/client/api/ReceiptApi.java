@@ -44,8 +44,11 @@ import javax.ws.rs.core.SecurityContext;
  * "up to and including" the event specified. For example, marking an event as "read" would indicate that the user had read all
  * events up to the referenced event.
  */
-@Api(value = "Receipt", description = "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. "
-    + "This module defines a single acknowledgement: m.read which indicates that the user has read up to a given event.")
+@Api(
+    value = "Receipt",
+    description = "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. "
+        + "This module defines a single acknowledgement: m.read which indicates that the user has read up to a given event."
+)
 @Path("/_matrix/client/r0/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 public interface ReceiptApi {
@@ -74,14 +77,15 @@ public interface ReceiptApi {
      * @param roomId          Required. The room in which to send the event.
      * @param receiptType     Required. The type of receipt to send. One of: ["m.read"]
      * @param eventId         Required. The event ID to acknowledge up to.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The receipt was sent.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "This API updates the marker for the given receipt type to the event ID specified.",
-        response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This API updates the marker for the given receipt type to the event ID specified."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The receipt was sent."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
@@ -91,9 +95,22 @@ public interface ReceiptApi {
     @Secured
     @Path("/{roomId}/receipt/{receiptType}/{eventId}")
     EmptyResponse receipt(
-        @ApiParam(value = "The room in which to send the event.", required = true) @PathParam("roomId") String roomId,
-        @ApiParam(value = "The type of receipt to send.", required = true, allowableValues = "[\"m.read\"]")
-        @PathParam("receiptType") String receiptType,
-        @ApiParam(value = "The event ID to acknowledge up to.", required = true) @PathParam("eventId") String eventId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The room in which to send the event.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "The type of receipt to send.",
+            required = true,
+            allowableValues = "m.read"
+        ) @PathParam("receiptType") String receiptType,
+        @ApiParam(
+            value = "The event ID to acknowledge up to.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
