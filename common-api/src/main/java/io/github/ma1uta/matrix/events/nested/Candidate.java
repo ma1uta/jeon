@@ -28,19 +28,28 @@ public class Candidate {
     /**
      * Required. The SDP media type this candidate is intended for.
      */
-    @ApiModelProperty(value = "The SDP media type this candidate is intended for.", required = true)
+    @ApiModelProperty(
+        value = "The SDP media type this candidate is intended for.",
+        required = true
+    )
     private String sdpMid;
 
     /**
      * Required. The index of the SDP 'm' line this candidate is intended for.
      */
-    @ApiModelProperty(value = "The index of the SDP 'm' line this candidate is intended for.", required = true)
+    @ApiModelProperty(
+        value = "The index of the SDP 'm' line this candidate is intended for.",
+        required = true
+    )
     private Long sdpMLineIndex;
 
     /**
      * Required. The SDP 'a' line of the candidate.
      */
-    @ApiModelProperty(value = "The SDP 'a' line of the candidate.", required = true)
+    @ApiModelProperty(
+        value = "The SDP 'a' line of the candidate.",
+        required = true
+    )
     private String candidate;
 
     public String getSdpMid() {

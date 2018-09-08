@@ -37,7 +37,10 @@ public class RoomCanonicalAlias implements EventContent {
     /**
      * Required. The canonical alias.
      */
-    @ApiModelProperty(value = "The canonical alias", required = true)
+    @ApiModelProperty(
+        value = "The canonical alias",
+        required = true
+    )
     private String alias;
 
     public String getAlias() {

@@ -41,7 +41,10 @@ public class RoomAliases implements EventContent {
     /**
      * Required. A list of room aliases.
      */
-    @ApiModelProperty(value = "A list of room aliases.", required = true)
+    @ApiModelProperty(
+        value = "A list of room aliases.",
+        required = true
+    )
     private List<String> aliases;
 
     public List<String> getAliases() {

@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
+import io.github.ma1uta.matrix.events.nested.NotificationPowerLevel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -80,62 +81,92 @@ public class RoomPowerLevels implements EventContent {
     /**
      * The level required to ban a user. Defaults to 50 if unspecified.
      */
+    @ApiModelProperty(
+        value = "The level required to ban a user. Defaults to 50 if unspecified."
+    )
     private Byte ban = DEFAULT_MEDIUM_LEVEL;
 
     /**
      * The level required to send specific event types. This is a mapping from event type to power level required.
      */
-    @ApiModelProperty("The level required to send specific event types. This is a mapping from event type to power level required.")
+    @ApiModelProperty(
+        value = "The level required to send specific event types. This is a mapping from event type to power level required."
+    )
     private Map<String, Byte> events;
 
     /**
      * The default level required to send message events. Can be overridden by the events key. Defaults to 0 if unspecified.
      */
-    @ApiModelProperty(name = "events_default", value = "The default level required to send message events. Can be overridden"
-        + " by the events key. Defaults to 0 if unspecified.")
+    @ApiModelProperty(
+        name = "events_default",
+        value = "The default level required to send message events. Can be overridden by the events key. Defaults to 0 if unspecified."
+    )
     @JsonProperty("events_default")
     private Byte eventsDefault = DEFAULT_LOW_LEVEL;
 
     /**
      * The level required to invite a user. Defaults to 50 if unspecified.
      */
-    @ApiModelProperty("The level required to invite a user. Defaults to 50 if unspecified.")
+    @ApiModelProperty(
+        value = "The level required to invite a user. Defaults to 50 if unspecified."
+    )
     private Byte invite = DEFAULT_MEDIUM_LEVEL;
 
     /**
      * The level required to kick a user. Defaults to 50 if unspecified.
      */
-    @ApiModelProperty("The level required to kick a user. Defaults to 50 if unspecified.")
+    @ApiModelProperty(
+        value = "The level required to kick a user. Defaults to 50 if unspecified."
+    )
     private Byte kick = DEFAULT_MEDIUM_LEVEL;
 
     /**
      * The level required to redact an event. Defaults to 50 if unspecified.
      */
-    @ApiModelProperty("The level required to redact an event. Defaults to 50 if unspecified.")
+    @ApiModelProperty(
+        value = "The level required to redact an event. Defaults to 50 if unspecified."
+    )
     private Byte redact = DEFAULT_MEDIUM_LEVEL;
 
     /**
      * The default level required to send state events. Can be overridden by the events key. Defaults to 50 if unspecified,
      * but 0 if there is no m.room.power_levels event at all.
      */
-    @ApiModelProperty(name = "state_default", value = "The default level required to send state events. Can be overridden"
-        + " by the events key. Defaults to 50 if unspecified, but 0 if there is no m.room.power_levels event at all.")
+    @ApiModelProperty(
+        name = "state_default",
+        value = "The default level required to send state events. Can be overridden"
+            + " by the events key. Defaults to 50 if unspecified, but 0 if there is no m.room.power_levels event at all."
+    )
     @JsonProperty("state_default")
     private Byte stateDefault;
 
     /**
      * The power levels for specific users. This is a mapping from user_id to power level for that user.
      */
-    @ApiModelProperty("The power levels for specific users. This is a mapping from user_id to power level for that user.")
+    @ApiModelProperty(
+        value = "The power levels for specific users. This is a mapping from user_id to power level for that user."
+    )
     private Map<String, Byte> users;
 
     /**
      * The default power level for every user in the room, unless their user_id is mentioned in the users key. Defaults to 0 if unspecified.
      */
-    @ApiModelProperty(name = "users_default", value = "The default power level for every user in the room, unless their user_id"
-        + " is mentioned in the users key. Defaults to 0 if unspecified.")
+    @ApiModelProperty(
+        name = "users_default",
+        value = "The default power level for every user in the room, unless their user_id is mentioned in the users key."
+            + " Defaults to 0 if unspecified."
+    )
     @JsonProperty("users_default")
     private Byte usersDefault = DEFAULT_LOW_LEVEL;
+
+    /**
+     * The power level requirements for specific notification types. This is a mapping from key to power level for that notifications key.
+     */
+    @ApiModelProperty(
+        value = "The power level requirements for specific notification types. This is a mapping from key to power level for that"
+            + " notifications key."
+    )
+    private NotificationPowerLevel notifications;
 
     public Byte getBan() {
         return ban;
@@ -207,5 +238,13 @@ public class RoomPowerLevels implements EventContent {
 
     public void setUsersDefault(Byte usersDefault) {
         this.usersDefault = usersDefault;
+    }
+
+    public NotificationPowerLevel getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(NotificationPowerLevel notifications) {
+        this.notifications = notifications;
     }
 }

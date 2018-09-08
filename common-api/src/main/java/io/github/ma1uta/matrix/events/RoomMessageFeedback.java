@@ -35,14 +35,19 @@ public class RoomMessageFeedback implements EventContent {
     /**
      * The event that this feedback is related to.
      */
-    @ApiModelProperty("The event that this feedback is related to.")
+    @ApiModelProperty(
+        value = "The event that this feedback is related to."
+    )
     @JsonProperty("target_event_id")
     private String targetEventId;
 
     /**
      * The type of feedback.
      */
-    @ApiModelProperty(value = "The type of feedback.", allowableValues = "delivered, read")
+    @ApiModelProperty(
+        value = "The type of feedback.",
+        allowableValues = "delivered, read"
+    )
     private String type;
 
     public String getTargetEventId() {

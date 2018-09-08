@@ -42,7 +42,10 @@ public class RoomName implements EventContent {
     /**
      * Required. The name of the room. This MUST NOT exceed 255 bytes.
      */
-    @ApiModelProperty(value = "The name of the room. This MUST NOT exceed 255 bytes.", required = true)
+    @ApiModelProperty(
+        value = "The name of the room. This MUST NOT exceed 255 bytes.",
+        required = true
+    )
     private String name;
 
     public String getName() {

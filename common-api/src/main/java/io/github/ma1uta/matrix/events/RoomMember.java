@@ -18,7 +18,9 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
+import io.github.ma1uta.matrix.Unsigned;
 import io.github.ma1uta.matrix.events.nested.Invite;
+import io.github.ma1uta.matrix.events.nested.RoomMemberUnsigned;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -36,36 +38,61 @@ public class RoomMember implements EventContent {
     /**
      * The avatar URL for this user, if any. This is added by the homeserver.
      */
-    @ApiModelProperty(name = "avatar_url", value = "The avatar URL for this user, if any. This is added by the homeserver.")
+    @ApiModelProperty(
+        name = "avatar_url",
+        value = "The avatar URL for this user, if any. This is added by the homeserver."
+    )
     @JsonProperty("avatar_url")
     private String avatarUrl;
 
     /**
      * The display name for this user, if any. This is added by the homeserver.
      */
-    @ApiModelProperty("The display name for this user, if any. This is added by the homeserver.")
-    private String displayname;
+    @ApiModelProperty(
+        name = "displayname",
+        value = "The display name for this user, if any. This is added by the homeserver."
+    )
+    @JsonProperty("displayname")
+    private String displayName;
 
     /**
      * Required. The membership state of the user. One of: ["invite", "join", "knock", "leave", "ban"].
      */
-    @ApiModelProperty(value = "The membership state of the user.", required = true, allowableValues = "invite, join, knock, leave, ban")
+    @ApiModelProperty(
+        value = "The membership state of the user.",
+        required = true,
+        allowableValues = "invite, join, knock, leave, ban"
+    )
     private String membership;
 
     /**
      * Flag indicating if the room containing this event was created with the intention of being a direct chat. See Direct Messaging.
      */
-    @ApiModelProperty(name = "is_direct", value = "Flag indicating if the room containing this event was created with the intention"
-        + " of being a direct chat. See Direct Messaging.")
+    @ApiModelProperty(
+        name = "is_direct",
+        value = "Flag indicating if the room containing this event was created with the intention of being a direct chat."
+            + " See Direct Messaging."
+    )
     @JsonProperty("is_direct")
     private Boolean isDirect;
 
     /**
      * Third-party invites.
      */
-    @ApiModelProperty(name = "third_party_invite", value = "Third-party invites.")
+    @ApiModelProperty(
+        name = "third_party_invite",
+        value = "Third-party invites."
+    )
     @JsonProperty("third_party_invite")
     private Invite thirdPartyInvite;
+
+    /**
+     * Contains optional extra information about the event.
+     */
+    @ApiModelProperty(
+        value = "Contains optional extra information about the event."
+    )
+    private RoomMemberUnsigned unsigned;
 
     public String getAvatarUrl() {
         return avatarUrl;
@@ -75,12 +102,12 @@ public class RoomMember implements EventContent {
         this.avatarUrl = avatarUrl;
     }
 
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getMembership() {
@@ -105,5 +132,13 @@ public class RoomMember implements EventContent {
 
     public void setThirdPartyInvite(Invite thirdPartyInvite) {
         this.thirdPartyInvite = thirdPartyInvite;
+    }
+
+    public RoomMemberUnsigned getUnsigned() {
+        return unsigned;
+    }
+
+    public void setUnsigned(RoomMemberUnsigned unsigned) {
+        this.unsigned = unsigned;
     }
 }

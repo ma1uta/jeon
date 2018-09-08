@@ -32,7 +32,11 @@ public class Typing implements EventContent {
     /**
      * Required. The list of user IDs typing in this room, if any.
      */
-    @ApiModelProperty(name = "user_ids", value = "The list of user IDs typing in this room, if any.", required = true)
+    @ApiModelProperty(
+        name = "user_ids",
+        value = "The list of user IDs typing in this room, if any.",
+        required = true
+    )
     @JsonProperty("user_ids")
     private List<String> userIds;
 

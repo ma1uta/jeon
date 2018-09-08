@@ -28,13 +28,19 @@ public class Answer {
     /**
      * Required. The type of session description. Must be 'answer'.
      */
-    @ApiModelProperty(value = "The type of session description. Must be 'answer'.", required = true)
+    @ApiModelProperty(
+        value = "The type of session description. Must be 'answer'.",
+        required = true
+    )
     private String type;
 
     /**
      * Required. The SDP text of the session description.
      */
-    @ApiModelProperty(value = "The SDP text of the session description.", required = true)
+    @ApiModelProperty(
+        value = "The SDP text of the session description.",
+        required = true
+    )
     private String sdp;
 
     public String getType() {

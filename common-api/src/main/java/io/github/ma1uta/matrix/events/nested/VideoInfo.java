@@ -29,23 +29,29 @@ public class VideoInfo extends FileInfo {
     /**
      * The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
-    @ApiModelProperty(name = "h", value = "The intended display height of the image in pixels. This may differ from the"
-        + " intrinsic dimensions of the image file.")
+    @ApiModelProperty(
+        name = "h",
+        value = "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+    )
     @JsonProperty("h")
     private Long height;
 
     /**
      * The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
-    @ApiModelProperty(name = "w", value = "The intended display width of the image in pixels. This may differ from the"
-        + " intrinsic dimensions of the image file.")
+    @ApiModelProperty(
+        name = "w",
+        value = "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+    )
     @JsonProperty("w")
     private Long width;
 
     /**
      * The duration of the video in milliseconds.
      */
-    @ApiModelProperty("The duration of the video in milliseconds.")
+    @ApiModelProperty(
+        value = "The duration of the video in milliseconds."
+    )
     private Long duration;
 
     public Long getHeight() {

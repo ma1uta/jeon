@@ -29,26 +29,42 @@ public class FileInfo {
     /**
      * The mimetype of the image, e.g. image/jpeg.
      */
-    @ApiModelProperty("The mimetype of the image, e.g. image/jpeg.")
+    @ApiModelProperty(
+        value = "The mimetype of the image, e.g. image/jpeg."
+    )
     private String mimetype;
 
     /**
      * Size of the image in bytes.
      */
-    @ApiModelProperty("Size of the image in bytes.")
+    @ApiModelProperty(
+        value = "Size of the image in bytes."
+    )
     private Long size;
 
     /**
      * The URL to a thumbnail of the image.
      */
-    @ApiModelProperty(name = "thumbnail_url", value = "The URL to a thumbnail of the image.")
+    @ApiModelProperty(
+        name = "thumbnail_url",
+        value = "The URL to a thumbnail of the image."
+    )
     @JsonProperty("thumbnail_url")
     private String thumbnailUrl;
 
     /**
+     * Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail is encrypted.
+     */
+    @JsonProperty("thumbnail_file")
+    private EncryptedFile thumbnailFile;
+
+    /**
      * Metadata about the image referred to in thumbnail_url.
      */
-    @ApiModelProperty(name = "thumbnail_info", value = "Metadata about the image referred to in thumbnail_url.")
+    @ApiModelProperty(
+        name = "thumbnail_info",
+        value = "Metadata about the image referred to in thumbnail_url."
+    )
     @JsonProperty("thumbnail_info")
     private ThumbnailInfo thumbnailInfo;
 
@@ -74,6 +90,14 @@ public class FileInfo {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public EncryptedFile getThumbnailFile() {
+        return thumbnailFile;
+    }
+
+    public void setThumbnailFile(EncryptedFile thumbnailFile) {
+        this.thumbnailFile = thumbnailFile;
     }
 
     public ThumbnailInfo getThumbnailInfo() {

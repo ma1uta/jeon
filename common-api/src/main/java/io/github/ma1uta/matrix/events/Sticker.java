@@ -31,20 +31,29 @@ public class Sticker implements EventContent {
      * Required. A textual representation or associated description of the sticker image. This could be the alt text of the original
      * image, or a message to accompany and further describe the sticker.
      */
-    @ApiModelProperty(value = "A textual representation or associated description of the sticker image. This could be the alt text"
-        + " of the original image, or a message to accompany and further describe the sticker.", required = true)
+    @ApiModelProperty(
+        value = "A textual representation or associated description of the sticker image. This could be the alt text"
+            + " of the original image, or a message to accompany and further describe the sticker.",
+        required = true
+    )
     private String body;
 
     /**
      * Required. Metadata about the image referred to in url including a thumbnail representation.
      */
-    @ApiModelProperty(value = "Metadata about the image referred to in url including a thumbnail representation.", required = true)
+    @ApiModelProperty(
+        value = "Metadata about the image referred to in url including a thumbnail representation.",
+        required = true
+    )
     private ImageInfo info;
 
     /**
      * Required. The URL to the sticker image. This must be a valid mxc:// URI.
      */
-    @ApiModelProperty(value = "The URL to the sticker image. This must be a valid mxc:// URI.", required = true)
+    @ApiModelProperty(
+        value = "The URL to the sticker image. This must be a valid mxc:// URI.",
+        required = true
+    )
     private String url;
 
     public String getBody() {

@@ -35,15 +35,20 @@ public class CallHangup implements EventContent {
     /**
      * Required. The ID of the call this event relates to.
      */
-    @ApiModelProperty(value = "The ID of the call this event relates to.", required = true)
+    @ApiModelProperty(
+        value = "The ID of the call this event relates to.",
+        required = true
+    )
     @JsonProperty("call_id")
     private String callId;
 
     /**
      * Required. The version of the VoIP specification this message adheres to. This specification is version 0.
      */
-    @ApiModelProperty(value = "The version of the VoIP specification this message adheres to. This specification is version 0.",
-        required = true)
+    @ApiModelProperty(
+        value = "The version of the VoIP specification this message adheres to. This specification is version 0.",
+        required = true
+    )
     private Long version;
 
     public String getCallId() {

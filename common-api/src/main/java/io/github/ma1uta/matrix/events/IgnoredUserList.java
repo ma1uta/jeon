@@ -31,7 +31,10 @@ public class IgnoredUserList implements EventContent {
     /**
      * Required. The map of users to ignore.
      */
-    @ApiModelProperty(value = "The map of users to ignore.", required = true)
+    @ApiModelProperty(
+        value = "The map of users to ignore.",
+        required = true
+    )
     private Map<String, Object> ignoredUsers;
 
     public Map<String, Object> getIgnoredUsers() {

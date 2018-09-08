@@ -37,7 +37,9 @@ public class RoomRedaction implements EventContent {
     /**
      * The reason for the redaction, if any.
      */
-    @ApiModelProperty("The reason for the redaction, if any.")
+    @ApiModelProperty(
+        value = "The reason for the redaction, if any."
+    )
     private String reason;
 
     public String getReason() {

@@ -58,20 +58,28 @@ public abstract class RoomMessage implements EventContent {
      *
      * @return message type.
      */
-    @ApiModelProperty(value = "Message type.", readOnly = true)
+    @ApiModelProperty(
+        value = "Message type.",
+        readOnly = true
+    )
     @JsonProperty(value = "msgtype", access = JsonProperty.Access.READ_ONLY)
     public abstract String getMsgtype();
 
     /**
      * The textual representation of this message.
      */
-    @ApiModelProperty("The textual representation of this message.")
+    @ApiModelProperty(
+        value = "The textual representation of this message."
+    )
     private String body;
 
     /**
      * Relates (reply, ...).
      */
-    @ApiModelProperty(name = "m.relates_to", value = "Relates (reply, ...).")
+    @ApiModelProperty(
+        name = "m.relates_to",
+        value = "Relates (reply, ...)."
+    )
     @JsonProperty("m.relates_to")
     private Relates relatesTo;
 

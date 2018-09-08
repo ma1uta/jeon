@@ -29,7 +29,11 @@ public class Reply {
     /**
      * The origin event id.
      */
-    @ApiModelProperty(name = "event_id", value = "The origin event id.", required = true)
+    @ApiModelProperty(
+        name = "event_id",
+        value = "The origin event id.",
+        required = true
+    )
     @JsonProperty("event_id")
     private String eventId;
 

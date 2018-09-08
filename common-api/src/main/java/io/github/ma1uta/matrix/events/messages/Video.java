@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.events.messages;
 
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomMessage;
+import io.github.ma1uta.matrix.events.nested.EncryptedFile;
 import io.github.ma1uta.matrix.events.nested.VideoInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,14 +32,27 @@ public class Video extends RoomMessage {
     /**
      * Metadata about the video clip referred to in url.
      */
-    @ApiModelProperty("Metadata about the video clip referred to in url.")
+    @ApiModelProperty(
+        value = "Metadata about the video clip referred to in url."
+    )
     private VideoInfo info;
 
     /**
      * Required. The URL to the video clip.
      */
-    @ApiModelProperty(value = "The URL to the video clip.", required = true)
+    @ApiModelProperty(
+        value = "The URL to the video clip.",
+        required = true
+    )
     private String url;
+
+    /**
+     * Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption.
+     */
+    @ApiModelProperty(
+        value = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
+    )
+    private EncryptedFile file;
 
     public VideoInfo getInfo() {
         return info;
@@ -54,6 +68,14 @@ public class Video extends RoomMessage {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public EncryptedFile getFile() {
+        return file;
+    }
+
+    public void setFile(EncryptedFile file) {
+        this.file = file;
     }
 
     @Override

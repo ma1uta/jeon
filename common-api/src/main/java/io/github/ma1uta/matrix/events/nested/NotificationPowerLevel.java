@@ -16,31 +16,28 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Related data.
+ * Notifications.
  */
-@ApiModel(description = "Related data.")
-public class Relates {
+@ApiModel(description = "Notifications.")
+public class NotificationPowerLevel {
 
     /**
-     * Reply.
+     * The level required to trigger an @room notification. Defaults to 50 if unspecified.
      */
     @ApiModelProperty(
-        name = "m.in_reply_to",
-        value = "Reply."
+        value = "The level required to trigger an @room notification. Defaults to 50 if unspecified."
     )
-    @JsonProperty("m.in_reply_to")
-    private Reply inReplyTo;
+    private Byte room;
 
-    public Reply getInReplyTo() {
-        return inReplyTo;
+    public Byte getRoom() {
+        return room;
     }
 
-    public void setInReplyTo(Reply inReplyTo) {
-        this.inReplyTo = inReplyTo;
+    public void setRoom(Byte room) {
+        this.room = room;
     }
 }

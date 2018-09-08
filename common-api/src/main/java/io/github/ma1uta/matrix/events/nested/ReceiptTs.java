@@ -28,7 +28,9 @@ public class ReceiptTs {
     /**
      * The timestamp the receipt was sent at.
      */
-    @ApiModelProperty("The timestamp the receipt was sent at.")
+    @ApiModelProperty(
+        value = "The timestamp the receipt was sent at."
+    )
     private Long ts;
 
     public Long getTs() {

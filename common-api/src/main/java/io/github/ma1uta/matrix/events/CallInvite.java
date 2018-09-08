@@ -34,29 +34,41 @@ public class CallInvite implements EventContent {
     /**
      * Required. The ID of the call this event relates to.
      */
-    @ApiModelProperty(name = "call_id", value = "The ID of the call this event relates to.", required = true)
+    @ApiModelProperty(
+        name = "call_id",
+        value = "The ID of the call this event relates to.",
+        required = true
+    )
     @JsonProperty("call_id")
     private String callId;
 
     /**
      * Required. The session description object.
      */
-    @ApiModelProperty(value = "The session description object.", required = true)
+    @ApiModelProperty(
+        value = "The session description object.",
+        required = true
+    )
     private Offer offer;
 
     /**
      * Required. The version of the VoIP specification this message adheres to. This specification is version 0.
      */
-    @ApiModelProperty(value = "The version of the VoIP specification this message adheres to. This specification is version 0.",
-        required = true)
+    @ApiModelProperty(
+        value = "The version of the VoIP specification this message adheres to. This specification is version 0.",
+        required = true
+    )
     private Long version;
 
     /**
      * Required. The time in milliseconds that the invite is valid for. Once the invite age exceeds this value,
      * clients should discard it. They should also no longer show the call as awaiting an answer in the UI.
      */
-    @ApiModelProperty(value = "The time in milliseconds that the invite is valid for. Once the invite age exceeds this value,"
-        + " clients should discard it. They should also no longer show the call as awaiting an answer in the UI.", required = true)
+    @ApiModelProperty(
+        value = "The time in milliseconds that the invite is valid for. Once the invite age exceeds this value,"
+            + " clients should discard it. They should also no longer show the call as awaiting an answer in the UI.",
+        required = true
+    )
     private Long lifetime;
 
     public String getCallId() {

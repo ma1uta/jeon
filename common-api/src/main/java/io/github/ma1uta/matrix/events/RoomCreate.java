@@ -30,16 +30,31 @@ public class RoomCreate implements EventContent {
     /**
      * Required. The user_id of the room creator. This is set by the homeserver.
      */
-    @ApiModelProperty(value = "The user_id of the room creator. This is set by the homeserver.", required = true)
+    @ApiModelProperty(
+        value = "The user_id of the room creator. This is set by the homeserver.",
+        required = true
+    )
     private String creator;
 
     /**
      * Whether users on other servers can join this room. Defaults to ``true`` if key does not exist.
      */
-    @ApiModelProperty(name = "m.federate", value = "Whether users on other servers can join this room. Defaults to ``true`` if key"
-        + " does not exist.")
+    @ApiModelProperty(
+        name = "m.federate",
+        value = "Whether users on other servers can join this room. Defaults to ``true`` if key does not exist."
+    )
     @JsonProperty("m.federate")
     private Boolean federate;
+
+    /**
+     * The version of the room. Defaults to "1" if the key does not exist.
+     */
+    @ApiModelProperty(
+        name = "room_version",
+        value = "The version of the room. Defaults to \"1\" if the key does not exist."
+    )
+    @JsonProperty("room_version")
+    private String roomVersion;
 
     public String getCreator() {
         return creator;
@@ -55,5 +70,13 @@ public class RoomCreate implements EventContent {
 
     public void setFederate(Boolean federate) {
         this.federate = federate;
+    }
+
+    public String getRoomVersion() {
+        return roomVersion;
+    }
+
+    public void setRoomVersion(String roomVersion) {
+        this.roomVersion = roomVersion;
     }
 }

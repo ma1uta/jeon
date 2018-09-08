@@ -29,14 +29,29 @@ public class LocationInfo {
     /**
      * The URL to a thumbnail of the location being represented.
      */
-    @ApiModelProperty(name = "thumbnail_url", value = "The URL to a thumbnail of the location being represented.")
+    @ApiModelProperty(
+        name = "thumbnail_url",
+        value = "The URL to a thumbnail of the location being represented."
+    )
     @JsonProperty("thumbnail_url")
     private String thumbnailUrl;
 
     /**
+     * Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail is encrypted.
+     */
+    @ApiModelProperty(
+        value = "Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail"
+            + " is encrypted."
+    )
+    private EncryptedFile thumbnailFile;
+
+    /**
      * Metadata about the image referred to in thumbnail_url.
      */
-    @ApiModelProperty(name = "thumbnail_info", value = "Metadata about the image referred to in thumbnail_url.")
+    @ApiModelProperty(
+        name = "thumbnail_info",
+        value = "Metadata about the image referred to in thumbnail_url."
+    )
     @JsonProperty("thumbnail_info")
     private ThumbnailInfo thumbnailInfo;
 
@@ -46,6 +61,14 @@ public class LocationInfo {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public EncryptedFile getThumbnailFile() {
+        return thumbnailFile;
+    }
+
+    public void setThumbnailFile(EncryptedFile thumbnailFile) {
+        this.thumbnailFile = thumbnailFile;
     }
 
     public ThumbnailInfo getThumbnailInfo() {

@@ -35,8 +35,11 @@ public class RoomJoinRules implements EventContent {
     /**
      * The type of rules used for users wishing to join this room. One of: ["public", "knock", "invite", "private"]
      */
-    @ApiModelProperty(name = "join_rule", value = "The type of rules used for users wishing to join this room.",
-        allowableValues = "public, knock, invite, private")
+    @ApiModelProperty(
+        name = "join_rule",
+        value = "The type of rules used for users wishing to join this room.",
+        allowableValues = "public, knock, invite, private"
+    )
     @JsonProperty("join_rule")
     private String joinRule;
 

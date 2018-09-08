@@ -32,7 +32,11 @@ public class RoomGuestAccess implements EventContent {
     /**
      * Whether guests can join the room. One of: ["can_join", "forbidden"].
      */
-    @ApiModelProperty(name = "guest_access", value = "Whether guests can join the room.", allowableValues = "can_join, forbidden")
+    @ApiModelProperty(
+        name = "guest_access",
+        value = "Whether guests can join the room.",
+        allowableValues = "can_join, forbidden"
+    )
     @JsonProperty("guest_access")
     private String guestAccess;
 

@@ -32,7 +32,9 @@ public class Tag implements EventContent {
     /**
      * The tags on the room and their contents.
      */
-    @ApiModelProperty("The tags on the room and their contents.")
+    @ApiModelProperty(
+        value = "The tags on the room and their contents."
+    )
     private Map<String, TagInfo> tags;
 
     public Map<String, TagInfo> getTags() {

@@ -31,16 +31,22 @@ public class PublicKeys {
      * The URL must return a JSON object containing a boolean property named 'valid'. If this URL is absent, the key must be
      * considered valid indefinitely.
      */
-    @ApiModelProperty(name = "key_validity_url", value = "An optional URL which can be fetched, with querystring public_key=public_key,"
-        + " to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'."
-        + " If this URL is absent, the key must be considered valid indefinitely.")
+    @ApiModelProperty(
+        name = "key_validity_url",
+        value = "An optional URL which can be fetched, with querystring public_key=public_key,"
+            + " to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'."
+            + " If this URL is absent, the key must be considered valid indefinitely."
+    )
     @JsonProperty("key_validity_url")
     private String keyValidityUrl;
 
     /**
      * Required. A base-64 encoded ed25519 key with which token may be signed.
      */
-    @ApiModelProperty(value = "A base-64 encoded ed25519 key with which token may be signed.", required = true)
+    @ApiModelProperty(
+        value = "A base-64 encoded ed25519 key with which token may be signed.",
+        required = true
+    )
     private String publicKey;
 
     public String getKeyValidityUrl() {

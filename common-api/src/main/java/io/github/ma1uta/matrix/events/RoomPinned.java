@@ -38,7 +38,10 @@ public class RoomPinned implements EventContent {
     /**
      * Required. An ordered list of event IDs to pin.
      */
-    @ApiModelProperty(value = "An ordered list of event IDs to pin.", required = true)
+    @ApiModelProperty(
+        value = "An ordered list of event IDs to pin.",
+        required = true
+    )
     private List<String> pinned;
 
     public List<String> getPinned() {

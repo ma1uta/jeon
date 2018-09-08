@@ -30,33 +30,50 @@ public class Presence implements EventContent {
     /**
      * The current avatar URL for this user, if any.
      */
-    @ApiModelProperty(name = "avatar_url", value = "The current avatar URL for this user, if any.")
+    @ApiModelProperty(
+        name = "avatar_url",
+        value = "The current avatar URL for this user, if any."
+    )
     @JsonProperty("avatar_url")
     private String avatarUrl;
 
     /**
      * The current display name for this user, if any.
      */
-    @ApiModelProperty("The current display name for this user, if any.")
-    private String displayname;
+    @ApiModelProperty(
+        name = "displayname",
+        value = "The current display name for this user, if any."
+    )
+    @JsonProperty("displayname")
+    private String displayName;
 
     /**
      * The last time since this used performed some action, in milliseconds.
      */
-    @ApiModelProperty(name = "last_active_ago", value = "The last time since this used performed some action, in milliseconds.")
+    @ApiModelProperty(
+        name = "last_active_ago",
+        value = "The last time since this used performed some action, in milliseconds."
+    )
     @JsonProperty("last_active_ago")
     private Long lastActiveAgo;
 
     /**
      * Required. The presence state for this user. One of: ["online", "offline", "unavailable"].
      */
-    @ApiModelProperty(value = "The presence state for this user.", required = true, allowableValues = "online, offline, unavailable")
+    @ApiModelProperty(
+        value = "The presence state for this user.",
+        required = true,
+        allowableValues = "online, offline, unavailable"
+    )
     private String presence;
 
     /**
      * Whether the user is currently active.
      */
-    @ApiModelProperty(name = "currently_active", value = "Whether the user is currently active.")
+    @ApiModelProperty(
+        name = "currently_active",
+        value = "Whether the user is currently active."
+    )
     @JsonProperty("currently_active")
     private Boolean currentlyActive;
 
@@ -68,12 +85,12 @@ public class Presence implements EventContent {
         this.avatarUrl = avatarUrl;
     }
 
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public Long getLastActiveAgo() {

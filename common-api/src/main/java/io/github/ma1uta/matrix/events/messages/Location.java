@@ -32,13 +32,18 @@ public class Location extends RoomMessage {
     /**
      * Information about the file referred to in url.
      */
-    @ApiModelProperty("Information about the file referred to in url.")
+    @ApiModelProperty(
+        value = "Information about the file referred to in url."
+    )
     private LocationInfo info;
 
     /**
      * Required. A geo URI representing this location.
      */
-    @ApiModelProperty(value = "A geo URI representing this location.", required = true)
+    @ApiModelProperty(
+        value = "A geo URI representing this location.",
+        required = true
+    )
     @JsonProperty("geo_uri")
     private String geoUri;
 

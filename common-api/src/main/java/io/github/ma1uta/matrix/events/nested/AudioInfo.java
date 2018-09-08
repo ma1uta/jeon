@@ -28,19 +28,25 @@ public class AudioInfo {
     /**
      * The duration of the audio in milliseconds.
      */
-    @ApiModelProperty("The duration of the audio in milliseconds.")
+    @ApiModelProperty(
+        value = "The duration of the audio in milliseconds."
+    )
     private Long duration;
 
     /**
      * The mimetype of the audio e.g. audio/aac.
      */
-    @ApiModelProperty("The mimetype of the audio e.g. audio/aac.")
+    @ApiModelProperty(
+        value = "The mimetype of the audio e.g. audio/aac."
+    )
     private String mimetype;
 
     /**
      * The size of the audio clip in bytes.
      */
-    @ApiModelProperty("The size of the audio clip in bytes.")
+    @ApiModelProperty(
+        value = "The size of the audio clip in bytes."
+    )
     private Long size;
 
     public Long getDuration() {

@@ -30,8 +30,12 @@ public class RoomHistoryVisibility implements EventContent {
     /**
      * Required. Who can see the room history. One of: ["invited", "joined", "shared", "world_readable"].
      */
-    @ApiModelProperty(name = "history_visibility", value = "Who can see the room history.", required = true,
-        allowableValues = "invited, joined, shared, world_readable")
+    @ApiModelProperty(
+        name = "history_visibility",
+        value = "Who can see the room history.",
+        required = true,
+        allowableValues = "invited, joined, shared, world_readable"
+    )
     @JsonProperty("history_visibility")
     private String historyVisibility;
 

@@ -33,7 +33,10 @@ public class RoomTopic implements EventContent {
     /**
      * Required. The topic text.
      */
-    @ApiModelProperty(value = "The topic text", required = true)
+    @ApiModelProperty(
+        value = "The topic text",
+        required = true
+    )
     private String topic;
 
     public String getTopic() {

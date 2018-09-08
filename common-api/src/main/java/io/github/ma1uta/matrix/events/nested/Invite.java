@@ -30,16 +30,21 @@ public class Invite {
     /**
      * Required. A name which can be displayed to represent the user instead of their third party identifier.
      */
-    @ApiModelProperty(name = "display_name", value = "A name which can be displayed to represent the user instead of their"
-        + " third party identifier.", required = true)
+    @ApiModelProperty(
+        name = "display_name",
+        value = "A name which can be displayed to represent the user instead of their third party identifier.",
+        required = true
+    )
     @JsonProperty("display_name")
     private String displayName;
 
     /**
      * Required. A block of content which has been signed, which servers can use to verify the event. Clients should ignore this.
      */
-    @ApiModelProperty(value = "A block of content which has been signed, which servers can use to verify the event."
-        + " Clients should ignore this.", required = true)
+    @ApiModelProperty(
+        value = "A block of content which has been signed, which servers can use to verify the event. Clients should ignore this.",
+        required = true
+    )
     private Signed signed;
 
     public String getDisplayName() {

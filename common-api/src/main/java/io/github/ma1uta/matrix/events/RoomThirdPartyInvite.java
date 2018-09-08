@@ -38,9 +38,13 @@ public class RoomThirdPartyInvite implements EventContent {
      * Required. A user-readable string which represents the user who has been invited. This should not contain the user's
      * third party ID, as otherwise when the invite is accepted it would leak the association between the matrix ID and the third party ID.
      */
-    @ApiModelProperty(name = "display_name", value = "A user-readable string which represents the user who has been invited."
-        + " This should not contain the user's third party ID, as otherwise when the invite is accepted it would leak the association"
-        + " between the matrix ID and the third party ID.", required = true)
+    @ApiModelProperty(
+        name = "display_name",
+        value = "A user-readable string which represents the user who has been invited."
+            + " This should not contain the user's third party ID, as otherwise when the invite is accepted it would leak the association"
+            + " between the matrix ID and the third party ID.",
+        required = true
+    )
     @JsonProperty("display_name")
     private String displayName;
 
@@ -48,9 +52,12 @@ public class RoomThirdPartyInvite implements EventContent {
      * Required. A URL which can be fetched, with querystring public_key=public_key, to validate whether the key has been revoked.
      * The URL must return a JSON object containing a boolean property named 'valid'.
      */
-    @ApiModelProperty(name = "key_validity_url", value = "A URL which can be fetched, with querystring public_key=public_key, to"
-        + " validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'.",
-        required = true)
+    @ApiModelProperty(
+        name = "key_validity_url",
+        value = "A URL which can be fetched, with querystring public_key=public_key, to"
+            + " validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'.",
+        required = true
+    )
     @JsonProperty("key_validity_url")
     private String keyValidityUrl;
 
@@ -58,16 +65,22 @@ public class RoomThirdPartyInvite implements EventContent {
      * Required. A base64-encoded ed25519 key with which token must be signed (though a signature from any entry in public_keys is
      * also sufficient). This exists for backwards compatibility.
      */
-    @ApiModelProperty(name = "public_key", value = "A base64-encoded ed25519 key with which token must be signed"
-        + " (though a signature from any entry in public_keys is also sufficient). This exists for backwards compatibility.",
-        required = true)
+    @ApiModelProperty(
+        name = "public_key",
+        value = "A base64-encoded ed25519 key with which token must be signed"
+            + " (though a signature from any entry in public_keys is also sufficient). This exists for backwards compatibility.",
+        required = true
+    )
     @JsonProperty("public_key")
     private String publicKey;
 
     /**
      * Keys with which the token may be signed.
      */
-    @ApiModelProperty(name = "public_keys", value = "Keys with which the token may be signed.")
+    @ApiModelProperty(
+        name = "public_keys",
+        value = "Keys with which the token may be signed."
+    )
     @JsonProperty("public_keys")
     private List<PublicKeys> publicKeys;
 

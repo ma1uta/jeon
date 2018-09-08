@@ -45,14 +45,17 @@ public abstract class FormattedBody extends RoomMessage {
     /**
      * The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported.
      */
-    @ApiModelProperty("The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported.")
+    @ApiModelProperty(
+        value = "The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported."
+    )
     private String format;
 
     /**
      * The formatted version of the ``body``. This is required if ``format`` is specified.
      */
-    @ApiModelProperty(name = "formatted_body", value = "The formatted version of the ``body``. This is required if ``format``"
-        + " is specified.")
+    @ApiModelProperty(
+        name = "formatted_body",
+        value = "The formatted version of the ``body``. This is required if ``format`` is specified.")
     @JsonProperty("formatted_body")
     private String formattedBody;
 

@@ -30,13 +30,18 @@ public class RoomAvatar implements EventContent {
     /**
      * Metadata about the image referred to in url.
      */
-    @ApiModelProperty("Metadata about the image referred to in url.")
+    @ApiModelProperty(
+        value = "Metadata about the image referred to in url."
+    )
     private ImageInfo info;
 
     /**
      * Required. The URL to the image.
      */
-    @ApiModelProperty(value = "The URL to the image.", required = true)
+    @ApiModelProperty(
+        value = "The URL to the image.",
+        required = true
+    )
     private String url;
 
     public ImageInfo getInfo() {
