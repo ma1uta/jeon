@@ -802,6 +802,12 @@ public class Event {
         public static final String RECEIPT = "m.receipt";
 
         /**
+         * The current location of the user's read marker in a room. This event appears in the user's room account data for
+         * the room the marker is applicable for.
+         */
+        public static final String FULLY_READ = "m.fully_read";
+
+        /**
          * Informs the client of a user's presence state change.
          *
          * <table summary="Content">

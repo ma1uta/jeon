@@ -21,6 +21,7 @@ import static io.github.ma1uta.matrix.Event.EventType.CALL_CANDIDATES;
 import static io.github.ma1uta.matrix.Event.EventType.CALL_HANGUP;
 import static io.github.ma1uta.matrix.Event.EventType.CALL_INVITE;
 import static io.github.ma1uta.matrix.Event.EventType.DIRECT;
+import static io.github.ma1uta.matrix.Event.EventType.FULLY_READ;
 import static io.github.ma1uta.matrix.Event.EventType.IGNORED_USER_LIST;
 import static io.github.ma1uta.matrix.Event.EventType.PRESENCE;
 import static io.github.ma1uta.matrix.Event.EventType.RECEIPT;
@@ -53,6 +54,7 @@ import io.github.ma1uta.matrix.events.CallCandidates;
 import io.github.ma1uta.matrix.events.CallHangup;
 import io.github.ma1uta.matrix.events.CallInvite;
 import io.github.ma1uta.matrix.events.Direct;
+import io.github.ma1uta.matrix.events.FullyRead;
 import io.github.ma1uta.matrix.events.IgnoredUserList;
 import io.github.ma1uta.matrix.events.Presence;
 import io.github.ma1uta.matrix.events.RawEvent;
@@ -106,6 +108,8 @@ public class EventContentDeserializer {
                 return codec.treeToValue(node, CallInvite.class);
             case DIRECT:
                 return codec.treeToValue(node, Direct.class);
+            case FULLY_READ:
+                return codec.treeToValue(node, FullyRead.class);
             case IGNORED_USER_LIST:
                 return codec.treeToValue(node, IgnoredUserList.class);
             case PRESENCE:

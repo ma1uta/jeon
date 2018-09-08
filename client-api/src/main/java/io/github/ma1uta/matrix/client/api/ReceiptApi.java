@@ -19,6 +19,7 @@ package io.github.ma1uta.matrix.client.api;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.Secured;
+import io.github.ma1uta.matrix.client.model.receipt.ReadMarkersRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -108,6 +109,46 @@ public interface ReceiptApi {
             value = "The event ID to acknowledge up to.",
             required = true
         ) @PathParam("eventId") String eventId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
+
+    /**
+     * Sets the position of the read marker for a given room, and optionally the read receipt's location.
+     * <br>
+     * <b>Rate-limited</b>: Yes.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     *
+     * @param roomId          Required. The room ID to set the read marker in for the user.
+     * @param request         JSON body request.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
+     * @return <p>Status code 200: The read marker, and read receipt if provided, have been updated.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
+     */
+    @ApiOperation(
+        value = "Sets the position of the read marker for a given room, and optionally the read receipt's location."
+    )
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The read marker, and read receipt if provided, have been updated."),
+        @ApiResponse(code = 429, message = "This request was rate-limited.")
+    })
+    @POST
+    @Secured
+    @RateLimit
+    @Path("/{roomId}/read_markers")
+    EmptyResponse readMarkers(
+        @ApiParam(
+            value = "The room ID to set the read marker in for the user.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "JSON body request."
+        ) ReadMarkersRequest request,
 
         @Context HttpServletRequest servletRequest,
         @Context HttpServletResponse servletResponse,

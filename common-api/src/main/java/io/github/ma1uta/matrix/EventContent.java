@@ -21,6 +21,7 @@ import io.github.ma1uta.matrix.events.CallCandidates;
 import io.github.ma1uta.matrix.events.CallHangup;
 import io.github.ma1uta.matrix.events.CallInvite;
 import io.github.ma1uta.matrix.events.Direct;
+import io.github.ma1uta.matrix.events.FullyRead;
 import io.github.ma1uta.matrix.events.IgnoredUserList;
 import io.github.ma1uta.matrix.events.Presence;
 import io.github.ma1uta.matrix.events.Receipt;
@@ -55,6 +56,7 @@ import io.swagger.annotations.ApiModel;
         CallHangup.class,
         CallInvite.class,
         Direct.class,
+        FullyRead.class,
         IgnoredUserList.class,
         Presence.class,
         Receipt.class,
