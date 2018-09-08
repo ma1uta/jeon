@@ -24,31 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  * JSON body request for presence api.
  */
 @ApiModel(description = "JSON body request for presence api.")
-public class PresenceStatus {
-
-    /**
-     * Presence types.
-     */
-    public static class PresenceType {
-
-        protected PresenceType() {
-        }
-
-        /**
-         * Online status.
-         */
-        public static final String ONLINE = "online";
-
-        /**
-         * Offline status.
-         */
-        public static final String OFFLINE = "offline";
-
-        /**
-         * Unavailable status.
-         */
-        public static final String UNAVAILABLE = "unavailable";
-    }
+public class PresenceRequest {
 
     /**
      * Required. The new presence state. One of: ["online", "offline", "unavailable"].
@@ -70,26 +46,6 @@ public class PresenceStatus {
     @JsonProperty("status_msg")
     private String statusMsg;
 
-    /**
-     * The length of time in milliseconds since an action was performed by this user.
-     */
-    @ApiModelProperty(
-        name = "last_active_ago",
-        value = "The length of time in milliseconds since an action was performed by this user."
-    )
-    @JsonProperty("last_active_ago")
-    private Long lastActiveAgo;
-
-    /**
-     * Whether the user is currently active.
-     */
-    @ApiModelProperty(
-        name = "currently_active",
-        value = "Whether the user is currently active."
-    )
-    @JsonProperty("currently_active")
-    private Boolean currentlyActive;
-
     public String getPresence() {
         return presence;
     }
@@ -104,21 +60,5 @@ public class PresenceStatus {
 
     public void setStatusMsg(String statusMsg) {
         this.statusMsg = statusMsg;
-    }
-
-    public Long getLastActiveAgo() {
-        return lastActiveAgo;
-    }
-
-    public void setLastActiveAgo(Long lastActiveAgo) {
-        this.lastActiveAgo = lastActiveAgo;
-    }
-
-    public Boolean getCurrentlyActive() {
-        return currentlyActive;
-    }
-
-    public void setCurrentlyActive(Boolean currentlyActive) {
-        this.currentlyActive = currentlyActive;
     }
 }

@@ -30,13 +30,17 @@ public class PresenceList {
     /**
      * A list of user IDs to add to the list.
      */
-    @ApiModelProperty("A list of user IDs to add to the list.")
+    @ApiModelProperty(
+        value = "A list of user IDs to add to the list."
+    )
     private List<String> invite;
 
     /**
      * A list of user IDs to remove from the list.
      */
-    @ApiModelProperty("A list of user IDs to remove from the list.")
+    @ApiModelProperty(
+        value = "A list of user IDs to remove from the list."
+    )
     private List<String> drop;
 
     public List<String> getInvite() {
