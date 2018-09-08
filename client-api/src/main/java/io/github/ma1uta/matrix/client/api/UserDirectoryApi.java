@@ -41,30 +41,42 @@ import javax.ws.rs.core.SecurityContext;
  * <br>
  * Provides search over all users.
  */
-@Api(value = "UserDirectory", description = "User directory.")
+@Api(
+    value = "UserDirectory",
+    description = "User directory."
+)
 @Path("/_matrix/client/r0/user_directory")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface UserDirectoryApi {
 
     /**
-     * This API performs a server-side search over all users registered on the server. It searches user ID and displayname
-     * case-insensitively for users that you share a room with or that are in public rooms.
+     * Performs a search for users on the homeserver. The homeserver may determine which subset of users are searched, however
+     * the homeserver MUST at a minimum consider the users the requesting user shares a room with and those who reside in public
+     * rooms (known to the homeserver). The search MUST consider local users to the homeserver, and SHOULD query remote users as
+     * part of the search.
+     * <br>
+     * The search is performed case-insensitively on user IDs and display names preferably using a collation determined based upon
+     * the Accept-Language header provided in the request, if present.
      * <br>
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
      *
-     * @param request         json body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param request         JSON body request.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The results of the search.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "This API performs a server-side search over all users registered on the server. It searches user ID "
-        + "and displayname case-insensitively for users that you share a room with or that are in public rooms.",
-        response = SearchResponse.class)
+    @ApiOperation(value = "Performs a search for users on the homeserver.",
+        notes = "The homeserver may determine which subset of users are searched, however the homeserver MUST at a minimum"
+            + " consider the users the requesting user shares a room with and those who reside in public rooms (known to the homeserver)."
+            + " The search MUST consider local users to the homeserver, and SHOULD query remote users as part of the search."
+            + " The search is performed case-insensitively on user IDs and display names preferably using a collation determined based upon"
+            + " * the Accept-Language header provided in the request, if present."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The results of the search."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
@@ -74,6 +86,12 @@ public interface UserDirectoryApi {
     @Secured
     @Path("/search")
     SearchResponse searchUsers(
-        @ApiParam("JSON body request.") SearchRequest request,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "JSON body request."
+        ) SearchRequest request,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }

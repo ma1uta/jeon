@@ -30,13 +30,19 @@ public class SearchResponse {
     /**
      * Required. Ordered by rank and then whether or not profile info is available.
      */
-    @ApiModelProperty(value = "Ordered by rank and then whether or not profile info is available.", required = true)
+    @ApiModelProperty(
+        value = "Ordered by rank and then whether or not profile info is available.",
+        required = true
+    )
     private List<User> results;
 
     /**
      * Required. Indicates if the result list has been truncated by the limit.
      */
-    @ApiModelProperty(value = "Indicates if the result list has been truncated by the limit.", required = true)
+    @ApiModelProperty(
+        value = "Indicates if the result list has been truncated by the limit.",
+        required = true
+    )
     private Boolean limit;
 
     public List<User> getResults() {

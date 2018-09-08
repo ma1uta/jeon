@@ -29,14 +29,20 @@ public class SearchRequest {
     /**
      * Required. The term to search for.
      */
-    @ApiModelProperty(name = "search_term", value = "The term to search for.", required = true)
+    @ApiModelProperty(
+        name = "search_term",
+        value = "The term to search for.",
+        required = true
+    )
     @JsonProperty("search_term")
     private String searchTerm;
 
     /**
      * The maximum number of results to return (Defaults to 10).
      */
-    @ApiModelProperty("The maximum number of results to return (Defaults to 10).")
+    @ApiModelProperty(
+        value = "The maximum number of results to return (Defaults to 10)."
+    )
     private Long limit;
 
     public String getSearchTerm() {
