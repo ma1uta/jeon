@@ -28,13 +28,18 @@ public class TypingRequest {
     /**
      * Required. Whether the user is typing or not. If false, the timeout key can be omitted.
      */
-    @ApiModelProperty(value = "Whether the user is typing or not. If false, the timeout key can be omitted.", required = true)
+    @ApiModelProperty(
+        value = "Whether the user is typing or not. If false, the timeout key can be omitted.",
+        required = true
+    )
     private Boolean typing;
 
     /**
      * The length of time in milliseconds to mark this user as typing.
      */
-    @ApiModelProperty("The length of time in milliseconds to mark this user as typing.")
+    @ApiModelProperty(
+        value = "The length of time in milliseconds to mark this user as typing."
+    )
     private Long timeout;
 
     public Boolean getTyping() {

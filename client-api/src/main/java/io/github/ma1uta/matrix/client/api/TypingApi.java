@@ -49,9 +49,12 @@ import javax.ws.rs.core.SecurityContext;
  * stops typing, the state change of the boolean to false should trigger another HTTP request to inform the server that the user has
  * stopped typing.
  */
-@Api(value = "Typing", description = "When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge "
-    + "of every user who is currently typing. The reason for this is that the server does not remember users who are not currently "
-    + "typing as that list gets big quickly. The client should mark as not typing any user ID who is not in that list.")
+@Api(
+    value = "Typing",
+    description = "When a client receives an m.typing event, it MUST use the user ID list to REPLACE its knowledge "
+        + "of every user who is currently typing. The reason for this is that the server does not remember users who are not currently "
+        + "typing as that list gets big quickly. The client should mark as not typing any user ID who is not in that list."
+)
 @Path("/_matrix/client/r0/rooms")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -74,9 +77,10 @@ public interface TypingApi {
      * @return <p>Status code 200: The new typing state was set.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "This tells the server that the user is typing for the next N milliseconds where N is the value specified "
-        + "in the timeout key. Alternatively, if typing is false, it tells the server that the user has stopped typing.",
-        response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This tells the server that the user is typing for the next N milliseconds where N is the value specified "
+            + "in the timeout key. Alternatively, if typing is false, it tells the server that the user has stopped typing."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The new typing state was set."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
@@ -86,8 +90,20 @@ public interface TypingApi {
     @Secured
     @Path("/{roomId}/typing/{userId}")
     EmptyResponse typing(
-        @ApiParam(value = "The user who has started to type.", required = true) @PathParam("roomId") String roomId,
-        @ApiParam(value = "The room in which the user is typing.", required = true) @PathParam("userId") String userId,
-        @ApiParam("JSON body request.") TypingRequest request,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The user who has started to type.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "The room in which the user is typing.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "JSON body request."
+        ) TypingRequest request,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
