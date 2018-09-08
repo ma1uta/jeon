@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.events.RoomPowerLevels;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -34,9 +35,12 @@ public class CreateRoomRequest {
      * from the published room list. Rooms default to private visibility if this key is not included. NB: This should not be confused
      * with join_rules which also uses the word public. One of: ["public", "private"]
      */
-    @ApiModelProperty(value = "A public visibility indicates that the room will be shown in the published room list. A private visibility "
-        + "will hide the room from the published room list. Rooms default to private visibility if this key is not included. "
-        + "NB: This should not be confused with join_rules which also uses the word public.", allowableValues = "[\"public\",\"private\"]")
+    @ApiModelProperty(
+        value = "A public visibility indicates that the room will be shown in the published room list. A private visibility "
+            + "will hide the room from the published room list. Rooms default to private visibility if this key is not included. "
+            + "NB: This should not be confused with join_rules which also uses the word public.",
+        allowableValues = "public, private"
+    )
     private String visibility;
 
     /**
@@ -44,10 +48,13 @@ public class CreateRoomRequest {
      * The alias will belong on the same homeserver which created the room. For example, if this was set to "foo" and sent to the
      * homeserver "example.com" the complete room alias would be #foo:example.com.
      */
-    @ApiModelProperty(name = "room_alias_name", value = "The desired room alias local part. If this is included, a room alias "
-        + "will be created and mapped to the newly created room. The alias will belong on the same homeserver which created the "
-        + "room. For example, if this was set to \"foo\" and sent to the homeserver \"example.com\" the complete room alias would "
-        + "be #foo:example.com.")
+    @ApiModelProperty(
+        name = "room_alias_name",
+        value = "The desired room alias local part. If this is included, a room alias "
+            + "will be created and mapped to the newly created room. The alias will belong on the same homeserver which created the "
+            + "room. For example, if this was set to \"foo\" and sent to the homeserver \"example.com\" the complete room alias would "
+            + "be #foo:example.com."
+    )
     @JsonProperty("room_alias_name")
     private String roomAliasName;
 
@@ -55,39 +62,65 @@ public class CreateRoomRequest {
      * If this is included, an m.room.name event will be sent into the room to indicate the name of the room. See Room Events for
      * more information on m.room.name.
      */
-    @ApiModelProperty("If this is included, an m.room.name event will be sent into the room to indicate the name of the room. "
-        + "See Room Events for more information on m.room.name.")
+    @ApiModelProperty(
+        value = "If this is included, an m.room.name event will be sent into the room to indicate the name of the room. "
+            + "See Room Events for more information on m.room.name."
+    )
     private String name;
 
     /**
      * If this is included, an m.room.topic event will be sent into the room to indicate the topic for the room. See Room Events for
      * more information on m.room.topic.
      */
-    @ApiModelProperty("If this is included, an m.room.topic event will be sent into the room to indicate the topic for the room. "
-        + "See Room Events for more information on m.room.topic.")
+    @ApiModelProperty(
+        value = "If this is included, an m.room.topic event will be sent into the room to indicate the topic for the room. "
+            + "See Room Events for more information on m.room.topic."
+    )
     private String topic;
 
     /**
      * A list of user IDs to invite to the room. This will tell the server to invite everyone in the list to the newly created room.
      */
-    @ApiModelProperty("A list of user IDs to invite to the room. This will tell the server to invite everyone in the list "
-        + "to the newly created room.")
+    @ApiModelProperty(
+        value = "A list of user IDs to invite to the room. This will tell the server to invite everyone in the list "
+            + "to the newly created room."
+    )
     private List<String> invite;
 
     /**
      * A list of objects representing third party IDs to invite into the room.
      */
-    @ApiModelProperty(name = "invite_3pid", value = "A list of objects representing third party IDs to invite into the room.")
+    @ApiModelProperty(
+        name = "invite_3pid",
+        value = "A list of objects representing third party IDs to invite into the room."
+    )
     @JsonProperty("invite_3pid")
     private List<Invite3pid> invite3pid;
+
+    /**
+     * The room version to set for the room. If not provided, the homeserver is to use its configured default.
+     * If provided, the homeserver will return a 400 error with the errcode M_UNSUPPORTED_ROOM_VERSION if it does not support
+     * the room version.
+     */
+    @ApiModelProperty(
+        notes = "room_version",
+        value = "The room version to set for the room. If not provided, the homeserver is to use its configured default."
+            + " If provided, the homeserver will return a 400 error with the errcode M_UNSUPPORTED_ROOM_VERSION if it does not"
+            + " support the room version."
+    )
+    @JsonProperty("room_version")
+    private String roomVersion;
 
     /**
      * Extra keys to be added to the content of the m.room.create. The server will clobber the following keys: creator.
      * Future versions of the specification may allow the server to clobber other keys.
      */
-    @ApiModelProperty(name = "creation_content", value = "Extra keys to be added to the content of the m.room.create. "
-        + "The server will clobber the following keys: creator. Future versions of the specification may allow the server "
-        + "to clobber other keys.")
+    @ApiModelProperty(
+        name = "creation_content",
+        value = "Extra keys to be added to the content of the m.room.create. "
+            + "The server will clobber the following keys: creator. Future versions of the specification may allow the server "
+            + "to clobber other keys."
+    )
     @JsonProperty("creation_content")
     private Object creationContent;
 
@@ -97,34 +130,47 @@ public class CreateRoomRequest {
      * <p/>
      * Takes precedence over events set by preset, but gets overriden by name and topic keys.
      */
-    @ApiModelProperty(name = "initial_event", value = "A list of state events to set in the new room. This allows the user to "
-        + "override the default state events set in the new room. The expected format of the state events are an object with "
-        + "type, state_key and content keys set.")
+    @ApiModelProperty(
+        name = "initial_event",
+        value = "A list of state events to set in the new room. This allows the user to "
+            + "override the default state events set in the new room. The expected format of the state events are an object with "
+            + "type, state_key and content keys set."
+    )
     @JsonProperty("initial_event")
     private List<Event> initialEvent;
 
     /**
      * Convenience parameter for setting various default state events based on a preset.
      */
-    @ApiModelProperty(value = "Convenience parameter for setting various default state events based on a preset.",
-        allowableValues = "[\"private_chat\",\"public_chat\",\"trusted_private_chat\"]")
+    @ApiModelProperty(
+        value = "Convenience parameter for setting various default state events based on a preset.",
+        allowableValues = "private_chat, public_chat, trusted_private_chat"
+    )
     private String preset;
 
     /**
      * This flag makes the server set the is_direct flag on the m.room.member events sent to the users in invite and invite_3pid.
      * See Direct Messaging for more information.
      */
-    @ApiModelProperty(name = "is_direct", value = "This flag makes the server set the is_direct flag on the m.room.member events "
-        + "sent to the users in invite and invite_3pid. See Direct Messaging for more information.")
+    @ApiModelProperty(
+        name = "is_direct",
+        value = "This flag makes the server set the is_direct flag on the m.room.member events "
+            + "sent to the users in invite and invite_3pid. See Direct Messaging for more information."
+    )
     @JsonProperty("is_direct")
     private Boolean isDirect;
 
     /**
-     * Allows guests to join the room. See Guest Access for more information.
+     * The power level content to override in the default power level event. This object is applied on top of the generated
+     * m.room.power_levels event content prior to it being sent to the room. Defaults to overriding nothing.
      */
-    @ApiModelProperty(name = "guest_can_join", value = "Allows guests to join the room. See Guest Access for more information.")
-    @JsonProperty("guest_can_join")
-    private Boolean guestCanJoin;
+    @ApiModelProperty(
+        name = "power_level_content_override",
+        value = "The power level content to override in the default power level event. This object is applied on top of" +
+            " the generated m.room.power_levels event content prior to it being sent to the room. Defaults to overriding nothing."
+    )
+    @JsonProperty("power_level_content_override")
+    private RoomPowerLevels powerLevelContentOverride;
 
     public String getVisibility() {
         return visibility;
@@ -174,6 +220,14 @@ public class CreateRoomRequest {
         this.invite3pid = invite3pid;
     }
 
+    public String getRoomVersion() {
+        return roomVersion;
+    }
+
+    public void setRoomVersion(String roomVersion) {
+        this.roomVersion = roomVersion;
+    }
+
     public Object getCreationContent() {
         return creationContent;
     }
@@ -206,11 +260,11 @@ public class CreateRoomRequest {
         isDirect = direct;
     }
 
-    public Boolean getGuestCanJoin() {
-        return guestCanJoin;
+    public RoomPowerLevels getPowerLevelContentOverride() {
+        return powerLevelContentOverride;
     }
 
-    public void setGuestCanJoin(Boolean guestCanJoin) {
-        this.guestCanJoin = guestCanJoin;
+    public void setPowerLevelContentOverride(RoomPowerLevels powerLevelContentOverride) {
+        this.powerLevelContentOverride = powerLevelContentOverride;
     }
 }

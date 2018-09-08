@@ -28,7 +28,10 @@ public class RoomVisibility {
     /**
      * The visibility of the room in the directory. One of: ["private", "public"]
      */
-    @ApiModelProperty(value = "The visibility of the room in the directory.", allowableValues = "[\"private\",\"public\"]")
+    @ApiModelProperty(
+        value = "The visibility of the room in the directory.",
+        allowableValues = "private, public"
+    )
     private String visibility;
 
     public String getVisibility() {

@@ -29,14 +29,20 @@ public class KickRequest {
     /**
      * Required. The fully qualified user ID of the user being kicked.
      */
-    @ApiModelProperty(name = "user_id", value = "The fully qualified user ID of the user being kicked.", required = true)
+    @ApiModelProperty(
+        name = "user_id",
+        value = "The fully qualified user ID of the user being kicked.",
+        required = true
+    )
     @JsonProperty("user_id")
     private String userId;
 
     /**
      * The reason the user has been kicked. This will be supplied as the ``reason`` on the target's updated `m.room.member`_ event.
      */
-    @ApiModelProperty("The reason the user has been kicked.")
+    @ApiModelProperty(
+        value = "The reason the user has been kicked."
+    )
     private String reason;
 
     public String getUserId() {

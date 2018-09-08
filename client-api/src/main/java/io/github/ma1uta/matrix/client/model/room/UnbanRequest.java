@@ -21,26 +21,27 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * JSON body with roomId used in the room apis.
+ * Unban JSON body request.
  */
-@ApiModel(description = "JSON body with roomId used in the room apis.")
-public class RoomId {
+@ApiModel(description = "Unban JSON body request.")
+public class UnbanRequest {
 
     /**
-     * The created room's ID.
+     * Required. The fully qualified user ID of the user being unbanned.
      */
     @ApiModelProperty(
-        name = "room_id",
-        value = "The created room's ID."
+        name = "user_id",
+        value = "The fully qualified user ID of the user being unbanned.",
+        required = true
     )
-    @JsonProperty("room_id")
-    private String roomId;
+    @JsonProperty("user_id")
+    private String userId;
 
-    public String getRoomId() {
-        return roomId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

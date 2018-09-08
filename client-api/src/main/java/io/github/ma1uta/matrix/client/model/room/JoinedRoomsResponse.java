@@ -31,7 +31,11 @@ public class JoinedRoomsResponse {
     /**
      * Required. The ID of each room in which the user has joined membership.
      */
-    @ApiModelProperty(name = "joined_rooms", value = "The ID of each room in which the user has joined membership.", required = true)
+    @ApiModelProperty(
+        name = "joined_rooms",
+        value = "The ID of each room in which the user has joined membership.",
+        required = true
+    )
     @JsonProperty("joined_rooms")
     private List<String> joinedRooms;
 

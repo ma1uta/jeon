@@ -16,31 +16,30 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 /**
- * JSON body with roomId used in the room apis.
+ * JSON body response of the room response api.
  */
-@ApiModel(description = "JSON body with roomId used in the room apis.")
-public class RoomId {
+@ApiModel(description = "JSON body response of the room response api.")
+public class RoomResolveResponse extends RoomId {
 
     /**
-     * The created room's ID.
+     * A list of servers that are aware of this room alias.
      */
     @ApiModelProperty(
-        name = "room_id",
-        value = "The created room's ID."
+        value = "A list of servers that are aware of this room alias."
     )
-    @JsonProperty("room_id")
-    private String roomId;
+    private List<String> servers;
 
-    public String getRoomId() {
-        return roomId;
+    public List<String> getServers() {
+        return servers;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
+    public void setServers(List<String> servers) {
+        this.servers = servers;
     }
 }

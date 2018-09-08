@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,22 +29,49 @@ public class PublicRoomsRequest {
     /**
      * Limit the number of results returned.
      */
-    @ApiModelProperty("Limit the number of results returned.")
+    @ApiModelProperty(
+        value = "Limit the number of results returned."
+    )
     private Long limit;
 
     /**
      * A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms.
      * The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.
      */
-    @ApiModelProperty("A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms. "
-        + "lThe direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.")
+    @ApiModelProperty(
+        value = "A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms. "
+            + "The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag."
+    )
     private String since;
 
     /**
      * Filter to apply to the results.
      */
-    @ApiModelProperty("Filter to apply to the results.")
+    @ApiModelProperty(
+        value = "Filter to apply to the results."
+    )
     private PublicRoomsFilter filter;
+
+    /**
+     * Whether or not to include all known networks/protocols from application services on the homeserver. Defaults to false.
+     */
+    @ApiModelProperty(
+        name = "include_all_networks",
+        value = "Whether or not to include all known networks/protocols from application services on the homeserver. Defaults to false."
+    )
+    @JsonProperty("include_all_networks")
+    private Boolean includeAllNetworks;
+
+    /**
+     * The specific third party network/protocol to request from the homeserver. Can only be used if include_all_networks is false.
+     */
+    @ApiModelProperty(
+        name = "third_party_instance_id",
+        value = "The specific third party network/protocol to request from the homeserver. Can only be used if include_all_networks"
+            + " is false."
+    )
+    @JsonProperty("third_party_instance_id")
+    private String thirdPartyInstanceId;
 
     public Long getLimit() {
         return limit;
@@ -67,5 +95,21 @@ public class PublicRoomsRequest {
 
     public void setFilter(PublicRoomsFilter filter) {
         this.filter = filter;
+    }
+
+    public Boolean getIncludeAllNetworks() {
+        return includeAllNetworks;
+    }
+
+    public void setIncludeAllNetworks(Boolean includeAllNetworks) {
+        this.includeAllNetworks = includeAllNetworks;
+    }
+
+    public String getThirdPartyInstanceId() {
+        return thirdPartyInstanceId;
+    }
+
+    public void setThirdPartyInstanceId(String thirdPartyInstanceId) {
+        this.thirdPartyInstanceId = thirdPartyInstanceId;
     }
 }
