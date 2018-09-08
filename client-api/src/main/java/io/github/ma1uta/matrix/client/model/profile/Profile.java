@@ -29,15 +29,22 @@ public class Profile {
     /**
      * The user's avatar URL if they have set one, otherwise not present.
      */
-    @ApiModelProperty(name = "avatar_url", value = "The user's avatar URL if they have set one, otherwise not present.")
+    @ApiModelProperty(
+        name = "avatar_url",
+        value = "The user's avatar URL if they have set one, otherwise not present."
+    )
     @JsonProperty("avatar_url")
     private String avatarUrl;
 
     /**
      * The user's display name if they have set one, otherwise not present.
      */
-    @ApiModelProperty("The user's display name if they have set one, otherwise not present.")
-    private String displayname;
+    @ApiModelProperty(
+        name = "displayname",
+        value = "The user's display name if they have set one, otherwise not present."
+    )
+    @JsonProperty("displayname")
+    private String displayName;
 
     public String getAvatarUrl() {
         return avatarUrl;
@@ -47,11 +54,11 @@ public class Profile {
         this.avatarUrl = avatarUrl;
     }
 
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

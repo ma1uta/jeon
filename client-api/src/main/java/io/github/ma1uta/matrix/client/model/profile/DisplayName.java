@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,14 +29,18 @@ public class DisplayName {
     /**
      * The new display name for this user.
      */
-    @ApiModelProperty("The new display name for this user.")
-    private String displayname;
+    @ApiModelProperty(
+        name = "displayname",
+        value = "The new display name for this user."
+    )
+    @JsonProperty("displayname")
+    private String displayName;
 
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

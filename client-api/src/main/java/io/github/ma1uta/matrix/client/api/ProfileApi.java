@@ -43,7 +43,10 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * Profiles.
  */
-@Api(value = "Profile", description = "Profiles.")
+@Api(
+    value = "Profile",
+    description = "Profiles."
+)
 @Path("/_matrix/client/r0/profile")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -59,14 +62,16 @@ public interface ProfileApi {
      *
      * @param userId          Required. The user whose display name to set.
      * @param displayName     JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The display name was set.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "his API sets the given user's display name. You must have permission to set this user's display "
-        + "name, e.g. you need to have their access_token.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "his API sets the given user's display name. You must have permission to set this user's display "
+            + "name, e.g. you need to have their access_token."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The display name was set."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
@@ -76,22 +81,33 @@ public interface ProfileApi {
     @Secured
     @Path("/{userId}/displayname")
     EmptyResponse setDisplayName(
-        @ApiParam(value = "The user whose display name to set.", required = true) @PathParam("userId") String userId,
-        @ApiParam("JSON body request.") DisplayName displayName,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The user whose display name to set.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "JSON body request."
+        ) DisplayName displayName,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Get the user's display name. This API may be used to fetch the user's own displayname or to query the name of other users; either
      * locally or on remote homeservers.
      *
      * @param userId          Required. The user whose display name to get.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The display name for this user.</p>
      * <p>Status code 404: There is no display name for this user or this user does not exist.</p>
      */
-    @ApiOperation(value = "Get the user's display name. This API may be used to fetch the user's own displayname or to "
-        + "query the name of other users; either locally or on remote homeservers.", response = DisplayName.class)
+    @ApiOperation(
+        value = "Get the user's display name. This API may be used to fetch the user's own displayname or to "
+            + "query the name of other users; either locally or on remote homeservers."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The display name for this user."),
         @ApiResponse(code = 404, message = "There is no display name for this user or this user does not exist.")
@@ -99,8 +115,14 @@ public interface ProfileApi {
     @GET
     @Path("/{userId}/displayname")
     DisplayName showDisplayName(
-        @ApiParam(value = "The user whose display name to get.", required = true) @PathParam("userId") String userId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "The user whose display name to get.",
+            required = true
+        ) @PathParam("userId") String userId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
      * This API sets the given user's avatar URL. You must have permission to set this user's avatar URL, e.g. you need to have
@@ -112,14 +134,15 @@ public interface ProfileApi {
      *
      * @param userId          Required. The user whose avatar URL to set.
      * @param avatarUrl       JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The avatar URL was set.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "This API sets the given user's avatar URL. You must have permission to set this user's avatar "
-        + "URL, e.g. you need to have their access_token.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This API sets the given user's avatar URL. You must have permission to set this user's avatar "
+            + "URL, e.g. you need to have their access_token.")
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The avatar URL was set."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
@@ -129,22 +152,33 @@ public interface ProfileApi {
     @Secured
     @Path("/{userId}/avatar_url")
     EmptyResponse setAvatarUrl(
-        @ApiParam(value = "The user whose avatar URL to set.", required = true) @PathParam("userId") String userId,
-        @ApiParam("JSON body request") AvatarUrl avatarUrl,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The user whose avatar URL to set.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "JSON body request"
+        ) AvatarUrl avatarUrl,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Get the user's avatar URL. This API may be used to fetch the user's own avatar URL or to query the URL of other users;
      * either locally or on remote homeservers.
      *
      * @param userId          Required. The user whose avatar URL to get.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The avatar URL for this user.</p>
      * <p>Status code 404: There is no avatar URL for this user or this user does not exist.</p>
      */
-    @ApiOperation(value = "Get the user's avatar URL. This API may be used to fetch the user's own avatar URL or to query "
-        + "the URL of other users;  either locally or on remote homeservers.", response = AvatarUrl.class)
+    @ApiOperation(
+        value = "Get the user's avatar URL. This API may be used to fetch the user's own avatar URL or to query "
+            + "the URL of other users;  either locally or on remote homeservers."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The avatar URL for this user."),
         @ApiResponse(code = 404, message = "There is no avatar URL for this user or this user does not exist.")
@@ -152,22 +186,29 @@ public interface ProfileApi {
     @GET
     @Path("/{userId}/avatar_url")
     AvatarUrl showAvatarUrl(
-        @ApiParam(value = "The user whose avatar URL to get.", required = true) @PathParam("userId") String userId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "The user whose avatar URL to get.",
+            required = true
+        ) @PathParam("userId") String userId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
      * Get the combined profile information for this user. This API may be used to fetch the user's own profile information or
      * other users; either locally or on remote homeservers. This API may return keys which are not limited to displayname or avatar_url.
      *
      * @param userId          Required. The user whose profile information to get.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The avatar URL for this user.</p>
      * <p>Status code 404: There is no profile information for this user or this user does not exist.</p>
      */
-    @ApiOperation(value = "Get the combined profile information for this user. This API may be used to fetch the user's own "
-        + "profile information or other users; either locally or on remote homeservers. This API may return keys which are "
-        + "not limited to displayname or avatar_url.", response = Profile.class)
+    @ApiOperation(
+        value = "Get the combined profile information for this user. This API may be used to fetch the user's own "
+            + "profile information or other users; either locally or on remote homeservers. This API may return keys which are "
+            + "not limited to displayname or avatar_url.")
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The avatar URL for this user."),
         @ApiResponse(code = 404, message = "There is no profile information for this user or this user does not exist.")
@@ -175,6 +216,12 @@ public interface ProfileApi {
     @GET
     @Path("/{userId}")
     Profile profile(
-        @ApiParam(value = "The user whose profile information to get.", required = true) @PathParam("userId") String userId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "The user whose profile information to get.",
+            required = true
+        ) @PathParam("userId") String userId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 }

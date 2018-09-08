@@ -29,7 +29,10 @@ public class AvatarUrl {
     /**
      * The new avatar URL for this user.
      */
-    @ApiModelProperty(name = "avatar_url", value = "The new avatar URL for this user.")
+    @ApiModelProperty(
+        name = "avatar_url",
+        value = "The new avatar URL for this user."
+    )
     @JsonProperty("avatar_url")
     private String avatarUrl;
 
