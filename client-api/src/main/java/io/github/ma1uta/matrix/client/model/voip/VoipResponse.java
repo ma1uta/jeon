@@ -30,25 +30,37 @@ public class VoipResponse {
     /**
      * Required. The username to use.
      */
-    @ApiModelProperty(value = "The username to use.", required = true)
+    @ApiModelProperty(
+        value = "The username to use.",
+        required = true
+    )
     private String username;
 
     /**
      * Required. The password to use.
      */
-    @ApiModelProperty(value = "The password to use.", required = true)
+    @ApiModelProperty(
+        value = "The password to use.",
+        required = true
+    )
     private String password;
 
     /**
      * Required. A list of TURN URIs.
      */
-    @ApiModelProperty(value = "A list of TURN URIs.", required = true)
+    @ApiModelProperty(
+        value = "A list of TURN URIs.",
+        required = true
+    )
     private List<String> uris;
 
     /**
      * Required. The time-to-live in seconds.
      */
-    @ApiModelProperty(value = "The time-to-live in seconds.", required = true)
+    @ApiModelProperty(
+        value = "The time-to-live in seconds.",
+        required = true
+    )
     private Long ttl;
 
     public String getUsername() {

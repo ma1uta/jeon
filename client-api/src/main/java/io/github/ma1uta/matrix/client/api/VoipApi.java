@@ -37,8 +37,11 @@ import javax.ws.rs.core.SecurityContext;
  * The homeserver MAY provide a TURN server which clients can use to contact the remote party. The following HTTP API endpoints will
  * be used by clients in order to get information about the TURN server.
  */
-@Api(value = "VOIP", description = "The homeserver MAY provide a TURN server which clients can use to contact the remote party. "
-    + "The following HTTP API endpoints will be used by clients in order to get information about the TURN server.")
+@Api(
+    value = "VOIP",
+    description = "The homeserver MAY provide a TURN server which clients can use to contact the remote party. "
+        + "The following HTTP API endpoints will be used by clients in order to get information about the TURN server."
+)
 @Path("/_matrix/client/r0/voip")
 @Produces(MediaType.APPLICATION_JSON)
 public interface VoipApi {
@@ -50,13 +53,15 @@ public interface VoipApi {
      * <br>
      * <b>Requires auth</b>: Yes.
      *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The TURN server credentials.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "This API provides credentials for the client to use when initiating calls.", response = VoipResponse.class)
+    @ApiOperation(
+        value = "This API provides credentials for the client to use when initiating calls."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The TURN server credentials."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
@@ -65,6 +70,9 @@ public interface VoipApi {
     @RateLimit
     @Secured
     @Path("/turnServer")
-    VoipResponse turnServer(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                            @Context SecurityContext securityContext);
+    VoipResponse turnServer(
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
