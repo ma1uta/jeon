@@ -20,6 +20,7 @@ import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedInitialSyncResponse;
+import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedRoomInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -171,6 +172,45 @@ public interface DeprecatedSyncApi {
             value = "The event ID to get.",
             required = true
         ) @PathParam("eventId") String eventId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
+
+    /**
+     * Get a copy of the current state and the most recent messages in a room.
+     * <br>
+     * This endpoint was deprecated in r0 of this specification. There is no direct replacement; the relevant information is returned
+     * by the /sync API. See the migration guide.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     *
+     * @param roomId          Required. The room to get the data.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
+     * @return <p>Status code 200: The current state of the room.</p>
+     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
+     */
+    @ApiOperation(
+        value = "Get a copy of the current state and the most recent messages in a room.",
+        notes = "This endpoint was deprecated in r0 of this specification. There is no direct replacement; the relevant information"
+            + " is returned by the /sync API. See the migration guide."
+    )
+    @ApiResponses( {
+        @ApiResponse(code = 200, message = "The current state of the room."),
+        @ApiResponse(code = 403, message = "You aren't a member of the room and weren't previously a member of the room.")
+    })
+    @Deprecated
+    @GET
+    @Secured
+    @Path("/rooms/{roomId}/initialSync")
+    DeprecatedRoomInfo roomInitialSync(
+        @ApiParam(
+            value = "The room to get the data.",
+            required = true
+        ) @PathParam("roomId") String roomId,
 
         @Context HttpServletRequest servletRequest,
         @Context HttpServletResponse servletResponse,

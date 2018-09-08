@@ -28,7 +28,9 @@ public class RedactRequest {
     /**
      * The reason for the event being redacted.
      */
-    @ApiModelProperty("The reason for the event being redacted.")
+    @ApiModelProperty(
+        value = "The reason for the event being redacted."
+    )
     private String reason;
 
     public String getReason() {

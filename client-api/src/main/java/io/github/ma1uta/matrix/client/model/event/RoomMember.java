@@ -29,14 +29,20 @@ public class RoomMember {
     /**
      * The display name of the user this object is representing.
      */
-    @ApiModelProperty(name = "display_name", value = "The display name of the user this object is representing.")
+    @ApiModelProperty(
+        name = "display_name",
+        value = "The display name of the user this object is representing."
+    )
     @JsonProperty("display_name")
     private String displayName;
 
     /**
      * The mxc avatar url of the user this object is representing.
      */
-    @ApiModelProperty(name = "avatar_url", value = "The mxc avatar url of the user this object is representing.")
+    @ApiModelProperty(
+        name = "avatar_url",
+        value = "The mxc avatar url of the user this object is representing."
+    )
     @JsonProperty("avatar_url")
     private String avatarUrl;
 

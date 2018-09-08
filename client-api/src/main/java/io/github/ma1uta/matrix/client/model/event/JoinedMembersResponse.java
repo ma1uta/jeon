@@ -30,7 +30,9 @@ public class JoinedMembersResponse {
     /**
      * A map from user ID to a RoomMember object.
      */
-    @ApiModelProperty("A map from user ID to a RoomMember object.")
+    @ApiModelProperty(
+        value = "A map from user ID to a RoomMember object."
+    )
     private Map<String, RoomMember> joined;
 
     public Map<String, RoomMember> getJoined() {

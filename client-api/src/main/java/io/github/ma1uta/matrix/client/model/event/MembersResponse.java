@@ -31,7 +31,9 @@ public class MembersResponse {
     /**
      * MemberEvent.
      */
-    @ApiModelProperty("Member events.")
+    @ApiModelProperty(
+        value = "Member events."
+    )
     private List<Event> chunk;
 
     public List<Event> getChunk() {

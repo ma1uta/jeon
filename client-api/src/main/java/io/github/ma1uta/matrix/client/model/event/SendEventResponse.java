@@ -29,7 +29,10 @@ public class SendEventResponse {
     /**
      * A unique identifier for the event.
      */
-    @ApiModelProperty(name = "event_id", value = "A unique identifier for the event.")
+    @ApiModelProperty(
+        name = "event_id",
+        value = "A unique identifier for the event."
+    )
     @JsonProperty("event_id")
     private String eventId;
 
