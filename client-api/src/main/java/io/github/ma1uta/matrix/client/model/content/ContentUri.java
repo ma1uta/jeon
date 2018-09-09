@@ -29,7 +29,10 @@ public class ContentUri {
     /**
      * MXC URI.
      */
-    @ApiModelProperty(name = "content_uri", value = "MXC URI.")
+    @ApiModelProperty(
+        name = "content_uri",
+        value = "MXC URI."
+    )
     @JsonProperty("content_uri")
     private String contentUri;
 

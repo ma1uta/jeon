@@ -30,8 +30,11 @@ public class ContentConfig {
      * The maximum size an upload can be in bytes. Clients SHOULD use this as a guide when uploading content.
      * If not listed or null, the size limit should be treated as unknown.
      */
-    @ApiModelProperty(name = "m.upload.size", value = "The maximum size an upload can be in bytes. Clients SHOULD use this as a"
-        + "guide when uploading content. If not listed or null, the size limit should be treated as unknown.")
+    @ApiModelProperty(
+        name = "m.upload.size",
+        value = "The maximum size an upload can be in bytes. Clients SHOULD use this as a"
+            + "guide when uploading content. If not listed or null, the size limit should be treated as unknown."
+    )
     @JsonProperty("m.upload.size")
     private long uploadSize;
 
