@@ -31,13 +31,18 @@ public class DevicesDeleteRequest {
     /**
      * Required. The list of device IDs to delete.
      */
-    @ApiModelProperty(value = "The list of device IDs to delete.", required = true)
+    @ApiModelProperty(
+        value = "The list of device IDs to delete.",
+        required = true
+    )
     private List<String> devices;
 
     /**
      * Additional authentication information for the user-interactive authentication API.
      */
-    @ApiModelProperty("Additional authentication information for the user-interactive authentication API.")
+    @ApiModelProperty(
+        value = "Additional authentication information for the user-interactive authentication API."
+    )
     private AuthenticationData auth;
 
     public List<String> getDevices() {

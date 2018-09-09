@@ -29,7 +29,10 @@ public class DeviceUpdateRequest {
     /**
      * The new display name.
      */
-    @ApiModelProperty(name = "display_name", value = "The new display name.")
+    @ApiModelProperty(
+        name = "display_name",
+        value = "The new display name."
+    )
     @JsonProperty("display_name")
     private String displayName;
 

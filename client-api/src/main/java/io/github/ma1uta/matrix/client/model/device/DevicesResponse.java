@@ -30,7 +30,9 @@ public class DevicesResponse {
     /**
      * A list of all registered devices for this user.
      */
-    @ApiModelProperty("A list of all registered devices for this user.")
+    @ApiModelProperty(
+        value = "A list of all registered devices for this user."
+    )
     private List<Device> devices;
 
     public List<Device> getDevices() {

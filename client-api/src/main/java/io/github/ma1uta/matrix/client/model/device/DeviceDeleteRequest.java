@@ -29,7 +29,9 @@ public class DeviceDeleteRequest {
     /**
      * Authentication information.
      */
-    @ApiModelProperty("Authentication information.")
+    @ApiModelProperty(
+        value = "Authentication information."
+    )
     private AuthenticationData auth;
 
     public AuthenticationData getAuth() {

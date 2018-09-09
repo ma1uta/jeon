@@ -29,22 +29,31 @@ public class Device {
     /**
      * Required. Identifier of this device.
      */
-    @ApiModelProperty(name = "device_id", value = "Identifier of this device.", required = true)
+    @ApiModelProperty(
+        name = "device_id",
+        value = "Identifier of this device.",
+        required = true
+    )
     @JsonProperty("device_id")
     private String deviceId;
 
     /**
      * Display name set by the user for this device. Absent if no name has been set.
      */
-    @ApiModelProperty(name = "display_name", value = "Display name set by the user for this device. Absent if no name has been set.")
+    @ApiModelProperty(
+        name = "display_name",
+        value = "Display name set by the user for this device. Absent if no name has been set."
+    )
     @JsonProperty("display_name")
     private String displayName;
 
     /**
      * The IP address where this device was last seen. (May be a few minutes out of date, for efficiency reasons).
      */
-    @ApiModelProperty(name = "last_seen_ip", value = "The IP address where this device was last seen. (May be a few minutes out of "
-        + "date, for efficiency reasons)")
+    @ApiModelProperty(
+        name = "last_seen_ip",
+        value = "The IP address where this device was last seen. (May be a few minutes out of date, for efficiency reasons)"
+    )
     @JsonProperty("last_seen_ip")
     private String lastSeenIp;
 
@@ -52,8 +61,11 @@ public class Device {
      * The timestamp (in milliseconds since the unix epoch) when this devices was last seen. (May be a few minutes out of date,
      * for efficiency reasons).
      */
-    @ApiModelProperty(name = "last_seen_ts", value = "The timestamp (in milliseconds since the unix epoch) when this devices was "
-        + "last seen. (May be a few minutes out of date, for efficiency reasons).")
+    @ApiModelProperty(
+        name = "last_seen_ts",
+        value = "The timestamp (in milliseconds since the unix epoch) when this devices was last seen."
+            + " (May be a few minutes out of date, for efficiency reasons)."
+    )
     @JsonProperty("last_seen_ts")
     private Long lastSeenTs;
 
