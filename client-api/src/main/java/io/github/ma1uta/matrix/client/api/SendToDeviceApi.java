@@ -44,8 +44,11 @@ import javax.ws.rs.core.SecurityContext;
  * one-time authentication tokens or key data. It is not intended for conversational data, which should be sent using the normal
  * /rooms/&lt;room_id&gt;/send API for consistency throughout Matrix.
  */
-@Api(value = "SendToDevice", description = "This module provides a means by which clients can exchange signalling messages without them "
-    + "being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device.")
+@Api(
+    value = "SendToDevice",
+    description = "This module provides a means by which clients can exchange signalling messages without them "
+        + "being stored permanently as part of a shared communication history. A message is delivered exactly once to each client device."
+)
 @Path("/_matrix/client/r0/sendToDevice")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -59,13 +62,15 @@ public interface SendToDeviceApi {
      * @param eventType           Required. The type of event to send.
      * @param txnId               Required. The transaction ID for this event. Clients should generate an ID unique across requests with the
      *                            same access token; it will be used by the server to ensure idempotency of requests.
-     * @param sendToDeviceRequest request body.
-     * @param servletRequest      servlet requet.
-     * @param servletResponse     servlet response.
-     * @param securityContext     security context.
+     * @param sendToDeviceRequest Request body.
+     * @param servletRequest      Servlet requet.
+     * @param servletResponse     Servlet response.
+     * @param securityContext     Security context.
      * @return <p>Status code 200: The message was successfully sent.</p>
      */
-    @ApiOperation(value = "This endpoint is used to send send-to-device events to a set of client devices.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This endpoint is used to send send-to-device events to a set of client devices."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The message was successfully sent.")
     })
@@ -73,10 +78,21 @@ public interface SendToDeviceApi {
     @Secured
     @Path("/{eventType}/{txnId}")
     EmptyResponse send(
-        @ApiParam(value = "The type of event to send.", required = true) @PathParam("eventType") String eventType,
-        @ApiParam(value = "The transaction ID for this event. Clients should generate an ID unique across requests with the "
-            + "same access token; it will be used by the server to ensure idempotency of requests.", required = true)
-        @PathParam("txnId") String txnId,
-        @ApiParam("JSON resuest body") SendToDeviceRequest sendToDeviceRequest,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The type of event to send.",
+            required = true
+        ) @PathParam("eventType") String eventType,
+        @ApiParam(
+            value = "The transaction ID for this event. Clients should generate an ID unique across requests with the "
+                + "same access token; it will be used by the server to ensure idempotency of requests.",
+            required = true
+        ) @PathParam("txnId") String txnId,
+        @ApiParam(
+            value = "JSON resuest body"
+        ) SendToDeviceRequest sendToDeviceRequest,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
