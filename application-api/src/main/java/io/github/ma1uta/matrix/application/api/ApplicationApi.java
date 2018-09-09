@@ -39,7 +39,7 @@ import javax.ws.rs.core.MediaType;
  * Application service APIs which are used by the homeserver. All application services MUST implement these APIs.
  */
 @Api(
-    value = "Application service API.",
+    value = "ApplicationService",
     description = "All application services MUST implement these APIs."
 )
 @Path("/v1")

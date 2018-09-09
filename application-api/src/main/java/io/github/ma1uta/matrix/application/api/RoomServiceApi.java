@@ -39,7 +39,7 @@ import javax.ws.rs.core.MediaType;
  * These room directories may be accessed by clients through additional parameters on the /publicRooms client-server endpoint.
  */
 @Api(
-    value = "Room Service API.",
+    value = "RoomService",
     description = "Application services can maintain their own room directories for their defined third party protocols."
         + " These room directories may be accessed by clients through additional parameters on the /publicRooms client-server endpoint."
 )

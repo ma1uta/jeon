@@ -43,7 +43,7 @@ import javax.ws.rs.core.SecurityContext;
  * Warning: This API is deprecated and will be removed from a future release.
  */
 @Api(
-    value = "Deprecated Sync API.",
+    value = "DeprecatedSync",
     description = "Warning: This API is deprecated and will be removed from a future release.."
 )
 @Deprecated

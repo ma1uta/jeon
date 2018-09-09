@@ -59,7 +59,7 @@ import javax.ws.rs.core.SecurityContext;
  * using the same API (unless the origin and destination homeservers are the same).
  */
 @Api(
-    value = "Content API",
+    value = "Content",
     description = "This module allows users to upload content to their homeserver which is retrievable from other homeservers."
         + " Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs."
 )

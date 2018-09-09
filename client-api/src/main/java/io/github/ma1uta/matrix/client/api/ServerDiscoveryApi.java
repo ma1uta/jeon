@@ -36,7 +36,7 @@ import javax.ws.rs.core.MediaType;
  * be done at login time.
  */
 @Api(
-    value = "Server Discovery API",
+    value = "ServerDiscovery",
     description = "Gets discovery information about the domain."
 )
 @Path("/.well-known/matrix/client")

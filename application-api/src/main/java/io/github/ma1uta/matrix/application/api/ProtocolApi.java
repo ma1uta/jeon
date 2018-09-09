@@ -52,7 +52,7 @@ import javax.ws.rs.core.UriInfo;
  * to the application service for filtering.
  */
 @Api(
-    value = "Third Party Protocol API.",
+    value = "ThirdPartyProtocol",
     description = "Application services may declare which protocols they support via their registration configuration for the homeserver."
         + " These networks are generally for third party services such as IRC that the application service is managing."
         + " Application services may populate a Matrix room directory for their registered protocols, as defined in the Client-Server"

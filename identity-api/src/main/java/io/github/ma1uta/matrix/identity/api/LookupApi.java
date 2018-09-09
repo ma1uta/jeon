@@ -40,7 +40,7 @@ import javax.ws.rs.core.MediaType;
  * Association lookup.
  */
 @Api(
-    value = "Association lookup API."
+    value = "AssociationLookup"
 )
 @Path("/_matrix/identity/api/v1")
 @Consumes(MediaType.APPLICATION_JSON)

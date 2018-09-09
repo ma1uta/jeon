@@ -40,7 +40,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Deprecated
 @Api(
-    value = "Deprecated API."
+    value = "Deprecated"
 )
 @Path("/_matrix/identity/api/v1")
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

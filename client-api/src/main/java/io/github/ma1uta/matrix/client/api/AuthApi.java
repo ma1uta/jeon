@@ -45,7 +45,7 @@ import javax.ws.rs.core.SecurityContext;
  * Note that this endpoint does not currently use the user-interactive authentication API.
  */
 @Api(
-    value = "Authentication API.",
+    value = "Authentication",
     description = "A client can obtain access tokens using the /login API"
 )
 @Path("/_matrix/client/r0")

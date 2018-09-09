@@ -68,7 +68,7 @@ import javax.ws.rs.core.SecurityContext;
  * </ul>
  */
 @Api(
-    value = "Presence API",
+    value = "Presence",
     description = "Each user has the concept of presence information."
 )
 @Path("/_matrix/client/r0/presence")

@@ -56,7 +56,7 @@ import javax.ws.rs.core.SecurityContext;
  * Rooms API.
  */
 @Api(
-    value = "Room API"
+    value = "Room"
 )
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)

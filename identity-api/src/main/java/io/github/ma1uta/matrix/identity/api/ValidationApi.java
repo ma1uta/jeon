@@ -40,7 +40,7 @@ import javax.ws.rs.core.MediaType;
  * Checking the validation of the 3pid ownership.
  */
 @Api(
-    value = "Validation API.",
+    value = "Validation",
     description = "Checking the validation of the 3pid ownership."
 )
 @Path("/_matrix/identity/api/v1")
