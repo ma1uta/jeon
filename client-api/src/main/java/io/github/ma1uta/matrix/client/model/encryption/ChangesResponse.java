@@ -30,14 +30,18 @@ public class ChangesResponse {
     /**
      * The Matrix User IDs of all users who updated their device identity keys.
      */
-    @ApiModelProperty("The Matrix User IDs of all users who updated their device identity keys.")
+    @ApiModelProperty(
+        value = "The Matrix User IDs of all users who updated their device identity keys."
+    )
     private List<String> changed;
 
     /**
      * The Matrix User IDs of all users who may have left all the end-to-end encrypted rooms they previously shared with the user.
      */
-    @ApiModelProperty("The Matrix User IDs of all users who may have left all the end-to-end encrypted rooms they previously "
-        + "shared with the user.")
+    @ApiModelProperty(
+        value = "The Matrix User IDs of all users who may have left all the end-to-end encrypted rooms they previously"
+            + " shared with the user."
+    )
     private List<String> left;
 
     public List<String> getChanged() {

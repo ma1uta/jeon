@@ -35,11 +35,27 @@ public class DeviceLists {
     )
     private List<String> changed;
 
+    /**
+     * List of users with whom we do not share any encrypted rooms anymore since the previous sync response.
+     */
+    @ApiModelProperty(
+        value = "List of users with whom we do not share any encrypted rooms anymore since the previous sync response."
+    )
+    private List<String> left;
+
     public List<String> getChanged() {
         return changed;
     }
 
     public void setChanged(List<String> changed) {
         this.changed = changed;
+    }
+
+    public List<String> getLeft() {
+        return left;
+    }
+
+    public void setLeft(List<String> left) {
+        this.left = left;
     }
 }

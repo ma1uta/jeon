@@ -142,4 +142,12 @@ public class SyncResponse {
     public void setDeviceLists(DeviceLists deviceLists) {
         this.deviceLists = deviceLists;
     }
+
+    public Map<String, Long> getDeviceOneTimeKeysCount() {
+        return deviceOneTimeKeysCount;
+    }
+
+    public void setDeviceOneTimeKeysCount(Map<String, Long> deviceOneTimeKeysCount) {
+        this.deviceOneTimeKeysCount = deviceOneTimeKeysCount;
+    }
 }

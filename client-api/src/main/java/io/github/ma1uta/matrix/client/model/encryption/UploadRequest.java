@@ -31,7 +31,10 @@ public class UploadRequest {
     /**
      * Identity keys for the device. May be absent if no new identity keys are required.
      */
-    @ApiModelProperty(name = "device_keys", value = "Identity keys for the device. May be absent if no new identity keys are required.")
+    @ApiModelProperty(
+        name = "device_keys",
+        value = "Identity keys for the device. May be absent if no new identity keys are required."
+    )
     @JsonProperty("device_keys")
     private DeviceKeys deviceKeys;
 
@@ -41,8 +44,11 @@ public class UploadRequest {
      * <p/>
      * May be absent if no new one-time keys are required.
      */
-    @ApiModelProperty(name = "one_time_keys", value = "One-time public keys for \"pre-key\" messages. The names of the properties "
-        + "should be in the format (algorithm):(key_id). The format of the key is determined by the key algorithm.")
+    @ApiModelProperty(
+        name = "one_time_keys",
+        value = "One-time public keys for \"pre-key\" messages. The names of the properties "
+            + "should be in the format (algorithm):(key_id). The format of the key is determined by the key algorithm."
+    )
     @JsonProperty("one_time_keys")
     private Map<String, Object> oneTimeKeys;
 

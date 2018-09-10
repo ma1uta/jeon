@@ -32,31 +32,43 @@ public class DeviceKeys {
     /**
      * Required. The ID of the user the device belongs to. Must match the user ID used when logging in.
      */
-    @ApiModelProperty(name = "user_id", value = "The ID of the user the device belongs to. Must match the user ID used when logging in.",
-        required = true)
+    @ApiModelProperty(
+        name = "user_id",
+        value = "The ID of the user the device belongs to. Must match the user ID used when logging in.",
+        required = true
+    )
     @JsonProperty("user_id")
     private String userId;
 
     /**
      * Required. The ID of the device these keys belong to. Must match the device ID used when logging in.
      */
-    @ApiModelProperty(name = "device_id", value = "The ID of the device these keys belong to. Must match the device ID used when "
-        + "logging in.", required = true)
+    @ApiModelProperty(
+        name = "device_id",
+        value = "The ID of the device these keys belong to. Must match the device ID used when logging in.",
+        required = true
+    )
     @JsonProperty("device_id")
     private String deviceId;
 
     /**
      * Required. The encryption algorithms supported by this device.
      */
-    @ApiModelProperty(value = "The encryption algorithms supported by this device.", required = true)
+    @ApiModelProperty(
+        value = "The encryption algorithms supported by this device.",
+        required = true
+    )
     private List<String> algorithms;
 
     /**
      * Required. Public identity keys. The names of the properties should be in the format &lt;algorithm&gt;:&lt;device_id&gt;.
      * The keys themselves should be encoded as specified by the key algorithm.
      */
-    @ApiModelProperty(value = "Public identity keys. The names of the properties should be in the format "
-        + "&lt;algorithm&gt;:&lt;device_id&gt;. The keys themselves should be encoded as specified by the key algorithm.", required = true)
+    @ApiModelProperty(
+        value = "Public identity keys. The names of the properties should be in the format "
+            + "&lt;algorithm&gt;:&lt;device_id&gt;. The keys themselves should be encoded as specified by the key algorithm.",
+        required = true
+    )
     private Map<String, String> keys;
 
     /**
@@ -64,8 +76,11 @@ public class DeviceKeys {
      * <p/>
      * The signature is calculated using the process described at Signing JSON.
      */
-    @ApiModelProperty(value = "Signatures for the device key object. A map from user ID, to a map from (algorithm):(device_id) to "
-        + "the signature.", required = true)
+    @ApiModelProperty(
+        value = "Signatures for the device key object. A map from user ID, to a map from (algorithm):(device_id) to "
+            + "the signature.",
+        required = true
+    )
     private Map<String, Map<String, String>> signatures;
 
     /**

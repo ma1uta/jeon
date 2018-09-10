@@ -31,8 +31,12 @@ public class UploadResponse {
     /**
      * Required. For each key algorithm, the number of unclaimed one-time keys of that type currently held on the server for this device.
      */
-    @ApiModelProperty(name = "one_time_key_counts", value = "For each key algorithm, the number of unclaimed one-time keys of that "
-        + "type currently held on the server for this device.", required = true)
+    @ApiModelProperty(
+        name = "one_time_key_counts",
+        value = "For each key algorithm, the number of unclaimed one-time keys of that "
+            + "type currently held on the server for this device.",
+        required = true
+    )
     @JsonProperty("one_time_key_counts")
     private Map<String, Long> oneTimeKeyCounts;
 

@@ -31,15 +31,19 @@ public class ClaimRequest {
     /**
      * The time (in milliseconds) to wait when downloading keys from remote servers. 10 seconds is the recommended default.
      */
-    @ApiModelProperty("The time (in milliseconds) to wait when downloading keys from remote servers. 10 seconds is the "
-        + "recommended default.")
+    @ApiModelProperty(
+        value = "The time (in milliseconds) to wait when downloading keys from remote servers. 10 seconds is the recommended default."
+    )
     private Long timeout;
 
     /**
      * Required. The keys to be claimed. A map from user ID, to a map from device ID to algorithm name.
      */
-    @ApiModelProperty(name = "one_time_keys", value = "The keys to be claimed. A map from user ID, to a map from device ID to "
-        + "algorithm name.", required = true)
+    @ApiModelProperty(
+        name = "one_time_keys",
+        value = "The keys to be claimed. A map from user ID, to a map from device ID to algorithm name.",
+        required = true
+    )
     @JsonProperty("one_time_keys")
     private Map<String, Map<String, String>> oneTimeKeys;
 
