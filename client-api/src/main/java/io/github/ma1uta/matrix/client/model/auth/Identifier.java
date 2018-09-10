@@ -35,7 +35,13 @@ import io.swagger.annotations.ApiModelProperty;
     @JsonSubTypes.Type(name = "m.id.thirdparty", value = ThirdpartyIdentifier.class),
     @JsonSubTypes.Type(name = "m.id.phone", value = PhoneIdentifier.class)
 })
-@ApiModel(description = "Identifier types.")
+@ApiModel(description = "Identifier types.",
+    subTypes = {
+        UserIdentifier.class,
+        ThirdpartyIdentifier.class,
+        PhoneIdentifier.class
+    }
+)
 public abstract class Identifier {
 
     /**

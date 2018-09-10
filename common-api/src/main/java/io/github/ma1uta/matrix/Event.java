@@ -217,6 +217,34 @@ public class Event {
         public static final String PRESENCE = "m.presence";
 
         /**
+         * Defines how messages sent in this room should be encrypted.
+         */
+        public static final String ROOM_ENCRIPTION = "m.room.encryption";
+
+        /**
+         * This event type is used when sending encrypted events. It can be used either within a room
+         * (in which case it will have all of the Room Event fields), or as a to-device event.
+         */
+        public static final String ROOM_ENCRYPTED = "m.room.encrypted";
+
+        /**
+         * This event type is used to exchange keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
+         * then sent as a to-device event.
+         */
+        public static final String ROOM_KEY = "m.room_key";
+
+        /**
+         * This event type is used to request keys for end-to-end encryption. It is sent as an unencrypted to-device event.
+         */
+        public static final String ROOM_KEY_REQUEST = "m.room_key_request";
+
+        /**
+         * This event type is used to forward keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
+         * then sent as a to-device event.
+         */
+        public static final String FORWARDED_ROOM_KEY = "m.forwarded_room_key";
+
+        /**
          * This event controls whether a user can see the events that happened in a room from before they joined.
          */
         public static final String ROOM_HISTORY_VISIBILITY = "m.room.history_visibility";
@@ -393,6 +421,44 @@ public class Event {
          * Forbidden.
          */
         public static final String FORBIDDEN = "forbidden";
+    }
+
+    /**
+     * Encryption algorithms.
+     */
+    public static class Enctyption {
+
+        protected Enctyption() {
+        }
+
+        /**
+         * Olm algorithm version.
+         */
+        public static final String OLM = "m.olm.v1.curve25519-aes-sha2";
+
+        /**
+         * Megolm algorithm version.
+         */
+        public static final String MEGOLM = "m.megolm.v1.aes-sha2";
+    }
+
+    /**
+     * Room key request action.
+     */
+    public static class KeyRequestAction {
+
+        protected KeyRequestAction() {
+        }
+
+        /**
+         * Request.
+         */
+        public static final String REQUEST = "request";
+
+        /**
+         * Cancel Request.
+         */
+        public static final String CANCEL_REQUEST = "cancel_request";
     }
 
     // ---- Common properties ----

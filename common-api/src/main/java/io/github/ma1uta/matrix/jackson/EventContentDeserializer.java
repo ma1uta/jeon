@@ -21,6 +21,7 @@ import static io.github.ma1uta.matrix.Event.EventType.CALL_CANDIDATES;
 import static io.github.ma1uta.matrix.Event.EventType.CALL_HANGUP;
 import static io.github.ma1uta.matrix.Event.EventType.CALL_INVITE;
 import static io.github.ma1uta.matrix.Event.EventType.DIRECT;
+import static io.github.ma1uta.matrix.Event.EventType.FORWARDED_ROOM_KEY;
 import static io.github.ma1uta.matrix.Event.EventType.FULLY_READ;
 import static io.github.ma1uta.matrix.Event.EventType.IGNORED_USER_LIST;
 import static io.github.ma1uta.matrix.Event.EventType.PRESENCE;
@@ -29,9 +30,13 @@ import static io.github.ma1uta.matrix.Event.EventType.ROOM_ALIASES;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_AVATAR;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_CANONICAL_ALIAS;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_CREATE;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_ENCRIPTION;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_ENCRYPTED;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_GUEST_ACCESS;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_HISTORY_VISIBILITY;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_JOIN_RULES;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_KEY;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_KEY_REQUEST;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_MEMBER;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_MESSAGE;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_MESSAGE_FEEDBACK;
@@ -54,6 +59,7 @@ import io.github.ma1uta.matrix.events.CallCandidates;
 import io.github.ma1uta.matrix.events.CallHangup;
 import io.github.ma1uta.matrix.events.CallInvite;
 import io.github.ma1uta.matrix.events.Direct;
+import io.github.ma1uta.matrix.events.ForwardedRoomKey;
 import io.github.ma1uta.matrix.events.FullyRead;
 import io.github.ma1uta.matrix.events.IgnoredUserList;
 import io.github.ma1uta.matrix.events.Presence;
@@ -63,9 +69,12 @@ import io.github.ma1uta.matrix.events.RoomAliases;
 import io.github.ma1uta.matrix.events.RoomAvatar;
 import io.github.ma1uta.matrix.events.RoomCanonicalAlias;
 import io.github.ma1uta.matrix.events.RoomCreate;
+import io.github.ma1uta.matrix.events.RoomEncryption;
 import io.github.ma1uta.matrix.events.RoomGuestAccess;
 import io.github.ma1uta.matrix.events.RoomHistoryVisibility;
 import io.github.ma1uta.matrix.events.RoomJoinRules;
+import io.github.ma1uta.matrix.events.RoomKey;
+import io.github.ma1uta.matrix.events.RoomKeyRequest;
 import io.github.ma1uta.matrix.events.RoomMember;
 import io.github.ma1uta.matrix.events.RoomMessageFeedback;
 import io.github.ma1uta.matrix.events.RoomName;
@@ -108,6 +117,8 @@ public class EventContentDeserializer {
                 return codec.treeToValue(node, CallInvite.class);
             case DIRECT:
                 return codec.treeToValue(node, Direct.class);
+            case FORWARDED_ROOM_KEY:
+                return codec.treeToValue(node, ForwardedRoomKey.class);
             case FULLY_READ:
                 return codec.treeToValue(node, FullyRead.class);
             case IGNORED_USER_LIST:
@@ -126,10 +137,18 @@ public class EventContentDeserializer {
                 return codec.treeToValue(node, RoomCreate.class);
             case ROOM_GUEST_ACCESS:
                 return codec.treeToValue(node, RoomGuestAccess.class);
+            case ROOM_ENCRIPTION:
+                return codec.treeToValue(node, RoomEncryption.class);
+            case ROOM_ENCRYPTED:
+                return new EncryptedMessageDeserializer().deserialize(node, codec);
             case ROOM_HISTORY_VISIBILITY:
                 return codec.treeToValue(node, RoomHistoryVisibility.class);
             case ROOM_JOIN_RULES:
                 return codec.treeToValue(node, RoomJoinRules.class);
+            case ROOM_KEY:
+                return codec.treeToValue(node, RoomKey.class);
+            case ROOM_KEY_REQUEST:
+                return codec.treeToValue(node, RoomKeyRequest.class);
             case ROOM_MEMBER:
                 return codec.treeToValue(node, RoomMember.class);
             case ROOM_MESSAGE:

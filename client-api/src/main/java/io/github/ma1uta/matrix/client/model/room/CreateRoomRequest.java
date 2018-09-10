@@ -166,8 +166,8 @@ public class CreateRoomRequest {
      */
     @ApiModelProperty(
         name = "power_level_content_override",
-        value = "The power level content to override in the default power level event. This object is applied on top of" +
-            " the generated m.room.power_levels event content prior to it being sent to the room. Defaults to overriding nothing."
+        value = "The power level content to override in the default power level event. This object is applied on top of"
+            + " the generated m.room.power_levels event content prior to it being sent to the room. Defaults to overriding nothing."
     )
     @JsonProperty("power_level_content_override")
     private RoomPowerLevels powerLevelContentOverride;

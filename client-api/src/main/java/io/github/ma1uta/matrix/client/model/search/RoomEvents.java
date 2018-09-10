@@ -17,7 +17,7 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.client.model.filter.Filter;
+import io.github.ma1uta.matrix.client.model.filter.EventFilter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -89,7 +89,7 @@ public class RoomEvents {
      * This takes a filter.
      */
     @ApiModelProperty("This takes a filter.")
-    private Filter filter;
+    private EventFilter filter;
 
     /**
      * The order in which to search for results. One of: ["recent", "rank"]
@@ -135,11 +135,11 @@ public class RoomEvents {
         this.keys = keys;
     }
 
-    public Filter getFilter() {
+    public EventFilter getFilter() {
         return filter;
     }
 
-    public void setFilter(Filter filter) {
+    public void setFilter(EventFilter filter) {
         this.filter = filter;
     }
 

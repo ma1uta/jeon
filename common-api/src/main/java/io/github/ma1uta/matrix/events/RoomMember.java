@@ -18,7 +18,6 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.github.ma1uta.matrix.Unsigned;
 import io.github.ma1uta.matrix.events.nested.Invite;
 import io.github.ma1uta.matrix.events.nested.RoomMemberUnsigned;
 import io.swagger.annotations.ApiModel;

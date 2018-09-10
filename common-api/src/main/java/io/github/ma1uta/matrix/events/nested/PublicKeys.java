@@ -34,8 +34,8 @@ public class PublicKeys {
     @ApiModelProperty(
         name = "key_validity_url",
         value = "An optional URL which can be fetched, with querystring public_key=public_key,"
-            + " to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'."
-            + " If this URL is absent, the key must be considered valid indefinitely."
+            + " to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property"
+            + " named 'valid'. If this URL is absent, the key must be considered valid indefinitely."
     )
     @JsonProperty("key_validity_url")
     private String keyValidityUrl;

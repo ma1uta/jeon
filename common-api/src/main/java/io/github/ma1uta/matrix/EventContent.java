@@ -21,6 +21,7 @@ import io.github.ma1uta.matrix.events.CallCandidates;
 import io.github.ma1uta.matrix.events.CallHangup;
 import io.github.ma1uta.matrix.events.CallInvite;
 import io.github.ma1uta.matrix.events.Direct;
+import io.github.ma1uta.matrix.events.ForwardedRoomKey;
 import io.github.ma1uta.matrix.events.FullyRead;
 import io.github.ma1uta.matrix.events.IgnoredUserList;
 import io.github.ma1uta.matrix.events.Presence;
@@ -29,9 +30,13 @@ import io.github.ma1uta.matrix.events.RoomAliases;
 import io.github.ma1uta.matrix.events.RoomAvatar;
 import io.github.ma1uta.matrix.events.RoomCanonicalAlias;
 import io.github.ma1uta.matrix.events.RoomCreate;
+import io.github.ma1uta.matrix.events.RoomEncrypted;
+import io.github.ma1uta.matrix.events.RoomEncryption;
 import io.github.ma1uta.matrix.events.RoomGuestAccess;
 import io.github.ma1uta.matrix.events.RoomHistoryVisibility;
 import io.github.ma1uta.matrix.events.RoomJoinRules;
+import io.github.ma1uta.matrix.events.RoomKey;
+import io.github.ma1uta.matrix.events.RoomKeyRequest;
 import io.github.ma1uta.matrix.events.RoomMember;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.RoomName;
@@ -77,7 +82,12 @@ import io.swagger.annotations.ApiModel;
         RoomTopic.class,
         Sticker.class,
         Tag.class,
-        Typing.class
+        Typing.class,
+        RoomEncryption.class,
+        RoomEncrypted.class,
+        RoomKey.class,
+        RoomKeyRequest.class,
+        ForwardedRoomKey.class
     },
     discriminator = "type")
 public interface EventContent {
