@@ -31,26 +31,40 @@ public class PushRule {
     /**
      * Required. The actions to perform when this rule is matched.
      */
-    @ApiModelProperty(value = "The actions to perform when this rule is matched.", required = true)
+    @ApiModelProperty(
+        value = "The actions to perform when this rule is matched.",
+        required = true
+    )
     private List<Object> actions;
 
     /**
      * Required. Whether this is a default rule, or has been set explicitly.
      */
-    @ApiModelProperty(name = "default", value = "Whether this is a default rule, or has been set explicitly.", required = true)
+    @ApiModelProperty(
+        name = "default",
+        value = "Whether this is a default rule, or has been set explicitly.",
+        required = true
+    )
     @JsonProperty("default")
     private Boolean defaultRule;
 
     /**
      * Required. Whether the push rule is enabled or not.
      */
-    @ApiModelProperty(value = "Whether the push rule is enabled or not.", required = true)
+    @ApiModelProperty(
+        value = "Whether the push rule is enabled or not.",
+        required = true
+    )
     private Boolean enabled;
 
     /**
      * Required. The ID of this rule.
      */
-    @ApiModelProperty(name = "rule_id", value = "The ID of this rule.", required = true)
+    @ApiModelProperty(
+        name = "rule_id",
+        value = "The ID of this rule.",
+        required = true
+    )
     @JsonProperty("rule_id")
     private String ruleId;
 
@@ -58,14 +72,18 @@ public class PushRule {
      * The conditions that must hold true for an event in order for a rule to be applied to an event. A rule with no
      * conditions always matches. Only applicable to underride and override rules.
      */
-    @ApiModelProperty("The conditions that must hold true for an event in order for a rule to be applied to an event. A rule with no "
-        + "conditions always matches. Only applicable to underride and override rules.")
+    @ApiModelProperty(
+        value = "The conditions that must hold true for an event in order for a rule to be applied to an event. A rule with no "
+            + "conditions always matches. Only applicable to underride and override rules."
+    )
     private List<PushCondition> conditions;
 
     /**
      * The glob-style pattern to match against. Only applicable to content rules.
      */
-    @ApiModelProperty("The glob-style pattern to match against. Only applicable to content rules.")
+    @ApiModelProperty(
+        value = "The glob-style pattern to match against. Only applicable to content rules."
+    )
     private String pattern;
 
     public List<Object> getActions() {

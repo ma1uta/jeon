@@ -30,9 +30,11 @@ public class PushersRequest extends Pusher {
      * user IDs. Otherwise, the homeserver must remove any other pushers with the same App ID and pushkey for different users.
      * The default is false.
      */
-    @ApiModelProperty("If true, the homeserver should add another pusher with the given pushkey and App ID in addition to any "
-        + "others with different user IDs. Otherwise, the homeserver must remove any other pushers with the same App ID and "
-        + "pushkey for different users. The default is false.")
+    @ApiModelProperty(
+        value = "If true, the homeserver should add another pusher with the given pushkey and App ID in addition to any "
+            + "others with different user IDs. Otherwise, the homeserver must remove any other pushers with the same App ID and "
+            + "pushkey for different users. The default is false."
+    )
     private Boolean append;
 
     public Boolean getAppend() {

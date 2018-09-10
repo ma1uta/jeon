@@ -34,53 +34,73 @@ public class Pusher {
     /**
      * This is a unique identifier for this pusher. See /set for more detail. Max length, 512 bytes.
      */
-    @ApiModelProperty("This is a unique identifier for this pusher. See /set for more detail. Max length, 512 bytes.")
+    @ApiModelProperty(
+        value = "This is a unique identifier for this pusher. See /set for more detail. Max length, 512 bytes."
+    )
     private String pushkey;
 
     /**
      * The kind of pusher. "http" is a pusher that sends HTTP pokes.
      */
-    @ApiModelProperty("The kind of pusher. \"http\" is a pusher that sends HTTP pokes.")
+    @ApiModelProperty(
+        value = "The kind of pusher. \"http\" is a pusher that sends HTTP pokes."
+    )
     private String kind;
 
     /**
      * This is a reverse-DNS style identifier for the application. Max length, 64 chars.
      */
-    @ApiModelProperty(name = "app_id", value = "This is a reverse-DNS style identifier for the application. Max length, 64 chars.")
+    @ApiModelProperty(
+        name = "app_id",
+        value = "This is a reverse-DNS style identifier for the application. Max length, 64 chars."
+    )
     @JsonProperty("app_id")
     private String appId;
 
     /**
      * A string that will allow the user to identify what application owns this pusher.
      */
-    @ApiModelProperty(name = "app_display_name", value = "A string that will allow the user to identify what application owns this pusher.")
+    @ApiModelProperty(
+        name = "app_display_name",
+        value = "A string that will allow the user to identify what application owns this pusher."
+    )
     @JsonProperty("app_display_name")
     private String appDisplayName;
 
     /**
      * A string that will allow the user to identify what device owns this pusher.
      */
-    @ApiModelProperty(name = "device_display_name", value = "A string that will allow the user to identify what device owns this pusher.")
+    @ApiModelProperty(
+        name = "device_display_name",
+        value = "A string that will allow the user to identify what device owns this pusher."
+    )
     @JsonProperty("device_display_name")
     private String deviceDisplayName;
 
     /**
      * This string determines which set of device specific rules this pusher executes.
      */
-    @ApiModelProperty(name = "profile_tag", value = "This string determines which set of device specific rules this pusher executes.")
+    @ApiModelProperty(
+        name = "profile_tag",
+        value = "This string determines which set of device specific rules this pusher executes."
+    )
     @JsonProperty("profile_tag")
     private String profileTag;
 
     /**
      * The preferred language for receiving notifications (e.g. 'en' or 'en-US')
      */
-    @ApiModelProperty("The preferred language for receiving notifications (e.g. 'en' or 'en-US')")
+    @ApiModelProperty(
+        value = "The preferred language for receiving notifications (e.g. 'en' or 'en-US')"
+    )
     private String lang;
 
     /**
      * A dictionary of information for the pusher implementation itself.
      */
-    @ApiModelProperty("A dictionary of information for the pusher implementation itself.")
+    @ApiModelProperty(
+        value = "A dictionary of information for the pusher implementation itself."
+    )
     private PusherData data;
 
     public String getPushkey() {

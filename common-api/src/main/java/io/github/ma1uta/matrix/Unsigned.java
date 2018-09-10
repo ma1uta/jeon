@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Map;
-
 /**
  * UnsignedData.
  */
@@ -70,7 +68,7 @@ public class Unsigned {
             + "appearing in the timeline. If this is not a state event, or there is no previous content, this key will be missing."
     )
     @JsonProperty("prev_content")
-    private Map<String, Object> prevContent;
+    private EventContent prevContent;
 
     public Long getAge() {
         return age;
@@ -96,11 +94,11 @@ public class Unsigned {
         this.transactionId = transactionId;
     }
 
-    public Map<String, Object> getPrevContent() {
+    public EventContent getPrevContent() {
         return prevContent;
     }
 
-    public void setPrevContent(Map<String, Object> prevContent) {
+    public void setPrevContent(EventContent prevContent) {
         this.prevContent = prevContent;
     }
 }

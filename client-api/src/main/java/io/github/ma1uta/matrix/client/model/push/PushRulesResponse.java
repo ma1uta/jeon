@@ -28,7 +28,10 @@ public class PushRulesResponse {
     /**
      * Required. The global ruleset.
      */
-    @ApiModelProperty(value = "The global ruleset.", required = true)
+    @ApiModelProperty(
+        value = "The global ruleset.",
+        required = true
+    )
     private Ruleset global;
 
     public Ruleset getGlobal() {

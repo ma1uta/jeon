@@ -32,8 +32,11 @@ public class PushActions {
      * <p/>
      * One of: ["notify", "dont_notify", "coalesce", "set_tweak"].
      */
-    @ApiModelProperty(value = "The action(s) to perform for this rule.", required = true,
-        allowableValues = "[\"notify\", \"dont_notify\", \"coalesce\", \"set_tweak\"]")
+    @ApiModelProperty(
+        value = "The action(s) to perform for this rule.",
+        required = true,
+        allowableValues = "notify, dont_notify, coalesce, set_tweak"
+    )
     private List<String> actions;
 
     public List<String> getActions() {

@@ -28,7 +28,10 @@ public class PushEnable {
     /**
      * Required. Whether the push rule is enabled or not.
      */
-    @ApiModelProperty(value = "Whether the push rule is enabled or not.", required = true)
+    @ApiModelProperty(
+        value = "Whether the push rule is enabled or not.",
+        required = true
+    )
     private Boolean enabled;
 
     public Boolean getEnabled() {

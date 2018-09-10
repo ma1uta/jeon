@@ -31,22 +31,29 @@ public class PushUpdateRequest {
      * Required. The action(s) to perform when the conditions for this rule are met. One of: ["notify", "dont_notify", "coalesce",
      * "set_tweak"].
      */
-    @ApiModelProperty(value = "The action(s) to perform when the conditions for this rule are met.", required = true,
-        allowableValues = "[\"notify\", \"dont_notify\", \"coalesce\", \"set_tweak\"]")
+    @ApiModelProperty(
+        value = "The action(s) to perform when the conditions for this rule are met.",
+        required = true,
+        allowableValues = "notify, dont_notify, coalesce, set_tweak"
+    )
     private List<String> actions;
 
     /**
      * The conditions that must hold true for an event in order for a rule to be applied to an event. A rule with no conditions
      * always matches. Only applicable to underride and override rules.
      */
-    @ApiModelProperty("The conditions that must hold true for an event in order for a rule to be applied to an event. "
-        + "A rule with no conditions always matches. Only applicable to underride and override rules.")
+    @ApiModelProperty(
+        value = "The conditions that must hold true for an event in order for a rule to be applied to an event. "
+            + "A rule with no conditions always matches. Only applicable to underride and override rules."
+    )
     private List<PushCondition> conditions;
 
     /**
      * Only applicable to content rules. The glob- style pattern to match against.
      */
-    @ApiModelProperty("Only applicable to content rules. The glob- style pattern to match against.")
+    @ApiModelProperty(
+        value = "Only applicable to content rules. The glob- style pattern to match against."
+    )
     private String pattern;
 
     public List<String> getActions() {

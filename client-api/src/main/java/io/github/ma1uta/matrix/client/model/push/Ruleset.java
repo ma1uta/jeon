@@ -30,31 +30,41 @@ public class Ruleset {
     /**
      * Content rules.
      */
-    @ApiModelProperty("Content rules.")
+    @ApiModelProperty(
+        value = "Content rules."
+    )
     private List<PushRule> content;
 
     /**
      * Override rules.
      */
-    @ApiModelProperty("Override rules.")
+    @ApiModelProperty(
+        value = "Override rules."
+    )
     private List<PushRule> override;
 
     /**
      * Room rules.
      */
-    @ApiModelProperty("Room rules.")
+    @ApiModelProperty(
+        value = "Room rules."
+    )
     private List<PushRule> room;
 
     /**
      * Sender rules.
      */
-    @ApiModelProperty("Sender rules.")
+    @ApiModelProperty(
+        value = "Sender rules."
+    )
     private List<PushRule> sender;
 
     /**
      * Underride rules.
      */
-    @ApiModelProperty("UNderride rules.")
+    @ApiModelProperty(
+        value = "Underride rules."
+    )
     private List<PushRule> underride;
 
     public List<PushRule> getContent() {

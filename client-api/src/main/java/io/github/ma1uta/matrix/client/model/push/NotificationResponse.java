@@ -32,15 +32,21 @@ public class NotificationResponse {
      * The token to supply in the from param of the next /notifications request in order to request more events.
      * If this is absent, there are no more results.
      */
-    @ApiModelProperty(name = "next_token", value = "The token to supply in the from param of the next /notifications request in "
-        + "order to request more events. If this is absent, there are no more results.")
+    @ApiModelProperty(
+        name = "next_token",
+        value = "The token to supply in the from param of the next /notifications request in "
+            + "order to request more events. If this is absent, there are no more results."
+    )
     @JsonProperty("next_token")
     private String nextToken;
 
     /**
      * Required. The list of events that triggered notifications.
      */
-    @ApiModelProperty(value = "The list of events that triggered notifications.", required = true)
+    @ApiModelProperty(
+        value = "The list of events that triggered notifications.",
+        required = true
+    )
     private List<Notification> notifications;
 
     public String getNextToken() {

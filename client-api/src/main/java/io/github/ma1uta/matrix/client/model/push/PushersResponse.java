@@ -30,7 +30,9 @@ public class PushersResponse {
     /**
      * An array containing the current pushers for the user.
      */
-    @ApiModelProperty("An array containing the current pushers for the user.")
+    @ApiModelProperty(
+        value = "An array containing the current pushers for the user."
+    )
     private List<Pusher> pushers;
 
     public List<Pusher> getPushers() {

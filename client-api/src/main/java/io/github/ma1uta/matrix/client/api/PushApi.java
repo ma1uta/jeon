@@ -35,14 +35,17 @@ import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
 /**
@@ -50,11 +53,16 @@ import javax.ws.rs.core.SecurityContext;
  * Users may also configure a number of rules that determine which events generate notifications. These are all stored and managed
  * by the user's homeserver. This allows user-specific push settings to be reused between client applications.
  */
-@Api(value = "Push", description = "This module adds support for push notifications. Homeservers send notifications of "
-    + "events to user-configured HTTP endpoints. Users may also configure a number of rules that determine which events "
-    + "generate notifications. These are all stored and managed by the user's homeserver. This allows user-specific push "
-    + "settings to be reused between client applications.")
+@Api(
+    value = "Push",
+    description = "This module adds support for push notifications. Homeservers send notifications of "
+        + "events to user-configured HTTP endpoints. Users may also configure a number of rules that determine which events "
+        + "generate notifications. These are all stored and managed by the user's homeserver. This allows user-specific push "
+        + "settings to be reused between client applications."
+)
 @Path("/_matrix/client/r0")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public interface PushApi {
 
     /**
@@ -187,6 +195,12 @@ public interface PushApi {
         public static final String CONTAINS_DISPLAY_NAME = ".m.rule.contains_display_name";
 
         /**
+         * Matches any message whose content is unencrypted and contains the text @room, signifying the whole room should be notified
+         * of the event.
+         */
+        public static final String ROOM_NOTIF = ".m.rule.roomnotif";
+
+        /**
          * Matches any message whose content is unencrypted and contains the local part of the user's Matrix ID, separated by word
          * boundaries.
          */
@@ -198,6 +212,13 @@ public interface PushApi {
         public static final String CALL = ".m.rule.call";
 
         /**
+         * Matches any encrypted event sent in a room with exactly two members. Unlike other push rules, this rule cannot be matched
+         * against the content of the event by nature of it being encrypted. This causes the rule to be an "all or nothing" match
+         * where it either matches all events that are encrypted (in 1:1 rooms) or none.
+         */
+        public static final String ENCRYPTED_ROOM_ONE_TO_ONE = ".m.rule.encrypted_room_one_to_one";
+
+        /**
          * Matches any message sent in a room with exactly two members.
          */
         public static final String ROOM_ONE_TO_ONE = ".m.rule.room_one_to_one";
@@ -206,6 +227,13 @@ public interface PushApi {
          * Matches all chat messages.
          */
         public static final String MESSAGE = ".m.rule.message";
+
+        /**
+         * Matches all encrypted events. Unlike other push rules, this rule cannot be matched against the content of the event
+         * by nature of it being encrypted. This causes the rule to be an "all or nothing" match where it either matches all events
+         * that are encrypted (in 1:1 rooms) or none.
+         */
+        public static final String ENCRYPTED = ".m.rule.encrypted";
     }
 
     /**
@@ -245,6 +273,18 @@ public interface PushApi {
          * </ul>
          */
         public static final String ROOM_MEMBER_COUNT = "room_member_count";
+
+        /**
+         * This takes into account the current power levels in the room, ensuring the sender of the event has high enough power
+         * to trigger the notification. Parameters:
+         * <ul>
+         * <li>key: A string that determines the power level the sender must have to trigger notifications of a given type, such as room.
+         * Refer to the m.room.power_levels event schema for information about what the defaults are and how to interpret the event.
+         * The key is used to look up the power level required to send a notification type from the notifications object in the power
+         * level event content.</li>
+         * </ul>
+         */
+        public static final String SENDER_NOTIFICATION_PERMISSION = "sender_notification_permission";
     }
 
 
@@ -253,20 +293,25 @@ public interface PushApi {
      * <br>
      * <b>Requires auth</b>: Yes.
      *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The pushers for this user.</p>
      */
-    @ApiOperation(value = "Gets all currently active pushers for the authenticated user.", response = PushersResponse.class)
+    @ApiOperation(
+        value = "Gets all currently active pushers for the authenticated user."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The pushers for this user.")
     })
     @GET
     @Secured
     @Path("/pushers")
-    PushersResponse showPushers(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                                @Context SecurityContext securityContext);
+    PushersResponse showPushers(
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This endpoint allows the creation, modification and deletion of pushers for this user ID. The behaviour of this endpoint
@@ -277,15 +322,17 @@ public interface PushApi {
      * <b>Requires auth</b>: Yes.
      *
      * @param pushersRequest  JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The pusher was set.</p>
      * <p>Status code 400: One or more of the pusher values were invalid.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. "
-        + "The behaviour of this endpoint varies depending on the values in the JSON body.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. "
+            + "The behaviour of this endpoint varies depending on the values in the JSON body."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The pusher was set."),
         @ApiResponse(code = 400, message = "One or more of the pusher values were invalid."),
@@ -296,8 +343,14 @@ public interface PushApi {
     @Secured
     @Path("/pushers/set")
     EmptyResponse setPushers(
-        @ApiParam("JSON body request") PushersRequest pushersRequest,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "JSON body request"
+        ) PushersRequest pushersRequest,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This API is used to paginate through the list of events that the user has been, or would have been notified about.
@@ -308,13 +361,14 @@ public interface PushApi {
      * @param only            Allows basic filtering of events returned. Supply highlight to return only events where the notification had
      *                        the highlight tweak set.
      * @param limit           Limit on the number of events to return in this request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: A batch of events is being returned.</p>
      */
-    @ApiOperation(value = "This API is used to paginate through the list of events that the user has been, or would have been "
-        + "notified about.", response = NotificationResponse.class)
+    @ApiOperation(
+        value = "This API is used to paginate through the list of events that the user has been, or would have been notified about."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A batch of events is being returned.")
     })
@@ -322,10 +376,20 @@ public interface PushApi {
     @Secured
     @Path("/notifications")
     NotificationResponse notifications(
-        @ApiParam("Pagination token given to retrieve the next set of events.") @QueryParam("from") String from,
-        @ApiParam("Allows basic filtering of events returned. ") @QueryParam("only") String only,
-        @ApiParam("Limit on the number of events to return in this request.") @QueryParam("limit") Long limit,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Pagination token given to retrieve the next set of events."
+        ) @QueryParam("from") String from,
+        @ApiParam(
+            value = "Allows basic filtering of events returned."
+        ) @QueryParam("only") String only,
+        @ApiParam(
+            value = "Limit on the number of events to return in this request."
+        ) @QueryParam("limit") Long limit,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Retrieve all push rulesets for this user. Clients can "drill-down" on the rulesets by suffixing a scope to this path e.g.
@@ -333,22 +397,27 @@ public interface PushApi {
      * <br>
      * <b>Requires auth</b>: Yes.
      *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: All the push rulesets for this user.</p>
      */
-    @ApiOperation(value = "Retrieve all push rulesets for this user. Clients can \"drill-down]\"on the rulesets by suffixing "
-        + "a scope to this path e.g. /pushrules/global/. This will return a subset of this data under the specified key e.g. "
-        + "the global key.", response = PushRulesResponse.class)
+    @ApiOperation(
+        value = "Retrieve all push rulesets for this user. Clients can \"drill-down]\"on the rulesets by suffixing "
+            + "a scope to this path e.g. /pushrules/global/. This will return a subset of this data under the specified key e.g. "
+            + "the global key."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "All the push rulesets for this user.")
     })
     @GET
     @Secured
     @Path("/pushrules")
-    PushRulesResponse pushRules(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                                @Context SecurityContext securityContext);
+    PushRulesResponse pushRules(
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Retrieve a single specified push rule.
@@ -358,13 +427,15 @@ public interface PushApi {
      * @param scope           Required. Global to specify global rules.
      * @param kind            Required. The kind of rule. One of: ["override", "underride", "sender", "room", "content"].
      * @param ruleId          Required. The identifier for the rule.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The specific push rule. This will also include keys specific to the rule itself such as the rule's
      * actions and conditions if set.</p>
      */
-    @ApiOperation(value = "Retrieve a single specified push rule.", response = PushRule.class)
+    @ApiOperation(
+        value = "Retrieve a single specified push rule."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The specific push rule. This will also include keys specific to the rule itself "
             + "such as the rule's actions and conditions if set.")
@@ -373,11 +444,24 @@ public interface PushApi {
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}")
     PushRule pushRule(
-        @ApiParam(value = "Global to specify global rules.", required = true) @PathParam("scope") String scope,
-        @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
-            + "\"content\"]") @PathParam("kind") String kind,
-        @ApiParam(value = "The identifier for the rule.", required = true) @PathParam("ruleId") String ruleId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Global to specify global rules.",
+            required = true
+        ) @PathParam("scope") String scope,
+        @ApiParam(
+            value = "The kind of rule.",
+            required = true,
+            allowableValues = "override, underride, sender, room, content"
+        ) @PathParam("kind") String kind,
+        @ApiParam(
+            value = "The identifier for the rule.",
+            required = true
+        ) @PathParam("ruleId") String ruleId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This endpoint removes the push rule defined in the path.
@@ -387,12 +471,14 @@ public interface PushApi {
      * @param scope           Required. Global to specify global rules.
      * @param kind            Required. The kind of rule. One of: ["override", "underride", "sender", "room", "content"].
      * @param ruleId          Required. The identifier for the rule.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The push rule was deleted.</p>
      */
-    @ApiOperation(value = "This endpoint removes the push rule defined in the path.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This endpoint removes the push rule defined in the path."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The push rule was deleted.")
     })
@@ -400,11 +486,24 @@ public interface PushApi {
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}")
     EmptyResponse deleteRule(
-        @ApiParam(value = "Global to specify global rules.", required = true) @PathParam("scope") String scope,
-        @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
-            + "\"content\"]") @PathParam("kind") String kind,
-        @ApiParam(value = "The identifier for the rule.", required = true) @PathParam("ruleId") String ruleId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Global to specify global rules.",
+            required = true
+        ) @PathParam("scope") String scope,
+        @ApiParam(
+            value = "The kind of rule.",
+            required = true,
+            allowableValues = "override, underride, sender, room, content"
+        ) @PathParam("kind") String kind,
+        @ApiParam(
+            value = "The identifier for the rule.",
+            required = true
+        ) @PathParam("ruleId") String ruleId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This endpoint allows the creation, modification and deletion of pushers for this user ID. The behaviour of this endpoint
@@ -422,15 +521,17 @@ public interface PushApi {
      * @param after             This makes the new rule the next-less important rule relative to the given user defined rule. It is not
      *                          possible to add a rule relative to a predefined server rule.
      * @param pushUpdateRequest JSON body request.
-     * @param servletRequest    servlet request.
-     * @param servletResponse   servlet response.
-     * @param securityContext   security context.
+     * @param servletRequest    Servlet request.
+     * @param servletResponse   Servlet response.
+     * @param securityContext   Security context.
      * @return <p>Status code 200: The pusher was set.</p>
      * <p>Status code 400: There was a problem configuring this push rule.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. The "
-        + "behaviour of this endpoint varies depending on the values in the JSON body.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. The "
+            + "behaviour of this endpoint varies depending on the values in the JSON body."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The pusher was set."),
         @ApiResponse(code = 400, message = "There was a problem configuring this push rule."),
@@ -441,17 +542,35 @@ public interface PushApi {
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}")
     EmptyResponse updateRule(
-        @ApiParam(value = "Global to specify global rules.", required = true) @PathParam("scope") String scope,
-        @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
-            + "\"content\"].") @PathParam("kind") String kind,
-        @ApiParam(value = "The identifier for the rule.", required = true) @PathParam("ruleId") String ruleId,
-        @ApiParam("Use 'before' with a rule_id as its value to make the new rule the next-most important rule with respect "
-            + "to the given user defined rule. It is not possible to add a rule relative to a predefined server rule.")
-        @QueryParam("before") String before,
-        @ApiParam("This makes the new rule the next-less important rule relative to the given user defined rule. It is not "
-            + "possible to add a rule relative to a predefined server rule.") @QueryParam("after") String after,
-        @ApiParam("JSON body request.") PushUpdateRequest pushUpdateRequest,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Global to specify global rules.",
+            required = true
+        ) @PathParam("scope") String scope,
+        @ApiParam(
+            value = "The kind of rule.",
+            required = true,
+            allowableValues = "override, underride, sender, room, content"
+        ) @PathParam("kind") String kind,
+        @ApiParam(
+            value = "The identifier for the rule.",
+            required = true
+        ) @PathParam("ruleId") String ruleId,
+        @ApiParam(
+            value = "Use 'before' with a rule_id as its value to make the new rule the next-most important rule with respect "
+                + "to the given user defined rule. It is not possible to add a rule relative to a predefined server rule."
+        ) @QueryParam("before") String before,
+        @ApiParam(
+            value = "This makes the new rule the next-less important rule relative to the given user defined rule. It is not "
+                + "possible to add a rule relative to a predefined server rule."
+        ) @QueryParam("after") String after,
+        @ApiParam(
+            value = "JSON body request."
+        ) PushUpdateRequest pushUpdateRequest,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This endpoint gets whether the specified push rule is enabled.
@@ -462,12 +581,14 @@ public interface PushApi {
      *                        profile_tag.
      * @param kind            Required. The kind of rule. One of: ["override", "underride", "sender", "room", "content"].
      * @param ruleId          Required. The identifier for the rule.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: Whether the push rule is enabled.</p>
      */
-    @ApiOperation(value = "This endpoint gets whether the specified push rule is enabled.", response = PushEnable.class)
+    @ApiOperation(
+        value = "This endpoint gets whether the specified push rule is enabled."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Whether the push rule is enabled.")
     })
@@ -475,12 +596,24 @@ public interface PushApi {
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}/enabled")
     PushEnable getEnabled(
-        @ApiParam(value = "Either global or device/&lt;profile_tag&gt; to specify global rules or device rules for the given "
-            + "profile_tag.", required = true) @PathParam("scope") String scope,
-        @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
-            + "\"content\"].") @PathParam("kind") String kind,
-        @ApiParam(value = "The identifier for the rule.", required = true) @PathParam("ruleId") String ruleId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Either global or device/&lt;profile_tag&gt; to specify global rules or device rules for the given profile_tag.",
+            required = true
+        ) @PathParam("scope") String scope,
+        @ApiParam(
+            value = "The kind of rule.",
+            required = true,
+            allowableValues = "override, underride, sender, room, content"
+        ) @PathParam("kind") String kind,
+        @ApiParam(
+            value = "The identifier for the rule.",
+            required = true
+        ) @PathParam("ruleId") String ruleId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This endpoint allows clients to enable or disable the specified push rule.
@@ -491,12 +624,14 @@ public interface PushApi {
      * @param kind            Required. The kind of rule. One of: ["override", "underride", "sender", "room", "content"].
      * @param ruleId          Required. The identifier for the rule.
      * @param pushEnable      JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The push rule was enabled or disabled.</p>
      */
-    @ApiOperation(value = "his endpoint allows clients to enable or disable the specified push rule.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "his endpoint allows clients to enable or disable the specified push rule."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The push rule was enabled or disabled.")
     })
@@ -504,12 +639,27 @@ public interface PushApi {
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}/enabled")
     EmptyResponse setEnabled(
-        @ApiParam(value = "Global to specify global rules", required = true) @PathParam("scope") String scope,
-        @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
-            + "\"content\"].") @PathParam("kind") String kind,
-        @ApiParam(value = "The identifier for the rule.", required = true) @PathParam("ruleId") String ruleId,
-        @ApiParam("JSON body request.") PushEnable pushEnable,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Global to specify global rules",
+            required = true
+        ) @PathParam("scope") String scope,
+        @ApiParam(
+            value = "The kind of rule.",
+            required = true,
+            allowableValues = "override, underride, sender, room, content"
+        ) @PathParam("kind") String kind,
+        @ApiParam(
+            value = "The identifier for the rule.",
+            required = true
+        ) @PathParam("ruleId") String ruleId,
+        @ApiParam(
+            value = "JSON body request."
+        ) PushEnable pushEnable,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This endpoint get the actions for the specified push rule.
@@ -520,12 +670,14 @@ public interface PushApi {
      *                        profile_tag.
      * @param kind            Required. The kind of rule One of: ["override", "underride", "sender", "room", "content"].
      * @param ruleId          Required. The identifier for the rule.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The actions for this push rule.</p>
      */
-    @ApiOperation(value = "This endpoint get the actions for the specified push rule.", response = PushActions.class)
+    @ApiOperation(
+        value = "This endpoint get the actions for the specified push rule."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The actions for this push rule.")
     })
@@ -533,12 +685,24 @@ public interface PushApi {
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}/actions")
     PushActions getActions(
-        @ApiParam(value = "Either global or device/&lt;profile_tag&gt; to specify global rules or device rules for the given "
-            + "profile_tag.", required = true) @PathParam("scope") String scope,
-        @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
-            + "\"content\"].") @PathParam("kind") String kind,
-        @ApiParam(value = "The identifier for the rule.", required = true) @PathParam("ruleId") String ruleId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Either global or device/&lt;profile_tag&gt; to specify global rules or device rules for the given profile_tag.",
+            required = true
+        ) @PathParam("scope") String scope,
+        @ApiParam(
+            value = "The kind of rule.",
+            required = true,
+            allowableValues = "override, underride, sender, room, content"
+        ) @PathParam("kind") String kind,
+        @ApiParam(
+            value = "The identifier for the rule.",
+            required = true
+        ) @PathParam("ruleId") String ruleId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * This endpoint allows clients to change the actions of a push rule. This can be used to change the actions of builtin rules.
@@ -549,13 +713,15 @@ public interface PushApi {
      * @param kind            Required. The kind of rule. One of: ["override", "underride", "sender", "room", "content"].
      * @param ruleId          Required. The identifier for the rule.
      * @param pushActions     JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The actions for the push rule were set.</p>
      */
-    @ApiOperation(value = "This endpoint allows clients to change the actions of a push rule. This can be used to "
-        + "change the actions of builtin rules.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "This endpoint allows clients to change the actions of a push rule. This can be used to "
+            + "change the actions of builtin rules."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The actions for the push rule were set.")
     })
@@ -563,10 +729,25 @@ public interface PushApi {
     @Secured
     @Path("/pushrules/{scope}/{kind}/{ruleId}/actions")
     EmptyResponse setActions(
-        @ApiParam(value = "Global to specify global rules", required = true) @PathParam("scope") String scope,
-        @ApiParam(value = "The kind of rule.", required = true, allowableValues = "[\"override\", \"underride\", \"sender\", \"room\", "
-            + "\"content\"].") @PathParam("kind") String kind,
-        @ApiParam(value = "The identifier for the rule.", required = true) @PathParam("ruleId") String ruleId,
-        @ApiParam("JSON body request.") PushActions pushActions,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "Global to specify global rules",
+            required = true
+        ) @PathParam("scope") String scope,
+        @ApiParam(
+            value = "The kind of rule.",
+            required = true,
+            allowableValues = "override, underride, sender, room, content"
+        ) @PathParam("kind") String kind,
+        @ApiParam(
+            value = "The identifier for the rule.",
+            required = true
+        ) @PathParam("ruleId") String ruleId,
+        @ApiParam(
+            value = "JSON body request."
+        ) PushActions pushActions,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
