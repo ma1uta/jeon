@@ -39,8 +39,11 @@ import javax.ws.rs.core.SecurityContext;
  * This API returns a number of events that happened just before and after the specified event. This allows clients to get the context
  * surrounding an event.
  */
-@Api(value = "EventContext", description = "This API returns a number of events that happened just before and after the specified event. "
-    + "This allows clients to get the context surrounding an event.")
+@Api(
+    value = "EventContext",
+    description = "This API returns a number of events that happened just before and after the specified event. "
+        + "This allows clients to get the context surrounding an event."
+)
 @Path("/_matrix/client/r0/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 public interface EventContextApi {
@@ -54,13 +57,15 @@ public interface EventContextApi {
      * @param roomId          Required. The room to get events from.
      * @param eventId         Required. The event to get context around.
      * @param limit           The maximum number of events to return. Default: 10.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The events and state surrounding the requested event.</p>
      */
-    @ApiOperation(value = "This API returns a number of events that happened just before and after the specified event.",
-        notes = "This allows clients to get the context surrounding an event.")
+    @ApiOperation(
+        value = "This API returns a number of events that happened just before and after the specified event.",
+        notes = "This allows clients to get the context surrounding an event."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The events and state surrounding the requested event.")
     })
@@ -68,8 +73,20 @@ public interface EventContextApi {
     @Secured
     @Path("/{roomId}/context/{eventId}")
     EventContextResponse context(
-        @ApiParam(value = "The room to get events from.", required = true) @PathParam("roomId") String roomId,
-        @ApiParam(value = "The event to get context around.", required = true) @PathParam("eventId") String eventId,
-        @ApiParam("The maximum number of events to return. Default: 10.") @QueryParam("limit") Integer limit,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The room to get events from.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "The event to get context around.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+        @ApiParam(
+            value = "The maximum number of events to return. Default: 10."
+        ) @QueryParam("limit") Integer limit,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }

@@ -32,41 +32,53 @@ public class EventContextResponse {
     /**
      * A token that can be used to paginate backwards with.
      */
-    @ApiModelProperty("A token that can be used to paginate backwards with.")
+    @ApiModelProperty(
+        value = "A token that can be used to paginate backwards with."
+    )
     private String start;
 
     /**
      * A token that can be used to paginate forwards with.
      */
-    @ApiModelProperty("A token that can be used to paginate forwards with.")
+    @ApiModelProperty(
+        value = "A token that can be used to paginate forwards with."
+    )
     private String end;
 
     /**
      * A list of room events that happened just before the requested event, in reverse-chronological order.
      */
-    @ApiModelProperty(name = "events_before", value = "A list of room events that happened just before the requested event, "
-        + "in reverse-chronological order.")
+    @ApiModelProperty(
+        name = "events_before",
+        value = "A list of room events that happened just before the requested event, in reverse-chronological order."
+    )
     @JsonProperty("events_before")
     private List<Event> eventsBefore;
 
     /**
      * Details of the requested event.
      */
-    @ApiModelProperty("Details of the requested event.")
+    @ApiModelProperty(
+        value = "Details of the requested event."
+    )
     private Event event;
 
     /**
      * A list of room events that happened just after the requested event, in chronological order.
      */
-    @ApiModelProperty(name = "events_after", value = "A list of room events that happened just after the requested event, "
-        + "in chronological order.")
+    @ApiModelProperty(
+        name = "events_after",
+        value = "A list of room events that happened just after the requested event, in chronological order."
+    )
     @JsonProperty("events_after")
     private List<Event> eventsAfter;
 
     /**
      * The state of the room at the last event returned.
      */
-    @ApiModelProperty("The state of the room at the last event returned.")
+    @ApiModelProperty(
+        value = "The state of the room at the last event returned."
+    )
     private Event state;
 
     public String getStart() {
