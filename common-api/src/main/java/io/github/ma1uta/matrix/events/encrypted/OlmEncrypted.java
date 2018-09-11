@@ -35,8 +35,8 @@ public class OlmEncrypted extends RoomEncrypted {
      * For more details, see Messaging Algorithms.
      */
     @ApiModelProperty(
-        value = "The encrypted content of the event. A map from the recipient Curve25519 identity key to ciphertext information." +
-            " For more details, see Messaging Algorithms.",
+        value = "The encrypted content of the event. A map from the recipient Curve25519 identity key to ciphertext information."
+            + " For more details, see Messaging Algorithms.",
         required = true
     )
     private Map<String, CiphertextInfo> ciphertext;
