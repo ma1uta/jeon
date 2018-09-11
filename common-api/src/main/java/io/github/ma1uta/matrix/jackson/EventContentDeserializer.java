@@ -44,6 +44,7 @@ import static io.github.ma1uta.matrix.Event.EventType.ROOM_NAME;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_PINNED_EVENTS;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_POWER_LEVELS;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_REDACTION;
+import static io.github.ma1uta.matrix.Event.EventType.ROOM_SERVER_ACL;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_THIRD_PARTY_INVITE;
 import static io.github.ma1uta.matrix.Event.EventType.ROOM_TOPIC;
 import static io.github.ma1uta.matrix.Event.EventType.STICKER;
@@ -81,6 +82,7 @@ import io.github.ma1uta.matrix.events.RoomName;
 import io.github.ma1uta.matrix.events.RoomPinned;
 import io.github.ma1uta.matrix.events.RoomPowerLevels;
 import io.github.ma1uta.matrix.events.RoomRedaction;
+import io.github.ma1uta.matrix.events.RoomServerAcl;
 import io.github.ma1uta.matrix.events.RoomThirdPartyInvite;
 import io.github.ma1uta.matrix.events.RoomTopic;
 import io.github.ma1uta.matrix.events.Sticker;
@@ -95,9 +97,9 @@ public class EventContentDeserializer {
     /**
      * Deserialize the event content.
      *
-     * @param node   the json node with the event content.
-     * @param type   the type of the event.
-     * @param codec  the json codec.
+     * @param node  the json node with the event content.
+     * @param type  the type of the event.
+     * @param codec the json codec.
      * @return the deserialized event content or null
      * @throws JsonProcessingException when missing the `msgtype` of the message.
      */
@@ -173,6 +175,8 @@ public class EventContentDeserializer {
                 return codec.treeToValue(node, Tag.class);
             case TYPING:
                 return codec.treeToValue(node, Typing.class);
+            case ROOM_SERVER_ACL:
+                return codec.treeToValue(node, RoomServerAcl.class);
             default:
                 return new RawEvent(node);
         }

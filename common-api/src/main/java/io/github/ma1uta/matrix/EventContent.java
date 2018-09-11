@@ -43,6 +43,7 @@ import io.github.ma1uta.matrix.events.RoomName;
 import io.github.ma1uta.matrix.events.RoomPinned;
 import io.github.ma1uta.matrix.events.RoomPowerLevels;
 import io.github.ma1uta.matrix.events.RoomRedaction;
+import io.github.ma1uta.matrix.events.RoomServerAcl;
 import io.github.ma1uta.matrix.events.RoomThirdPartyInvite;
 import io.github.ma1uta.matrix.events.RoomTopic;
 import io.github.ma1uta.matrix.events.Sticker;
@@ -87,7 +88,8 @@ import io.swagger.annotations.ApiModel;
         RoomEncrypted.class,
         RoomKey.class,
         RoomKeyRequest.class,
-        ForwardedRoomKey.class
+        ForwardedRoomKey.class,
+        RoomServerAcl.class
     },
     discriminator = "type")
 public interface EventContent {
