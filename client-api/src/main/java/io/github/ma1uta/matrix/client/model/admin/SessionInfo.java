@@ -30,7 +30,9 @@ public class SessionInfo {
     /**
      * Information particular connections in the session.
      */
-    @ApiModelProperty("Information particular connections in the session.")
+    @ApiModelProperty(
+        value = "Information particular connections in the session."
+    )
     private List<ConnectionInfo> connections;
 
     public List<ConnectionInfo> getConnections() {

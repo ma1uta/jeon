@@ -29,20 +29,28 @@ public class ConnectionInfo {
     /**
      * Most recently seen IP address of the session.
      */
-    @ApiModelProperty("Most recently seen IP address of the session")
+    @ApiModelProperty(
+        value = "Most recently seen IP address of the session."
+    )
     private String ip;
 
     /**
      * Unix timestamp that the session was last active.
      */
-    @ApiModelProperty(name = "last_seen", value = "Unix timestamp that the session was last active")
+    @ApiModelProperty(
+        name = "last_seen",
+        value = "Unix timestamp that the session was last active."
+    )
     @JsonProperty("last_seen")
     private Long lastSeen;
 
     /**
      * User agent string last seen in the session.
      */
-    @ApiModelProperty(name = "user_agent", value = "User agent string last seen in the session")
+    @ApiModelProperty(
+        name = "user_agent",
+        value = "User agent string last seen in the session."
+    )
     @JsonProperty("user_agent")
     private String userAgent;
 

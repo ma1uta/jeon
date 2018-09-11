@@ -31,14 +31,19 @@ public class AdminResponse {
     /**
      * The Matrix user ID of the user.
      */
-    @ApiModelProperty(name = "user_id", value = "he Matrix user ID of the user.")
+    @ApiModelProperty(
+        name = "user_id",
+        value = "he Matrix user ID of the user."
+    )
     @JsonProperty("user_id")
     private String userId;
 
     /**
      * Each key is an identitfier for one of the user's devices.
      */
-    @ApiModelProperty("Each key is an identitfier for one of the user's devices")
+    @ApiModelProperty(
+        value = "Each key is an identitfier for one of the user's devices"
+    )
     private Map<String, DeviceInfo> devices;
 
     public String getUserId() {

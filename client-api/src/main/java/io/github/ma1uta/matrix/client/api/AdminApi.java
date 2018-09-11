@@ -37,7 +37,10 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * Gets information about a particular user.
  */
-@Api(value = "Admin", description = "Gets information about a particular user")
+@Api(
+    value = "Admin",
+    description = "Gets information about a particular user"
+)
 @Path("/_matrix/client/r0/admin")
 @Produces(MediaType.APPLICATION_JSON)
 public interface AdminApi {
@@ -49,20 +52,29 @@ public interface AdminApi {
      * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The user to look up.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The lookup was successful.</p>
      */
-    @ApiOperation(value = "his API may be restricted to only be called by the user being looked up, or by a server admin. "
-        + "Server-local administrator privileges are not specified in this document.", response = AdminResponse.class)
+    @ApiOperation(
+        value = "This API may be restricted to only be called by the user being looked up, or by a server admin. "
+            + "Server-local administrator privileges are not specified in this document."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The lookup was successful.")
     })
     @GET
     @Secured
     @Path("/whois/{userId}")
-    AdminResponse whois(@ApiParam(value = "The use to look up", required = true) @PathParam("userId") String userId,
-                        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse,
-                        @Context SecurityContext securityContext);
+    AdminResponse whois(
+        @ApiParam(
+            value = "The use to look up",
+            required = true
+        ) @PathParam("userId") String userId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
