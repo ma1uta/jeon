@@ -42,8 +42,11 @@ import javax.ws.rs.core.SecurityContext;
  * <br>
  * Content is reported based upon a negative score, where -100 is "most offensive" and 0 is "inoffensive".
  */
-@Api(value = "Report", description = "Users may encounter content which they find inappropriate and should be able to report it to "
-    + "the server administrators or room moderators for review. This module defines a way for users to report content.")
+@Api(
+    value = "Report",
+    description = "Users may encounter content which they find inappropriate and should be able to report it to "
+        + "the server administrators or room moderators for review. This module defines a way for users to report content."
+)
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,13 +60,14 @@ public interface ReportApi {
      * @param roomId          Required. The room in which the event being reported is located.
      * @param eventId         Required. The event to report.
      * @param reportRequest   JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The event has been reported successfully.</p>
      */
-    @ApiOperation(value = "Reports an event as inappropriate to the server, which may then notify the appropriate people.",
-        response = EmptyResponse.class)
+    @ApiOperation(
+        value = "Reports an event as inappropriate to the server, which may then notify the appropriate people."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The event has been reported successfully.")
     })
@@ -71,8 +75,20 @@ public interface ReportApi {
     @Secured
     @Path("/rooms/{roomId}/report/{eventId}")
     EmptyResponse report(
-        @ApiParam(value = "The room in which the event being reported is located.", required = true) @PathParam("roomId") String roomId,
-        @ApiParam(value = "The event to report.", required = true) @PathParam("eventId") String eventId,
-        @ApiParam("JSON body request.") ReportRequest reportRequest,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The room in which the event being reported is located.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "The event to report.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+        @ApiParam(
+            value = "JSON body request."
+        ) ReportRequest reportRequest,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
