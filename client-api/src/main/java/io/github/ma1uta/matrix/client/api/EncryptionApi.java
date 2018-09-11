@@ -181,9 +181,9 @@ public interface EncryptionApi {
     @Path("/changes")
     ChangesResponse changes(
         @ApiParam(
-            value = "The desired start point of the list. Should be the next_batch field from a response "
-                + "to an earlier call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted existing "
-                + "devices with identity keys since then, will be excluded from the results.",
+            value = "The desired start point of the list. Should be the next_batch field from a response"
+                + " to an earlier call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted"
+                + " existing devices with identity keys since then, will be excluded from the results.",
             required = true
         ) @QueryParam("from") String from,
         @ApiParam(

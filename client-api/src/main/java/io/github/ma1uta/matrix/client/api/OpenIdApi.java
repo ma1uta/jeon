@@ -76,8 +76,8 @@ public interface OpenIdApi {
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "OpenID token information. This response is nearly compatible with the response documented"
-            + " in the OpenID 1.0 Specification with the only difference being the lack of an id_token. Instead, the Matrix homeserver's name"
-            + " is provided."),
+            + " in the OpenID 1.0 Specification with the only difference being the lack of an id_token."
+            + " Instead, the Matrix homeserver's name is provided."),
         @ApiResponse(code = 429, message = "This request was rate-limited.")
     })
     @POST

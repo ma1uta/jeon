@@ -85,8 +85,8 @@ public class Filter {
      */
     @ApiModelProperty(
         name = "not_rooms",
-        value = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even" +
-            " if it is listed in the 'rooms' filter."
+        value = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even"
+            + " if it is listed in the 'rooms' filter."
     )
     @JsonProperty("not_rooms")
     private List<String> notRooms;
