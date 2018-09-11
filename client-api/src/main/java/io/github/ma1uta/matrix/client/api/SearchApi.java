@@ -42,9 +42,12 @@ import javax.ws.rs.core.SecurityContext;
  * that they have left. Only events that the user is allowed to see will be searched, e.g. it won't include events in rooms that
  * happened after you left.
  */
-@Api(value = "Search", description = "The search API allows clients to perform full text search across events in all rooms that "
-    + "the user has been in, including those that they have left. Only events that the user is allowed to see will be searched, "
-    + "e.g. it won't include events in rooms that happened after you left.")
+@Api(
+    value = "Search",
+    description = "The search API allows clients to perform full text search across events in all rooms that "
+        + "the user has been in, including those that they have left. Only events that the user is allowed to see will be searched, "
+        + "e.g. it won't include events in rooms that happened after you left."
+)
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -60,14 +63,16 @@ public interface SearchApi {
      * @param nextBatch       The point to return events from. If given, this should be a next_batch result from a previous call
      *                        to this endpoint.
      * @param searchRequest   JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: Results of the search.</p>
      * <p>Status code 400: Part of the request was invalid.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      */
-    @ApiOperation(value = "Performs a full text search across different categories.", response = SearchResponse.class)
+    @ApiOperation(
+        value = "Performs a full text search across different categories."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Results of the search."),
         @ApiResponse(code = 400, message = "Part of the request was invalid."),
@@ -78,8 +83,16 @@ public interface SearchApi {
     @Secured
     @Path("/search")
     SearchResponse search(
-        @ApiParam("The point to return events from. If given, this should be a next_batch result from a previous call "
-            + "to this endpoint.") @QueryParam("next_batch") String nextBatch,
-        @ApiParam("JSON body request") SearchRequest searchRequest,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The point to return events from. If given, this should be a next_batch result from a previous call "
+                + "to this endpoint."
+        ) @QueryParam("next_batch") String nextBatch,
+        @ApiParam(
+            value = "JSON body request"
+        ) SearchRequest searchRequest,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }

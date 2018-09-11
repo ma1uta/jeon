@@ -32,21 +32,28 @@ public class GroupValue {
      * Token that can be used to get the next batch of results in the group, by passing as the next_batch parameter to the next call.
      * If this field is absent, there are no more results in this group.
      */
-    @ApiModelProperty(name = "next_batch", value = "Token that can be used to get the next batch of results in the group, by passing "
-        + "as the next_batch parameter to the next call. If this field is absent, there are no more results in this group.")
+    @ApiModelProperty(
+        name = "next_batch",
+        value = "Token that can be used to get the next batch of results in the group, by passing "
+            + "as the next_batch parameter to the next call. If this field is absent, there are no more results in this group."
+    )
     @JsonProperty("next_batch")
     private String nextBatch;
 
     /**
      * Key that can be used to order different groups.
      */
-    @ApiModelProperty("Key that can be used to order different groups.")
+    @ApiModelProperty(
+        value = "Key that can be used to order different groups."
+    )
     private Long order;
 
     /**
      * Which results are in this group.
      */
-    @ApiModelProperty("Which results are in this group.")
+    @ApiModelProperty(
+        value = "Which results are in this group."
+    )
     private List<String> results;
 
     public String getNextBatch() {

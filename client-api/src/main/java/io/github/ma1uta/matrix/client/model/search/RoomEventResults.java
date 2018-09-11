@@ -33,19 +33,25 @@ public class RoomEventResults {
     /**
      * An approximate count of the total number of results found.
      */
-    @ApiModelProperty("An approximate count of the total number of results found.")
+    @ApiModelProperty(
+        value = "An approximate count of the total number of results found."
+    )
     private Long count;
 
     /**
      * List of words which should be highlighted, useful for stemming which may change the query terms.
      */
-    @ApiModelProperty("List of words which should be highlighted, useful for stemming which may change the query terms.")
+    @ApiModelProperty(
+        value = "List of words which should be highlighted, useful for stemming which may change the query terms."
+    )
     private List<String> highlights;
 
     /**
      * List of results in the requested order.
      */
-    @ApiModelProperty("List of results in the requested order.")
+    @ApiModelProperty(
+        value = "List of results in the requested order."
+    )
     private List<Result> results;
 
     /**
@@ -53,8 +59,10 @@ public class RoomEventResults {
      * <p/>
      * The string key is the room ID for which the State Event array belongs to.
      */
-    @ApiModelProperty("The current state for every room in the results. This is included if the request had the include_state "
-        + "key set with a value of true.")
+    @ApiModelProperty(
+        value = "The current state for every room in the results. This is included if the request had the include_state key set with"
+            + " a value of true."
+    )
     private Map<String, List<Event>> state;
 
     /**
@@ -63,15 +71,20 @@ public class RoomEventResults {
      * The outer string key is the group key requested (eg: room_id or sender). The inner string key is the grouped value
      * (eg: a room's ID or a user's ID).
      */
-    @ApiModelProperty("Any groups that were requested.")
+    @ApiModelProperty(
+        value = "Any groups that were requested."
+    )
     private Map<String, Map<String, GroupValue>> groups;
 
     /**
      * Token that can be used to get the next batch of results, by passing as the next_batch parameter to the next call. If this field
      * is absent, there are no more results.
      */
-    @ApiModelProperty(name = "next_batch", value = "Token that can be used to get the next batch of results, by passing as the "
-        + "next_batch parameter to the next call. If this field is absent, there are no more results.")
+    @ApiModelProperty(
+        name = "next_batch",
+        value = "Token that can be used to get the next batch of results, by passing as the "
+            + "next_batch parameter to the next call. If this field is absent, there are no more results."
+    )
     @JsonProperty("next_batch")
     private String nextBatch;
 

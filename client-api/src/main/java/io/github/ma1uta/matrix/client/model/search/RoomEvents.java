@@ -75,48 +75,68 @@ public class RoomEvents {
     /**
      * Required. The string to search events for.
      */
-    @ApiModelProperty(name = "search_term", value = "The string to search events for.", required = true)
+    @ApiModelProperty(
+        name = "search_term",
+        value = "The string to search events for.",
+        required = true
+    )
     @JsonProperty("search_term")
     private String searchTerm;
 
     /**
      * The keys to search. Defaults to all. One of: ["content.body", "content.name", "content.topic"]
      */
-    @ApiModelProperty(value = "The keys to search.", allowableValues = "[\"content.body\", \"content.name\", \"content.topic\"]")
+    @ApiModelProperty(
+        value = "The keys to search.",
+        allowableValues = "content.body, content.name, content.topic"
+    )
     private List<String> keys;
 
     /**
      * This takes a filter.
      */
-    @ApiModelProperty("This takes a filter.")
-    private EventFilter filter;
+    @ApiModelProperty(
+        value = "This takes a filter."
+    )
+    private Filter filter;
 
     /**
      * The order in which to search for results. One of: ["recent", "rank"]
      */
-    @ApiModelProperty(name = "order_by", value = "The order in which to search for results.", allowableValues = "[\"recent\", \"rank\"]")
+    @ApiModelProperty(
+        name = "order_by",
+        value = "The order in which to search for results.",
+        allowableValues = "recent, rank"
+    )
     @JsonProperty("order_by")
     private String orderBy;
 
     /**
      * Configures whether any context for the events returned are included in the response.
      */
-    @ApiModelProperty(name = "event_context", value = "Configures whether any context for the events returned are included in the "
-        + "response.")
+    @ApiModelProperty(
+        name = "event_context",
+        value = "Configures whether any context for the events returned are included in the response."
+    )
     @JsonProperty("event_context")
     private EventContext eventContext;
 
     /**
      * Requests the server return the current state for each room returned.
      */
-    @ApiModelProperty(name = "include_state", value = "Requests the server return the current state for each room returned.")
+    @ApiModelProperty(
+        name = "include_state",
+        value = "Requests the server return the current state for each room returned."
+    )
     @JsonProperty("include_state")
     private Boolean includeState;
 
     /**
      * Requests that the server partitions the result set based on the provided list of keys.
      */
-    @ApiModelProperty("Requests that the server partitions the result set based on the provided list of keys.")
+    @ApiModelProperty(
+        value = "Requests that the server partitions the result set based on the provided list of keys."
+    )
     private Groupings groupings;
 
     public String getSearchTerm() {
@@ -135,11 +155,11 @@ public class RoomEvents {
         this.keys = keys;
     }
 
-    public EventFilter getFilter() {
+    public Filter getFilter() {
         return filter;
     }
 
-    public void setFilter(EventFilter filter) {
+    public void setFilter(Filter filter) {
         this.filter = filter;
     }
 

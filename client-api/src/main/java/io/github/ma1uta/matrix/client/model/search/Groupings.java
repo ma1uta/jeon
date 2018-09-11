@@ -31,7 +31,10 @@ public class Groupings {
     /**
      * List of groups to request.
      */
-    @ApiModelProperty(name = "group_by", value = "List of groups to request.")
+    @ApiModelProperty(
+        name = "group_by",
+        value = "List of groups to request."
+    )
     @JsonProperty("group_by")
     private List<Group> groupBy;
 

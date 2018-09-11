@@ -38,7 +38,10 @@ public class Group {
     /**
      * Key that defines the group. One of: ["room_id", "sender"]
      */
-    @ApiModelProperty(value = "Key that defines the group.", allowableValues = "[\"room_id\", \"sender\"]")
+    @ApiModelProperty(
+        value = "Key that defines the group.",
+        allowableValues = "room_id, sender"
+    )
     private String key;
 
     public String getKey() {

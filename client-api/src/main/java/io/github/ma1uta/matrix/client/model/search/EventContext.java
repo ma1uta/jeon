@@ -29,22 +29,30 @@ public class EventContext {
     /**
      * How many events before the result are returned.
      */
-    @ApiModelProperty(name = "before_limit", value = "How many events before the result are returned.")
+    @ApiModelProperty(
+        name = "before_limit",
+        value = "How many events before the result are returned."
+    )
     @JsonProperty("before_limit")
     private Long beforeLimit;
 
     /**
      * How many events after the result are returned.
      */
-    @ApiModelProperty(name = "after_limit", value = "How many events after the result are returned.")
+    @ApiModelProperty(
+        name = "after_limit",
+        value = "How many events after the result are returned."
+    )
     @JsonProperty("after_limit")
     private Long afterLimit;
 
     /**
      * Requests that the server returns the historic profile information for the users that sent the events that were returned.
      */
-    @ApiModelProperty(name = "include_profile", value = "Requests that the server returns the historic profile information for the "
-        + "users that sent the events that were returned.")
+    @ApiModelProperty(
+        name = "include_profile",
+        value = "Requests that the server returns the historic profile information for the users that sent the events that were returned."
+    )
     @JsonProperty("include_profile")
     private Boolean includeProfile;
 

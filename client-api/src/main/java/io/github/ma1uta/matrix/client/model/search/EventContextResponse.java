@@ -34,13 +34,17 @@ public class EventContextResponse {
     /**
      * Pagination token for the start of the chunk.
      */
-    @ApiModelProperty("Pagination token for the start of the chunk.")
+    @ApiModelProperty(
+        value = "Pagination token for the start of the chunk."
+    )
     private String start;
 
     /**
      * Pagination token for the end of the chunk.
      */
-    @ApiModelProperty("Pagination token for the end of the chunk.")
+    @ApiModelProperty(
+        value = "Pagination token for the end of the chunk."
+    )
     private String end;
 
     /**
@@ -48,21 +52,30 @@ public class EventContextResponse {
      * <p/>
      * The string key is the user ID for which the profile belongs to.
      */
-    @ApiModelProperty(name = "profile_info", value = "The historic profile information of the users that sent the events returned.")
+    @ApiModelProperty(
+        name = "profile_info",
+        value = "The historic profile information of the users that sent the events returned."
+    )
     @JsonProperty("profile_info")
     private Map<String, Profile> profileInfo;
 
     /**
      * Events just before the result.
      */
-    @ApiModelProperty(name = "events_before", value = "Events just before the result.")
+    @ApiModelProperty(
+        name = "events_before",
+        value = "Events just before the result."
+    )
     @JsonProperty("events_before")
     private List<Event> eventsBefore;
 
     /**
      * Events just after the result.
      */
-    @ApiModelProperty(name = "events_after", value = "Events just after the result.")
+    @ApiModelProperty(
+        name = "events_after",
+        value = "Events just after the result."
+    )
     @JsonProperty("events_after")
     private List<Event> eventsAfter;
 

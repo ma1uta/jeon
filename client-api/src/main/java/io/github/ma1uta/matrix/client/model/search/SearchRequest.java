@@ -29,7 +29,11 @@ public class SearchRequest {
     /**
      * Required. Describes which categories to search in and their criteria.
      */
-    @ApiModelProperty(name = "search_categories", value = "Describes which categories to search in and their criteria.", required = true)
+    @ApiModelProperty(
+        name = "search_categories",
+        value = "Describes which categories to search in and their criteria.",
+        required = true
+    )
     @JsonProperty("search_categories")
     private RequestCategories searchCategories;
 

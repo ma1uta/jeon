@@ -29,7 +29,10 @@ public class ResponseCategories {
     /**
      * Mapping of category name to search criteria.
      */
-    @ApiModelProperty(name = "room_events", value = "Mapping of category name to search criteria.")
+    @ApiModelProperty(
+        name = "room_events",
+        value = "Mapping of category name to search criteria."
+    )
     @JsonProperty("room_events")
     private RoomEventResults roomEvents;
 
