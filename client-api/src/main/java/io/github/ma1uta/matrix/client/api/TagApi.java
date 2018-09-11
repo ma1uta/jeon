@@ -19,13 +19,13 @@ package io.github.ma1uta.matrix.client.api;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.tag.Tags;
+import io.github.ma1uta.matrix.events.nested.TagInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -43,8 +43,11 @@ import javax.ws.rs.core.SecurityContext;
  * Users can add tags to rooms. Tags are short strings used to label rooms, e.g. "work", "family". A room may have multiple tags.
  * Tags are only visible to the user that set them but are shared across all their devices.
  */
-@Api(value = "TagInfo", description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
-    + "A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices.")
+@Api(
+    value = "TagInfo",
+    description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
+        + "A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices."
+)
 @Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -77,12 +80,14 @@ public interface TagApi {
      * @param userId          Required. The id of the user to get tags for. The access token must be authorized to make requests for this
      *                        user id.
      * @param roomId          Required. The id of the room to get tags for.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The list of tags for the user for the room.</p>
      */
-    @ApiOperation(value = "List the tags set by a user on a room.", response = Tags.class)
+    @ApiOperation(
+        value = "List the tags set by a user on a room."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The list of tags for the user for the room.")
     })
@@ -90,10 +95,19 @@ public interface TagApi {
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags")
     Tags showTags(
-        @ApiParam(value = "The id of the user to get tags for. The access token must be authorized to make requests for this user id.",
-            required = true) @PathParam("userId") String userId,
-        @ApiParam(value = "The id of the room to get tags for.", required = true) @PathParam("roomId") String roomId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The id of the user to get tags for. The access token must be authorized to make requests for this user id.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "The id of the room to get tags for.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Add a tag to the room.
@@ -105,12 +119,14 @@ public interface TagApi {
      * @param roomId          Required. The id of the room to add a tag to.
      * @param tag             Required. The tag to add.
      * @param tagData         tag data.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The tag was successfully added.</p>
      */
-    @ApiOperation(value = "Add a tag to the room.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "Add a tag to the room."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The tag was successfully added.")
     })
@@ -118,12 +134,26 @@ public interface TagApi {
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags/{tag}")
     EmptyResponse addTag(
-        @ApiParam(value = "The id of the user to add a tag for. The access token must be authorized to make requests for this user id.",
-            required = true) @PathParam("userId") String userId,
-        @ApiParam(value = "The id of the room to add a tag to.", required = true) @PathParam("roomId") String roomId,
-        @ApiParam(value = "The tag to add.", required = true) @PathParam("tag") String tag,
-        @ApiParam("TagInfo data.") Map<String, String> tagData,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The id of the user to add a tag for. The access token must be authorized to make requests for this user id.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "The id of the room to add a tag to.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "The tag to add.",
+            required = true
+        ) @PathParam("tag") String tag,
+        @ApiParam(
+            value = "TagInfo data."
+        ) TagInfo tagData,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Remove a tag from the room.
@@ -134,12 +164,14 @@ public interface TagApi {
      *                        for this user id.
      * @param roomId          Required. The id of the room to remove a tag from.
      * @param tag             Required. The tag to remove.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The tag was successfully removed.</p>
      */
-    @ApiOperation(value = "Remove a tag from the room.", response = EmptyResponse.class)
+    @ApiOperation(
+        value = "Remove a tag from the room."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The tag was successfully removed.")
     })
@@ -147,9 +179,21 @@ public interface TagApi {
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags/{tag}")
     EmptyResponse deleteTag(
-        @ApiParam(value = "The id of the user to remove a tag for. The access token must be authorized to make requests for this user id.",
-            required = true) @PathParam("userId") String userId,
-        @ApiParam(value = "The id of the room to remove a tag from.", required = true) @PathParam("roomId") String roomId,
-        @ApiParam(value = "The tag to remove.", required = true) @PathParam("tag") String tag,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The id of the user to remove a tag for. The access token must be authorized to make requests for this user id.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "The id of the room to remove a tag from.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "The tag to remove.",
+            required = true
+        ) @PathParam("tag") String tag,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }

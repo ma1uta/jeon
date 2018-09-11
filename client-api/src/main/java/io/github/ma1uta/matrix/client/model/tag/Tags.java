@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.tag;
 
+import io.github.ma1uta.matrix.events.nested.TagInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -30,14 +31,16 @@ public class Tags {
     /**
      * Tags.
      */
-    @ApiModelProperty("Tags.")
-    private Map<String, Map<String, Object>> tags;
+    @ApiModelProperty(
+        value = "Tags."
+    )
+    private Map<String, TagInfo> tags;
 
-    public Map<String, Map<String, Object>> getTags() {
+    public Map<String, TagInfo> getTags() {
         return tags;
     }
 
-    public void setTags(Map<String, Map<String, Object>> tags) {
+    public void setTags(Map<String, TagInfo> tags) {
         this.tags = tags;
     }
 }

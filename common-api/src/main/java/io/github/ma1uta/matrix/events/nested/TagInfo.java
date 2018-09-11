@@ -17,12 +17,27 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import io.swagger.annotations.ApiModel;
-
-import java.util.HashMap;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Tag info.
  */
 @ApiModel(description = "Tag info.")
-public class TagInfo extends HashMap<String, Object> {
+public class TagInfo {
+
+    /**
+     * A number in a range [0,1] describing a relative position of the room under the given tag.
+     */
+    @ApiModelProperty(
+        value = "A number in a range [0,1] describing a relative position of the room under the given tag."
+    )
+    private Long order;
+
+    public Long getOrder() {
+        return order;
+    }
+
+    public void setOrder(Long order) {
+        this.order = order;
+    }
 }
