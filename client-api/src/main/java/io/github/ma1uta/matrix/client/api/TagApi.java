@@ -44,7 +44,7 @@ import javax.ws.rs.core.SecurityContext;
  * Tags are only visible to the user that set them but are shared across all their devices.
  */
 @Api(
-    value = "TagInfo",
+    value = "Tag",
     description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
         + "A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices."
 )

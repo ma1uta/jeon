@@ -39,7 +39,10 @@ import javax.ws.rs.core.SecurityContext;
 /**
  * Client Behaviour.
  */
-@Api(value = "ClientConfig", description = "Client Behaviour")
+@Api(
+    value = "ClientConfig",
+    description = "Client Behaviour"
+)
 @Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -54,15 +57,17 @@ public interface ClientConfigApi {
      * @param userId          Required. The id of the user to set account_data for. The access token must be authorized to make
      *                        requests for this user id.
      * @param type            Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
-     * @param accountData     account data.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param accountData     Account data.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The account_data was successfully added.</p>
      */
-    @ApiOperation(value = "Set some account_data for the client.",
+    @ApiOperation(
+        value = "Set some account_data for the client.",
         notes = "This config is only visible to the user that set the account_data. The config will be "
-            + "synced to clients in the top-level account_data.", response = EmptyResponse.class)
+            + "synced to clients in the top-level account_data."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account_data was successfully added.")
     })
@@ -70,12 +75,22 @@ public interface ClientConfigApi {
     @Secured
     @Path("/{userId}/account_data/{type}")
     EmptyResponse addConfig(
-        @ApiParam(value = "The id of the user to set account_data for. The access token must be authorized to make "
-            + "requests for this user id.", required = true) @PathParam("userId") String userId,
-        @ApiParam(value = "The event type of the account_data to set. Custom types should be namespaced to "
-            + "avoid clashes.", required = true) @PathParam("type") String type,
-        @ApiParam("Account data") Map<String, String> accountData,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The id of the user to set account_data for. The access token must be authorized to make requests for this user id.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
+            required = true
+        ) @PathParam("type") String type,
+        @ApiParam(
+            value = "Account data"
+        ) Map<String, String> accountData,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 
     /**
      * Set some account_data for the client on a given room. This config is only visible to the user that set the account_data.
@@ -88,14 +103,16 @@ public interface ClientConfigApi {
      * @param roomId          Required. The id of the room to set account_data on.
      * @param type            Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
      * @param accountData     account data.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
+     * @param securityContext Security context.
      * @return <p>Status code 200: The account_data was successfully added.</p>
      */
-    @ApiOperation(value = "Set some account_data for the client on a given room.",
+    @ApiOperation(
+        value = "Set some account_data for the client on a given room.",
         notes = "This config is only visible to the user that set the account_data. The config will be synced to clients in the "
-            + "per-room account_data.", response = EmptyResponse.class)
+            + "per-room account_data."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account_data was successfully added.")
     })
@@ -103,11 +120,24 @@ public interface ClientConfigApi {
     @Secured
     @Path("/{userId}/rooms/{roomId}/account_data/{type}")
     EmptyResponse addRoomConfig(
-        @ApiParam(value = "The id of the user to set account_data for. The access token must be authorized to make "
-            + "requests for this user id.", required = true) @PathParam("userId") String userId,
-        @ApiParam(value = "The id of the room to set account_data on.", required = true) @PathParam("roomId") String roomId,
-        @ApiParam(value = "The event type of the account_data to set. Custom types should be namespaced to avoid "
-            + "clashes.", required = true) @PathParam("type") String type,
-        @ApiParam("Account data") Map<String, String> accountData,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse, @Context SecurityContext securityContext);
+        @ApiParam(
+            value = "The id of the user to set account_data for. The access token must be authorized to make requests for this user id.",
+            required = true
+        ) @PathParam("userId") String userId,
+        @ApiParam(
+            value = "The id of the room to set account_data on.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @ApiParam(
+            value = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
+            required = true
+        ) @PathParam("type") String type,
+        @ApiParam(
+            value = "Account data"
+        ) Map<String, String> accountData,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse,
+        @Context SecurityContext securityContext
+    );
 }
