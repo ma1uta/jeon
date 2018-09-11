@@ -46,7 +46,10 @@ import javax.ws.rs.core.Context;
  * <li>The Matrix client receives the login token and passes it to the /login API.</li>
  * </ul>
  */
-@Api(value = "CAS", description = "Central Authentication Service (CAS) is a web-based single sign-on protocol.")
+@Api(
+    value = "CAS",
+    description = "Central Authentication Service (CAS) is a web-based single sign-on protocol."
+)
 @Path("/_matrix/client/r0/login/cas")
 public interface CasApi {
 
@@ -61,22 +64,29 @@ public interface CasApi {
      * Url%3Dhttps%253A%252F%252Fclient.example.com%252F%253Fq%253Dp}.
      *
      * @param redirectUrl     Required. URI to which the user will be redirected after the homeserver has authenticated the user with CAS.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return A redirect to the CAS interface.
      */
-    @ApiOperation(value = "A web-based Matrix client should instruct the user's browser to navigate to this endpoint in order to log "
-        + "in via CAS.",
+    @ApiOperation(
+        value = "A web-based Matrix client should instruct the user's browser to navigate to this endpoint in order to log in via CAS.",
         notes = "The server MUST respond with an HTTP redirect to the CAS interface. The URI MUST include a service parameter giving "
-            + "the path of the /login/cas/ticket endpoint (including the redirectUrl query parameter).", response = EmptyResponse.class)
+            + "the path of the /login/cas/ticket endpoint (including the redirectUrl query parameter)."
+    )
     @ApiResponses( {
         @ApiResponse(code = 302, message = "A redirect to the CAS interface")
     })
     @GET
     @Path("/redirect")
-    EmptyResponse redirect(@ApiParam(value = "URI to which the user will be redirected after the homeserver has authenticated the "
-        + "user with CAS.", required = true) @QueryParam("redirectUrl") String redirectUrl,
-                           @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    EmptyResponse redirect(
+        @ApiParam(
+            value = "URI to which the user will be redirected after the homeserver has authenticated the user with CAS.",
+            required = true
+        ) @QueryParam("redirectUrl") String redirectUrl,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
      * Once the CAS server has authenticated the user, it will redirect the browser to this endpoint (assuming /login/cas/redirect
@@ -92,26 +102,37 @@ public interface CasApi {
      *
      * @param redirectUrl     Required. The redirectUrl originally provided by the client to /login/cas/redirect.
      * @param ticket          Required. CAS authentication ticket.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 302: A redirect to the Matrix client.</p>
      * <p>Status code 401: The server was unable to validate the CAS ticket.</p>
      */
-    @ApiOperation(value = "Once the CAS server has authenticated the user, it will redirect the browser to this endpoint "
-        + "(assuming /login/cas/redirect gave it the correct service parameter).",
+    @ApiOperation(
+        value = "Once the CAS server has authenticated the user, it will redirect the browser to this endpoint "
+            + "(assuming /login/cas/redirect gave it the correct service parameter).",
         notes = "The server MUST call /proxyValidate on the CAS server, to validate the ticket supplied by the browser. "
             + "If validation is successful, the server must generate a Matrix login token. It must then respond with an HTTP redirect "
             + "to the URI given in the redirectUrl parameter, adding a loginToken query parameter giving the generated token. "
             + "If validation is unsuccessful, the server should respond with a 401 Unauthorized error, the body of which will be displayed "
-            + "to the user.", response = EmptyResponse.class)
+            + "to the user."
+    )
     @ApiResponses( {
         @ApiResponse(code = 302, message = "A redirect to the Matrix client."),
         @ApiResponse(code = 401, message = "The server was unable to validate the CAS ticket.")
     })
     @GET
     @Path("/ticket")
-    EmptyResponse ticket(@ApiParam(value = "The redirectUrl originally provided by the client to /login/cas/redirect.", required = true)
-                         @QueryParam("redirectUrl") String redirectUrl,
-                         @ApiParam(value = "CAS authentication ticket", required = true) @QueryParam("ticket") String ticket,
-                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    EmptyResponse ticket(
+        @ApiParam(
+            value = "The redirectUrl originally provided by the client to /login/cas/redirect.",
+            required = true
+        ) @QueryParam("redirectUrl") String redirectUrl,
+        @ApiParam(
+            value = "CAS authentication ticket",
+            required = true
+        ) @QueryParam("ticket") String ticket,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 }
