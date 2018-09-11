@@ -16,11 +16,13 @@
 
 package io.github.ma1uta.matrix.events;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.ReceiptInfo;
 import io.swagger.annotations.ApiModel;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an event of type m.direct.
@@ -33,5 +35,17 @@ import java.util.HashMap;
 @ApiModel(description = "A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an"
     + " event of type m.direct. The content of this event is an object where the keys are the user IDs and values are lists"
     + " of room ID strings of the 'direct' rooms for that user ID.")
-public class Receipt extends HashMap<String, ReceiptInfo> implements EventContent {
+public class Receipt implements EventContent {
+
+    private Map<String, ReceiptInfo> receipts;
+
+    @JsonAnyGetter
+    public Map<String, ReceiptInfo> getReceipts() {
+        return receipts;
+    }
+
+    @JsonAnySetter
+    public void setReceipts(Map<String, ReceiptInfo> receipts) {
+        this.receipts = receipts;
+    }
 }
