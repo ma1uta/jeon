@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.Event;
-import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedInitialSyncResponse;
 import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedRoomInfo;
@@ -51,51 +50,6 @@ import javax.ws.rs.core.SecurityContext;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface DeprecatedSyncApi {
-
-    /**
-     * This will listen for new events and return them to the caller. This will block until an event is received, or until the timeout
-     * is reached.
-     * <br>
-     * This endpoint was deprecated in r0 of this specification. Clients should instead call the /sync API with a since parameter.
-     * See the migration guide.
-     * <br>
-     * <b>Requires auth</b>: Yes.
-     *
-     * @param from            The token to stream from. This token is either from a previous request to this API or from the initial
-     *                        sync API.
-     * @param timeout         The maximum time in milliseconds to wait for an event.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @param securityContext Security context.
-     * @return <p>Status code 200: The events received, which may be none.</p>
-     * <p>Status code 400: Bad pagination from parameter.</p>
-     */
-    @ApiOperation(
-        value = "This will listen for new events and return them to the caller. This will block until an event is received, or"
-            + " until the timeout is reached.",
-        notes = "This endpoint was deprecated in r0 of this specification. Clients should instead call the /sync API with a since"
-            + " parameter. See the migration guide."
-    )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The events received, which may be none."),
-        @ApiResponse(code = 400, message = "Bad pagination from parameter.")
-    })
-    @Deprecated
-    @GET
-    @Secured
-    @Path("/events")
-    Page<Event> events(
-        @ApiParam(
-            value = "The token to stream from. This token is either from a previous request to this API or from the initial sync API."
-        ) @QueryParam("from") String from,
-        @ApiParam(
-            value = "The maximum time in milliseconds to wait for an event."
-        ) @QueryParam("timeout") Long timeout,
-
-        @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
-        @Context SecurityContext securityContext
-    );
 
     /**
      * This returns the full state for this user, with an optional limit on the number of messages per room to return.
