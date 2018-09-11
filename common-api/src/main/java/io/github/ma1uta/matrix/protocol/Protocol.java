@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * Protocol metadata.
  */
-@ApiModel(description = "Protocola metadata.")
+@ApiModel(description = "Protocol metadata.")
 public class Protocol {
 
     /**

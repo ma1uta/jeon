@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.protocol.Protocol;
 import io.github.ma1uta.matrix.protocol.ProtocolLocation;
 import io.github.ma1uta.matrix.protocol.ProtocolUser;
@@ -45,10 +46,13 @@ import javax.ws.rs.core.UriInfo;
  * may bridge multiple third party networks, and many individual locations within those networks. A single third party network
  * location may be bridged to multiple Matrix rooms.
  */
-@Api(value = "ThirdPartyProtocol", description = "Application services can provide access to third party networks via bridging."
-    + "This allows Matrix users to communicate with users on other communication platforms, with messages ferried back and forth"
-    + "by the application service. A single application service may bridge multiple third party networks, and many individual"
-    + "locations within those networks. A single third party network location may be bridged to multiple Matrix rooms.")
+@Api(
+    value = "ThirdPartyProtocol",
+    description = "Application services can provide access to third party networks via bridging."
+        + "This allows Matrix users to communicate with users on other communication platforms, with messages ferried back and forth"
+        + "by the application service. A single application service may bridge multiple third party networks, and many individual"
+        + "locations within those networks. A single third party network location may be bridged to multiple Matrix rooms."
+)
 @Path("/_matrix/client/r0/thirdparty")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,39 +61,58 @@ public interface ThirdPartyProtocolApi {
     /**
      * Fetches the overall metadata about protocols supported by the homeserver. Includes both the available protocols and all
      * fields required for queries against each protocol.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The protocols supported by the homeserver.</p>
      */
-    @ApiOperation(value = "Fetches the overall metadata about protocols supported by the homeserver."
-        + "Includes both the available protocols and all fields required for queries against each protocol.")
+    @ApiOperation(
+        value = "Fetches the overall metadata about protocols supported by the homeserver."
+            + "Includes both the available protocols and all fields required for queries against each protocol."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The protocols supported by the homeserver.")
     })
     @GET
+    @Secured
     @Path("/protocols")
-    Map<String, Protocol> protocols(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    Map<String, Protocol> protocols(
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
      * Fetches the metadata from the homeserver about a particular third party protocol.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param protocol        Required. The name of the protocol.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The protocol was found and metadata returned.</p>
      * <p>Status code 404: The protocol is unknown.</p>
      */
-    @ApiOperation(value = "Fetches the metadata from the homeserver about a particular third party protocol.", response = Protocol.class)
+    @ApiOperation(
+        value = "Fetches the metadata from the homeserver about a particular third party protocol."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The protocol was found and metadata returned."),
         @ApiResponse(code = 404, message = "The protocol is unknown.")
     })
     @GET
+    @Secured
     @Path("/protocol/{protocol}")
     Protocol protocol(
-        @ApiParam(value = "the name of the protocol", required = true) @PathParam("protocol") String protocol,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "the name of the protocol",
+            required = true
+        ) @PathParam("protocol") String protocol,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
      * Requesting this endpoint with a valid protocol name results in a list of successful mapping results in a JSON array.
@@ -97,89 +120,134 @@ public interface ThirdPartyProtocolApi {
      * Each has the Matrix room alias string, an identifier for the particular third party network protocol, and an object
      * containing the network-specific fields that comprise this identifier. It should attempt to canonicalise the identifier
      * as much as reasonably possible given the network type.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param protocol        Required. The protocol used to communicate to the third party network.
-     * @param uriInfo         uri info to retrieve all query params.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param uriInfo         Uri info to retrieve all query params.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: At least one portal room was found.</p>
      * <p>Status code 404: No portal rooms were found.</p>
      */
-    @ApiOperation(value = "Requesting this endpoint with a valid protocol name results in a list of successful mapping results"
-        + "in a JSON array.",
+    @ApiOperation(
+        value = "Requesting this endpoint with a valid protocol name results in a list of successful mapping results"
+            + "in a JSON array.",
         notes = "Each result contains objects to represent the Matrix room or rooms that represent a portal to this third party network."
             + " Each has the Matrix room alias string, an identifier for the particular third party network protocol, and an object"
             + " containing the network-specific fields that comprise this identifier.It should attempt to canonicalise the identifier"
-            + " as much as reasonably possible given the network type.")
+            + " as much as reasonably possible given the network type."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
         @ApiResponse(code = 404, message = "No portal rooms were found.")
     })
     @GET
+    @Secured
     @Path("/location/{protocol}")
     List<ProtocolLocation> locationProtocol(
-        @ApiParam(value = "The protocol used to communicate to the third party network.", required = true)
-        @PathParam("protocol") String protocol,
-        @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "The protocol used to communicate to the third party network.",
+            required = true
+        ) @PathParam("protocol") String protocol,
+        @Context UriInfo uriInfo,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
      * Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param protocol        Required. The name of the protocol.
-     * @param uriInfo         uri info to retrieve all query params.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param uriInfo         Uri info to retrieve all query params.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
      * <p>Status code 404: The Matrix User ID was not found.</p>
      */
-    @ApiOperation("Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.")
+    @ApiOperation(
+        value = "Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
         @ApiResponse(code = 404, message = "The Matrix User ID was not found.")
     })
     @GET
+    @Secured
     @Path("/user/{protocol}")
     List<ProtocolUser> userProtocol(
-        @ApiParam(value = "The name of the protocol", required = true) @PathParam("protocol") String protocol,
-        @Context UriInfo uriInfo, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "The name of the protocol",
+            required = true
+        ) @PathParam("protocol") String protocol,
+        @Context UriInfo uriInfo,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
      * Retrieve an array of third party network locations from a Matrix room alias.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param alias           Required. The Matrix room alias to look up.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: At least one portal room was found.</p>
      * <p>Status code 404: No portal rooms were found.</p>
      */
-    @ApiOperation("Retreive an array of third party network locations from a Matrix room alias.")
+    @ApiOperation(
+        value = "Retrieve an array of third party network locations from a Matrix room alias."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
         @ApiResponse(code = 404, message = "No portal rooms were found.")
     })
     @GET
+    @Secured
     @Path("/location")
     List<ProtocolLocation> location(
-        @QueryParam("alias") String alias,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "The Matrix room alias to look up",
+            required = true
+        ) @QueryParam("alias") String alias,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 
     /**
-     * Retreive an array of third party users from a Matrix User ID.
+     * Retrieve an array of third party users from a Matrix User ID.
+     * <br>
+     * <b>Requires auth</b>: Yes.
      *
      * @param userId          Required. The Matrix User ID to look up.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param servletResponse Servlet response.
      * @return <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
      * <p>Status code 404: The Matrix User ID was not found.</p>
      */
-    @ApiOperation("Retreive an array of third party users from a Matrix User ID.")
+    @ApiOperation(
+        value = "Retrieve an array of third party users from a Matrix User ID."
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
         @ApiResponse(code = 404, message = "The Matrix User ID was not found.")
     })
     @GET
+    @Secured
     @Path("/user")
     List<ProtocolUser> user(
-        @ApiParam(value = "The Matrix User Id to look up", required = true) @QueryParam("userid") String userId,
-        @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+        @ApiParam(
+            value = "The Matrix User Id to look up",
+            required = true
+        ) @QueryParam("userid") String userId,
+
+        @Context HttpServletRequest servletRequest,
+        @Context HttpServletResponse servletResponse
+    );
 }
