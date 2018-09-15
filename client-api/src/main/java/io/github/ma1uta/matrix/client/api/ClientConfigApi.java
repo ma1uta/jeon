@@ -26,12 +26,13 @@ import io.swagger.annotations.ApiResponses;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -53,20 +54,23 @@ public interface ClientConfigApi {
      * synced to clients in the top-level account_data.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The account_data was successfully added.</p>
      *
      * @param userId          Required. The id of the user to set account_data for. The access token must be authorized to make
      *                        requests for this user id.
      * @param type            Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
      * @param accountData     Account data.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The account_data was successfully added.</p>
      */
     @ApiOperation(
         value = "Set some account_data for the client.",
         notes = "This config is only visible to the user that set the account_data. The config will be "
-            + "synced to clients in the top-level account_data."
+            + "synced to clients in the top-level account_data.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account_data was successfully added.")
@@ -74,7 +78,7 @@ public interface ClientConfigApi {
     @PUT
     @Secured
     @Path("/{userId}/account_data/{type}")
-    EmptyResponse addConfig(
+    void addConfig(
         @ApiParam(
             value = "The id of the user to set account_data for. The access token must be authorized to make requests for this user id.",
             required = true
@@ -88,7 +92,7 @@ public interface ClientConfigApi {
         ) Map<String, String> accountData,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -97,6 +101,9 @@ public interface ClientConfigApi {
      * The config will be synced to clients in the per-room account_data.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The account_data was successfully added.</p>
      *
      * @param userId          Required. The id of the user to set account_data for. The access token must be authorized to make requests for
      *                        this user id.
@@ -104,14 +111,14 @@ public interface ClientConfigApi {
      * @param type            Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
      * @param accountData     account data.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The account_data was successfully added.</p>
      */
     @ApiOperation(
         value = "Set some account_data for the client on a given room.",
         notes = "This config is only visible to the user that set the account_data. The config will be synced to clients in the "
-            + "per-room account_data."
+            + "per-room account_data.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account_data was successfully added.")
@@ -119,7 +126,7 @@ public interface ClientConfigApi {
     @PUT
     @Secured
     @Path("/{userId}/rooms/{roomId}/account_data/{type}")
-    EmptyResponse addRoomConfig(
+    void addRoomConfig(
         @ApiParam(
             value = "The id of the user to set account_data for. The access token must be authorized to make requests for this user id.",
             required = true
@@ -137,7 +144,7 @@ public interface ClientConfigApi {
         ) Map<String, String> accountData,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
