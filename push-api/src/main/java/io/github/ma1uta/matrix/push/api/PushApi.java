@@ -30,6 +30,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -60,11 +62,14 @@ public interface PushApi {
      * <br>
      * Notifications are sent to the URL configured when the pusher is created. This means that the HTTP path may be different
      * depending on the push gateway.
+     * <br>
+     * Return:
+     * <p>Status code 200: A list of rejected push keys.</p>
      *
      * @param notification    Information about the push notification.
+     * @param response        Async response.
      * @param servletRequest  Servlet request.
      * @param servletResponse Servlet response.
-     * @return <p>Status code 200: A list of rejected push keys.</p>
      */
     @ApiOperation(
         value = "This endpoint is invoked by HTTP pushers to notify a push gateway about an event or update the number"
@@ -75,19 +80,21 @@ public interface PushApi {
             + " in some way.It is therefore necessary to perform duplicate suppression for such notifications using the event_id field"
             + " to avoid retries of this HTTP API causing duplicate alerts.The operation of updating counts of unread notifications"
             + " should be idempotent and therefore do not require duplicate suppression.\nNotifications are sent to the URL configured"
-            + " when the pusher is created.This means that the HTTP path may be different depending on the push gateway."
+            + " when the pusher is created.This means that the HTTP path may be different depending on the push gateway.",
+        response = RejectedPushKey.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of rejected push keys.")
     })
     @POST
     @Path("/notify")
-    RejectedPushKey pushNotify(
+    void pushNotify(
         @ApiParam(
             value = "Information about the push notification.",
             required = true
         ) Notification notification,
 
+        @Suspended AsyncResponse response,
         @Context HttpServletRequest servletRequest,
         @Context HttpServletResponse servletResponse
     );
