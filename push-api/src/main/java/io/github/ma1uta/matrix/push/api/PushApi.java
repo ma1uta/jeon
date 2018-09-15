@@ -67,7 +67,7 @@ public interface PushApi {
      *
      * @param notification   Information about the push notification.
      * @param servletRequest Servlet request.
-     * @param response       Async response.
+     * @param response       Asynchronous response.
      */
     @ApiOperation(
         value = "This endpoint is invoked by HTTP pushers to notify a push gateway about an event or update the number"
