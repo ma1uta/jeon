@@ -25,7 +25,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -73,13 +72,15 @@ public interface InvitationApi {
      * Also, the generated ephemeral public key will be listed as valid on requests to /_matrix/identity/api/v1/pubkey/ephemeral/isvalid.
      * <br>
      * Currently, invites may only be issued for 3pids of the email medium.
-     *
-     * @param request         JSON body request.
-     * @param servletRequ/est  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The invitation was stored.</p>
+     * <br>
+     * Return: {@link InvitationResponse}.
+     * <p>Status code 200: The invitation was stored.</p>
      * <p>Status code 400: An error has occured. If the 3pid is already bound to a Matrix user ID, the error code
      * will be M_THREEPID_IN_USE. If the medium is unsupported, the error code will be M_UNRECOGNIZED.</p>
+     *
+     * @param request        JSON body request.
+     * @param servletRequest Servlet request.
+     * @param response       Asynchronous response.
      */
     @ApiOperation(
         value = "Store pending invitations to a user's 3pid.",
@@ -89,7 +90,8 @@ public interface InvitationApi {
             + " is a redacted version of address which does not leak the full contents of the address. The service records persistently"
             + " all of the above information. It also generates an email containing all of this data, sent to the address parameter,"
             + " notifying them of the invitation. Also, the generated ephemeral public key will be listed as valid on requests"
-            + " to /_matrix/identity/api/v1/pubkey/ephemeral/isvalid. Currently, invites may only be issued for 3pids of the email medium."
+            + " to /_matrix/identity/api/v1/pubkey/ephemeral/isvalid. Currently, invites may only be issued for 3pids of the email medium.",
+        response = InvitationResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The invitation was stored."),
@@ -98,13 +100,12 @@ public interface InvitationApi {
     })
     @POST
     @Path("/store-invite")
-    InvitationResponse invite(
+    void invite(
         @ApiParam(
             value = "JSON body request"
         ) InvitationRequest request,
 
-        @Suspended AsyncResponse response,
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse response
     );
 }

@@ -25,12 +25,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -54,16 +55,19 @@ public interface KeyManagementApi {
 
     /**
      * Get the public key for the passed key ID.
-     *
-     * @param keyId           Required. The ID of the key. This should take the form algorithm:identifier where algorithm
-     *                        identifies the signing algorithm, and the identifier is an opaque string.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The public key exists.</p>
+     * <br>
+     * Return: {@link PublicKeyResponse}.
+     * <p>Status code 200: The public key exists.</p>
      * <p>Status code 404: The public key was not found.</p>
+     *
+     * @param keyId          Required. The ID of the key. This should take the form algorithm:identifier where algorithm
+     *                       identifies the signing algorithm, and the identifier is an opaque string.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Get the public key for the passed key ID."
+        value = "Get the public key for the passed key ID.",
+        response = PublicKeyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The public key exists."),
@@ -71,7 +75,7 @@ public interface KeyManagementApi {
     })
     @GET
     @Path("/{keyId}")
-    PublicKeyResponse get(
+    void get(
         @ApiParam(
             name = "keyId",
             value = "The ID of the key. This should take the form algorithm:identifier where algorithm identifies the signing"
@@ -80,27 +84,30 @@ public interface KeyManagementApi {
         ) @PathParam("keyId") String keyId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Check whether a long-term public key is valid. The response should always be the same, provided the key exists.
+     * <br>
+     * Return: {@link KeyValidationResponse}.
+     * <p>Status code 200: The validity of the public key.</p>
      *
-     * @param publicKey       Required. The unpadded base64-encoded public key to check.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The validity of the public key.</p>
+     * @param publicKey      Required. The unpadded base64-encoded public key to check.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Check whether a long-term public key is valid.",
-        notes = "The response should always be the same, provided the key exists."
+        notes = "The response should always be the same, provided the key exists.",
+        response = KeyValidationResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The validity of the public key.")
     })
     @GET
     @Path("/isvalid")
-    KeyValidationResponse valid(
+    void valid(
         @ApiParam(
             name = "public_key",
             value = "The unpadded base64-encoded public key to check.",
@@ -108,26 +115,29 @@ public interface KeyManagementApi {
         ) @QueryParam("public_key") String publicKey,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Check whether a short-term public key is valid.
+     * <br>
+     * Return: {@link KeyValidationResponse}.
+     * <p>Status code 200: Whether the public key is recognised and is currently valid.</p>
      *
-     * @param publicKey       Required. The unpadded base64-encoded public key to check.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: Whether the public key is recognised and is currently valid.</p>
+     * @param publicKey      Required. The unpadded base64-encoded public key to check.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Check whether a short-term public key is valid."
+        value = "Check whether a short-term public key is valid.",
+        response = KeyValidationResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The validity of the public key.")
     })
     @GET
     @Path("/ephemeral/isvalid")
-    KeyValidationResponse ephemeralValid(
+    void ephemeralValid(
         @ApiParam(
             name = "public_key",
             value = "The unpadded base64-encoded public key to check.",
@@ -135,6 +145,6 @@ public interface KeyManagementApi {
         ) @QueryParam("public_key") String publicKey,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }

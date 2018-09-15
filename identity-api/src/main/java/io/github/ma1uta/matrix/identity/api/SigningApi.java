@@ -25,11 +25,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -52,16 +53,19 @@ public interface SigningApi {
      * Sign invitation details.
      * <br>
      * The identity server will look up token which was stored in a call to store-invite, and fetch the sender of the invite.
-     *
-     * @param request         JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The signed JSON of the mxid, sender, and token.</p>
+     * <br>
+     * Return: {@link SigningResponse}.
+     * <p>Status code 200: The signed JSON of the mxid, sender, and token.</p>
      * <p>Status code 404: The token was not found.</p>
+     *
+     * @param request        JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Sign invitation details.",
-        notes = "The identity server will look up token which was stored in a call to store-invite, and fetch the sender of the invite."
+        notes = "The identity server will look up token which was stored in a call to store-invite, and fetch the sender of the invite.",
+        response = SigningResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The signed JSON of the mxid, sender, and token."),
@@ -69,13 +73,13 @@ public interface SigningApi {
     })
     @POST
     @Path("/sign-ed25519")
-    SigningResponse sign(
+    void sign(
         @ApiParam(
             value = "JSON body request.",
             required = true
         ) SigningRequest request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }

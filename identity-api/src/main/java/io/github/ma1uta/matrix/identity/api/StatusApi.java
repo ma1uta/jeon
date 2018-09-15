@@ -23,10 +23,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -45,23 +46,27 @@ public interface StatusApi {
      * To discover that an Identity server is available at a specific URL, this endpoint can be queried and will return an empty object.
      * <br>
      * This is primarly used for auto-discovery and health check purposes by entities acting as a client for the Identity server.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: An identity server is ready to serve requests.</p>
      *
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: An identity server is ready to serve requests.</p>
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "To discover that an Identity server is available at a specific URL, this endpoint can be queried and will return an"
             + " empty object.",
-        notes = "This is primarly used for auto-discovery and health check purposes by entities acting as a client for the Identity server."
+        notes = "This is primarly used for auto-discovery and health check purposes by entities acting as a client for"
+            + " the Identity server.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An identity server is ready to serve requests.")
     })
     @GET
     @Path("")
-    EmptyResponse v1Status(
+    void v1Status(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }

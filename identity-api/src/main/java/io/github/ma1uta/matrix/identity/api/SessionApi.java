@@ -36,6 +36,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -59,16 +61,18 @@ public interface SessionApi {
      * Note that homeservers offer APIs that proxy this API, adding additional behaviour on top, for example,
      * /register/email/requestToken is designed specifically for use when registering an account and therefore will inform the user
      * if the email address given is already registered on the server.
-     *
-     * @param request         JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p> Status code 200: Session created.</p>
+     * <br>
+     * Return: {@link SessionResponse}.
+     * <p> Status code 200: Session created.</p>
      * <p>Status code 400: An error ocurred. Some possible errors are:</p>
      * <ul>
      * <li>M_INVALID_EMAIL: The email address provided was invalid.</li>
      * <li>M_EMAIL_SEND_ERROR: The validation email could not be sent.</li>
      * </ul>
+     *
+     * @param request        JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Create a session for validating an email address.",
@@ -76,7 +80,8 @@ public interface SessionApi {
             + " the future, it indicates that that user was able to read the email for that email address, and so we validate ownership"
             + " of the email address.\nNote that homeservers offer APIs that proxy this API, adding additional behaviour on top,"
             + " for example,/register/email/requestToken is designed specifically for use when registering an account and therefore will"
-            + " inform the user if the email address given is already registered on the server."
+            + " inform the user if the email address given is already registered on the server.",
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Session created."),
@@ -84,13 +89,13 @@ public interface SessionApi {
     })
     @POST
     @Path("/validate/email/requestToken")
-    SessionResponse createEmailSession(
+    void createEmailSession(
         @ApiParam(
             value = "JSON body request."
         ) EmailRequestToken request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -103,11 +108,13 @@ public interface SessionApi {
      * The identity server is free to match the token case-insensitively, or carry out other mapping operations such as unicode
      * normalisation. Whether to do so is an implementation detail for the identity server. Clients must always pass on the token
      * without modification.
+     * <br>
+     * Return: {@link ValidationResponse}.
+     * <p>Status code 200: The success of the validation.</p>
      *
-     * @param request         JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The success of the validation.</p>
+     * @param request        JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Validate ownership of an email address.",
@@ -115,21 +122,22 @@ public interface SessionApi {
             + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
             + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
-            + " an implementation detail for the identity server. Clients must always pass on the token without modification."
+            + " an implementation detail for the identity server. Clients must always pass on the token without modification.",
+        response = ValidationResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The success of the validation.")
     })
     @POST
     @Path("/validate/email/submitToken")
-    ValidationResponse postValidateEmail(
+    void postValidateEmail(
         @ApiParam(
             value = "JSON body request.",
             required = true
         ) SubmitToken request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -140,16 +148,18 @@ public interface SessionApi {
      * any Matrix user ID. Specifically, calls to /lookup will not show a binding.
      * <br>
      * Note that, in contrast with the POST version, this endpoint will be used by end-users, and so the response should be human-readable.
-     *
-     * @param sid             Required. The session ID, generated by the requestToken call.
-     * @param clientSecret    Required. The client secret that was supplied to the requestToken call.
-     * @param token           Required. The token generated by the requestToken call and emailed to the user.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: Email address is validated.</p>
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: Email address is validated.</p>
      * <p>Status code 3xx: Email address is validated, and the next_link parameter was provided to the requestToken call.
      * The user must be redirected to the URL provided by the next_link parameter.</p>
      * <p>Status code 4xx: Validation failed.</p>
+     *
+     * @param sid            Required. The session ID, generated by the requestToken call.
+     * @param clientSecret   Required. The client secret that was supplied to the requestToken call.
+     * @param token          Required. The token generated by the requestToken call and emailed to the user.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Validate ownership of an email address.",
@@ -157,7 +167,8 @@ public interface SessionApi {
             + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
             + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
-            + " an implementation detail for the identity server. Clients must always pass on the token without modification."
+            + " an implementation detail for the identity server. Clients must always pass on the token without modification.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Email address is validated."),
@@ -167,7 +178,7 @@ public interface SessionApi {
     })
     @GET
     @Path("/validate/email/submitToken")
-    EmptyResponse getValidateEmail(
+    void getValidateEmail(
         @ApiParam(
             value = "The session ID, generated by the requestToken call.",
             required = true
@@ -182,7 +193,7 @@ public interface SessionApi {
         ) @QueryParam("token") String token,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -194,17 +205,19 @@ public interface SessionApi {
      * Note that homeservers offer APIs that proxy this API, adding additional behaviour on top, for example, /register/msisdn/requestToken
      * is designed specifically for use when registering an account and therefore will inform the user if the phone number given is already
      * registered on the server.
-     *
-     * @param request         JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: Session created.</p>
+     * <br>
+     * Return: {@link SessionResponse}.
+     * <p>Status code 200: Session created.</p>
      * <p>Status code 400: An error ocurred. Some possible errors are:</p>
      * <ul>
      * <li>M_INVALID_ADDRESS: The phone number provided was invalid.</li>
      * <li>M_SEND_ERROR: The validation SMS could not be sent.</li>
      * <li>M_DESTINATION_REJECTED: The identity server cannot deliver an SMS to the provided country or region.</li>
      * </ul>
+     *
+     * @param request        JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Create a session for validating a phone number.",
@@ -212,7 +225,8 @@ public interface SessionApi {
             + " in the future, it indicates that that user was able to read the SMS for that phone number, and so we validate ownership"
             + " of the phone number.\nNote that homeservers offer APIs that proxy this API, adding additional behaviour on top,"
             + " for example, /register/msisdn/requestToken is designed specifically for use when registering an account and therefore will"
-            + " inform the user if the phone number given is already registered on the server."
+            + " inform the user if the phone number given is already registered on the server.",
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Session created."),
@@ -220,14 +234,14 @@ public interface SessionApi {
     })
     @POST
     @Path("/validate/msisdn/requestToken")
-    SessionResponse createPhoneSession(
+    void createPhoneSession(
         @ApiParam(
             value = "JSON body request",
             required = true
         ) PhoneRequestToken request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -240,11 +254,13 @@ public interface SessionApi {
      * The identity server is free to match the token case-insensitively, or carry out other mapping operations such as unicode
      * normalisation. Whether to do so is an implementation detail for the identity server. Clients must always pass on the token
      * without modification.
+     * <br>
+     * Return: {@link ValidationResponse}.
+     * <p>Status code 200: The success of the validation.</p>
      *
-     * @param request         JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The success of the validation.</p>
+     * @param request        JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Validate ownership of a phone number.",
@@ -252,21 +268,22 @@ public interface SessionApi {
             + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
             + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
-            + " an implementation detail for the identity server. Clients must always pass on the token without modification."
+            + " an implementation detail for the identity server. Clients must always pass on the token without modification.",
+        response = ValidationResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The success of the validation.")
     })
     @POST
     @Path("/validate/msisdn/submitToken")
-    ValidationResponse postValidatePhone(
+    void postValidatePhone(
         @ApiParam(
             value = "JSON body request.",
             required = true
         ) SubmitToken request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -277,16 +294,18 @@ public interface SessionApi {
      * any Matrix user ID. Specifically, calls to /lookup will not show a binding.
      * <br>
      * Note that, in contrast with the POST version, this endpoint will be used by end-users, and so the response should be human-readable.
-     *
-     * @param sid             Required. The session ID, generated by the requestToken call.
-     * @param clientSecret    Required. The client secret that was supplied to the requestToken call.
-     * @param token           Required. The token generated by the requestToken call and sent to the user.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: Phone number is validated.</p>
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: Phone number is validated.</p>
      * <p>Status code 3xx: Phone number is validated, and the next_link parameter was provided to the requestToken call.
      * The user must be redirected to the URL provided by the next_link parameter.</p>
      * <p>Status code 4xx: Validation failed.</p>
+     *
+     * @param sid            Required. The session ID, generated by the requestToken call.
+     * @param clientSecret   Required. The client secret that was supplied to the requestToken call.
+     * @param token          Required. The token generated by the requestToken call and sent to the user.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Validate ownership of an email address.",
@@ -296,7 +315,8 @@ public interface SessionApi {
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
             + " an implementation detail for the identity server. Clients must always pass on the token without modification.\n"
             + " Note: for backwards compatibility with previous drafts of this specification, the parameters may also be specified"
-            + "as application/x-form-www-urlencoded data. However, this usage is deprecated."
+            + "as application/x-form-www-urlencoded data. However, this usage is deprecated.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Phone number is validated."),
@@ -306,7 +326,7 @@ public interface SessionApi {
     })
     @GET
     @Path("/validate/msisdn/submitToken")
-    EmptyResponse getValidatePhone(
+    void getValidatePhone(
         @ApiParam(
             value = "The session ID, generated by the requestToken call.",
             required = true
@@ -321,6 +341,6 @@ public interface SessionApi {
         ) @QueryParam("token") String token,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }
