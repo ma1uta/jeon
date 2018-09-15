@@ -62,7 +62,7 @@ public interface PushApi {
      * Notifications are sent to the URL configured when the pusher is created. This means that the HTTP path may be different
      * depending on the push gateway.
      * <br>
-     * Return:
+     * Return: {@link RejectedPushKey}.
      * <p>Status code 200: A list of rejected push keys.</p>
      *
      * @param notification   Information about the push notification.
