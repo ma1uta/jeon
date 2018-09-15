@@ -25,11 +25,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -50,16 +51,19 @@ public interface AdminApi {
      * privileges are not specified in this document.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link AdminResponse}.
+     * <p>Status code 200: The lookup was successful.</p>
      *
      * @param userId          Required. The user to look up.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The lookup was successful.</p>
      */
     @ApiOperation(
         value = "This API may be restricted to only be called by the user being looked up, or by a server admin. "
-            + "Server-local administrator privileges are not specified in this document."
+            + "Server-local administrator privileges are not specified in this document.",
+        response = AdminResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The lookup was successful.")
@@ -67,14 +71,14 @@ public interface AdminApi {
     @GET
     @Secured
     @Path("/whois/{userId}")
-    AdminResponse whois(
+    void whois(
         @ApiParam(
             value = "The use to look up",
             required = true
         ) @PathParam("userId") String userId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
