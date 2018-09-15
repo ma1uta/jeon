@@ -38,13 +38,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -84,12 +85,9 @@ public interface AccountApi {
      * Register for an account on this homeserver.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param kind            The kind of account to register. Defaults to user. One of: ["guest", "user"].
-     * @param registerRequest JSON body parameters.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The account has been registered.</p>
+     * <br>
+     * Return: {@link LoginResponse}.
+     * <p>Status code 200: The account has been registered.</p>
      * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:</p>
      * <ul>
      * <li>M_USER_IN_USE : The desired user ID is already taken.</li>
@@ -107,9 +105,15 @@ public interface AccountApi {
      * </p>
      * <p>Status code 401: The homeserver requires additional authentication information.</p>
      * <p>Status code 429: This request was rate-limited.</p>
+     *
+     * @param kind            The kind of account to register. Defaults to user. One of: ["guest", "user"].
+     * @param registerRequest JSON body parameters.
+     * @param servletRequest  Servlet request.
+     * @param asyncResponse   Asynchronous response.
      */
     @ApiOperation(
-        value = "Register for an account on this homeserver."
+        value = "Register for an account on this homeserver.",
+        response = LoginResponse.class
     )
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "The account has been registered"),
@@ -120,7 +124,7 @@ public interface AccountApi {
     @POST
     @RateLimit
     @Path("/register")
-    LoginResponse register(
+    void register(
         @ApiParam(
             value = "The kind of account to register.",
             defaultValue = "user",
@@ -131,18 +135,15 @@ public interface AccountApi {
         ) RegisterRequest registerRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Proxies the identity server API validate/email/emailRequestToken, but first checks that the given email address is not already
      * associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects, though the
      * Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.
-     *
-     * @param emailRequestToken JSON body request.
-     * @param servletRequest    Servlet request.
-     * @param servletResponse   Servlet response.
-     * @return <p>Status code 200: An email has been sent to the specified address. Note that this may be an email containing the
+     * <br>
+     * Return <p>Status code 200: An email has been sent to the specified address. Note that this may be an email containing the
      * validation token or it may be informing the user of an error.</p>
      * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:</p>
      * <ul>
@@ -153,12 +154,17 @@ public interface AccountApi {
      * <li>M_SERVER_NOT_TRUSTED : The id_server parameter refers to an ID server that is not trusted by this Home Server.</li>
      * </ul>
      * <p>Status code 403: The homeserver does not permit the address to be bound.</p>
+     *
+     * @param emailRequestToken JSON body request.
+     * @param servletRequest    Servlet request.
+     * @param asyncResponse     Asynchronous response.
      */
     @ApiOperation(
         value = "Request email token.",
         notes = "Proxies the identity server API validate/email/emailRequestToken, but first checks that the given email address is not"
             + " already associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects, though"
-            + " the Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information."
+            + " the Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.",
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An email has been sent to the specified address."),
@@ -167,23 +173,21 @@ public interface AccountApi {
     })
     @POST
     @Path("/register/email/emailRequestToken")
-    SessionResponse emailRequestToken(
+    void emailRequestToken(
         @ApiParam(
             value = "JSON body request."
         ) EmailRequestToken emailRequestToken,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Proxies the Identity Service API validate/msisdn/requestToken, but first checks that the given phone number is not already
      * associated with an account on this homeserver. See the Identity Service API for further information.
-     *
-     * @param msisdnRequestToken JSON body request.
-     * @param servletRequest     Servlet request.
-     * @param servletResponse    Servlet response.
-     * @return <p>Status code 200: An SMS message has been sent to the specified phone number. Note that this may be an SMS message
+     * <br>
+     * Return: {@link SessionResponse}.
+     * <p>Status code 200: An SMS message has been sent to the specified phone number. Note that this may be an SMS message
      * containing the validation token or it may be informing the user of an error.</p>
      * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:</p>
      * <ul>
@@ -194,11 +198,16 @@ public interface AccountApi {
      * <li>M_SERVER_NOT_TRUSTED : The id_server parameter refers to an identity server that is not trusted by this homeserver.</li>
      * </ul>
      * <p>Status code 403: The homeserver does not permit the address to be bound.</p>
+     *
+     * @param msisdnRequestToken JSON body request.
+     * @param servletRequest     Servlet request.
+     * @param asyncResponse      Asynchronous response.
      */
     @ApiOperation(
         value = "Request msisdn token.",
         notes = "Proxies the Identity Service API validate/msisdn/requestToken, but first checks that the given phone number is"
-            + " not already associated with an account on this homeserver. See the Identity Service API for further information."
+            + " not already associated with an account on this homeserver. See the Identity Service API for further information.",
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An SMS message has been sent to the specified phone number."),
@@ -207,13 +216,13 @@ public interface AccountApi {
     })
     @POST
     @Path("/register/msisdn/requestToken")
-    SessionResponse msisdnRequestToken(
+    void msisdnRequestToken(
         @ApiParam(
             value = "JSON body request."
         ) MsisdnRequestToken msisdnRequestToken,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -228,14 +237,16 @@ public interface AccountApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The password has been changed.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param passwordRequest Password.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The password has been changed.</p>
-     * <p>Status code 401: The homeserver requires additional authentication information.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Changes the password for an account on this homeserver.",
         notes = "This API endpoint uses the User-Interactive Authentication API. An access token should be submitted to this"
@@ -251,13 +262,13 @@ public interface AccountApi {
     @RateLimit
     @Secured
     @Path("/account/password")
-    EmptyResponse password(
+    void password(
         @ApiParam(
             value = "password."
         ) PasswordRequest passwordRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -268,13 +279,15 @@ public interface AccountApi {
      * /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email
      * address could be found. The server may instead send an email to the given address prompting the user to create an account.
      * M_THREEPID_IN_USE may not be returned.
-     *
-     * @param requestToken    JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: An email was sent to the given address.</p>
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: An email was sent to the given address.</p>
      * <p>Status code 400: The referenced third party identifier is not recognised by the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
+     *
+     * @param requestToken   JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address"
@@ -283,7 +296,8 @@ public interface AccountApi {
             + " for the account/password endpoint. This API's parameters and response are identical to that of the HS API"
             + " /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email"
             + " address could be found. The server may instead send an email to the given address prompting the user to create an account."
-            + " M_THREEPID_IN_USE may not be returned."
+            + " M_THREEPID_IN_USE may not be returned.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An email was sent to the given address"),
@@ -293,13 +307,13 @@ public interface AccountApi {
     })
     @POST
     @Path("/account/password/email/requestToken")
-    EmptyResponse passwordEmailRequestToken(
+    void passwordEmailRequestToken(
         @ApiParam(
             value = "JSON body request."
         ) EmailRequestToken requestToken,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -308,13 +322,15 @@ public interface AccountApi {
      * the account/password endpoint. This API's parameters and response are identical to that of the HS API /register/msisdn/requestToken
      * except that M_THREEPID_NOT_FOUND may be returned if no account matching the given phone number could be found. The server may
      * instead send an SMS message to the given address prompting the user to create an account. M_THREEPID_IN_USE may not be returned.
-     *
-     * @param requestToken    JSON body request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: An SMS message was sent to the given phone number.</p>
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: An SMS message was sent to the given phone number.</p>
      * <p>Status code 400: The referenced third party identifier is not recognised by the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
+     *
+     * @param requestToken   JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address"
@@ -323,7 +339,8 @@ public interface AccountApi {
             + " for the account/password endpoint. This API's parameters and response are identical to that of the HS API"
             + " /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email"
             + " address could be found. The server may instead send an email to the given address prompting the user to create an account."
-            + " M_THREEPID_IN_USE may not be returned."
+            + " M_THREEPID_IN_USE may not be returned.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An SMS message was sent to the given phone number."),
@@ -333,13 +350,13 @@ public interface AccountApi {
     })
     @POST
     @Path("/account/password/msisdn/requestToken")
-    EmptyResponse passwordMsisdnRequestToken(
+    void passwordMsisdnRequestToken(
         @ApiParam(
             value = "JSON body request."
         ) MsisdnRequestToken requestToken,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -354,20 +371,23 @@ public interface AccountApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The account has been deactivated.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param deactivateRequest JSON body request.
      * @param servletRequest    Servlet request.
-     * @param servletResponse   Servlet response.
+     * @param asyncResponse     Asynchronous response.
      * @param securityContext   Security context.
-     * @return <p>Status code 200: The account has been deactivated.</p>
-     * <p>Status code 401: The homeserver requires additional authentication information.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
         value = "Deactivate the user's account, removing all ability for the user to login again.",
         notes = "This API endpoint uses the User-Interactive Authentication API."
             + "An access token should be submitted to this endpoint if the client has an active session."
-            + "The homeserver may change the flows available depending on whether a valid access token is provided."
+            + "The homeserver may change the flows available depending on whether a valid access token is provided.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account has been deactivated."),
@@ -378,13 +398,13 @@ public interface AccountApi {
     @RateLimit
     @Secured
     @Path("/account/deactivate")
-    EmptyResponse deactivate(
+    void deactivate(
         @ApiParam(
             value = "request"
         ) DeactivateRequest deactivateRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -400,11 +420,9 @@ public interface AccountApi {
      * between checking its availability and attempting to register it.
      * <br>
      * <b>Rate-limited</b>: Yes.
-     *
-     * @param username        Required. The username to check the availability of.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The username is available.</p>
+     * <br>
+     * Return: {@link AvailableResponse}.
+     * <p>Status code 200: The username is available.</p>
      * <p>Status code 400: Part of the request was invalid or the username is not available. This may include one of the following error
      * codes:</p>
      * <ul>
@@ -413,6 +431,10 @@ public interface AccountApi {
      * <li>M_EXCLUSIVE : The desired username is in the exclusive namespace claimed by an application service.</li>
      * </ul>
      * <p>Status code 429: This request was rate-limited.</p>
+     *
+     * @param username       Required. The username to check the availability of.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Checks to see if a username is available, and valid, for the server.",
@@ -421,7 +443,8 @@ public interface AccountApi {
             + "desired requirements (for example, a server could dictate that it does not permit usernames with underscores)."
             + "Matrix clients may wish to use this API prior to attempting registration, however the clients must also be aware"
             + "that using this API does not normally reserve the username. This can mean that the username becomes unavailable"
-            + "between checking its availability and attempting to register it."
+            + "between checking its availability and attempting to register it.",
+        response = AvailableResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The username is available."),
@@ -431,14 +454,14 @@ public interface AccountApi {
     @GET
     @RateLimit
     @Path("/register/available")
-    AvailableResponse available(
+    void available(
         @ApiParam(
             value = "The username to check the availability of",
             required = true
         ) @QueryParam("username") String username,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -450,17 +473,20 @@ public interface AccountApi {
      * account password.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link ThreePidResponse}.
+     * <p>Status code 200: The lookup was successful.</p>
      *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param servletRequest  Servlet request.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext security context.
-     * @return <p>Status code 200: The lookup was successful.</p>
      */
     @ApiOperation(
         value = "Gets a list of the third party identifiers that the homeserver has associated with the user's account",
         notes = "This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers. "
             + "Identifiers in this list may be used by the homeserver as, for example, identifiers that it will accept to reset the user's "
-            + "account password."
+            + "account password.",
+        response = ThreePidResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The lookup was successful")
@@ -468,9 +494,9 @@ public interface AccountApi {
     @GET
     @Secured
     @Path("/account/3pid")
-    ThreePidResponse showThreePid(
+    void showThreePid(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -478,16 +504,19 @@ public interface AccountApi {
      * Adds contact information to the user's account.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The addition was successful.</p>
+     * <p>Status code 403: The credentials could not be verified with the identity server.</p>
      *
      * @param threePidRequest New contact information.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The addition was successful.</p>
-     * <p>Status code 403: The credentials could not be verified with the identity server.</p>
      */
     @ApiOperation(
-        value = "Adds contact information to the user's account"
+        value = "Adds contact information to the user's account",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The addition was successful."),
@@ -496,13 +525,13 @@ public interface AccountApi {
     @POST
     @Secured
     @Path("/account/3pid")
-    EmptyResponse updateThreePid(
+    void updateThreePid(
         @ApiParam(
             value = "New contact information."
         ) ThreePidRequest threePidRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -510,16 +539,19 @@ public interface AccountApi {
      * Removes a third party identifier from the user's account. This might not cause an unbind of the identifier from the identity server.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The homeserver has disassociated the third party identifier from the user.</p>
      *
      * @param request         JSON body request to delete 3pid.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The homeserver has disassociated the third party identifier from the user.</p>
      */
     @ApiOperation(
         value = "Removes a third party identifier from the user's account.",
-        notes = "This might not cause an unbind of the identifier from the identity server."
+        notes = "This might not cause an unbind of the identifier from the identity server.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The homeserver has disassociated the third party identifier from the user.")
@@ -527,13 +559,13 @@ public interface AccountApi {
     @POST
     @Secured
     @Path("/account/3pid/delete")
-    EmptyResponse deleteThreePid(
+    void deleteThreePid(
         @ApiParam(
             value = "JSON body request."
         ) Delete3PidRequest request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -541,20 +573,23 @@ public interface AccountApi {
      * Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not already
      * associated with an account on this Home Server. This API should be used to request validation tokens when adding an email
      * address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken endpoint.
-     *
-     * @param requestToken    JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: An email was sent to the given address.</p>
+     * <br>
+     * Return: {@link SessionResponse}.
+     * <p>Status code 200: An email was sent to the given address.</p>
      * <p>Status code 400: The third party identifier is already in use on the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
+     *
+     * @param requestToken   JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Proxies the identity server API validate/email/requestToken",
         notes = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not already "
             + "associated with an account on this Home Server. This API should be used to request validation tokens when adding an email "
             + "address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken "
-            + "endpoint."
+            + "endpoint.",
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An email was sent to the given address"),
@@ -563,33 +598,36 @@ public interface AccountApi {
     })
     @POST
     @Path("/account/3pid/email/requestToken")
-    SessionResponse threePidEmailRequestToken(
+    void threePidEmailRequestToken(
         @ApiParam(
             value = "JSON body request."
         ) EmailRequestToken requestToken,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Proxies the Identity Service API validate/msisdn/requestToken, but first checks that the given phone number is not already
      * associated with an account on this homeserver. This API should be used to request validation tokens when adding a phone number
      * to an account. This API's parameters and response are identical to that of the /register/msisdn/requestToken endpoint.
-     *
-     * @param requestToken    JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: An SMS message was sent to the given phone number.</p>
+     * <br>
+     * Return: {@link SessionResponse}.
+     * <p>Status code 200: An SMS message was sent to the given phone number.</p>
      * <p>Status code 400: The third party identifier is already in use on the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
+     *
+     * @param requestToken   JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Proxies the identity server API validate/email/requestToken",
         notes = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not already "
             + "associated with an account on this Home Server. This API should be used to request validation tokens when adding an email "
             + "address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken "
-            + "endpoint."
+            + "endpoint.",
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An SMS message was sent to the given phone number."),
@@ -598,13 +636,13 @@ public interface AccountApi {
     })
     @POST
     @Path("/account/3pid/msisdn/requestToken")
-    SessionResponse threePidMsisdnRequestToken(
+    void threePidMsisdnRequestToken(
         @ApiParam(
             value = "JSON body request."
         ) MsisdnRequestToken requestToken,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -617,20 +655,23 @@ public interface AccountApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @param securityContext Security context.
-     * @return <p>Status code 200: The token belongs to a known user.</p>
+     * <br>
+     * Return: {@link WhoamiResponse}.
+     * <p>Status code 200: The token belongs to a known user.</p>
      * <p>Status code 401: The token is not recognised.</p>
      * <p>Status code 403: The appservice cannot masquerade as the user or has not registered them.</p>
      * <p>Status code 429: This request was rate-limited.</p>
+     *
+     * @param servletRequest  Servlet request.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
      */
     @ApiOperation(
         value = "Gets information about the owner of a given access token",
         notes = "Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their namespace "
             + "by giving a user_id query parameter. In this situation, the server should verify that the given user_id is registered by "
-            + "the appservice, and return it in the response body."
+            + "the appservice, and return it in the response body.",
+        response = WhoamiResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The token belongs to a known user"),
@@ -642,9 +683,9 @@ public interface AccountApi {
     @RateLimit
     @Secured
     @Path("/account/whoami")
-    WhoamiResponse whoami(
+    void whoami(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
