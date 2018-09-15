@@ -25,12 +25,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -68,20 +69,23 @@ public interface RoomServiceApi {
      * <br>
      * This API requires the use of an application service access token (as_token) instead of a typical client's access_token.
      * This API cannot be invoked by users who are not identified as application services.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The room's directory visibility has been updated.</p>
      *
-     * @param networkId       Required. The protocol (network) ID to update the room list for. This would have been provided by
-     *                        the application service as being listed as a supported protocol.
-     * @param roomId          Required. The room ID to add to the directory.
-     * @param roomVisibility  Required. JSON body request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The room's directory visibility has been updated.</p>
+     * @param networkId      Required. The protocol (network) ID to update the room list for. This would have been provided by
+     *                       the application service as being listed as a supported protocol.
+     * @param roomId         Required. The room ID to add to the directory.
+     * @param roomVisibility Required. JSON body request.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Updates the visibility of a given room on the application service's room directory.",
         notes = "This API is similar to the room directory visibility API used by clients to update the homeserver's more general"
             + " room directory.\nThis API requires the use of an application service access token (as_token) instead of a typical"
-            + " client's access_token. This API cannot be invoked by users who are not identified as application services."
+            + " client's access_token. This API cannot be invoked by users who are not identified as application services.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The room's directory visibility has been updated.")
@@ -89,12 +93,12 @@ public interface RoomServiceApi {
     @Secured
     @PUT
     @Path("/{networkId}/{roomId}")
-    EmptyResponse updateVisibility(
+    void updateVisibility(
         @PathParam("networkId") String networkId,
         @PathParam("roomId") String roomId,
         RoomVisibility roomVisibility,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }

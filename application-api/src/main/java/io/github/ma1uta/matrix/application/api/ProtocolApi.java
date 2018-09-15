@@ -28,13 +28,14 @@ import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -72,19 +73,22 @@ public interface ProtocolApi {
      * networks that an application service supports.
      * <br>
      * <b>Requires Auth</b>: Yes.
-     *
-     * @param protocol        Required. The name of the protocol.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The protocol was found and metadata returned.</p>
+     * <br>
+     * Return: {@link Protocol}.
+     * <p>Status code 200: The protocol was found and metadata returned.</p>
      * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
      * be included in the body of this response.</p>
      * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: No protocol was found with the given path.The protocol is unknown.</p>
+     *
+     * @param protocol       Required. The name of the protocol.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "This API is called by the homeserver when it wants to present clients with specific information about the various"
-            + " third party networks that an application service supports."
+            + " third party networks that an application service supports.",
+        response = Protocol.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The protocol was found and metadata returned."),
@@ -96,32 +100,38 @@ public interface ProtocolApi {
     @Secured
     @GET
     @Path("/protocol/{protocol}")
-    Protocol protocol(
+    void protocol(
         @ApiParam(
             value = "the name of the protocol",
             required = true
         ) @PathParam("protocol") String protocol,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Retrieve a list of Matrix portal rooms that lead to the matched third party location.
      * <br>
      * <b>Requires Auth</b>: Yes.
-     *
-     * @param protocol        Required. The protocol ID.
-     * @param uriInfo         One or more custom fields to help identify the third party location.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: At least one portal room was found.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolLocation}s.
+     * <p>Status code 200: At least one portal room was found.</p>
      * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
      * be included in the body of this response.</p>
      * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: No mappings were found with the given parameters.</p>
+     *
+     * @param protocol       Required. The protocol ID.
+     * @param uriInfo        One or more custom fields to help identify the third party location.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
-    @ApiOperation(value = "Retrieve a list of Matrix portal rooms that lead to the matched third party location.")
+    @ApiOperation(
+        value = "Retrieve a list of Matrix portal rooms that lead to the matched third party location.",
+        response = ProtocolLocation.class,
+        responseContainer = "List"
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
         @ApiResponse(code = 401, message = "The homeserver has not supplied credentials to the application service."
@@ -132,7 +142,7 @@ public interface ProtocolApi {
     @Secured
     @GET
     @Path("/location/{protocol}")
-    List<ProtocolLocation> locationProtocol(
+    void locationProtocol(
         @ApiParam(
             value = "The protocol ID.",
             required = true
@@ -140,25 +150,31 @@ public interface ProtocolApi {
         @Context UriInfo uriInfo,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * This API is called by the homeserver in order to retrieve a Matrix User ID linked to a user on the third party network,
      * given a set of user parameters.
      * <b>Required Auth</b>: Yes.
-     *
-     * @param protocol        Required. The protocol ID.
-     * @param uriInfo         Uri info to retrieve all query params.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolUser}s.
+     * <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
      * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
      * be included in the body of this response.</p>
      * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: No users were found with the given parameters.</p>
+     *
+     * @param protocol       Required. The protocol ID.
+     * @param uriInfo        Uri info to retrieve all query params.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
-    @ApiOperation("Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.")
+    @ApiOperation(
+        value = "Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.",
+        response = ProtocolUser.class,
+        responseContainer = "List"
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
         @ApiResponse(code = 401, message = "The homeserver has not supplied credentials to the application service."
@@ -169,7 +185,7 @@ public interface ProtocolApi {
     @Secured
     @GET
     @Path("/user/{protocol}")
-    List<ProtocolUser> userProtocol(
+    void userProtocol(
         @ApiParam(
             value = "The name of the protocol",
             required = true
@@ -177,25 +193,29 @@ public interface ProtocolApi {
         @Context UriInfo uriInfo,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Retrieve an array of third party network locations from a Matrix room alias.
      * <br>
      * <b>Requires Auth</b>: Yes.
-     *
-     * @param alias           Required. The Matrix room alias to look up.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: All found third party locations.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolLocation}s.
+     * <p>Status code 200: All found third party locations.</p>
      * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
      * be included in the body of this response.</p>
      * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: No mappings were found with the given parameters.</p>
+     *
+     * @param alias          Required. The Matrix room alias to look up.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Retrieve an array of third party network locations from a Matrix room alias."
+        value = "Retrieve an array of third party network locations from a Matrix room alias.",
+        response = ProtocolLocation.class,
+        responseContainer = "List"
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
@@ -204,31 +224,37 @@ public interface ProtocolApi {
     @Secured
     @GET
     @Path("/location")
-    List<ProtocolLocation> location(
+    void location(
         @ApiParam(
             value = "The Matrix room alias to look up.",
             required = true
         ) @QueryParam("alias") String alias,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Retrieve an array of third party users from a Matrix User ID.
      * <br>
      * <b>Requires Auth</b>: Yes.
-     *
-     * @param userId          Required. The Matrix User ID to look up.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: An array of third party users.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolUser}s.
+     * <p>Status code 200: An array of third party users.</p>
      * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
      * be included in the body of this response.</p>
      * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
      * <p>Status code 404: No mappings were found with the given parameters.</p>
+     *
+     * @param userId         Required. The Matrix User ID to look up.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
-    @ApiOperation("Retrieve an array of third party users from a Matrix User ID.")
+    @ApiOperation(
+        value = "Retrieve an array of third party users from a Matrix User ID.",
+        response = ProtocolUser.class,
+        responseContainer = "List"
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An array of third party users."),
         @ApiResponse(code = 401, message = "The homeserver has not supplied credentials to the application service."
@@ -239,13 +265,13 @@ public interface ProtocolApi {
     @Secured
     @GET
     @Path("/user")
-    List<ProtocolUser> user(
+    void user(
         @ApiParam(
             value = "The Matrix User Id to look up",
             required = true
         ) @QueryParam("userid") String userId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }
