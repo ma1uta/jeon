@@ -25,7 +25,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -66,10 +65,9 @@ public interface PushApi {
      * Return:
      * <p>Status code 200: A list of rejected push keys.</p>
      *
-     * @param notification    Information about the push notification.
-     * @param response        Async response.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param notification   Information about the push notification.
+     * @param servletRequest Servlet request.
+     * @param response       Async response.
      */
     @ApiOperation(
         value = "This endpoint is invoked by HTTP pushers to notify a push gateway about an event or update the number"
@@ -94,8 +92,7 @@ public interface PushApi {
             required = true
         ) Notification notification,
 
-        @Suspended AsyncResponse response,
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse response
     );
 }

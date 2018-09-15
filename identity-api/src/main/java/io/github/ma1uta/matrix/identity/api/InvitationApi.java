@@ -30,6 +30,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -73,7 +75,7 @@ public interface InvitationApi {
      * Currently, invites may only be issued for 3pids of the email medium.
      *
      * @param request         JSON body request.
-     * @param servletRequest  Servlet request.
+     * @param servletRequ/est  Servlet request.
      * @param servletResponse Servlet response.
      * @return <p>Status code 200: The invitation was stored.</p>
      * <p>Status code 400: An error has occured. If the 3pid is already bound to a Matrix user ID, the error code
@@ -101,6 +103,7 @@ public interface InvitationApi {
             value = "JSON body request"
         ) InvitationRequest request,
 
+        @Suspended AsyncResponse response,
         @Context HttpServletRequest servletRequest,
         @Context HttpServletResponse servletResponse
     );
