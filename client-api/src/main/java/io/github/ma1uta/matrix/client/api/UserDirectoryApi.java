@@ -27,11 +27,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -62,20 +63,23 @@ public interface UserDirectoryApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link SearchResponse}.
+     * <p>Status code 200: The results of the search.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param request         JSON body request.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The results of the search.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(value = "Performs a search for users on the homeserver.",
         notes = "The homeserver may determine which subset of users are searched, however the homeserver MUST at a minimum"
             + " consider the users the requesting user shares a room with and those who reside in public rooms (known to the homeserver)."
             + " The search MUST consider local users to the homeserver, and SHOULD query remote users as part of the search."
             + " The search is performed case-insensitively on user IDs and display names preferably using a collation determined based upon"
-            + " * the Accept-Language header provided in the request, if present."
+            + " * the Accept-Language header provided in the request, if present.",
+        response = SearchResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The results of the search."),
@@ -85,13 +89,13 @@ public interface UserDirectoryApi {
     @RateLimit
     @Secured
     @Path("/search")
-    SearchResponse searchUsers(
+    void searchUsers(
         @ApiParam(
             value = "JSON body request."
         ) SearchRequest request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
