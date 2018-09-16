@@ -30,7 +30,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -39,6 +38,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -61,14 +62,17 @@ public interface DeviceApi {
      * Gets information about all devices for the current user.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link DevicesResponse}.
+     * <p>Status code 200: A list of all registered devices for this user.</p>
      *
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: A list of all registered devices for this user.</p>
      */
     @ApiOperation(
-        value = "Gets information about all devices for the current user."
+        value = "Gets information about all devices for the current user.",
+        response = DevicesResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of all registered devices for this user.")
@@ -76,9 +80,9 @@ public interface DeviceApi {
     @GET
     @Secured
     @Path("/devices")
-    DevicesResponse devices(
+    void devices(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -86,16 +90,19 @@ public interface DeviceApi {
      * Gets information on a single device, by device id.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link Device}.
+     * <p>Status code 200: Device information.</p>
+     * <p>Status code 404: The current user has no device with the given ID.</p>
      *
      * @param deviceId        Required. The device to retrieve.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: Device information.</p>
-     * <p>Status code 404: The current user has no device with the given ID.</p>
      */
     @ApiOperation(
-        value = "Gets information on a single device, by device id."
+        value = "Gets information on a single device, by device id.",
+        response = Device.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Device information."),
@@ -104,14 +111,14 @@ public interface DeviceApi {
     @GET
     @Secured
     @Path("/devices/{deviceId}")
-    Device device(
+    void device(
         @ApiParam(
             value = "The device to retrieve",
             required = true
         ) @PathParam("deviceId") String deviceId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -119,17 +126,20 @@ public interface DeviceApi {
      * Updates the metadata on the given device.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The device was successfully updated.</p>
+     * <p>Status code 404: The current user has no device with the given ID.</p>
      *
      * @param deviceId            Required. The device to update.
      * @param deviceUpdateRequest The new display name for this device. If not given, the display name is unchanged.
      * @param servletRequest      Servlet request.
-     * @param servletResponse     Servlet response.
+     * @param asyncResponse       Asynchronous response.
      * @param securityContext     Security context.
-     * @return <p>Status code 200: The device was successfully updated.</p>
-     * <p>Status code 404: The current user has no device with the given ID.</p>
      */
     @ApiOperation(
-        value = "Updates the metadata on the given device."
+        value = "Updates the metadata on the given device.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The device was successfully updated."),
@@ -138,7 +148,7 @@ public interface DeviceApi {
     @PUT
     @Secured
     @Path("/devices/{deviceId}")
-    EmptyResponse updateDevice(
+    void updateDevice(
         @ApiParam(
             value = "The device to update.",
             required = true
@@ -148,7 +158,7 @@ public interface DeviceApi {
         ) DeviceUpdateRequest deviceUpdateRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -158,18 +168,21 @@ public interface DeviceApi {
      * Deletes the given device, and invalidates any access token associated with it.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The device was successfully removed, or had been removed previously.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
      *
      * @param deviceId            Required. The device to delete.
      * @param deviceDeleteRequest Additional authentication information for the user-interactive authentication API.
      * @param servletRequest      Servlet request.
-     * @param servletResponse     Servlet response.
+     * @param asyncResponse       Asynchronous response.
      * @param securityContext     Security context.
-     * @return <p>Status code 200: The device was successfully removed, or had been removed previously.</p>
-     * <p>Status code 401: The homeserver requires additional authentication information.</p>
      */
     @ApiOperation(
         value = "Deletes the given device, and invalidates any access token associated with it.",
-        notes = "This API endpoint uses the User-Interactive Authentication API."
+        notes = "This API endpoint uses the User-Interactive Authentication API.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The device was successfully removed, or had been removed previously."),
@@ -178,7 +191,7 @@ public interface DeviceApi {
     @DELETE
     @Secured
     @Path("/devices/{deviceId}")
-    EmptyResponse deleteDevice(
+    void deleteDevice(
         @ApiParam(
             value = "The device to delete",
             required = true
@@ -188,7 +201,7 @@ public interface DeviceApi {
         ) DeviceDeleteRequest deviceDeleteRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -198,17 +211,20 @@ public interface DeviceApi {
      * Deletes the given devices, and invalidates any access token associated with them.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The devices were successfully removed, or had been removed previously.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
      *
      * @param devicesDeleteRequest JSON body request.
      * @param servletRequest       Servlet request.
-     * @param servletResponse      Servlet response.
+     * @param asyncResponse        Asynchronous response.
      * @param securityContext      Security context.
-     * @return <p>Status code 200: The devices were successfully removed, or had been removed previously.</p>
-     * <p>Status code 401: The homeserver requires additional authentication information.</p>
      */
     @ApiOperation(
         value = "Deletes the given devices, and invalidates any access token associated with them.",
-        notes = "This API endpoint uses the User-Interactive Authentication API."
+        notes = "This API endpoint uses the User-Interactive Authentication API.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The devices were successfully removed, or had been removed previously."),
@@ -217,11 +233,11 @@ public interface DeviceApi {
     @POST
     @Secured
     @Path("/delete_devices")
-    EmptyResponse deleteDevices(
+    void deleteDevices(
         @ApiParam("JSON body request") DevicesDeleteRequest devicesDeleteRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
