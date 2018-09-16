@@ -27,12 +27,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -77,6 +78,9 @@ public interface SyncApi {
      * and to receive new messages.
      * <br>
      * <b>Requires auth:</b> Yes.
+     * <br>
+     * Return: {@link SyncResponse}.
+     * <p>Status code 200: The initial snapshot or delta for the client to use to update their state.</p>
      *
      * @param filter          The ID of a filter created using the filter API or a filter JSON object encoded as a string. The server will
      *                        detect whether it is an ID or a JSON object by whether the first character is a "{" open brace. Passing the
@@ -101,14 +105,14 @@ public interface SyncApi {
      *                        <br>
      *                        By default, this is 0, so the server will return immediately even if the response is empty.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The initial snapshot or delta for the client to use to update their state.</p>
      */
     @ApiOperation(
         value = "Synchronise the client's state with the latest state on the server. Clients use this API when they first "
             + "log in to get an initial snapshot of the state on the server, and then continue to call this API to get incremental deltas "
-            + "to the state, and to receive new messages."
+            + "to the state, and to receive new messages.",
+        response = SyncResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The initial snapshot or delta for the client to use to update their state.")
@@ -116,7 +120,7 @@ public interface SyncApi {
     @GET
     @Secured
     @Path("/sync")
-    SyncResponse sync(
+    void sync(
         @ApiParam(
             value = "The ID of a filter created using the filter API or a filter JSON object encoded as a string. The server will "
                 + "detect whether it is an ID or a JSON object by whether the first character is a \"{\" open brace. Passing the "
@@ -141,7 +145,7 @@ public interface SyncApi {
         ) @QueryParam("timeout") Long timeout,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -155,20 +159,23 @@ public interface SyncApi {
      * replacement is not yet known.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link Page} of the {@link Event}s.
+     * <p>Status code 200: The events received, which may be none.</p>
+     * <p>Status code 400: Bad pagination from parameter.</p>
      *
      * @param from            The token to stream from. This token is either from a previous request to this API or from the initial sync
      *                        API.
      * @param timeout         The maximum time in milliseconds to wait for an event.
      * @param roomId          The room ID for which events should be returned.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The events received, which may be none.</p>
-     * <p>Status code 400: Bad pagination from parameter.</p>
      */
     @ApiOperation(
         value = "This will listen for new events related to a particular room and return them to the caller. "
-            + "This will block until an event is received, or until the timeout is reached."
+            + "This will block until an event is received, or until the timeout is reached.",
+        response = Page.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The events received, which may be none."),
@@ -177,7 +184,7 @@ public interface SyncApi {
     @GET
     @Secured
     @Path("/events")
-    Page<Event> events(
+    void events(
         @ApiParam(
             value = "The token to stream from. This token is either from a previous request to this API or from the initial sync API."
         ) @QueryParam("from") String from,
@@ -189,7 +196,7 @@ public interface SyncApi {
         ) @QueryParam("room_id") String roomId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
