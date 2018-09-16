@@ -26,12 +26,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -56,17 +57,20 @@ public interface ReportApi {
      * Reports an event as inappropriate to the server, which may then notify the appropriate people.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The event has been reported successfully.</p>
      *
      * @param roomId          Required. The room in which the event being reported is located.
      * @param eventId         Required. The event to report.
      * @param reportRequest   JSON body request.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The event has been reported successfully.</p>
      */
     @ApiOperation(
-        value = "Reports an event as inappropriate to the server, which may then notify the appropriate people."
+        value = "Reports an event as inappropriate to the server, which may then notify the appropriate people.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The event has been reported successfully.")
@@ -74,7 +78,7 @@ public interface ReportApi {
     @POST
     @Secured
     @Path("/rooms/{roomId}/report/{eventId}")
-    EmptyResponse report(
+    void report(
         @ApiParam(
             value = "The room in which the event being reported is located.",
             required = true
@@ -88,7 +92,7 @@ public interface ReportApi {
         ) ReportRequest reportRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
