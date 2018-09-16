@@ -27,12 +27,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -59,19 +60,22 @@ public interface SearchApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link SearchResponse}.
+     * <p>Status code 200: Results of the search.</p>
+     * <p>Status code 400: Part of the request was invalid.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param nextBatch       The point to return events from. If given, this should be a next_batch result from a previous call
      *                        to this endpoint.
      * @param searchRequest   JSON body request.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: Results of the search.</p>
-     * <p>Status code 400: Part of the request was invalid.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
-        value = "Performs a full text search across different categories."
+        value = "Performs a full text search across different categories.",
+        response = SearchResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Results of the search."),
@@ -82,7 +86,7 @@ public interface SearchApi {
     @RateLimit
     @Secured
     @Path("/search")
-    SearchResponse search(
+    void search(
         @ApiParam(
             value = "The point to return events from. If given, this should be a next_batch result from a previous call "
                 + "to this endpoint."
@@ -92,7 +96,7 @@ public interface SearchApi {
         ) SearchRequest searchRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
