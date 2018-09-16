@@ -31,7 +31,6 @@ import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -39,6 +38,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -84,19 +85,22 @@ public interface PresenceApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The new presence state was set.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param userId          Required. The user whose presence state to update.
      * @param request         JSON body request.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The new presence state was set.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
         value = "This API sets the given user's presence state. When setting the status, the activity time is updated to "
             + "reflect that activity; the client does not need to specify the last_active_ago field. You cannot set the presence state of "
-            + "another user."
+            + "another user.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The new presence state was set."),
@@ -106,7 +110,7 @@ public interface PresenceApi {
     @RateLimit
     @Secured
     @Path("/{userId}/status")
-    EmptyResponse setPresenceStatus(
+    void setPresenceStatus(
         @ApiParam(
             value = "The user whose presence state to update.",
             required = true
@@ -116,7 +120,7 @@ public interface PresenceApi {
         ) PresenceRequest request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -124,17 +128,19 @@ public interface PresenceApi {
      * Get the given user's presence state.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param userId          Required. The user whose presence state to get.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The presence state for this user.</p>
+     * Return: {@link PresenceStatus}.
+     * <p>Status code 200: The presence state for this user.</p>
      * <p>Status code 403: You are not allowed to see this user's presence status.</p>
      * <p>Status code 404: There is no presence state for this user. This user may not exist or isn't exposing presence information
      * to you.</p>
+     *
+     * @param userId         Required. The user whose presence state to get.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Get the given user's presence state."
+        value = "Get the given user's presence state.",
+        response = PresenceStatus.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The presence state for this user."),
@@ -145,14 +151,14 @@ public interface PresenceApi {
     @GET
     @Secured
     @Path("/{userId}/status")
-    PresenceStatus getPresenceStatus(
+    void getPresenceStatus(
         @ApiParam(
             value = "The user whose presence state to get.",
             required = true
         ) @PathParam("userId") String userId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -161,17 +167,20 @@ public interface PresenceApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The list was updated.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param userId          Required. The user whose presence list is being modified.
      * @param presenceList    JSON body request.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The list was updated.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
-        value = "Adds or removes users from this presence list."
+        value = "Adds or removes users from this presence list.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The list was updated."),
@@ -181,7 +190,7 @@ public interface PresenceApi {
     @RateLimit
     @Secured
     @Path("/list/{userId}")
-    EmptyResponse setPresenceList(
+    void setPresenceList(
         @ApiParam(
             value = "The user whose presence list is being modified.",
             required = true
@@ -191,33 +200,37 @@ public interface PresenceApi {
         ) PresenceList presenceList,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
     /**
      * Retrieve a list of presence events for every user on this list.
+     * <br>
+     * Return: {@link List} of the {@link Event}s.
+     * <p>Status code 200: A list of presence events for this list.</p>
      *
-     * @param userId          Required. The user whose presence list should be retrieved.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: A list of presence events for this list.</p>
+     * @param userId         Required. The user whose presence list should be retrieved.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Retrieve a list of presence events for every user on this list."
+        value = "Retrieve a list of presence events for every user on this list.",
+        response = Event.class,
+        responseContainer = "List"
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of presence events for this list.")
     })
     @GET
     @Path("/list/{userId}")
-    List<Event> getPresenceList(
+    void getPresenceList(
         @ApiParam(
             value = "The user whose presence list should be retrieved.",
             required = true
         ) @PathParam("userId") String userId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }
