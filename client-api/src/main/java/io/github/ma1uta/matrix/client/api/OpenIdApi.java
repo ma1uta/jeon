@@ -24,12 +24,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -58,21 +59,24 @@ public interface OpenIdApi {
      * <br>
      * <b>Rate-limited</b>: Yes.
      * <b>Requires auth</b>: Yes.
-     *
-     * @param userId          Required. The user to request and OpenID token for. Should be the user who is authenticated for the request.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @param securityContext Security context.
-     * @return <p>Status code 200: OpenID token information. This response is nearly compatible with the response documented
+     * <br>
+     * Return: {@link OpenIdResponse}.
+     * <p>Status code 200: OpenID token information. This response is nearly compatible with the response documented
      * in the OpenID 1.0 Specification with the only difference being the lack of an id_token. Instead, the Matrix homeserver's name
      * is provided.</p>
      * <p>Status code 429: This request was rate-limited.</p>
+     *
+     * @param userId          Required. The user to request and OpenID token for. Should be the user who is authenticated for the request.
+     * @param servletRequest  Servlet request.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
      */
     @ApiOperation(
         value = "Gets an OpenID token object that the requester may supply to another service to verify their identity in Matrix.",
         notes = "The generated token is only valid for exchanging for user information from the federation API for OpenID."
             + " The access token generated is only valid for the OpenID API."
-            + " It cannot be used to request another OpenID access token or call /sync, for example."
+            + " It cannot be used to request another OpenID access token or call /sync, for example.",
+        response = OpenIdResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "OpenID token information. This response is nearly compatible with the response documented"
@@ -82,13 +86,13 @@ public interface OpenIdApi {
     })
     @POST
     @Path("/user/{userId}/openid/request_token")
-    OpenIdResponse requestToken(
+    void requestToken(
         @ApiParam(
             value = "The user to request and OpenID token for. Should be the user who is authenticated for the request.",
             required = true
         ) @PathParam("userId") String userId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext);
 }
