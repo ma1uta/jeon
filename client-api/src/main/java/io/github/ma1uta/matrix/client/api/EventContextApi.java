@@ -25,12 +25,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -53,18 +54,21 @@ public interface EventContextApi {
      * context surrounding an event.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EventContextResponse}.
+     * <p>Status code 200: The events and state surrounding the requested event.</p>
      *
      * @param roomId          Required. The room to get events from.
      * @param eventId         Required. The event to get context around.
      * @param limit           The maximum number of events to return. Default: 10.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The events and state surrounding the requested event.</p>
      */
     @ApiOperation(
         value = "This API returns a number of events that happened just before and after the specified event.",
-        notes = "This allows clients to get the context surrounding an event."
+        notes = "This allows clients to get the context surrounding an event.",
+        response = EventContextResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The events and state surrounding the requested event.")
@@ -72,7 +76,7 @@ public interface EventContextApi {
     @GET
     @Secured
     @Path("/{roomId}/context/{eventId}")
-    EventContextResponse context(
+    void context(
         @ApiParam(
             value = "The room to get events from.",
             required = true
@@ -86,7 +90,7 @@ public interface EventContextApi {
         ) @QueryParam("limit") Integer limit,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
