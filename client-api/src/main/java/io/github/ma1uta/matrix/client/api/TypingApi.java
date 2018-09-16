@@ -27,12 +27,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -67,19 +68,22 @@ public interface TypingApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The new typing state was set.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param roomId          Required. The user who has started to type.
      * @param userId          Required. The room in which the user is typing.
      * @param request         JSON body request.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The new typing state was set.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
         value = "This tells the server that the user is typing for the next N milliseconds where N is the value specified "
-            + "in the timeout key. Alternatively, if typing is false, it tells the server that the user has stopped typing."
+            + "in the timeout key. Alternatively, if typing is false, it tells the server that the user has stopped typing.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The new typing state was set."),
@@ -89,7 +93,7 @@ public interface TypingApi {
     @RateLimit
     @Secured
     @Path("/{roomId}/typing/{userId}")
-    EmptyResponse typing(
+    void typing(
         @ApiParam(
             value = "The user who has started to type.",
             required = true
@@ -103,7 +107,7 @@ public interface TypingApi {
         ) TypingRequest request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
