@@ -32,7 +32,6 @@ import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -40,6 +39,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -61,18 +62,21 @@ public interface EventApi {
      * room for this event.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link Event}.
+     * <p>Status code 200: The full event.</p>
+     * <p>Status code 404: The event was not found or you do not have permission to read this event.</p>
      *
      * @param roomId          Required. The ID of the room the event is in.
      * @param eventId         Required. The event ID to get.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The full event.</p>
-     * <p>Status code 404: The event was not found or you do not have permission to read this event.</p>
      */
     @ApiOperation(
         value = "Get a single event based on roomId/eventId. You must have permission to retrieve this event e.g. by "
-            + "being a member in the room for this event."
+            + "being a member in the room for this event.",
+        response = Event.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The full event."),
@@ -81,7 +85,7 @@ public interface EventApi {
     @GET
     @Secured
     @Path("/{roomId}/event/{eventId}")
-    Event roomEvent(
+    void roomEvent(
         @ApiParam(
             value = "The ID of the room the event is in.",
             required = true
@@ -92,7 +96,7 @@ public interface EventApi {
         ) @PathParam("eventId") String eventId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -101,21 +105,24 @@ public interface EventApi {
      * state of the room. If the user has left the room then the state is taken from the state of the room when they left.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EventContent}.
+     * <p>Status code 200: The content of the state event.</p>
+     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
+     * <p>Status code 404: The room has no state with the given type or key.</p>
      *
      * @param roomId          Required. The room to look up the state in.
      * @param eventType       Required. The type of state to look up.
      * @param stateKey        Required. The key of the state to look up.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The content of the state event.</p>
-     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
-     * <p>Status code 404: The room has no state with the given type or key.</p>
      */
     @ApiOperation(
         value = "Looks up the contents of a state event in a room. If the user is joined to the room then the state is "
             + "taken from the current state of the room. If the user has left the room then the state is taken from the state of the "
-            + "room when they left."
+            + "room when they left.",
+        response = EventContent.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The content of the state event."),
@@ -125,7 +132,7 @@ public interface EventApi {
     @GET
     @Secured
     @Path("/{roomId}/state/{eventType}/{stateKey}")
-    EventContent roomEventWithTypeAndState(
+    void roomEventWithTypeAndState(
         @ApiParam(
             value = "The room to look up the state in.",
             required = true
@@ -140,7 +147,7 @@ public interface EventApi {
         ) @PathParam("stateKey") String stateKey,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -151,21 +158,24 @@ public interface EventApi {
      * This looks up the state event with the empty state key.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EventContent}.
+     * <p>Status code 200: The content of the state event.</p>
+     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
+     * <p>Status code 404: The room has no state with the given type or key.</p>
      *
      * @param roomId          Required. The room to look up the state in.
      * @param eventType       Required. The type of state to look up.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The content of the state event.</p>
-     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
-     * <p>Status code 404: The room has no state with the given type or key.</p>
      */
     @ApiOperation(
         value = "Looks up the contents of a state event in a room. If the user is joined to the room then the state is "
             + "taken from the current state of the room. If the user has left the room then the state is taken from the state of the "
             + "room when they left.",
-        notes = "This looks up the state event with the empty state key."
+        notes = "This looks up the state event with the empty state key.",
+        response = EventContent.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The content of the state event."),
@@ -175,7 +185,7 @@ public interface EventApi {
     @GET
     @Secured
     @Path("/{roomId}/state/{eventType}")
-    EventContent roomEventWithType(
+    void roomEventWithType(
         @ApiParam(
             value = "The room to look up the state in.",
             required = true
@@ -186,7 +196,7 @@ public interface EventApi {
         ) @PathParam("eventType") String eventType,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -194,16 +204,20 @@ public interface EventApi {
      * Get the state events for the current state of a room.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link List} of the {@link Event}s.
+     * <p>Status code 200: The current state of the room.</p>
+     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
      *
      * @param roomId          Required. The room to look up the state for.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The current state of the room.</p>
-     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
      */
     @ApiOperation(
-        value = "Get the state events for the current state of a room."
+        value = "Get the state events for the current state of a room.",
+        response = Event.class,
+        responseContainer = "List"
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The current state of the room."),
@@ -212,14 +226,14 @@ public interface EventApi {
     @GET
     @Secured
     @Path("/{roomId}/state")
-    List<Event> roomState(
+    void roomState(
         @ApiParam(
             value = "The room to look up the state for.",
             required = true
         ) @PathParam("roomId") String roomId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -227,17 +241,20 @@ public interface EventApi {
      * Get the list of members for this room.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link MembersResponse}.
+     * <p>Status code 200: A list of members of the room. If you are joined to the room then this will be the current
+     * members of the room. If you have left the room then this will be the members of the room when you left.</p>
+     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
      *
      * @param roomId          Required. The room to get the member events for.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: A list of members of the room. If you are joined to the room then this will be the current
-     * members of the room. If you have left the room then this will be the members of the room when you left.</p>
-     * <p>Status code 403: You aren't a member of the room and weren't previously a member of the room.</p>
      */
     @ApiOperation(
-        value = "Get the list of members for this room."
+        value = "Get the list of members for this room.",
+        response = MembersResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of members of the room. If you are joined to the room then this will be the current "
@@ -247,14 +264,14 @@ public interface EventApi {
     @GET
     @Secured
     @Path("/{roomId}/members")
-    MembersResponse members(
+    void members(
         @ApiParam(
             value = "The room to get the member events for.",
             required = true
         ) @PathParam("roomId") String roomId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -265,19 +282,22 @@ public interface EventApi {
      * efficiently on the server.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link JoinedMembersResponse}.
+     * <p>Status code 200: A map of MXID to room member objects.</p>
+     * <p>Status code 403: You aren't a member of the room.</p>
      *
      * @param roomId          Required. The room to get the members of.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
-     * @return <p>Status code 200: A map of MXID to room member objects.</p>
-     * <p>Status code 403: You aren't a member of the room.</p>
+     * @param servletRequest  Servlet request.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
      */
     @ApiOperation(
         value = "This API returns a map of MXIDs to member info objects for members of the room.",
         notes = "The current user must be in the room for it to work, unless it is an Application Service in which case any of "
             + "the AS's users must be in the room. This API is primarily for Application Services and should be faster to respond "
-            + "than/members as it can be implemented more efficiently on the server."
+            + "than/members as it can be implemented more efficiently on the server.",
+        response = JoinedMembersResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A map of MXID to room member objects."),
@@ -286,14 +306,14 @@ public interface EventApi {
     @GET
     @Secured
     @Path("/{roomId}/joined_members")
-    JoinedMembersResponse joinedMembers(
+    void joinedMembers(
         @ApiParam(
             value = "The room to get the members of.",
             required = true
         ) @PathParam("roomId") String roomId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -301,6 +321,10 @@ public interface EventApi {
      * This API returns a list of message and state events for a room. It uses pagination query parameters to paginate history in the room.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link Page} of the {@link Event}s.
+     * <p>Status code 200: A list of messages with a new token to request more.</p>
+     * <p>Status code 403: You aren't a member of the room.</p>
      *
      * @param roomId          Required. The room to get events from.
      * @param from            Required. The token to start returning events from. This token can be obtained from a prev_batch token
@@ -312,14 +336,13 @@ public interface EventApi {
      * @param limit           The maximum number of events to return. Default: 10.
      * @param filter          A JSON RoomEventFilter to filter returned events with.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: A list of messages with a new token to request more.</p>
-     * <p>Status code 403: You aren't a member of the room.</p>
      */
     @ApiOperation(
         value = "This API returns a list of message and state events for a room.",
-        notes = "It uses pagination query parameters to paginate history in the room."
+        notes = "It uses pagination query parameters to paginate history in the room.",
+        response = Page.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of messages with a new token to request more."),
@@ -328,7 +351,7 @@ public interface EventApi {
     @GET
     @Secured
     @Path("/{roomId}/messages")
-    Page<Event> messages(
+    void messages(
         @ApiParam(
             value = "The room to get events from.",
             required = true
@@ -358,7 +381,7 @@ public interface EventApi {
         ) @QueryParam("filter") String filter,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -372,23 +395,26 @@ public interface EventApi {
      * type of event. See Room Events for the m. event specification.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link SendEventResponse}.
+     * <p>Status code 200: An ID for the sent event.</p>
+     * <p>Status code 403: The sender doesn't have permission to send the event into the room.</p>
      *
      * @param roomId          Required. The room to set the state in.
      * @param eventType       Required. The type of event to send.
      * @param stateKey        Required. The state_key for the state to send. Defaults to the empty string.
      * @param event           event.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: An ID for the sent event.</p>
-     * <p>Status code 403: The sender doesn't have permission to send the event into the room.</p>
      */
     @ApiOperation(
         value = "State events can be sent using this endpoint.",
         notes = "These events will be overwritten if (room id), (event type) and (state key) all match. Requests to this "
             + "endpoint cannot use transaction IDs like other PUT paths because they cannot be differentiated from the state_key. "
             + "Furthermore, POST is unsupported on state paths. The body of the request should be the content object of the event; "
-            + "the fields in this object will vary depending on the type of event.See Room Events for the m.event specification."
+            + "the fields in this object will vary depending on the type of event.See Room Events for the m.event specification.",
+        response = SendEventResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the sent event."),
@@ -397,7 +423,7 @@ public interface EventApi {
     @PUT
     @Secured
     @Path("/{roomId}/state/{eventType}/{stateKey}")
-    SendEventResponse sendEventWithTypeAndState(
+    void sendEventWithTypeAndState(
         @ApiParam(
             value = "The room to set the state in.",
             required = true
@@ -415,7 +441,7 @@ public interface EventApi {
         ) EventContent event,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -430,15 +456,17 @@ public interface EventApi {
      * of event. See Room Events for the m. event specification.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link SendEventResponse}.
+     * <p>Status code 200: An ID for the sent event.</p>
+     * <p>Status code 403: The sender doesn't have permission to send the event into the room.</p>
      *
      * @param roomId          Required. The room to set the state in.
      * @param eventType       Required. The type of event to send.
      * @param event           event.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: An ID for the sent event.</p>
-     * <p>Status code 403: The sender doesn't have permission to send the event into the room.</p>
      */
     @ApiOperation(
         value = "State events can be sent using this endpoint.",
@@ -447,7 +475,8 @@ public interface EventApi {
             + "Requests to this endpoint cannot use transaction IDs like other PUT paths because they cannot be differentiated "
             + "from the state_key. Furthermore, POST is unsupported on state paths. The body of the request should be the content "
             + "object of the event; the fields in this object will vary depending on the type of event. See Room Events for the "
-            + "m.event specification."
+            + "m.event specification.",
+        response = SendEventResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the sent event."),
@@ -456,7 +485,7 @@ public interface EventApi {
     @PUT
     @Secured
     @Path("/{roomId}/state/{eventType}")
-    SendEventResponse sendEventWithType(
+    void sendEventWithType(
         @ApiParam(
             value = "The room to set the state in.",
             required = true
@@ -470,7 +499,7 @@ public interface EventApi {
         ) EventContent event,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -482,6 +511,9 @@ public interface EventApi {
      * type of event. See Room Events for the m. event specification.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link SendEventResponse}.
+     * <p>Status code 200: An ID for the sent event.</p>
      *
      * @param roomId          Required. The room to send the event to.
      * @param eventType       Required. The type of event to send.
@@ -489,22 +521,23 @@ public interface EventApi {
      *                        same access token; it will be used by the server to ensure idempotency of requests.
      * @param event           event.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: An ID for the sent event.</p>
      */
     @ApiOperation(
         value = "This endpoint is used to send a message event to a room.",
         notes = "Message events allow access to historical events and pagination, making them suited for \"once-off\" activity in a room. "
             + "The body of the request should be the content object of the event; the fields in this object will vary depending on the "
-            + "type of event. See Room Events for the m. event specification.")
+            + "type of event. See Room Events for the m. event specification.",
+        response = SendEventResponse.class
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the sent event.")
     })
     @PUT
     @Secured
     @Path("/{roomId}/send/{eventType}/{txnId}")
-    SendEventResponse sendEvent(
+    void sendEvent(
         @ApiParam(
             value = "The room to send the event to.",
             required = true
@@ -523,7 +556,7 @@ public interface EventApi {
         ) EventContent event,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -536,6 +569,9 @@ public interface EventApi {
      * room may redact events there.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link SendEventResponse}.
+     * <p>Status code 200: An ID for the redaction event.</p>
      *
      * @param roomId          Required. The room from which to redact the event.
      * @param eventId         Required. The ID of the event to redact.
@@ -543,21 +579,23 @@ public interface EventApi {
      *                        server to ensure idempotency of requests.
      * @param event           The reason for the event being redacted.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: An ID for the redaction event.</p>
      */
-    @ApiOperation(value = "Strips all information out of an event which isn't critical to the integrity of the server-side "
-        + "representation of the room.", notes = "This cannot be undone. Users may redact their own events, and any user with "
-        + "a power level greater than or equal to the redact power level of the room may redact events there.",
-        response = SendEventResponse.class)
+    @ApiOperation(
+        value = "Strips all information out of an event which isn't critical to the integrity of the server-side "
+            + "representation of the room.",
+        notes = "This cannot be undone. Users may redact their own events, and any user with "
+            + "a power level greater than or equal to the redact power level of the room may redact events there.",
+        response = SendEventResponse.class
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the redaction event.")
     })
     @PUT
     @Secured
     @Path("/{roomId}/redact/{eventId}/{txnId}")
-    SendEventResponse redact(
+    void redact(
         @ApiParam(
             value = "The room from which to redact the event.",
             required = true
@@ -576,8 +614,7 @@ public interface EventApi {
         ) RedactRequest event,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
-
 }
