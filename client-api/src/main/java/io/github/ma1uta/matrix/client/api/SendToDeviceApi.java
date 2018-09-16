@@ -26,12 +26,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -58,18 +59,21 @@ public interface SendToDeviceApi {
      * This endpoint is used to send send-to-device events to a set of client devices.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The message was successfully sent.</p>
      *
      * @param eventType           Required. The type of event to send.
      * @param txnId               Required. The transaction ID for this event. Clients should generate an ID unique across requests with the
      *                            same access token; it will be used by the server to ensure idempotency of requests.
      * @param sendToDeviceRequest Request body.
      * @param servletRequest      Servlet requet.
-     * @param servletResponse     Servlet response.
+     * @param asyncResponse       Asynchronous response.
      * @param securityContext     Security context.
-     * @return <p>Status code 200: The message was successfully sent.</p>
      */
     @ApiOperation(
-        value = "This endpoint is used to send send-to-device events to a set of client devices."
+        value = "This endpoint is used to send send-to-device events to a set of client devices.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The message was successfully sent.")
@@ -77,7 +81,7 @@ public interface SendToDeviceApi {
     @PUT
     @Secured
     @Path("/{eventType}/{txnId}")
-    EmptyResponse send(
+    void send(
         @ApiParam(
             value = "The type of event to send.",
             required = true
@@ -92,7 +96,7 @@ public interface SendToDeviceApi {
         ) SendToDeviceRequest sendToDeviceRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
