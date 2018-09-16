@@ -23,10 +23,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -48,21 +49,24 @@ public interface VersionApi {
 
     /**
      * Gets the versions of the specification supported by the server.
+     * <br>
+     * Return: {@link VersionsResponse}.
+     * <p>Status code 200: The versions supported by the server.</p>
      *
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The versions supported by the server.</p>
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Gets the versions of the specification supported by the server."
+        value = "Gets the versions of the specification supported by the server.",
+        response = VersionsResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The versions supported by the server.")
     })
     @GET
     @Path("/")
-    VersionsResponse versions(
+    void versions(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }
