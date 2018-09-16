@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -73,7 +74,8 @@ public interface SendToDeviceApi {
      */
     @ApiOperation(
         value = "This endpoint is used to send send-to-device events to a set of client devices.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The message was successfully sent.")

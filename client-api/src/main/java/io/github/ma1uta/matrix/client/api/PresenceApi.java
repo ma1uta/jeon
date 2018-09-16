@@ -28,6 +28,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -100,7 +101,8 @@ public interface PresenceApi {
         value = "This API sets the given user's presence state. When setting the status, the activity time is updated to "
             + "reflect that activity; the client does not need to specify the last_active_ago field. You cannot set the presence state of "
             + "another user.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The new presence state was set."),
@@ -140,7 +142,8 @@ public interface PresenceApi {
      */
     @ApiOperation(
         value = "Get the given user's presence state.",
-        response = PresenceStatus.class
+        response = PresenceStatus.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The presence state for this user."),
@@ -180,7 +183,8 @@ public interface PresenceApi {
      */
     @ApiOperation(
         value = "Adds or removes users from this presence list.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The list was updated."),

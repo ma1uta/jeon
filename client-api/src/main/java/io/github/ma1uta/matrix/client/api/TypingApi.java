@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -83,7 +84,8 @@ public interface TypingApi {
     @ApiOperation(
         value = "This tells the server that the user is typing for the next N milliseconds where N is the value specified "
             + "in the timeout key. Alternatively, if typing is false, it tells the server that the user has stopped typing.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The new typing state was set."),

@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,7 +73,8 @@ public interface DeprecatedSyncApi {
     @ApiOperation(
         value = "This returns the full state for this user, with an optional limit on the number of messages per room to return.",
         notes = "This endpoint was deprecated in r0 of this specification. Clients should instead call the /sync API with no since"
-            + " parameter. See the migration guide."
+            + " parameter. See the migration guide.",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The user's current state."),
@@ -111,7 +113,8 @@ public interface DeprecatedSyncApi {
         value = "Get a single event based on event_id.",
         notes = "You must have permission to retrieve this event e.g. by being a member in the room for this event."
             + " This endpoint was deprecated in r0 of this specification. Clients should instead call the /rooms/{roomId}/event/{eventId}"
-            + " API or the /rooms/{roomId}/context/{eventId} API."
+            + " API or the /rooms/{roomId}/context/{eventId} API.",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The full event."),
@@ -150,7 +153,8 @@ public interface DeprecatedSyncApi {
     @ApiOperation(
         value = "Get a copy of the current state and the most recent messages in a room.",
         notes = "This endpoint was deprecated in r0 of this specification. There is no direct replacement; the relevant information"
-            + " is returned by the /sync API. See the migration guide."
+            + " is returned by the /sync API. See the migration guide.",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The current state of the room."),

@@ -35,6 +35,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -173,7 +174,8 @@ public interface RoomApi {
         value = "Create a new room with various configuration options.",
         notes = "The server MUST apply the normal state resolution rules when creating the new room, including checking power "
             + "levels for each event.",
-        response = RoomId.class
+        response = RoomId.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Information about the newly created room."),
@@ -209,7 +211,8 @@ public interface RoomApi {
      */
     @ApiOperation(
         value = "Create a new mapping from room alias to room ID.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The mapping was created."),
@@ -285,7 +288,8 @@ public interface RoomApi {
      */
     @ApiOperation(
         value = "Remove a mapping of room alias to room ID.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The mapping was deleted.")
@@ -318,7 +322,8 @@ public interface RoomApi {
      */
     @ApiOperation(
         value = "This API returns a list of the user's current rooms.",
-        response = JoinedRoomsResponse.class
+        response = JoinedRoomsResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of the rooms the user is in.")
@@ -368,7 +373,8 @@ public interface RoomApi {
     @ApiOperation(
         value = "This API invites a user to participate in a particular room. They do not start participating in the "
             + "room until they actually join the room.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The user has been invited to join the room."),
@@ -431,7 +437,8 @@ public interface RoomApi {
         value = "This API starts a user participating in a particular room, if that user is allowed to participate in "
             + "that room. After this call, the client is allowed to see all current state events in the room, and all subsequent "
             + "events associated with the room until the user leaves the room.",
-        response = RoomId.class
+        response = RoomId.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The room has been joined. The joined room ID must be returned in the room_id field."),
@@ -495,7 +502,8 @@ public interface RoomApi {
         value = "This API starts a user participating in a particular room, if that user is allowed to participate in "
             + "that room. After this call, the client is allowed to see all current state events in the room, and all subsequent "
             + "events associated with the room until the user leaves the room.",
-        response = RoomId.class
+        response = RoomId.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The room has been joined. The joined room ID must be returned in the room_id field."),
@@ -554,7 +562,8 @@ public interface RoomApi {
             + "to be re-invited before they can re-join. If the user was invited to the room, but had not joined, this call serves "
             + "to reject the invite.The user will still be allowed to retrieve history from the room which they were previously "
             + "allowed to see.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The room has been left."),
@@ -602,7 +611,8 @@ public interface RoomApi {
         value = "This API stops a user remembering about a particular room. In general, history is a first class "
             + "citizen in Matrix. After this API is called, however, a user will no longer be able to retrieve history for this "
             + "room. If all users on a homeserver forget a room, the room is eligible for deletion from that homeserver.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The room has been forgotten."),
@@ -653,7 +663,8 @@ public interface RoomApi {
      */
     @ApiOperation(
         value = "Kick a user from the room.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The user has been kicked from the room."),
@@ -703,7 +714,8 @@ public interface RoomApi {
      */
     @ApiOperation(
         value = "Ban a user in the room. If the user is currently in the room, also kick them.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The user has been kicked and banned from the room."),
@@ -752,7 +764,8 @@ public interface RoomApi {
     @ApiOperation(
         value = "Unban a user from the room. This allows them to be invited to the room, and join if they would "
             + "otherwise be allowed to join according to its join rules.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The user has been unbanned from the room."),
@@ -827,7 +840,8 @@ public interface RoomApi {
      */
     @ApiOperation(
         value = "Sets the visibility of a given room in the server's public room directory.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The visibility was updated, or no change was needed."),
@@ -910,7 +924,8 @@ public interface RoomApi {
     @ApiOperation(
         value = "Lists the public rooms on the server, with optional filter. This API returns paginated responses. "
             + "The rooms are ordered by the number of joined members, with the largest rooms first.",
-        response = PublicRoomsResponse.class
+        response = PublicRoomsResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of the rooms on the server.")

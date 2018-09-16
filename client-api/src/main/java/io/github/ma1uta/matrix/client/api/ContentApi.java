@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -106,7 +107,8 @@ public interface ContentApi {
      */
     @ApiOperation(
         value = "Upload some content to the content repository.",
-        response = ContentUri.class
+        response = ContentUri.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The MXC URI for the uploaded content."),
@@ -361,7 +363,8 @@ public interface ContentApi {
      */
     @ApiOperation(
         value = "Get information about a PATH for a client.",
-        response = Map.class
+        response = Map.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The content that was previously uploaded."),
@@ -415,7 +418,8 @@ public interface ContentApi {
             + " NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect"
             + " the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is"
             + " advertised by the server on this endpoint.",
-        response = ContentConfig.class
+        response = ContentConfig.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The public content repository configuration for the matrix server."),

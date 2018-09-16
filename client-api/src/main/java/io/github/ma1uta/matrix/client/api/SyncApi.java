@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -112,7 +113,8 @@ public interface SyncApi {
         value = "Synchronise the client's state with the latest state on the server. Clients use this API when they first "
             + "log in to get an initial snapshot of the state on the server, and then continue to call this API to get incremental deltas "
             + "to the state, and to receive new messages.",
-        response = SyncResponse.class
+        response = SyncResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The initial snapshot or delta for the client to use to update their state.")
@@ -175,7 +177,8 @@ public interface SyncApi {
     @ApiOperation(
         value = "This will listen for new events related to a particular room and return them to the caller. "
             + "This will block until an event is received, or until the timeout is reached.",
-        response = Page.class
+        response = Page.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The events received, which may be none."),

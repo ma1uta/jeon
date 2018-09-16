@@ -295,6 +295,14 @@
                                         <name>Apache 2.0</name>
                                     </license>
                                 </info>
+                                <securityDefinitions>
+                                    <securityDefinition>
+                                        <type>apiKey</type>
+                                        <in>header</in>
+                                        <name>Authorization</name>
+                                        <description>The value should be 'Bearer &lt;access_token&gt;'</description>
+                                    </securityDefinition>
+                                </securityDefinitions>
                                 <templatePath>config/swagger/strapdown.html.hbs</templatePath>
                                 <outputPath>${basedir}/target/generated/document.html</outputPath>
                                 <swaggerDirectory>${basedir}/target/generated/swagger-ui</swaggerDirectory>
@@ -399,12 +407,20 @@
             </modules>
         </profile>
         <profile>
-            <id>c2s</id>
+            <id>common</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
                 <module>common-api</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>c2s</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
                 <module>client-api</module>
             </modules>
         </profile>
@@ -414,7 +430,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>common-api</module>
                 <module>server-api</module>
             </modules>
         </profile>
@@ -424,7 +439,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>common-api</module>
                 <module>identity-api</module>
             </modules>
         </profile>
@@ -434,7 +448,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>common-api</module>
                 <module>application-api</module>
             </modules>
         </profile>
@@ -444,7 +457,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>common-api</module>
                 <module>push-api</module>
             </modules>
         </profile>

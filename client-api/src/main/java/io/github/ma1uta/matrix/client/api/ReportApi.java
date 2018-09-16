@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -70,7 +71,8 @@ public interface ReportApi {
      */
     @ApiOperation(
         value = "Reports an event as inappropriate to the server, which may then notify the appropriate people.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The event has been reported successfully.")

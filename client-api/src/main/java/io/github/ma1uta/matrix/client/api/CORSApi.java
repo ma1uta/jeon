@@ -16,6 +16,9 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.Path;
@@ -28,6 +31,9 @@ import javax.ws.rs.core.Context;
  * In these cases, the homeserver should respond to pre-flight requests and supply Cross-Origin Resource Sharing (CORS) headers
  * on all requests.
  */
+@Api(
+    hidden = true
+)
 @Path("/")
 public interface CORSApi {
 
@@ -44,6 +50,10 @@ public interface CORSApi {
      * @param servletRequest Servlet request.
      * @param asyncResponse  Asynchronous response.
      */
+    @ApiOperation(
+        value = "",
+        hidden = true
+    )
     @OPTIONS
     @Path("/{path:.*}")
     void options(

@@ -36,6 +36,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -252,7 +253,9 @@ public interface AccountApi {
         notes = "This API endpoint uses the User-Interactive Authentication API. An access token should be submitted to this"
             + " endpoint if the client has an active session. The homeserver may change the flows available depending on"
             + " whether a valid access token is provided.",
-        response = EmptyResponse.class)
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
+    )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The password has been changed."),
         @ApiResponse(code = 401, message = "The homeserver requires additional authentication information."),
@@ -387,7 +390,8 @@ public interface AccountApi {
         notes = "This API endpoint uses the User-Interactive Authentication API."
             + "An access token should be submitted to this endpoint if the client has an active session."
             + "The homeserver may change the flows available depending on whether a valid access token is provided.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account has been deactivated."),
@@ -486,7 +490,8 @@ public interface AccountApi {
         notes = "This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers. "
             + "Identifiers in this list may be used by the homeserver as, for example, identifiers that it will accept to reset the user's "
             + "account password.",
-        response = ThreePidResponse.class
+        response = ThreePidResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The lookup was successful")
@@ -494,7 +499,7 @@ public interface AccountApi {
     @GET
     @Secured
     @Path("/account/3pid")
-    void showThreePid(
+    void getThreePid(
         @Context HttpServletRequest servletRequest,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
@@ -516,7 +521,8 @@ public interface AccountApi {
      */
     @ApiOperation(
         value = "Adds contact information to the user's account",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The addition was successful."),
@@ -551,7 +557,8 @@ public interface AccountApi {
     @ApiOperation(
         value = "Removes a third party identifier from the user's account.",
         notes = "This might not cause an unbind of the identifier from the identity server.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The homeserver has disassociated the third party identifier from the user.")
@@ -671,7 +678,8 @@ public interface AccountApi {
         notes = "Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their namespace "
             + "by giving a user_id query parameter. In this situation, the server should verify that the given user_id is registered by "
             + "the appservice, and return it in the response body.",
-        response = WhoamiResponse.class
+        response = WhoamiResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The token belongs to a known user"),

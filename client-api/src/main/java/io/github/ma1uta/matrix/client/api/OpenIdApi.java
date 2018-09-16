@@ -16,12 +16,15 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.openid.OpenIdResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -76,7 +79,8 @@ public interface OpenIdApi {
         notes = "The generated token is only valid for exchanging for user information from the federation API for OpenID."
             + " The access token generated is only valid for the OpenID API."
             + " It cannot be used to request another OpenID access token or call /sync, for example.",
-        response = OpenIdResponse.class
+        response = OpenIdResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "OpenID token information. This response is nearly compatible with the response documented"
@@ -85,6 +89,8 @@ public interface OpenIdApi {
         @ApiResponse(code = 429, message = "This request was rate-limited.")
     })
     @POST
+    @Secured
+    @RateLimit
     @Path("/user/{userId}/openid/request_token")
     void requestToken(
         @ApiParam(

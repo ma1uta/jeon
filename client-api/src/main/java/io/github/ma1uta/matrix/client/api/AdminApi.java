@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -63,7 +64,8 @@ public interface AdminApi {
     @ApiOperation(
         value = "This API may be restricted to only be called by the user being looked up, or by a server admin. "
             + "Server-local administrator privileges are not specified in this document.",
-        response = AdminResponse.class
+        response = AdminResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The lookup was successful.")

@@ -28,6 +28,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -72,7 +73,8 @@ public interface DeviceApi {
      */
     @ApiOperation(
         value = "Gets information about all devices for the current user.",
-        response = DevicesResponse.class
+        response = DevicesResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of all registered devices for this user.")
@@ -102,7 +104,8 @@ public interface DeviceApi {
      */
     @ApiOperation(
         value = "Gets information on a single device, by device id.",
-        response = Device.class
+        response = Device.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Device information."),
@@ -139,7 +142,8 @@ public interface DeviceApi {
      */
     @ApiOperation(
         value = "Updates the metadata on the given device.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The device was successfully updated."),
@@ -182,7 +186,8 @@ public interface DeviceApi {
     @ApiOperation(
         value = "Deletes the given device, and invalidates any access token associated with it.",
         notes = "This API endpoint uses the User-Interactive Authentication API.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The device was successfully removed, or had been removed previously."),
@@ -224,7 +229,8 @@ public interface DeviceApi {
     @ApiOperation(
         value = "Deletes the given devices, and invalidates any access token associated with them.",
         notes = "This API endpoint uses the User-Interactive Authentication API.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The devices were successfully removed, or had been removed previously."),

@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -191,7 +192,8 @@ public interface AuthApi {
      */
     @ApiOperation(
         value = "Invalidates an existing access token, so that it can no longer be used for authorization.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The access token used in the request was succesfully invalidated")
@@ -228,7 +230,8 @@ public interface AuthApi {
         notes = "This endpoint does not require UI authorization because UI authorization is designed to protect against attacks where the "
             + "someone gets hold of a single access token then takes over the account. This endpoint invalidates all access tokens for the "
             + "user, including the token used in the request, and therefore the attacker is unable to take over the account in this way.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The user's access tokens were succesfully invalidated")

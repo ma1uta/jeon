@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
@@ -89,7 +90,8 @@ public interface ReceiptApi {
      */
     @ApiOperation(
         value = "This API updates the marker for the given receipt type to the event ID specified.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The receipt was sent."),
@@ -138,7 +140,8 @@ public interface ReceiptApi {
      */
     @ApiOperation(
         value = "Sets the position of the read marker for a given room, and optionally the read receipt's location.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The read marker, and read receipt if provided, have been updated."),

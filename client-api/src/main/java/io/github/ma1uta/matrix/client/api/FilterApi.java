@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -71,7 +72,8 @@ public interface FilterApi {
     @ApiOperation(
         value = "Uploads a new filter definition to the homeserver.",
         notes = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client.",
-        response = FilterResponse.class
+        response = FilterResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The filter was created.")
@@ -108,7 +110,8 @@ public interface FilterApi {
      */
     @ApiOperation(
         value = "Download a filter.",
-        response = FilterData.class
+        response = FilterData.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The filter definition."),

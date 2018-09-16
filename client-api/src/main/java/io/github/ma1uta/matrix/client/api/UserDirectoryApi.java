@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -79,7 +80,8 @@ public interface UserDirectoryApi {
             + " The search MUST consider local users to the homeserver, and SHOULD query remote users as part of the search."
             + " The search is performed case-insensitively on user IDs and display names preferably using a collation determined based upon"
             + " * the Accept-Language header provided in the request, if present.",
-        response = SearchResponse.class
+        response = SearchResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The results of the search."),

@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,8 @@ public interface ThirdPartyProtocolApi {
     @ApiOperation(
         value = "Fetches the overall metadata about protocols supported by the homeserver."
             + "Includes both the available protocols and all fields required for queries against each protocol.",
-        response = Map.class
+        response = Map.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The protocols supported by the homeserver.")
@@ -102,7 +104,8 @@ public interface ThirdPartyProtocolApi {
      */
     @ApiOperation(
         value = "Fetches the metadata from the homeserver about a particular third party protocol.",
-        response = Protocol.class
+        response = Protocol.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The protocol was found and metadata returned."),
@@ -147,7 +150,8 @@ public interface ThirdPartyProtocolApi {
             + " containing the network-specific fields that comprise this identifier.It should attempt to canonicalise the identifier"
             + " as much as reasonably possible given the network type.",
         response = ProtocolLocation.class,
-        responseContainer = "List"
+        responseContainer = "List",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
@@ -184,7 +188,8 @@ public interface ThirdPartyProtocolApi {
     @ApiOperation(
         value = "Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.",
         response = ProtocolUser.class,
-        responseContainer = "List"
+        responseContainer = "List",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
@@ -220,7 +225,8 @@ public interface ThirdPartyProtocolApi {
     @ApiOperation(
         value = "Retrieve an array of third party network locations from a Matrix room alias.",
         response = ProtocolLocation.class,
-        responseContainer = "List"
+        responseContainer = "List",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
@@ -255,7 +261,8 @@ public interface ThirdPartyProtocolApi {
     @ApiOperation(
         value = "Retrieve an array of third party users from a Matrix User ID.",
         response = ProtocolUser.class,
-        responseContainer = "List"
+        responseContainer = "List",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),

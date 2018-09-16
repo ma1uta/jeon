@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +77,8 @@ public interface EventApi {
     @ApiOperation(
         value = "Get a single event based on roomId/eventId. You must have permission to retrieve this event e.g. by "
             + "being a member in the room for this event.",
-        response = Event.class
+        response = Event.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The full event."),
@@ -122,7 +124,8 @@ public interface EventApi {
         value = "Looks up the contents of a state event in a room. If the user is joined to the room then the state is "
             + "taken from the current state of the room. If the user has left the room then the state is taken from the state of the "
             + "room when they left.",
-        response = EventContent.class
+        response = EventContent.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The content of the state event."),
@@ -175,7 +178,8 @@ public interface EventApi {
             + "taken from the current state of the room. If the user has left the room then the state is taken from the state of the "
             + "room when they left.",
         notes = "This looks up the state event with the empty state key.",
-        response = EventContent.class
+        response = EventContent.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The content of the state event."),
@@ -217,7 +221,8 @@ public interface EventApi {
     @ApiOperation(
         value = "Get the state events for the current state of a room.",
         response = Event.class,
-        responseContainer = "List"
+        responseContainer = "List",
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The current state of the room."),
@@ -254,7 +259,8 @@ public interface EventApi {
      */
     @ApiOperation(
         value = "Get the list of members for this room.",
-        response = MembersResponse.class
+        response = MembersResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of members of the room. If you are joined to the room then this will be the current "
@@ -297,7 +303,8 @@ public interface EventApi {
         notes = "The current user must be in the room for it to work, unless it is an Application Service in which case any of "
             + "the AS's users must be in the room. This API is primarily for Application Services and should be faster to respond "
             + "than/members as it can be implemented more efficiently on the server.",
-        response = JoinedMembersResponse.class
+        response = JoinedMembersResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A map of MXID to room member objects."),
@@ -342,7 +349,8 @@ public interface EventApi {
     @ApiOperation(
         value = "This API returns a list of message and state events for a room.",
         notes = "It uses pagination query parameters to paginate history in the room.",
-        response = Page.class
+        response = Page.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A list of messages with a new token to request more."),
@@ -414,7 +422,8 @@ public interface EventApi {
             + "endpoint cannot use transaction IDs like other PUT paths because they cannot be differentiated from the state_key. "
             + "Furthermore, POST is unsupported on state paths. The body of the request should be the content object of the event; "
             + "the fields in this object will vary depending on the type of event.See Room Events for the m.event specification.",
-        response = SendEventResponse.class
+        response = SendEventResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the sent event."),
@@ -476,7 +485,8 @@ public interface EventApi {
             + "from the state_key. Furthermore, POST is unsupported on state paths. The body of the request should be the content "
             + "object of the event; the fields in this object will vary depending on the type of event. See Room Events for the "
             + "m.event specification.",
-        response = SendEventResponse.class
+        response = SendEventResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the sent event."),
@@ -529,7 +539,8 @@ public interface EventApi {
         notes = "Message events allow access to historical events and pagination, making them suited for \"once-off\" activity in a room. "
             + "The body of the request should be the content object of the event; the fields in this object will vary depending on the "
             + "type of event. See Room Events for the m. event specification.",
-        response = SendEventResponse.class
+        response = SendEventResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the sent event.")
@@ -587,7 +598,8 @@ public interface EventApi {
             + "representation of the room.",
         notes = "This cannot be undone. Users may redact their own events, and any user with "
             + "a power level greater than or equal to the redact power level of the room may redact events there.",
-        response = SendEventResponse.class
+        response = SendEventResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An ID for the redaction event.")

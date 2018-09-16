@@ -23,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -64,7 +65,8 @@ public interface VoipApi {
      */
     @ApiOperation(
         value = "This API provides credentials for the client to use when initiating calls.",
-        response = VoipResponse.class
+        response = VoipResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The TURN server credentials."),

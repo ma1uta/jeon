@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -68,7 +69,8 @@ public interface EventContextApi {
     @ApiOperation(
         value = "This API returns a number of events that happened just before and after the specified event.",
         notes = "This allows clients to get the context surrounding an event.",
-        response = EventContextResponse.class
+        response = EventContextResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The events and state surrounding the requested event.")

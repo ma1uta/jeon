@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -72,7 +73,8 @@ public interface EncryptionApi {
      */
     @ApiOperation(
         value = "Publishes end-to-end encryption keys for the device.",
-        response = UploadResponse.class
+        response = UploadResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The provided keys were sucessfully uploaded.")
@@ -105,7 +107,8 @@ public interface EncryptionApi {
      */
     @ApiOperation(
         value = "Returns the current devices and identity keys for the given users.",
-        response = QueryResponse.class
+        response = QueryResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The device information.")
@@ -138,7 +141,8 @@ public interface EncryptionApi {
      */
     @ApiOperation(
         value = "Claims one-time keys for use in pre-key messages.",
-        response = ClaimResponse.class
+        response = ClaimResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The claimed keys.")
@@ -184,7 +188,8 @@ public interface EncryptionApi {
         notes = "The server should include in the results any users who currently share a room with the calling user (ie, both "
             + "users have membership state join); and added new device identity keys or removed an existing device with identity "
             + "keys, between from and to.",
-        response = ChangesResponse.class
+        response = ChangesResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The list of users who updated their devices.")

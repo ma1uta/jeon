@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -90,7 +91,8 @@ public interface TagApi {
      */
     @ApiOperation(
         value = "List the tags set by a user on a room.",
-        response = Tags.class
+        response = Tags.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The list of tags for the user for the room.")
@@ -132,7 +134,8 @@ public interface TagApi {
      */
     @ApiOperation(
         value = "Add a tag to the room.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The tag was successfully added.")
@@ -180,7 +183,8 @@ public interface TagApi {
      */
     @ApiOperation(
         value = "Remove a tag from the room.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The tag was successfully removed.")

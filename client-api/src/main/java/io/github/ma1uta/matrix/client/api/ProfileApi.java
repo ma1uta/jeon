@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -74,7 +75,8 @@ public interface ProfileApi {
     @ApiOperation(
         value = "his API sets the given user's display name. You must have permission to set this user's display "
             + "name, e.g. you need to have their access_token.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The display name was set."),
@@ -152,7 +154,8 @@ public interface ProfileApi {
     @ApiOperation(
         value = "This API sets the given user's avatar URL. You must have permission to set this user's avatar "
             + "URL, e.g. you need to have their access_token.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The avatar URL was set."),

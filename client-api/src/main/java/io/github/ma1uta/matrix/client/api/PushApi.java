@@ -32,6 +32,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -303,7 +304,8 @@ public interface PushApi {
      */
     @ApiOperation(
         value = "Gets all currently active pushers for the authenticated user.",
-        response = PushersResponse.class
+        response = PushersResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The pushers for this user.")
@@ -338,7 +340,8 @@ public interface PushApi {
     @ApiOperation(
         value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. "
             + "The behaviour of this endpoint varies depending on the values in the JSON body.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The pusher was set."),
@@ -377,7 +380,8 @@ public interface PushApi {
      */
     @ApiOperation(
         value = "This API is used to paginate through the list of events that the user has been, or would have been notified about.",
-        response = NotificationResponse.class
+        response = NotificationResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "A batch of events is being returned.")
@@ -418,7 +422,8 @@ public interface PushApi {
         value = "Retrieve all push rulesets for this user. Clients can \"drill-down]\"on the rulesets by suffixing "
             + "a scope to this path e.g. /pushrules/global/. This will return a subset of this data under the specified key e.g. "
             + "the global key.",
-        response = PushRulesResponse.class
+        response = PushRulesResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "All the push rulesets for this user.")
@@ -450,7 +455,8 @@ public interface PushApi {
      */
     @ApiOperation(
         value = "Retrieve a single specified push rule.",
-        response = PushRule.class
+        response = PushRule.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The specific push rule. This will also include keys specific to the rule itself "
@@ -496,7 +502,8 @@ public interface PushApi {
      */
     @ApiOperation(
         value = "This endpoint removes the push rule defined in the path.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The push rule was deleted.")
@@ -552,7 +559,8 @@ public interface PushApi {
     @ApiOperation(
         value = "This endpoint allows the creation, modification and deletion of pushers for this user ID. The "
             + "behaviour of this endpoint varies depending on the values in the JSON body.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The pusher was set."),
@@ -612,7 +620,8 @@ public interface PushApi {
      */
     @ApiOperation(
         value = "This endpoint gets whether the specified push rule is enabled.",
-        response = PushEnable.class
+        response = PushEnable.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Whether the push rule is enabled.")
@@ -658,7 +667,8 @@ public interface PushApi {
      */
     @ApiOperation(
         value = "his endpoint allows clients to enable or disable the specified push rule.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The push rule was enabled or disabled.")
@@ -707,7 +717,8 @@ public interface PushApi {
      */
     @ApiOperation(
         value = "This endpoint get the actions for the specified push rule.",
-        response = PushActions.class
+        response = PushActions.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The actions for this push rule.")
@@ -754,7 +765,8 @@ public interface PushApi {
     @ApiOperation(
         value = "This endpoint allows clients to change the actions of a push rule. This can be used to "
             + "change the actions of builtin rules.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The actions for the push rule were set.")

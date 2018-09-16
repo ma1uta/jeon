@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -70,7 +71,8 @@ public interface ClientConfigApi {
         value = "Set some account_data for the client.",
         notes = "This config is only visible to the user that set the account_data. The config will be "
             + "synced to clients in the top-level account_data.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account_data was successfully added.")
@@ -118,7 +120,8 @@ public interface ClientConfigApi {
         value = "Set some account_data for the client on a given room.",
         notes = "This config is only visible to the user that set the account_data. The config will be synced to clients in the "
             + "per-room account_data.",
-        response = EmptyResponse.class
+        response = EmptyResponse.class,
+        authorizations = @Authorization("Authorization")
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The account_data was successfully added.")
