@@ -25,10 +25,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -52,15 +53,18 @@ public interface VoipApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link VoipResponse}.
+     * <p>Status code 200: The TURN server credentials.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The TURN server credentials.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
-        value = "This API provides credentials for the client to use when initiating calls."
+        value = "This API provides credentials for the client to use when initiating calls.",
+        response = VoipResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The TURN server credentials."),
@@ -70,9 +74,9 @@ public interface VoipApi {
     @RateLimit
     @Secured
     @Path("/turnServer")
-    VoipResponse turnServer(
+    void turnServer(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
