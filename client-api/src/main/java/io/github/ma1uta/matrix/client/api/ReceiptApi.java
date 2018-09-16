@@ -27,11 +27,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -74,18 +75,21 @@ public interface ReceiptApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The receipt was sent.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param roomId          Required. The room in which to send the event.
      * @param receiptType     Required. The type of receipt to send. One of: ["m.read"]
      * @param eventId         Required. The event ID to acknowledge up to.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The receipt was sent.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
-        value = "This API updates the marker for the given receipt type to the event ID specified."
+        value = "This API updates the marker for the given receipt type to the event ID specified.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The receipt was sent."),
@@ -95,7 +99,7 @@ public interface ReceiptApi {
     @RateLimit
     @Secured
     @Path("/{roomId}/receipt/{receiptType}/{eventId}")
-    EmptyResponse receipt(
+    void receipt(
         @ApiParam(
             value = "The room in which to send the event.",
             required = true
@@ -111,7 +115,7 @@ public interface ReceiptApi {
         ) @PathParam("eventId") String eventId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -121,17 +125,20 @@ public interface ReceiptApi {
      * <b>Rate-limited</b>: Yes.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The read marker, and read receipt if provided, have been updated.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param roomId          Required. The room ID to set the read marker in for the user.
      * @param request         JSON body request.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The read marker, and read receipt if provided, have been updated.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
      */
     @ApiOperation(
-        value = "Sets the position of the read marker for a given room, and optionally the read receipt's location."
+        value = "Sets the position of the read marker for a given room, and optionally the read receipt's location.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The read marker, and read receipt if provided, have been updated."),
@@ -141,7 +148,7 @@ public interface ReceiptApi {
     @Secured
     @RateLimit
     @Path("/{roomId}/read_markers")
-    EmptyResponse readMarkers(
+    void readMarkers(
         @ApiParam(
             value = "The room ID to set the read marker in for the user.",
             required = true
@@ -151,7 +158,7 @@ public interface ReceiptApi {
         ) ReadMarkersRequest request,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
