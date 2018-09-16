@@ -23,10 +23,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -50,14 +51,17 @@ public interface ServerDiscoveryApi {
      * <br>
      * Note that this endpoint is not necessarily handled by the homeserver, but by another webserver, to be used for discovering
      * the homeserver URL.
-     *
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: Server discovery information.</p>
+     * <br>
+     * Return: {@link ServerDiscoveryResponse}.
+     * <p>Status code 200: Server discovery information.</p>
      * <p>Status code 404: No server discovery information available.</p>
+     *
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Gets discovery information about the domain."
+        value = "Gets discovery information about the domain.",
+        response = ServerDiscoveryResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "Server discovery information."),
@@ -65,8 +69,8 @@ public interface ServerDiscoveryApi {
     })
     @GET
     @Path("/")
-    ServerDiscoveryResponse serverDiscovery(
+    void serverDiscovery(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }
