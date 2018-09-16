@@ -27,7 +27,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -35,6 +34,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -76,17 +77,20 @@ public interface TagApi {
      * List the tags set by a user on a room.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link Tags}.
+     * <p>Status code 200: The list of tags for the user for the room.</p>
      *
      * @param userId          Required. The id of the user to get tags for. The access token must be authorized to make requests for this
      *                        user id.
      * @param roomId          Required. The id of the room to get tags for.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The list of tags for the user for the room.</p>
      */
     @ApiOperation(
-        value = "List the tags set by a user on a room."
+        value = "List the tags set by a user on a room.",
+        response = Tags.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The list of tags for the user for the room.")
@@ -94,7 +98,7 @@ public interface TagApi {
     @GET
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags")
-    Tags showTags(
+    void showTags(
         @ApiParam(
             value = "The id of the user to get tags for. The access token must be authorized to make requests for this user id.",
             required = true
@@ -105,7 +109,7 @@ public interface TagApi {
         ) @PathParam("roomId") String roomId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -113,6 +117,9 @@ public interface TagApi {
      * Add a tag to the room.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The tag was successfully added.</p>
      *
      * @param userId          Required. The id of the user to add a tag for. The access token must be authorized to make requests for this
      *                        user id.
@@ -120,12 +127,12 @@ public interface TagApi {
      * @param tag             Required. The tag to add.
      * @param tagData         tag data.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The tag was successfully added.</p>
      */
     @ApiOperation(
-        value = "Add a tag to the room."
+        value = "Add a tag to the room.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The tag was successfully added.")
@@ -133,7 +140,7 @@ public interface TagApi {
     @PUT
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags/{tag}")
-    EmptyResponse addTag(
+    void addTag(
         @ApiParam(
             value = "The id of the user to add a tag for. The access token must be authorized to make requests for this user id.",
             required = true
@@ -151,7 +158,7 @@ public interface TagApi {
         ) TagInfo tagData,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -159,18 +166,21 @@ public interface TagApi {
      * Remove a tag from the room.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The tag was successfully removed.</p>
      *
      * @param userId          Required. The id of the user to remove a tag for. The access token must be authorized to make requests
      *                        for this user id.
      * @param roomId          Required. The id of the room to remove a tag from.
      * @param tag             Required. The tag to remove.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The tag was successfully removed.</p>
      */
     @ApiOperation(
-        value = "Remove a tag from the room."
+        value = "Remove a tag from the room.",
+        response = EmptyResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The tag was successfully removed.")
@@ -178,7 +188,7 @@ public interface TagApi {
     @DELETE
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags/{tag}")
-    EmptyResponse deleteTag(
+    void deleteTag(
         @ApiParam(
             value = "The id of the user to remove a tag for. The access token must be authorized to make requests for this user id.",
             required = true
@@ -193,7 +203,7 @@ public interface TagApi {
         ) @PathParam("tag") String tag,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
