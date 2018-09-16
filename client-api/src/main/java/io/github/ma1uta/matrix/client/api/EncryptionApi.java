@@ -31,13 +31,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -60,15 +61,18 @@ public interface EncryptionApi {
      * Publishes end-to-end encryption keys for the device.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link UploadResponse}.
+     * <p>Status code 200: The provided keys were sucessfully uploaded.</p>
      *
      * @param uploadRequest   JSON body parameters.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The provided keys were sucessfully uploaded.</p>
      */
     @ApiOperation(
-        value = "Publishes end-to-end encryption keys for the device."
+        value = "Publishes end-to-end encryption keys for the device.",
+        response = UploadResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The provided keys were sucessfully uploaded.")
@@ -76,13 +80,13 @@ public interface EncryptionApi {
     @POST
     @Secured
     @Path("/upload")
-    UploadResponse uploadKey(
+    void uploadKey(
         @ApiParam(
             value = "JSON body request"
         ) UploadRequest uploadRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -90,15 +94,18 @@ public interface EncryptionApi {
      * Returns the current devices and identity keys for the given users.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link QueryResponse}.
+     * <p>Status code 200: The device information.</p>
      *
      * @param queryRequest    JSON body parameters.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The device information.</p>
      */
     @ApiOperation(
-        value = "Returns the current devices and identity keys for the given users."
+        value = "Returns the current devices and identity keys for the given users.",
+        response = QueryResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The device information.")
@@ -106,13 +113,13 @@ public interface EncryptionApi {
     @POST
     @Secured
     @Path("/query")
-    QueryResponse query(
+    void query(
         @ApiParam(
             value = "JSON body request"
         ) QueryRequest queryRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -120,15 +127,18 @@ public interface EncryptionApi {
      * Claims one-time keys for use in pre-key messages.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link ClaimResponse}.
+     * <p>Status code 200: The claimed keys.</p>
      *
      * @param claimRequest    JSON body parameters.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The claimed keys.</p>
      */
     @ApiOperation(
-        value = "Claims one-time keys for use in pre-key messages."
+        value = "Claims one-time keys for use in pre-key messages.",
+        response = ClaimResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The claimed keys.")
@@ -136,13 +146,13 @@ public interface EncryptionApi {
     @POST
     @Secured
     @Path("/claim")
-    ClaimResponse claim(
+    void claim(
         @ApiParam(
             value = "JSON body request."
         ) ClaimRequest claimRequest,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -155,6 +165,9 @@ public interface EncryptionApi {
      * <li>added new device identity keys or removed an existing device with identity keys, between from and to.</li>
      * </ul>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link ChangesResponse}.
+     * <p>Status code 200: The list of users who updated their devices.</p>
      *
      * @param from            Required. The desired start point of the list. Should be the next_batch field from a response to an earlier
      *                        call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted existing
@@ -163,15 +176,15 @@ public interface EncryptionApi {
      *                        typically the most recent such call. This may be used by the server as a hint to check its caches are up to
      *                        date.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The list of users who updated their devices.</p>
      */
     @ApiOperation(
         value = "Gets a list of users who have updated their device identity keys since a previous sync token.",
         notes = "The server should include in the results any users who currently share a room with the calling user (ie, both "
             + "users have membership state join); and added new device identity keys or removed an existing device with identity "
-            + "keys, between from and to."
+            + "keys, between from and to.",
+        response = ChangesResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The list of users who updated their devices.")
@@ -179,7 +192,7 @@ public interface EncryptionApi {
     @GET
     @Secured
     @Path("/changes")
-    ChangesResponse changes(
+    void changes(
         @ApiParam(
             value = "The desired start point of the list. Should be the next_batch field from a response"
                 + " to an earlier call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted"
@@ -194,7 +207,7 @@ public interface EncryptionApi {
         ) @QueryParam("to") String to,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
