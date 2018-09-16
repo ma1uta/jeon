@@ -31,7 +31,7 @@ public class ServerDiscoveryResponse {
      */
     @ApiModelProperty(
         name = "m.homeserver",
-        value = "INformation about the homeserver to connect to.",
+        value = "Information about the homeserver to connect to.",
         required = true
     )
     @JsonProperty("m.homeserver")
