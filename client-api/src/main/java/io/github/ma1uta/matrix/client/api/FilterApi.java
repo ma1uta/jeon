@@ -26,13 +26,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
@@ -56,18 +57,21 @@ public interface FilterApi {
      * events are returned to the client.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link FilterResponse}.
+     * <p>Status code 200: The filter was created.</p>
      *
      * @param userId          Required. The id of the user uploading the filter. The access token must be authorized to make requests for
      *                        this user id.
      * @param filterData      JSON body parameters.
      * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
+     * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @return <p>Status code 200: The filter was created.</p>
      */
     @ApiOperation(
         value = "Uploads a new filter definition to the homeserver.",
-        notes = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client."
+        notes = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client.",
+        response = FilterResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The filter was created.")
@@ -75,7 +79,7 @@ public interface FilterApi {
     @POST
     @Secured
     @Path("/{userId}/filter")
-    FilterResponse uploadFilter(
+    void uploadFilter(
         @ApiParam(
             value = "The id of the user uploading the filter. The access token must be authorized to make requests for this user id.",
             required = true
@@ -83,7 +87,7 @@ public interface FilterApi {
         @ApiParam("JSON body parameters") FilterData filterData,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 
@@ -91,17 +95,20 @@ public interface FilterApi {
      * Download a filter.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link FilterData}.
+     * <p>Status code 200: "The filter defintion".</p>
+     * <p>Status code 404: Unknown filter.</p>
      *
      * @param userId          Required. The user ID to download a filter for.
      * @param filterId        Required. The filter ID to download.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @param securityContext security context.
-     * @return <p>Status code 200: "The filter defintion".</p>
-     * <p>Status code 404: Unknown filter.</p>
+     * @param servletRequest  Servlet request.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
      */
     @ApiOperation(
-        value = "Download a filter."
+        value = "Download a filter.",
+        response = FilterData.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The filter definition."),
@@ -110,7 +117,7 @@ public interface FilterApi {
     @GET
     @Secured
     @Path("/{userId}/filter/{filterId}")
-    FilterData getFilter(
+    void getFilter(
         @ApiParam(
             value = "The user ID to download a filter for.",
             required = true
@@ -121,7 +128,7 @@ public interface FilterApi {
         ) @PathParam("filterId") String filterId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse,
+        @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }
