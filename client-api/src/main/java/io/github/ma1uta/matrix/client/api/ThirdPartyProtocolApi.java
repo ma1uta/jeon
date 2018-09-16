@@ -29,13 +29,14 @@ import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -63,14 +64,17 @@ public interface ThirdPartyProtocolApi {
      * fields required for queries against each protocol.
      * <br>
      * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link Map} from the {@link String} to the {@link Protocol}.
+     * <p>Status code 200: The protocols supported by the homeserver.</p>
      *
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The protocols supported by the homeserver.</p>
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Fetches the overall metadata about protocols supported by the homeserver."
-            + "Includes both the available protocols and all fields required for queries against each protocol."
+            + "Includes both the available protocols and all fields required for queries against each protocol.",
+        response = Map.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The protocols supported by the homeserver.")
@@ -78,24 +82,27 @@ public interface ThirdPartyProtocolApi {
     @GET
     @Secured
     @Path("/protocols")
-    Map<String, Protocol> protocols(
+    void protocols(
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Fetches the metadata from the homeserver about a particular third party protocol.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param protocol        Required. The name of the protocol.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The protocol was found and metadata returned.</p>
+     * <br>
+     * Return: {@link Protocol}.
+     * <p>Status code 200: The protocol was found and metadata returned.</p>
      * <p>Status code 404: The protocol is unknown.</p>
+     *
+     * @param protocol       Required. The name of the protocol.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Fetches the metadata from the homeserver about a particular third party protocol."
+        value = "Fetches the metadata from the homeserver about a particular third party protocol.",
+        response = Protocol.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The protocol was found and metadata returned."),
@@ -104,14 +111,14 @@ public interface ThirdPartyProtocolApi {
     @GET
     @Secured
     @Path("/protocol/{protocol}")
-    Protocol protocol(
+    void protocol(
         @ApiParam(
             value = "the name of the protocol",
             required = true
         ) @PathParam("protocol") String protocol,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
@@ -122,13 +129,15 @@ public interface ThirdPartyProtocolApi {
      * as much as reasonably possible given the network type.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param protocol        Required. The protocol used to communicate to the third party network.
-     * @param uriInfo         Uri info to retrieve all query params.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: At least one portal room was found.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolLocation}s.
+     * <p>Status code 200: At least one portal room was found.</p>
      * <p>Status code 404: No portal rooms were found.</p>
+     *
+     * @param protocol       Required. The protocol used to communicate to the third party network.
+     * @param uriInfo        Uri info to retrieve all query params.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
         value = "Requesting this endpoint with a valid protocol name results in a list of successful mapping results"
@@ -136,7 +145,9 @@ public interface ThirdPartyProtocolApi {
         notes = "Each result contains objects to represent the Matrix room or rooms that represent a portal to this third party network."
             + " Each has the Matrix room alias string, an identifier for the particular third party network protocol, and an object"
             + " containing the network-specific fields that comprise this identifier.It should attempt to canonicalise the identifier"
-            + " as much as reasonably possible given the network type."
+            + " as much as reasonably possible given the network type.",
+        response = ProtocolLocation.class,
+        responseContainer = "List"
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
@@ -145,7 +156,7 @@ public interface ThirdPartyProtocolApi {
     @GET
     @Secured
     @Path("/location/{protocol}")
-    List<ProtocolLocation> locationProtocol(
+    void locationProtocol(
         @ApiParam(
             value = "The protocol used to communicate to the third party network.",
             required = true
@@ -153,23 +164,27 @@ public interface ThirdPartyProtocolApi {
         @Context UriInfo uriInfo,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param protocol        Required. The name of the protocol.
-     * @param uriInfo         Uri info to retrieve all query params.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolUser}s.
+     * <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
      * <p>Status code 404: The Matrix User ID was not found.</p>
+     *
+     * @param protocol       Required. The name of the protocol.
+     * @param uriInfo        Uri info to retrieve all query params.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters."
+        value = "Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.",
+        response = ProtocolUser.class,
+        responseContainer = "List"
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
@@ -178,7 +193,7 @@ public interface ThirdPartyProtocolApi {
     @GET
     @Secured
     @Path("/user/{protocol}")
-    List<ProtocolUser> userProtocol(
+    void userProtocol(
         @ApiParam(
             value = "The name of the protocol",
             required = true
@@ -186,22 +201,26 @@ public interface ThirdPartyProtocolApi {
         @Context UriInfo uriInfo,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Retrieve an array of third party network locations from a Matrix room alias.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param alias           Required. The Matrix room alias to look up.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: At least one portal room was found.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolLocation}s.
+     * <p>Status code 200: At least one portal room was found.</p>
      * <p>Status code 404: No portal rooms were found.</p>
+     *
+     * @param alias          Required. The Matrix room alias to look up.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Retrieve an array of third party network locations from a Matrix room alias."
+        value = "Retrieve an array of third party network locations from a Matrix room alias.",
+        response = ProtocolLocation.class,
+        responseContainer = "List"
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "At least one portal room was found."),
@@ -210,29 +229,33 @@ public interface ThirdPartyProtocolApi {
     @GET
     @Secured
     @Path("/location")
-    List<ProtocolLocation> location(
+    void location(
         @ApiParam(
             value = "The Matrix room alias to look up",
             required = true
         ) @QueryParam("alias") String alias,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 
     /**
      * Retrieve an array of third party users from a Matrix User ID.
      * <br>
      * <b>Requires auth</b>: Yes.
-     *
-     * @param userId          Required. The Matrix User ID to look up.
-     * @param servletRequest  Servlet request.
-     * @param servletResponse Servlet response.
-     * @return <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
+     * <br>
+     * Return: {@link List} of the {@link ProtocolUser}s.
+     * <p>Status code 200: The Matrix User IDs found with the given parameters.</p>
      * <p>Status code 404: The Matrix User ID was not found.</p>
+     *
+     * @param userId         Required. The Matrix User ID to look up.
+     * @param servletRequest Servlet request.
+     * @param asyncResponse  Asynchronous response.
      */
     @ApiOperation(
-        value = "Retrieve an array of third party users from a Matrix User ID."
+        value = "Retrieve an array of third party users from a Matrix User ID.",
+        response = ProtocolUser.class,
+        responseContainer = "List"
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "The Matrix User IDs found with the given parameters."),
@@ -241,13 +264,13 @@ public interface ThirdPartyProtocolApi {
     @GET
     @Secured
     @Path("/user")
-    List<ProtocolUser> user(
+    void user(
         @ApiParam(
             value = "The Matrix User Id to look up",
             required = true
         ) @QueryParam("userid") String userId,
 
         @Context HttpServletRequest servletRequest,
-        @Context HttpServletResponse servletResponse
+        @Suspended AsyncResponse asyncResponse
     );
 }
