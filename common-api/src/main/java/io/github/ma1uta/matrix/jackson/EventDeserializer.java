@@ -22,13 +22,10 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.github.ma1uta.matrix.Event;
-import io.github.ma1uta.matrix.StrippedState;
 import io.github.ma1uta.matrix.Unsigned;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Event deserializer.
@@ -82,16 +79,6 @@ public class EventDeserializer extends JsonDeserializer<Event> {
 
         event.setStateKey(asString(node.get("state_key")));
 
-        JsonNode inviteRoomState = node.get("invite_room_state");
-        if (inviteRoomState != null && inviteRoomState.isArray()) {
-            ArrayNode nodes = (ArrayNode) inviteRoomState;
-            ArrayList<StrippedState> strippedStates = new ArrayList<>(nodes.size());
-            for (JsonNode inviteItem : inviteRoomState) {
-                strippedStates.add(codec.treeToValue(inviteItem, StrippedState.class));
-            }
-            event.setInviteRoomState(strippedStates);
-        }
-
         return event;
     }
 
@@ -106,6 +93,4 @@ public class EventDeserializer extends JsonDeserializer<Event> {
     protected boolean isBlank(String value) {
         return value == null || value.trim().isEmpty();
     }
-
-
 }

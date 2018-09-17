@@ -22,8 +22,6 @@ import io.github.ma1uta.matrix.jackson.EventDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 /**
  * Event.
  */
@@ -579,17 +577,6 @@ public class Event {
     @JsonProperty("state_key")
     private String stateKey;
 
-    /**
-     * This contains an array of StrippedState Events. These events provide information on a subset of state events such as the room name.
-     */
-    @ApiModelProperty(
-        name = "invite_room_state",
-        value = "This contains an array of StrippedState Events. These events provide information on a subset of state events"
-            + " such as the room name."
-    )
-    @JsonProperty("invite_room_state")
-    private List<StrippedState> inviteRoomState;
-
     public String getEventId() {
         return eventId;
     }
@@ -660,13 +647,5 @@ public class Event {
 
     public void setPrevContent(EventContent prevContent) {
         this.prevContent = prevContent;
-    }
-
-    public List<StrippedState> getInviteRoomState() {
-        return inviteRoomState;
-    }
-
-    public void setInviteRoomState(List<StrippedState> inviteRoomState) {
-        this.inviteRoomState = inviteRoomState;
     }
 }
