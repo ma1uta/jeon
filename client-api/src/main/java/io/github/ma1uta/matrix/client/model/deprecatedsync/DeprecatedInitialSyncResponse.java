@@ -21,9 +21,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  * JSON body response of the deprecated initial sync.
+ *
+ * @deprecated in favor of {@link io.github.ma1uta.matrix.client.api.SyncApi#sync(String, String, Boolean, String, Long,
+ * HttpServletRequest, AsyncResponse, SecurityContext)}.
  */
 @Deprecated
 @ApiModel(description = "JSON body response of the deprecated initial sync.")

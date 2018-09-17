@@ -48,7 +48,7 @@ public class LoginRequest {
     /**
      * The fully qualified user ID or just local part of the user ID, to log in.
      * <br>
-     * Deprecated in favour of identifier.
+     * @deprecated in favour of {@link LoginRequest#identifier}.
      */
     @ApiModelProperty(
         value = "he fully qualified user ID or just local part of the user ID, to log in."
@@ -59,7 +59,7 @@ public class LoginRequest {
     /**
      * When logging in using a third party identifier, the medium of the identifier. Must be 'email'.
      * <br>
-     * Deprecated in favour of identifier.
+     * @deprecated in favour of {@link LoginRequest#identifier}.
      */
     @ApiModelProperty(
         value = "When logging in using a third party identifier, the medium of the identifier. Must be 'email'."
@@ -70,7 +70,7 @@ public class LoginRequest {
     /**
      * Third party identifier for the user.
      * <br>
-     * Deprecated in favour of identifier.
+     * @deprecated in favour of {@link LoginRequest#identifier}.
      */
     @ApiModelProperty(
         value = "Third party identifier for the user"

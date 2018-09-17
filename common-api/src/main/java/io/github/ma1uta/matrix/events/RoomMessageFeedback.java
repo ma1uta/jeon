@@ -27,6 +27,8 @@ import io.swagger.annotations.ApiModelProperty;
  * There are two supported acknowledgements: ``delivered`` (sent when the event has been received) and ``read``
  * (sent when the event has been observed by the end-user).
  * The ``target_event_id`` should reference the ``m.room.message`` event being acknowledged.
+ *
+ * @deprecated in favor of {@link Receipt}.
  */
 @Deprecated
 @ApiModel(description = "DEPRECATED. **NB: Usage of this event is discouraged in favour of the** `receipts module`_.")
