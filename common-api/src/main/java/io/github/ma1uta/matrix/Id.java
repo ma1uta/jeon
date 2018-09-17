@@ -19,29 +19,38 @@ package io.github.ma1uta.matrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Matrix id (MXID) util class.
  */
-public final class Id {
+public class Id {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Id.class);
 
     /**
      * MXID pattern.
      */
-    private static final Pattern PATTERN = Pattern.compile("^[@!$#+]([a-zA-Z0-9._=\\-/]+):(.*)$");
+    public static final Pattern PATTERN = Pattern.compile("^[@!$#+]([^:]+):(.+)$");
+
+    /**
+     * User localpart pattern.
+     */
+    public static final Pattern USER = Pattern.compile("[a-z0-9._=\\-/]+");
+
+    /**
+     * Domain pattern.
+     */
+    public static final Pattern DOMAIN = Pattern
+        .compile("(\\d{3}.\\d{3}.\\d{3}.\\d{3}|\\[[0-9\\p{Alpha}:]{0,39}]|[0-9\\-.\\p{Alpha}]{1,255})(:[\\d]+)?");
 
     /**
      * Sigil chars.
      */
-    public final class Sigil {
+    public static class Sigil {
 
-        private Sigil() {
+        protected Sigil() {
             //singleton
         }
 
@@ -67,7 +76,7 @@ public final class Id {
         public static final char GROUP = '+';
     }
 
-    private Id() {
+    protected Id() {
         // singleton.
     }
 
@@ -104,9 +113,8 @@ public final class Id {
         String domain = matcher.group(2);
         LOGGER.trace("localpart: '%s', domain: '%s'", localpart, domain);
 
-        try {
-            new URI(domain);
-        } catch (URISyntaxException e) {
+        Matcher domainMatcher = DOMAIN.matcher(domain);
+        if (!domainMatcher.matches()) {
             String message = String.format("Invalid domain part: '%s'", domain);
             LOGGER.error(message);
             throw new IllegalArgumentException(message);
@@ -127,9 +135,6 @@ public final class Id {
 
     /**
      * Return localpart of the MXID.
-     * <p>
-     * Localpart contains only 'a'-'z', 'A'-'Z', 0-9, '.', '_', '=', '-', '/' characters.
-     * </p>
      *
      * @param id MXID.
      * @return localpart.
@@ -155,7 +160,12 @@ public final class Id {
      * @return {@code true} if user id, else {@code false}.
      */
     public static boolean isUserId(String id) {
-        return sigil(id) == Sigil.USER;
+        try {
+            Matcher matcher = validate(id);
+            return id.charAt(0) == Sigil.USER && USER.matcher(matcher.group(1)).matches();
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
@@ -165,7 +175,11 @@ public final class Id {
      * @return {@code true} if event id, else {@code false}.
      */
     public static boolean isEventId(String id) {
-        return sigil(id) == Sigil.EVENT;
+        try {
+            return sigil(id) == Sigil.EVENT;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
@@ -175,7 +189,11 @@ public final class Id {
      * @return {@code true} if room id, else {@code false}.
      */
     public static boolean isRoomId(String id) {
-        return sigil(id) == Sigil.ROOM;
+        try {
+            return sigil(id) == Sigil.ROOM;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
@@ -185,7 +203,11 @@ public final class Id {
      * @return {@code true} if room alias id, else {@code false}.
      */
     public static boolean isAliasId(String id) {
-        return sigil(id) == Sigil.ALIAS;
+        try {
+            return sigil(id) == Sigil.ALIAS;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
@@ -195,6 +217,10 @@ public final class Id {
      * @return {@code true} if group id, else {@code false}.
      */
     public static boolean isGroupId(String id) {
-        return sigil(id) == Sigil.GROUP;
+        try {
+            return sigil(id) == Sigil.GROUP;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
