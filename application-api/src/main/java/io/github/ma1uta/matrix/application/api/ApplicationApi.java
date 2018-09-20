@@ -43,7 +43,7 @@ import javax.ws.rs.core.MediaType;
     value = "ApplicationService",
     description = "All application services MUST implement these APIs."
 )
-@Path("/v1")
+@Path("/_matrix/app/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ApplicationApi {

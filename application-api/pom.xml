@@ -25,7 +25,7 @@
         <version>0.5.0</version>
     </parent>
     <artifactId>application-api</artifactId>
-    <version>r0.1.0-1</version>
+    <version>r0.1.0-2</version>
 
     <name>Application API</name>
     <description>Application API</description>
