@@ -144,7 +144,8 @@ public interface AccountApi {
      * associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects, though the
      * Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.
      * <br>
-     * Return <p>Status code 200: An email has been sent to the specified address. Note that this may be an email containing the
+     * Return: {@link SessionResponse}.
+     * <p>Status code 200: An email has been sent to the specified address. Note that this may be an email containing the
      * validation token or it may be informing the user of an error.</p>
      * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:</p>
      * <ul>
@@ -283,7 +284,7 @@ public interface AccountApi {
      * address could be found. The server may instead send an email to the given address prompting the user to create an account.
      * M_THREEPID_IN_USE may not be returned.
      * <br>
-     * Return: {@link EmptyResponse}.
+     * Return: {@link SessionResponse}.
      * <p>Status code 200: An email was sent to the given address.</p>
      * <p>Status code 400: The referenced third party identifier is not recognised by the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
@@ -300,7 +301,7 @@ public interface AccountApi {
             + " /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email"
             + " address could be found. The server may instead send an email to the given address prompting the user to create an account."
             + " M_THREEPID_IN_USE may not be returned.",
-        response = EmptyResponse.class
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An email was sent to the given address"),
@@ -326,7 +327,7 @@ public interface AccountApi {
      * except that M_THREEPID_NOT_FOUND may be returned if no account matching the given phone number could be found. The server may
      * instead send an SMS message to the given address prompting the user to create an account. M_THREEPID_IN_USE may not be returned.
      * <br>
-     * Return: {@link EmptyResponse}.
+     * Return: {@link SessionResponse}.
      * <p>Status code 200: An SMS message was sent to the given phone number.</p>
      * <p>Status code 400: The referenced third party identifier is not recognised by the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
@@ -343,7 +344,7 @@ public interface AccountApi {
             + " /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email"
             + " address could be found. The server may instead send an email to the given address prompting the user to create an account."
             + " M_THREEPID_IN_USE may not be returned.",
-        response = EmptyResponse.class
+        response = SessionResponse.class
     )
     @ApiResponses( {
         @ApiResponse(code = 200, message = "An SMS message was sent to the given phone number."),
