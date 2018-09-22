@@ -173,7 +173,7 @@ public interface AccountApi {
         @ApiResponse(code = 403, message = "The homeserver does not permit the address to be bound.")
     })
     @POST
-    @Path("/register/email/emailRequestToken")
+    @Path("/register/email/requestToken")
     void emailRequestToken(
         @ApiParam(
             value = "JSON body request."

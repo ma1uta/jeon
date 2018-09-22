@@ -29,7 +29,10 @@ public class UnsignedDeviceInfo {
     /**
      * The display name which the user set on the device.
      */
-    @ApiModelProperty(name = "device_display_name", value = "The display name which the user set on the device.")
+    @ApiModelProperty(
+        name = "device_display_name",
+        value = "The display name which the user set on the device."
+    )
     @JsonProperty("device_display_name")
     private String deviceDisplayName;
 

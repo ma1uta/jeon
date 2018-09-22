@@ -42,41 +42,62 @@ public class RegisterRequest {
     /**
      * If true, the server binds the email used for authentication to the Matrix ID with the ID Server.
      */
-    @ApiModelProperty(name = "bind_email",
-        value = "If true, the server binds the email used for authentication to the Matrix ID with the ID Server.")
+    @ApiModelProperty(
+        name = "bind_email",
+        value = "If true, the server binds the email used for authentication to the Matrix ID with the ID Server."
+    )
     @JsonProperty("bind_email")
     private Boolean bindEmail;
 
     /**
      * The basis for the localpart of the desired Matrix ID. If omitted, the homeserver MUST generate a Matrix ID local part.
      */
-    @ApiModelProperty("The basis for the localpart of the desired Matrix ID. If omitted, the homeserver MUST generate a"
-        + " Matrix ID local part.")
+    @ApiModelProperty(
+        value = "The basis for the localpart of the desired Matrix ID. If omitted, the homeserver MUST generate a"
+        + " Matrix ID local part."
+    )
     private String username;
 
     /**
      * The desired password for the account.
      */
-    @ApiModelProperty("The desired password for the account.")
+    @ApiModelProperty(
+        value = "The desired password for the account."
+    )
     private String password;
 
     /**
      * ID of the client device. If this does not correspond to a known client device, a new device will be created.
      * The server will auto-generate a device_id if this is not specified.
      */
-    @ApiModelProperty(name = "device_id",
+    @ApiModelProperty(
+        name = "device_id",
         value = "ID of the client device. If this does not correspond to a known client device, a new device will be created."
-            + " The server will auto-generate a device_id if this is not specified.")
+            + " The server will auto-generate a device_id if this is not specified."
+    )
     @JsonProperty("device_id")
     private String deviceId;
 
     /**
      * A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device.
      */
-    @ApiModelProperty(name = "initial_device_display_name",
-        value = "A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device.")
+    @ApiModelProperty(
+        name = "initial_device_display_name",
+        value = "A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device."
+    )
     @JsonProperty("initial_device_display_name")
     private String initialDeviceDisplayName;
+
+    /**
+     * If true, an access_token and device_id should not be returned from this call, therefore preventing an automatic login.
+     * Defaults to false.
+     */
+    @ApiModelProperty(
+        name = "inhibit_login",
+        value = "If true, an access_token and device_id should not be returned from this call, therefore preventing an automatic login."
+    )
+    @JsonProperty("inhibit_login")
+    private Boolean inhibitLogin;
 
     public AuthenticationData getAuth() {
         return auth;
@@ -124,5 +145,13 @@ public class RegisterRequest {
 
     public void setInitialDeviceDisplayName(String initialDeviceDisplayName) {
         this.initialDeviceDisplayName = initialDeviceDisplayName;
+    }
+
+    public Boolean getInhibitLogin() {
+        return inhibitLogin;
+    }
+
+    public void setInhibitLogin(Boolean inhibitLogin) {
+        this.inhibitLogin = inhibitLogin;
     }
 }

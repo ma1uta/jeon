@@ -86,7 +86,9 @@ public class DeviceKeys {
     /**
      * Additional data added to the device key information by intermediate servers, and not covered by the signatures.
      */
-    @ApiModelProperty("Additional data added to the device key information by intermediate servers, and not covered by the signatures.")
+    @ApiModelProperty(
+        value = "Additional data added to the device key information by intermediate servers, and not covered by the signatures."
+    )
     private UnsignedDeviceInfo unsignedDeviceInfo;
 
     public String getUserId() {

@@ -29,8 +29,10 @@ public class PublicRoomsFilter {
     /**
      * A string to search for in the room metadata, e.g. name, topic, canonical alias etc. (Optional).
      */
-    @ApiModelProperty(name = "generic_search_term", value = "A string to search for in the room metadata, e.g. name, topic, canonical "
-        + "alias etc. (Optional).")
+    @ApiModelProperty(
+        name = "generic_search_term",
+        value = "A string to search for in the room metadata, e.g. name, topic, canonical alias etc. (Optional)."
+    )
     @JsonProperty("generic_search_term")
     private String genericSearchTerm;
 

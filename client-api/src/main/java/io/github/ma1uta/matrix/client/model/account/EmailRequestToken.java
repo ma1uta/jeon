@@ -74,7 +74,17 @@ public class EmailRequestToken {
         required = true
     )
     @JsonProperty("send_attempt")
-    private String sendAttempt;
+    private Long sendAttempt;
+
+    /**
+     * Optional. When the validation is completed, the identity server will redirect the user to this URL.
+     */
+    @ApiModelProperty(
+        name = "next_link",
+        value = "When the validation is completed, the identity server will redirect the user to this URL."
+    )
+    @JsonProperty("next_link")
+    private String nextLink;
 
     public String getIdServer() {
         return idServer;
@@ -100,11 +110,19 @@ public class EmailRequestToken {
         this.email = email;
     }
 
-    public String getSendAttempt() {
+    public Long getSendAttempt() {
         return sendAttempt;
     }
 
-    public void setSendAttempt(String sendAttempt) {
+    public void setSendAttempt(Long sendAttempt) {
         this.sendAttempt = sendAttempt;
+    }
+
+    public String getNextLink() {
+        return nextLink;
+    }
+
+    public void setNextLink(String nextLink) {
+        this.nextLink = nextLink;
     }
 }
