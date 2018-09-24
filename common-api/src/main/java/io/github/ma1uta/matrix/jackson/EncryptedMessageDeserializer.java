@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.jackson;
 
-import static io.github.ma1uta.matrix.Event.Enctyption.MEGOLM;
-import static io.github.ma1uta.matrix.Event.Enctyption.OLM;
+import static io.github.ma1uta.matrix.Event.Encryption.MEGOLM;
+import static io.github.ma1uta.matrix.Event.Encryption.OLM;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
