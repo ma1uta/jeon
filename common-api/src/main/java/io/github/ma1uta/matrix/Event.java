@@ -446,9 +446,9 @@ public class Event {
     /**
      * Encryption algorithms.
      */
-    public static class Enctyption {
+    public static class Encryption {
 
-        protected Enctyption() {
+        protected Encryption() {
         }
 
         /**

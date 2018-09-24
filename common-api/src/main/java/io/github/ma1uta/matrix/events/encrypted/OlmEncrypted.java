@@ -50,6 +50,6 @@ public class OlmEncrypted extends RoomEncrypted {
     }
 
     public String getAlgorithm() {
-        return Event.Enctyption.OLM;
+        return Event.Encryption.OLM;
     }
 }

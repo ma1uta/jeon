@@ -46,6 +46,6 @@ public class MegolmEncrypted extends RoomEncrypted {
 
     @Override
     public String getAlgorithm() {
-        return Event.Enctyption.MEGOLM;
+        return Event.Encryption.MEGOLM;
     }
 }
