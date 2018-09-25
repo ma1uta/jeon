@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import io.github.ma1uta.matrix.client.api.AuthApi;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -57,5 +58,10 @@ public class ThirdpartyIdentifier extends Identifier {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String getType() {
+        return AuthApi.IdentifierType.THIRD_PARTY;
     }
 }

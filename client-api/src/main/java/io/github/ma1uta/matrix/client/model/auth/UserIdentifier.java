@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import io.github.ma1uta.matrix.client.api.AuthApi;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -42,5 +43,10 @@ public class UserIdentifier extends Identifier {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    @Override
+    public String getType() {
+        return AuthApi.IdentifierType.USER;
     }
 }

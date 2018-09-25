@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.github.ma1uta.matrix.client.api.AuthApi;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -31,9 +33,9 @@ import io.swagger.annotations.ApiModelProperty;
     property = "type"
 )
 @JsonSubTypes( {
-    @JsonSubTypes.Type(name = "m.id.user", value = UserIdentifier.class),
-    @JsonSubTypes.Type(name = "m.id.thirdparty", value = ThirdpartyIdentifier.class),
-    @JsonSubTypes.Type(name = "m.id.phone", value = PhoneIdentifier.class)
+    @JsonSubTypes.Type(name = AuthApi.IdentifierType.USER, value = UserIdentifier.class),
+    @JsonSubTypes.Type(name = AuthApi.IdentifierType.THIRD_PARTY, value = ThirdpartyIdentifier.class),
+    @JsonSubTypes.Type(name = AuthApi.IdentifierType.PHONE, value = PhoneIdentifier.class)
 })
 @ApiModel(description = "Identifier types.",
     subTypes = {
@@ -51,13 +53,6 @@ public abstract class Identifier {
         value = "Identifier type.",
         required = true
     )
-    private String type;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    @JsonProperty(value = "type", access = JsonProperty.Access.READ_ONLY)
+    public abstract String getType();
 }

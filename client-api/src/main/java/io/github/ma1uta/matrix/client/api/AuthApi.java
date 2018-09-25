@@ -102,6 +102,30 @@ public interface AuthApi {
     }
 
     /**
+     * Identifier types.
+     */
+    class IdentifierType {
+
+        protected IdentifierType() {
+        }
+
+        /**
+         * Matrix user id (MXID).
+         */
+        public static final String USER = "m.id.user";
+
+        /**
+         * Third party user id.
+         */
+        public static final String THIRD_PARTY = "m.id.thirdparty";
+
+        /**
+         * User phone.
+         */
+        public static final String PHONE = "m.id.phone";
+    }
+
+    /**
      * Gets the homeserver's supported login types to authenticate users. Clients should pick one of these and supply it as the
      * type when logging in.
      * <br>
