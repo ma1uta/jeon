@@ -47,7 +47,9 @@ import io.swagger.annotations.ApiModelProperty;
 public abstract class Identifier {
 
     /**
-     * Identifier type.
+     * The identifier type.
+     *
+     * @return The identifier type.
      */
     @ApiModelProperty(
         value = "Identifier type.",
