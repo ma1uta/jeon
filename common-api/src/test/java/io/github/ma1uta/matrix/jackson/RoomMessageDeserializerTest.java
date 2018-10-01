@@ -22,20 +22,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.messages.Notice;
 import io.github.ma1uta.matrix.events.messages.RawMessage;
 import io.github.ma1uta.matrix.events.messages.Text;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 public class RoomMessageDeserializerTest {
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper;
 
-    private RoomMessageDeserializer roomMessageDeserializer = new RoomMessageDeserializer();
+    private RoomMessageDeserializer roomMessageDeserializer;
+
+    @BeforeEach
+    public void before() {
+        mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        roomMessageDeserializer = new RoomMessageDeserializer();
+    }
 
     @Test
     public void msgtype() throws Exception {
