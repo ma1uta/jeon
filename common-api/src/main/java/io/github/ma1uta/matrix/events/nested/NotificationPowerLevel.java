@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Notifications.
  */
-@ApiModel(description = "Notifications.")
+@Schema(
+    description = "Notifications."
+)
 public class NotificationPowerLevel {
 
     /**
      * The level required to trigger an @room notification. Defaults to 50 if unspecified.
      */
-    @ApiModelProperty(
-        value = "The level required to trigger an @room notification. Defaults to 50 if unspecified."
+    @Schema(
+        description = "The level required to trigger an @room notification. Defaults to 50 if unspecified."
     )
     private Byte room;
 

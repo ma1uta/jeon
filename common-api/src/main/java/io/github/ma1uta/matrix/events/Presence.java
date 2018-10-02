@@ -18,21 +18,22 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Informs the client of a user's presence state change.
  */
-@ApiModel(description = "Informs the client of a user's presence state change.")
+@Schema(
+    description = "Informs the client of a user's presence state change."
+)
 public class Presence implements EventContent {
 
     /**
      * The current avatar URL for this user, if any.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "avatar_url",
-        value = "The current avatar URL for this user, if any."
+        description = "The current avatar URL for this user, if any."
     )
     @JsonProperty("avatar_url")
     private String avatarUrl;
@@ -40,9 +41,9 @@ public class Presence implements EventContent {
     /**
      * The current display name for this user, if any.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "displayname",
-        value = "The current display name for this user, if any."
+        description = "The current display name for this user, if any."
     )
     @JsonProperty("displayname")
     private String displayName;
@@ -50,9 +51,9 @@ public class Presence implements EventContent {
     /**
      * The last time since this used performed some action, in milliseconds.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "last_active_ago",
-        value = "The last time since this used performed some action, in milliseconds."
+        description = "The last time since this used performed some action, in milliseconds."
     )
     @JsonProperty("last_active_ago")
     private Long lastActiveAgo;
@@ -60,8 +61,8 @@ public class Presence implements EventContent {
     /**
      * Required. The presence state for this user. One of: ["online", "offline", "unavailable"].
      */
-    @ApiModelProperty(
-        value = "The presence state for this user.",
+    @Schema(
+        description = "The presence state for this user.",
         required = true,
         allowableValues = "online, offline, unavailable"
     )
@@ -70,9 +71,9 @@ public class Presence implements EventContent {
     /**
      * Whether the user is currently active.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "currently_active",
-        value = "Whether the user is currently active."
+        description = "Whether the user is currently active."
     )
     @JsonProperty("currently_active")
     private Boolean currentlyActive;

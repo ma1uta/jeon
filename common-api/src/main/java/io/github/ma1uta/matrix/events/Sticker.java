@@ -18,21 +18,22 @@ package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.ImageInfo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This message represents a single sticker image.
  */
-@ApiModel(description = "This message represents a single sticker image.")
+@Schema(
+    description = "This message represents a single sticker image."
+)
 public class Sticker implements EventContent {
 
     /**
      * Required. A textual representation or associated description of the sticker image. This could be the alt text of the original
      * image, or a message to accompany and further describe the sticker.
      */
-    @ApiModelProperty(
-        value = "A textual representation or associated description of the sticker image. This could be the alt text"
+    @Schema(
+        description = "A textual representation or associated description of the sticker image. This could be the alt text"
             + " of the original image, or a message to accompany and further describe the sticker.",
         required = true
     )
@@ -41,8 +42,8 @@ public class Sticker implements EventContent {
     /**
      * Required. Metadata about the image referred to in url including a thumbnail representation.
      */
-    @ApiModelProperty(
-        value = "Metadata about the image referred to in url including a thumbnail representation.",
+    @Schema(
+        description = "Metadata about the image referred to in url including a thumbnail representation.",
         required = true
     )
     private ImageInfo info;
@@ -50,8 +51,8 @@ public class Sticker implements EventContent {
     /**
      * Required. The URL to the sticker image. This must be a valid mxc:// URI.
      */
-    @ApiModelProperty(
-        value = "The URL to the sticker image. This must be a valid mxc:// URI.",
+    @Schema(
+        description = "The URL to the sticker image. This must be a valid mxc:// URI.",
         required = true
     )
     private String url;

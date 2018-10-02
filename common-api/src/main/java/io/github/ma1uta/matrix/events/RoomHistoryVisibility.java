@@ -18,21 +18,22 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This event controls whether a user can see the events that happened in a room from before they joined.
  */
-@ApiModel(description = "This event controls whether a user can see the events that happened in a room from before they joined.")
+@Schema(
+    description = "This event controls whether a user can see the events that happened in a room from before they joined."
+)
 public class RoomHistoryVisibility implements EventContent {
 
     /**
      * Required. Who can see the room history. One of: ["invited", "joined", "shared", "world_readable"].
      */
-    @ApiModelProperty(
+    @Schema(
         name = "history_visibility",
-        value = "Who can see the room history.",
+        description = "Who can see the room history.",
         required = true,
         allowableValues = "invited, joined, shared, world_readable"
     )

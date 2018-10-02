@@ -49,12 +49,12 @@ import io.github.ma1uta.matrix.events.RoomTopic;
 import io.github.ma1uta.matrix.events.Sticker;
 import io.github.ma1uta.matrix.events.Tag;
 import io.github.ma1uta.matrix.events.Typing;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Parent class of all event contents part in the Event.
  */
-@ApiModel(
+@Schema(
     description = "Parent class of all event contents part in the Event.",
     subTypes = {
         CallAnswer.class,
@@ -90,7 +90,7 @@ import io.swagger.annotations.ApiModel;
         RoomKeyRequest.class,
         ForwardedRoomKey.class,
         RoomServerAcl.class
-    },
-    discriminator = "type")
+    }
+)
 public interface EventContent {
 }

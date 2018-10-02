@@ -20,28 +20,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.nested.LocationInfo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This message represents a real-world location.
  */
-@ApiModel(description = "This message represents a real-world location.")
+@Schema(
+    description = "This message represents a real-world location."
+)
 public class Location extends RoomMessage {
 
     /**
      * Information about the file referred to in url.
      */
-    @ApiModelProperty(
-        value = "Information about the file referred to in url."
+    @Schema(
+        description = "Information about the file referred to in url."
     )
     private LocationInfo info;
 
     /**
      * Required. A geo URI representing this location.
      */
-    @ApiModelProperty(
-        value = "A geo URI representing this location.",
+    @Schema(
+        description = "A geo URI representing this location.",
         required = true
     )
     @JsonProperty("geo_uri")

@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Signed part of the invitation request.
  */
-@ApiModel(description = "Signed part of the invitation request.")
+@Schema(
+    description = "Signed part of the invitation request."
+)
 public class Signed {
 
     /**
      * Required. The invited matrix user ID. Must be equal to the user_id property of the event.
      */
-    @ApiModelProperty(
-        value = "The invited matrix user ID. Must be equal to the user_id property of the event.",
+    @Schema(
+        description = "The invited matrix user ID. Must be equal to the user_id property of the event.",
         required = true
     )
     private String mxid;
@@ -39,8 +40,8 @@ public class Signed {
     /**
      * Required. The token property of the containing third_party_invite object.
      */
-    @ApiModelProperty(
-        value = "The token property of the containing third_party_invite object.",
+    @Schema(
+        description = "The token property of the containing third_party_invite object.",
         required = true)
     private String token;
 
@@ -48,9 +49,9 @@ public class Signed {
      * Required. A single signature from the verifying server, in the format specified by the Signing Events section of the server-server
      * API.
      */
-    @ApiModelProperty(
-        value = "A single signature from the verifying server, in the format specified by the Signing Events section of the server-server"
-            + " API.",
+    @Schema(
+        description = "A single signature from the verifying server, in the format specified by the Signing Events section"
+            + " of the server-server API.",
         required = true
     )
     private Map<String, Map<String, String>> signatures;

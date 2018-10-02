@@ -17,12 +17,14 @@
 package io.github.ma1uta.matrix.events.messages;
 
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This message is the most basic message and is used to represent text.
  */
-@ApiModel(description = "This message is the most basic message and is used to represent text.")
+@Schema(
+    description = "This message is the most basic message and is used to represent text."
+)
 public class Text extends FormattedBody {
 
     @Override

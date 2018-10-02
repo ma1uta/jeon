@@ -17,8 +17,7 @@
 package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -28,18 +27,20 @@ import java.util.List;
  * not be able to see some of the events pinned due to visibility settings in the room. Clients are responsible for determining
  * if a particular event in the pinned list is displayable, and have the option to not display it if it cannot be pinned in the client.
  */
-@ApiModel(description = "This event is used to \"pin\" particular events in a room for other participants to review later."
-    + " The order of the pinned events is guaranteed and based upon the order supplied in the event. Clients should be aware"
-    + " that the current user may not be able to see some of the events pinned due to visibility settings in the room. Clients"
-    + " are responsible for determining if a particular event in the pinned list is displayable, and have the option to not"
-    + " display it if it cannot be pinned in the client.")
+@Schema(
+    description = "This event is used to \"pin\" particular events in a room for other participants to review later."
+        + " The order of the pinned events is guaranteed and based upon the order supplied in the event. Clients should be aware"
+        + " that the current user may not be able to see some of the events pinned due to visibility settings in the room. Clients"
+        + " are responsible for determining if a particular event in the pinned list is displayable, and have the option to not"
+        + " display it if it cannot be pinned in the client."
+)
 public class RoomPinned implements EventContent {
 
     /**
      * Required. An ordered list of event IDs to pin.
      */
-    @ApiModelProperty(
-        value = "An ordered list of event IDs to pin.",
+    @Schema(
+        description = "An ordered list of event IDs to pin.",
         required = true
     )
     private List<String> pinned;

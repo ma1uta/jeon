@@ -16,11 +16,13 @@
 
 package io.github.ma1uta.matrix;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Empty response.
  */
-@ApiModel(description = "Empty response")
+@Schema(
+    description = "Empty response"
+)
 public class EmptyResponse {
 }

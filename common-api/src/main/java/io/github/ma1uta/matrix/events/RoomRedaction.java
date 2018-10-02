@@ -17,8 +17,7 @@
 package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Events can be redacted by either room or server admins. Redacting an event means that all keys not required by the protocol
@@ -27,18 +26,20 @@ import io.swagger.annotations.ApiModelProperty;
  * event, which can be undone, but cannot be applied to state events. The event that has been redacted is specified in the redacts
  * event level key.
  */
-@ApiModel(description = "Events can be redacted by either room or server admins. Redacting an event means that all keys not"
-    + " required by the protocol are stripped off, allowing admins to remove offensive or illegal content that may have been"
-    + " attached to any event. This cannot be undone, allowing server owners to physically delete the offending data."
-    + " There is also a concept of a moderator hiding a message event, which can be undone, but cannot be applied to state events."
-    + " The event that has been redacted is specified in the redacts event level key.")
+@Schema(
+    description = "Events can be redacted by either room or server admins. Redacting an event means that all keys not"
+        + " required by the protocol are stripped off, allowing admins to remove offensive or illegal content that may have been"
+        + " attached to any event. This cannot be undone, allowing server owners to physically delete the offending data."
+        + " There is also a concept of a moderator hiding a message event, which can be undone, but cannot be applied to state events."
+        + " The event that has been redacted is specified in the redacts event level key."
+)
 public class RoomRedaction implements EventContent {
 
     /**
      * The reason for the redaction, if any.
      */
-    @ApiModelProperty(
-        value = "The reason for the redaction, if any."
+    @Schema(
+        description = "The reason for the redaction, if any."
     )
     private String reason;
 

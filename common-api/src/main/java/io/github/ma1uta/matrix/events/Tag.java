@@ -18,22 +18,23 @@ package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.TagInfo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Informs the client of tags on a room.
  */
-@ApiModel(description = "Informs the client of tags on a room.")
+@Schema(
+    description = "Informs the client of tags on a room."
+)
 public class Tag implements EventContent {
 
     /**
      * The tags on the room and their contents.
      */
-    @ApiModelProperty(
-        value = "The tags on the room and their contents."
+    @Schema(
+        description = "The tags on the room and their contents."
     )
     private Map<String, TagInfo> tags;
 

@@ -17,23 +17,24 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Receipts.
  */
-@ApiModel(description = "Receipts.")
+@Schema(
+    description = "Receipts."
+)
 public class ReceiptInfo {
 
     /**
      * A collection of users who have sent m.read receipts for this event.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "m.read",
-        value = "A collection of users who have sent m.read receipts for this event."
+        description = "A collection of users who have sent m.read receipts for this event."
     )
     @JsonProperty("m.read")
     private Map<String, ReceiptTs> read;

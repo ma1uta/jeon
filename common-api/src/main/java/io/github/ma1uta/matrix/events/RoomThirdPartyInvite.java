@@ -19,8 +19,7 @@ package io.github.ma1uta.matrix.events;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.PublicKeys;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -29,18 +28,20 @@ import java.util.List;
  * public key whose private key must be used to sign the token. Any user who can present that signature may use this invitation
  * to join the target room.
  */
-@ApiModel(description = "Acts as an m.room.member invite event, where there isn't a target user_id to invite."
-    + " This event contains a token and a public key whose private key must be used to sign the token."
-    + " Any user who can present that signature may use this invitation to join the target room.")
+@Schema(
+    description = "Acts as an m.room.member invite event, where there isn't a target user_id to invite."
+        + " This event contains a token and a public key whose private key must be used to sign the token."
+        + " Any user who can present that signature may use this invitation to join the target room."
+)
 public class RoomThirdPartyInvite implements EventContent {
 
     /**
      * Required. A user-readable string which represents the user who has been invited. This should not contain the user's
      * third party ID, as otherwise when the invite is accepted it would leak the association between the matrix ID and the third party ID.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "display_name",
-        value = "A user-readable string which represents the user who has been invited."
+        description = "A user-readable string which represents the user who has been invited."
             + " This should not contain the user's third party ID, as otherwise when the invite is accepted it would leak the association"
             + " between the matrix ID and the third party ID.",
         required = true
@@ -52,9 +53,9 @@ public class RoomThirdPartyInvite implements EventContent {
      * Required. A URL which can be fetched, with querystring public_key=public_key, to validate whether the key has been revoked.
      * The URL must return a JSON object containing a boolean property named 'valid'.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "key_validity_url",
-        value = "A URL which can be fetched, with querystring public_key=public_key, to"
+        description = "A URL which can be fetched, with querystring public_key=public_key, to"
             + " validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'.",
         required = true
     )
@@ -65,9 +66,9 @@ public class RoomThirdPartyInvite implements EventContent {
      * Required. A base64-encoded ed25519 key with which token must be signed (though a signature from any entry in public_keys is
      * also sufficient). This exists for backwards compatibility.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "public_key",
-        value = "A base64-encoded ed25519 key with which token must be signed"
+        description = "A base64-encoded ed25519 key with which token must be signed"
             + " (though a signature from any entry in public_keys is also sufficient). This exists for backwards compatibility.",
         required = true
     )
@@ -77,9 +78,9 @@ public class RoomThirdPartyInvite implements EventContent {
     /**
      * Keys with which the token may be signed.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "public_keys",
-        value = "Keys with which the token may be signed."
+        description = "Keys with which the token may be signed."
     )
     @JsonProperty("public_keys")
     private List<PublicKeys> publicKeys;

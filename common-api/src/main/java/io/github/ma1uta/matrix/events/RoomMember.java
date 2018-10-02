@@ -20,26 +20,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.Invite;
 import io.github.ma1uta.matrix.events.nested.RoomMemberUnsigned;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Adjusts the membership state for a user in a room. It is preferable to use the membership APIs (/rooms/&lt;room id&gt;/invite etc)
  * when performing membership actions rather than adjusting the state directly as there are a restricted set of valid transformations.
  * For example, user A cannot force user B to join a room, and trying to force this state change directly will fail.
  */
-@ApiModel(description = "Adjusts the membership state for a user in a room. It is preferable to use the membership APIs"
-    + " (/rooms/<room id>/invite etc) when performing membership actions rather than adjusting the state directly"
-    + " as there are a restricted set of valid transformations. For example, user A cannot force user B to join a room,"
-    + " and trying to force this state change directly will fail.")
+@Schema(
+    description = "Adjusts the membership state for a user in a room. It is preferable to use the membership APIs"
+        + " (/rooms/<room id>/invite etc) when performing membership actions rather than adjusting the state directly"
+        + " as there are a restricted set of valid transformations. For example, user A cannot force user B to join a room,"
+        + " and trying to force this state change directly will fail."
+)
 public class RoomMember implements EventContent {
 
     /**
      * The avatar URL for this user, if any. This is added by the homeserver.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "avatar_url",
-        value = "The avatar URL for this user, if any. This is added by the homeserver."
+        description = "The avatar URL for this user, if any. This is added by the homeserver."
     )
     @JsonProperty("avatar_url")
     private String avatarUrl;
@@ -47,9 +48,9 @@ public class RoomMember implements EventContent {
     /**
      * The display name for this user, if any. This is added by the homeserver.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "displayname",
-        value = "The display name for this user, if any. This is added by the homeserver."
+        description = "The display name for this user, if any. This is added by the homeserver."
     )
     @JsonProperty("displayname")
     private String displayName;
@@ -57,8 +58,8 @@ public class RoomMember implements EventContent {
     /**
      * Required. The membership state of the user. One of: ["invite", "join", "knock", "leave", "ban"].
      */
-    @ApiModelProperty(
-        value = "The membership state of the user.",
+    @Schema(
+        description = "The membership state of the user.",
         required = true,
         allowableValues = "invite, join, knock, leave, ban"
     )
@@ -67,9 +68,9 @@ public class RoomMember implements EventContent {
     /**
      * Flag indicating if the room containing this event was created with the intention of being a direct chat. See Direct Messaging.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "is_direct",
-        value = "Flag indicating if the room containing this event was created with the intention of being a direct chat."
+        description = "Flag indicating if the room containing this event was created with the intention of being a direct chat."
             + " See Direct Messaging."
     )
     @JsonProperty("is_direct")
@@ -78,9 +79,9 @@ public class RoomMember implements EventContent {
     /**
      * Third-party invites.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "third_party_invite",
-        value = "Third-party invites."
+        description = "Third-party invites."
     )
     @JsonProperty("third_party_invite")
     private Invite thirdPartyInvite;
@@ -88,8 +89,8 @@ public class RoomMember implements EventContent {
     /**
      * Contains optional extra information about the event.
      */
-    @ApiModelProperty(
-        value = "Contains optional extra information about the event."
+    @Schema(
+        description = "Contains optional extra information about the event."
     )
     private RoomMemberUnsigned unsigned;
 

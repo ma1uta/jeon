@@ -16,36 +16,37 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Audio type.
  */
-@ApiModel(description = "Audio type.")
+@Schema(
+    description = "Audio type."
+)
 public class AudioInfo {
 
     /**
      * The duration of the audio in milliseconds.
      */
-    @ApiModelProperty(
-        value = "The duration of the audio in milliseconds."
+    @Schema(
+        description = "The duration of the audio in milliseconds."
     )
     private Long duration;
 
     /**
      * The mimetype of the audio e.g. audio/aac.
      */
-    @ApiModelProperty(
-        value = "The mimetype of the audio e.g. audio/aac."
+    @Schema(
+        description = "The mimetype of the audio e.g. audio/aac."
     )
     private String mimetype;
 
     /**
      * The size of the audio clip in bytes.
      */
-    @ApiModelProperty(
-        value = "The size of the audio clip in bytes."
+    @Schema(
+        description = "The size of the audio clip in bytes."
     )
     private Long size;
 

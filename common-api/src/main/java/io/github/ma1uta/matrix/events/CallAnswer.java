@@ -19,8 +19,7 @@ package io.github.ma1uta.matrix.events;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.Answer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Message Event.
@@ -28,14 +27,16 @@ import io.swagger.annotations.ApiModelProperty;
  * This event is sent by the callee when they wish to answer the call.
  * </p>
  */
-@ApiModel(description = "This event is sent by the callee when they wish to answer the call.")
+@Schema(
+    description = "This event is sent by the callee when they wish to answer the call."
+)
 public class CallAnswer implements EventContent {
 
     /**
      * Required. The ID of the call this event relates to.
      */
-    @ApiModelProperty(
-        value = "The ID of the call this event relates to.",
+    @Schema(
+        description = "The ID of the call this event relates to.",
         required = true
     )
     @JsonProperty("call_id")
@@ -44,8 +45,8 @@ public class CallAnswer implements EventContent {
     /**
      * Required. The session description object.
      */
-    @ApiModelProperty(
-        value = "The session description object.",
+    @Schema(
+        description = "The session description object.",
         required = true
     )
     private Answer answer;
@@ -53,8 +54,8 @@ public class CallAnswer implements EventContent {
     /**
      * Required. The version of the VoIP specification this message adheres to. This specification is version 0.
      */
-    @ApiModelProperty(
-        value = "The version of the VoIP specification this message adheres to. This specification is version 0.",
+    @Schema(
+        description = "The version of the VoIP specification this message adheres to. This specification is version 0.",
         required = true
     )
     private Long version;

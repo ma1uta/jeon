@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.protocol;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Definition of valid values for a field.
  */
-@ApiModel(description = "Definition of valid values for a field.")
+@Schema(
+    description = "Definition of valid values for a field."
+)
 public class FieldMetadata {
 
     /**
      * Required. A regular expression for validation of a field's value.
      */
-    @ApiModelProperty(
-        value = "A regular expression for validation of a field's value.",
+    @Schema(
+        description = "A regular expression for validation of a field's value.",
         required = true
     )
     private String regexp;
@@ -37,8 +38,8 @@ public class FieldMetadata {
     /**
      * Required. An placeholder serving as a valid example of the field value.
      */
-    @ApiModelProperty(
-        value = "An placeholder serving as a valid example of the field value.",
+    @Schema(
+        description = "An placeholder serving as a valid example of the field value.",
         required = true
     )
     private String placeholder;

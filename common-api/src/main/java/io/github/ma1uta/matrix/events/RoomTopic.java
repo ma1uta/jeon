@@ -17,24 +17,25 @@
 package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * A topic is a short message detailing what is currently being discussed in the room. It can also be used as a way to display extra
  * information about the room, which may not be suitable for the room name. The room topic can also be set when creating a room using
  * /createRoom with the topic key.
  */
-@ApiModel(description = "A topic is a short message detailing what is currently being discussed in the room. It can also be used as"
-    + " a way to display extra information about the room, which may not be suitable for the room name. The room topic can also be"
-    + " set when creating a room using /createRoom with the topic key.")
+@Schema(
+    description = "A topic is a short message detailing what is currently being discussed in the room. It can also be used as"
+        + " a way to display extra information about the room, which may not be suitable for the room name. The room topic can also be"
+        + " set when creating a room using /createRoom with the topic key."
+)
 public class RoomTopic implements EventContent {
 
     /**
      * Required. The topic text.
      */
-    @ApiModelProperty(
-        value = "The topic text",
+    @Schema(
+        description = "The topic text",
         required = true
     )
     private String topic;

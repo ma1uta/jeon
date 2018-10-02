@@ -20,19 +20,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.encrypted.MegolmEncrypted;
 import io.github.ma1uta.matrix.events.encrypted.OlmEncrypted;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This event type is used when sending encrypted events. It can be used either within a room
  * (in which case it will have all of the Room Event fields), or as a to-device event.
  */
-@ApiModel(description = "This event type is used when sending encrypted events. It can be used either within a room"
-    + " (in which case it will have all of the Room Event fields), or as a to-device event.",
+@Schema(
+    description = "This event type is used when sending encrypted events. It can be used either within a room"
+        + " (in which case it will have all of the Room Event fields), or as a to-device event.",
     subTypes = {
         MegolmEncrypted.class,
         OlmEncrypted.class
-    })
+    }
+)
 public abstract class RoomEncrypted implements EventContent {
 
     /**
@@ -41,9 +42,9 @@ public abstract class RoomEncrypted implements EventContent {
      *
      * @return algorithm.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "algorithm",
-        value = "The encryption algorithm used to encrypt this event. The value of this field determines which other properties"
+        description = "The encryption algorithm used to encrypt this event. The value of this field determines which other properties"
             + " will be present.",
         required = true,
         allowableValues = "m.olm.v1.curve25519-aes-sha2, m.megolm.v1.aes-sha2"
@@ -54,9 +55,9 @@ public abstract class RoomEncrypted implements EventContent {
     /**
      * Required. The Curve25519 key of the sender.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "sender_key",
-        value = "The Curve25519 key of the sender.",
+        description = "The Curve25519 key of the sender.",
         required = true
     )
     @JsonProperty("sender_key")
@@ -65,9 +66,9 @@ public abstract class RoomEncrypted implements EventContent {
     /**
      * The ID of the sending device. Required with Megolm.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "device_id",
-        value = "The ID of the sending device. Required with Megolm."
+        description = "The ID of the sending device. Required with Megolm."
     )
     @JsonProperty("device_id")
     private String deviceId;
@@ -75,9 +76,9 @@ public abstract class RoomEncrypted implements EventContent {
     /**
      * The ID of the session used to encrypt the message. Required with Megolm.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "session_id",
-        value = "The ID of the session used to encrypt the message. Required with Megolm."
+        description = "The ID of the session used to encrypt the message. Required with Megolm."
     )
     @JsonProperty("session_id")
     private String sessionId;

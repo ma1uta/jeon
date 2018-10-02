@@ -17,21 +17,22 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Video info.
  */
-@ApiModel(description = "Video info.")
+@Schema(
+    description = "Video info."
+)
 public class VideoInfo extends FileInfo {
 
     /**
      * The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "h",
-        value = "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        description = "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
     )
     @JsonProperty("h")
     private Long height;
@@ -39,9 +40,9 @@ public class VideoInfo extends FileInfo {
     /**
      * The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "w",
-        value = "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        description = "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
     )
     @JsonProperty("w")
     private Long width;
@@ -49,8 +50,8 @@ public class VideoInfo extends FileInfo {
     /**
      * The duration of the video in milliseconds.
      */
-    @ApiModelProperty(
-        value = "The duration of the video in milliseconds."
+    @Schema(
+        description = "The duration of the video in milliseconds."
     )
     private Long duration;
 

@@ -17,21 +17,22 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Reply model.
  */
-@ApiModel(description = "Reply model.")
+@Schema(
+    description = "Reply model."
+)
 public class Reply {
 
     /**
      * The origin event id.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "event_id",
-        value = "The origin event id.",
+        description = "The origin event id.",
         required = true
     )
     @JsonProperty("event_id")

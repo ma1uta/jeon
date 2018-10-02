@@ -17,13 +17,14 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Public keys.
  */
-@ApiModel(description = "Public keys.")
+@Schema(
+    description = "Public keys."
+)
 public class PublicKeys {
 
     /**
@@ -31,9 +32,9 @@ public class PublicKeys {
      * The URL must return a JSON object containing a boolean property named 'valid'. If this URL is absent, the key must be
      * considered valid indefinitely.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "key_validity_url",
-        value = "An optional URL which can be fetched, with querystring public_key=public_key,"
+        description = "An optional URL which can be fetched, with querystring public_key=public_key,"
             + " to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property"
             + " named 'valid'. If this URL is absent, the key must be considered valid indefinitely."
     )
@@ -43,8 +44,8 @@ public class PublicKeys {
     /**
      * Required. A base-64 encoded ed25519 key with which token may be signed.
      */
-    @ApiModelProperty(
-        value = "A base-64 encoded ed25519 key with which token may be signed.",
+    @Schema(
+        description = "A base-64 encoded ed25519 key with which token may be signed.",
         required = true
     )
     private String publicKey;

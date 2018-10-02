@@ -18,22 +18,23 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This event type is used to exchange keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
  * then sent as a to-device event.
  */
-@ApiModel(description = "This event type is used to exchange keys for end-to-end encryption."
-    + " Typically it is encrypted as an m.room.encrypted event, then sent as a to-device event.")
+@Schema(
+    description = "This event type is used to exchange keys for end-to-end encryption."
+        + " Typically it is encrypted as an m.room.encrypted event, then sent as a to-device event."
+)
 public class RoomKey implements EventContent {
 
     /**
      * Required. The encryption algorithm the key in this event is to be used with. Must be 'm.megolm.v1.aes-sha2'.
      */
-    @ApiModelProperty(
-        value = "The encryption algorithm the key in this event is to be used with. Must be 'm.megolm.v1.aes-sha2'.",
+    @Schema(
+        description = "The encryption algorithm the key in this event is to be used with. Must be 'm.megolm.v1.aes-sha2'.",
         required = true
     )
     private String algorithm;
@@ -41,9 +42,9 @@ public class RoomKey implements EventContent {
     /**
      * Required. The room where the key is used.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_id",
-        value = "The room where the key is used.",
+        description = "The room where the key is used.",
         required = true
     )
     @JsonProperty("room_id")
@@ -52,9 +53,9 @@ public class RoomKey implements EventContent {
     /**
      * Required. The ID of the session that the key is for.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "session_id",
-        value = "The ID of the session that the key is for.",
+        description = "The ID of the session that the key is for.",
         required = true
     )
     @JsonProperty("session_id")
@@ -63,9 +64,9 @@ public class RoomKey implements EventContent {
     /**
      * Required. The key to be exchanged.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "session_key",
-        value = "The key to be exchanged.",
+        description = "The key to be exchanged.",
         required = true
     )
     @JsonProperty("session_key")

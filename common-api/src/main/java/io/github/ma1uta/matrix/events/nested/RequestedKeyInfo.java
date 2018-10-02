@@ -17,20 +17,21 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Requested key info.
  */
-@ApiModel(description = "Requested key info.")
+@Schema(
+    description = "Requested key info."
+)
 public class RequestedKeyInfo {
 
     /**
      * Required. The encryption algorithm the requested key in this event is to be used with.
      */
-    @ApiModelProperty(
-        value = "Required. The encryption algorithm the requested key in this event is to be used with.",
+    @Schema(
+        description = "Required. The encryption algorithm the requested key in this event is to be used with.",
         required = true
     )
     private String algorithm;
@@ -38,9 +39,9 @@ public class RequestedKeyInfo {
     /**
      * Required. The room where the key is used.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_id",
-        value = "The room where the key is used.",
+        description = "The room where the key is used.",
         required = true
     )
     @JsonProperty("room_id")
@@ -49,9 +50,9 @@ public class RequestedKeyInfo {
     /**
      * Required. The Curve25519 key of the device which initiated the session originally.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "sender_key",
-        value = "The Curve25519 key of the device which initiated the session originally.",
+        description = "The Curve25519 key of the device which initiated the session originally.",
         required = true
     )
     @JsonProperty("sender_key")
@@ -60,9 +61,9 @@ public class RequestedKeyInfo {
     /**
      * Required. The ID of the session that the key is for.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "session_id",
-        value = "The ID of the session that the key is for.",
+        description = "The ID of the session that the key is for.",
         required = true
     )
     @JsonProperty("session_id")

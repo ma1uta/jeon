@@ -19,13 +19,12 @@ package io.github.ma1uta.matrix;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.ma1uta.matrix.jackson.EventDeserializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Event.
  */
-@ApiModel(description = "Event.")
+@Schema(description = "Event.")
 @JsonDeserialize(using = EventDeserializer.class)
 public class Event {
 
@@ -485,9 +484,10 @@ public class Event {
     /**
      * The fields in this object will vary depending on the type of event. When interacting with the REST API, this is the HTTP body.
      */
-    @ApiModelProperty(
-        value = "The fields in this object will vary depending on the type of event. When interacting with the REST API, this "
-            + "is the HTTP body."
+    @Schema(
+        description = "The fields in this object will vary depending on the type of event. When interacting with the REST API, this "
+            + "is the HTTP body.",
+        implementation = EventContent.class
     )
     private EventContent content;
 
@@ -495,8 +495,8 @@ public class Event {
      * Required. The type of event. This SHOULD be namespaced similar to Java package naming conventions e.g.
      * 'com.example.subdomain.event.type'
      */
-    @ApiModelProperty(
-        value = "The type of event. This SHOULD be namespaced similar to Java package naming conventions.",
+    @Schema(
+        description = "The type of event. This SHOULD be namespaced similar to Java package naming conventions.",
         required = true
     )
     private String type;
@@ -505,9 +505,9 @@ public class Event {
     /**
      * Required. The globally unique event identifier.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "event_id",
-        value = "The globally unique event identifier.",
+        description = "The globally unique event identifier.",
         required = true
     )
     @JsonProperty("event_id")
@@ -516,9 +516,9 @@ public class Event {
     /**
      * Required. The ID of the room associated with this event.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_id",
-        value = "The ID of the room associated with this event.",
+        description = "The ID of the room associated with this event.",
         required = true
     )
     @JsonProperty("room_id")
@@ -527,8 +527,8 @@ public class Event {
     /**
      * Required. Contains the fully-qualified ID of the user who sent this event.
      */
-    @ApiModelProperty(
-        value = "Contains the fully-qualified ID of the user who sent this event.",
+    @Schema(
+        description = "Contains the fully-qualified ID of the user who sent this event.",
         required = true
     )
     private String sender;
@@ -536,9 +536,9 @@ public class Event {
     /**
      * Required. Timestamp in milliseconds on originating homeserver when this event was sent.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "origin_server_ts",
-        value = "Timestamp in milliseconds on originating homeserver when this event was sent.",
+        description = "Timestamp in milliseconds on originating homeserver when this event was sent.",
         required = true
     )
     @JsonProperty("origin_server_ts")
@@ -547,8 +547,8 @@ public class Event {
     /**
      * Contains optional extra information about the event.
      */
-    @ApiModelProperty(
-        value = "Contains optional extra information about the event."
+    @Schema(
+        description = "Contains optional extra information about the event."
     )
     private Unsigned unsigned;
 
@@ -556,9 +556,9 @@ public class Event {
     /**
      * Optional. The previous content for this event. If there is no previous content, this key will be missing.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "prev_content",
-        value = "The previous content for this event. If there is no previous content, this key will be missing."
+        description = "The previous content for this event. If there is no previous content, this key will be missing."
     )
     @JsonProperty("prev_content")
     private EventContent prevContent;
@@ -567,9 +567,9 @@ public class Event {
      * Required. A unique key which defines the overwriting semantics for this piece of room state. This value is often a
      * zero-length string. The presence of this key makes this event a State Event. The key MUST NOT start with '_'.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "state_key",
-        value = " A unique key which defines the overwriting semantics for this piece of room "
+        description = " A unique key which defines the overwriting semantics for this piece of room "
             + "state. This value is often a zero-length string. The presence of this key makes this event a State Event. The key MUST "
             + "NOT start with '_'.",
         required = true

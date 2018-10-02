@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON Web Key.
  */
-@ApiModel(description = "JSON Web Key.")
+@Schema(
+    description = "JSON Web Key."
+)
 public class JWK {
 
     /**
      * Required. Key type. Must be oct.
      */
-    @ApiModelProperty(
-        value = "Key type. Must be oct.",
+    @Schema(
+        description = "Key type. Must be oct.",
         required = true
     )
     private String key;
@@ -40,9 +41,9 @@ public class JWK {
     /**
      * Required. Key operations. Must at least contain encrypt and decrypt.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "key_opts",
-        value = "Key operations, Must at least contain encrypt and decrypt.",
+        description = "Key operations, Must at least contain encrypt and decrypt.",
         required = true
     )
     @JsonProperty("key_opts")
@@ -51,8 +52,8 @@ public class JWK {
     /**
      * Required. Algorithm. Must be A256CTR.
      */
-    @ApiModelProperty(
-        value = "Algorithm, Must be A256CTR.",
+    @Schema(
+        description = "Algorithm, Must be A256CTR.",
         required = true
     )
     private String alg;
@@ -60,9 +61,9 @@ public class JWK {
     /**
      * Required. The key, encoded as urlsafe unpadded base64.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "k",
-        value = "The key, encoded as urlsafe unpadded base64.",
+        description = "The key, encoded as urlsafe unpadded base64.",
         required = true
     )
     @JsonProperty("k")
@@ -71,8 +72,8 @@ public class JWK {
     /**
      * Required. Extractable. Must be true. This is a W3C extension.
      */
-    @ApiModelProperty(
-        value = "Extractable. Must be true. This is a W3C extension.",
+    @Schema(
+        description = "Extractable. Must be true. This is a W3C extension.",
         required = true
     )
     private Boolean ext;

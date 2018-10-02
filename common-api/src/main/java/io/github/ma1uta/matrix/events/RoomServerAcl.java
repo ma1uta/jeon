@@ -18,8 +18,7 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -41,8 +40,10 @@ import java.util.List;
  * <li>Otherwise, deny.</li>
  * </ol>
  */
-@ApiModel(description = "An event to indicate which servers are permitted to participate in the room. Server ACLs may allow or deny"
-    + " groups of hosts.")
+@Schema(
+    description = "An event to indicate which servers are permitted to participate in the room. Server ACLs may allow or deny"
+        + " groups of hosts."
+)
 public class RoomServerAcl implements EventContent {
 
     /**
@@ -51,9 +52,9 @@ public class RoomServerAcl implements EventContent {
      * This is strongly recommended to be set to false as servers running with IP literal names are strongly discouraged in order
      * to require legitimate homeservers to be backed by a valid registered domain name.
      */
-    @ApiModelProperty(
-        notes = "allow_ip_literals",
-        value = "True to allow server names that are IP address literals. False to deny. Defaults to true if missing or otherwise"
+    @Schema(
+        name = "allow_ip_literals",
+        description = "True to allow server names that are IP address literals. False to deny. Defaults to true if missing or otherwise"
             + " not a boolean. This is strongly recommended to be set to false as servers running with IP literal names are strongly"
             + " discouraged in order to require legitimate homeservers to be backed by a valid registered domain name."
     )
@@ -66,8 +67,8 @@ public class RoomServerAcl implements EventContent {
      * <br>
      * This defaults to an empty list when not provided, effectively disallowing every server.
      */
-    @ApiModelProperty(
-        value = "The server names to allow in the room, excluding any port information. Wildcards may be used to cover a wider range"
+    @Schema(
+        description = "The server names to allow in the room, excluding any port information. Wildcards may be used to cover a wider range"
             + " of hosts, where * matches zero or more characters and ? matches exactly one character."
             + " This defaults to an empty list when not provided, effectively disallowing every server."
     )
@@ -79,8 +80,8 @@ public class RoomServerAcl implements EventContent {
      * <br>
      * This defaults to an empty list when not provided.
      */
-    @ApiModelProperty(
-        value = "The server names to disallow in the room, excluding any port information. Wildcards may be used to cover a wider"
+    @Schema(
+        description = "The server names to disallow in the room, excluding any port information. Wildcards may be used to cover a wider"
             + " range of hosts, where * matches zero or more characters and ? matches exactly one character."
             + " This defaults to an empty list when not provided."
     )

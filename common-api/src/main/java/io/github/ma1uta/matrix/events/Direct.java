@@ -19,7 +19,7 @@ package io.github.ma1uta.matrix.events;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
@@ -32,9 +32,11 @@ import java.util.Map;
  * Map USER_ID -&gt; ROOM_ID
  * </p>
  */
-@ApiModel(description = "A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in"
-    + " an event of type m.direct. The content of this event is an object where the keys are the user IDs and values are lists"
-    + " of room ID strings of the 'direct' rooms for that user ID.")
+@Schema(
+    description = "A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in"
+        + " an event of type m.direct. The content of this event is an object where the keys are the user IDs and values are lists"
+        + " of room ID strings of the 'direct' rooms for that user ID."
+)
 public class Direct implements EventContent {
 
     private Map<String, List<String>> content;

@@ -18,27 +18,28 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * A room may be ``public`` meaning anyone can join the room without any prior action. Alternatively, it can be ``invite`` meaning
  * that a user who wishes to join the room must first receive an invite to the room from someone already inside of the room.
  * Currently, ``knock`` and ``private`` are reserved keywords which are not implemented.
  */
-@ApiModel(description = "A room may be ``public`` meaning anyone can join the room without any prior action."
-    + " Alternatively, it can be ``invite`` meaning that a user who wishes to join the room must first receive"
-    + " an invite to the room from someone already inside of the room. Currently, ``knock`` and ``private`` are"
-    + " reserved keywords which are not implemented.")
+@Schema(
+    description = "A room may be ``public`` meaning anyone can join the room without any prior action."
+        + " Alternatively, it can be ``invite`` meaning that a user who wishes to join the room must first receive"
+        + " an invite to the room from someone already inside of the room. Currently, ``knock`` and ``private`` are"
+        + " reserved keywords which are not implemented."
+)
 public class RoomJoinRules implements EventContent {
 
     /**
      * The type of rules used for users wishing to join this room. One of: ["public", "knock", "invite", "private"]
      */
-    @ApiModelProperty(
+    @Schema(
         name = "join_rule",
-        value = "The type of rules used for users wishing to join this room.",
-        allowableValues = "public, knock, invite, private"
+        description = "The type of rules used for users wishing to join this room.",
+        allowableValues = {"public", "knock", "invite", "private"}
     )
     @JsonProperty("join_rule")
     private String joinRule;

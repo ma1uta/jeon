@@ -18,8 +18,7 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Message Event.
@@ -28,15 +27,17 @@ import io.swagger.annotations.ApiModelProperty;
  * established or before to abort the call.
  * </p>
  */
-@ApiModel(description = "Sent by either party to signal their termination of the call. This can be sent either once the call has has been"
-    + " established or before to abort the call.")
+@Schema(
+    description = "Sent by either party to signal their termination of the call. This can be sent either once the call has has been"
+    + " established or before to abort the call."
+)
 public class CallHangup implements EventContent {
 
     /**
      * Required. The ID of the call this event relates to.
      */
-    @ApiModelProperty(
-        value = "The ID of the call this event relates to.",
+    @Schema(
+        description = "The ID of the call this event relates to.",
         required = true
     )
     @JsonProperty("call_id")
@@ -45,8 +46,8 @@ public class CallHangup implements EventContent {
     /**
      * Required. The version of the VoIP specification this message adheres to. This specification is version 0.
      */
-    @ApiModelProperty(
-        value = "The version of the VoIP specification this message adheres to. This specification is version 0.",
+    @Schema(
+        description = "The version of the VoIP specification this message adheres to. This specification is version 0.",
         required = true
     )
     private Long version;

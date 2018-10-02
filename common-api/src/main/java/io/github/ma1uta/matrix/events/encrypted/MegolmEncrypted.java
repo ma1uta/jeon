@@ -18,20 +18,21 @@ package io.github.ma1uta.matrix.events.encrypted;
 
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomEncrypted;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Megolm encrypted message.
  */
-@ApiModel(description = "Megolm encrypted message.")
+@Schema(
+    description = "Megolm encrypted message."
+)
 public class MegolmEncrypted extends RoomEncrypted {
 
     /**
      * Required. The encrypted content of the event. The encrypted payload itself.
      */
-    @ApiModelProperty(
-        value = "The encrypted content of the event. The encrypted payload itself.",
+    @Schema(
+        description = "The encrypted content of the event. The encrypted payload itself.",
         required = true
     )
     private String ciphertext;

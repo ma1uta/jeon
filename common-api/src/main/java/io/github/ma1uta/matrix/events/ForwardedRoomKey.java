@@ -18,8 +18,7 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -27,15 +26,17 @@ import java.util.List;
  * This event type is used to forward keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
  * then sent as a to-device event.
  */
-@ApiModel(description = "This event type is used to forward keys for end-to-end encryption."
-    + " Typically it is encrypted as an m.room.encrypted event, then sent as a to-device event.")
+@Schema(
+    description = "This event type is used to forward keys for end-to-end encryption."
+        + " Typically it is encrypted as an m.room.encrypted event, then sent as a to-device event."
+)
 public class ForwardedRoomKey implements EventContent {
 
     /**
      * Required. The encryption algorithm the key in this event is to be used with.
      */
-    @ApiModelProperty(
-        value = "Required. The encryption algorithm the key in this event is to be used with.",
+    @Schema(
+        description = "Required. The encryption algorithm the key in this event is to be used with.",
         required = true
     )
     private String algorithm;
@@ -43,9 +44,9 @@ public class ForwardedRoomKey implements EventContent {
     /**
      * Required. The room where the key is used.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_id",
-        value = "The room where the key is used.",
+        description = "The room where the key is used.",
         required = true
     )
     @JsonProperty("room_id")
@@ -54,9 +55,9 @@ public class ForwardedRoomKey implements EventContent {
     /**
      * Required. The Curve25519 key of the device which initiated the session originally.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "sender_key",
-        value = "Required. The Curve25519 key of the device which initiated the session originally.",
+        description = "Required. The Curve25519 key of the device which initiated the session originally.",
         required = true
     )
     @JsonProperty("sender_key")
@@ -65,9 +66,9 @@ public class ForwardedRoomKey implements EventContent {
     /**
      * Required. The ID of the session that the key is for.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "session_id",
-        value = "The ID of the session that the key is for.",
+        description = "The ID of the session that the key is for.",
         required = true
     )
     @JsonProperty("session_id")
@@ -76,9 +77,9 @@ public class ForwardedRoomKey implements EventContent {
     /**
      * Required. The key to be exchanged.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "session_key",
-        value = "The key to be exchanged.",
+        description = "The key to be exchanged.",
         required = true
     )
     @JsonProperty("session_key")
@@ -89,9 +90,9 @@ public class ForwardedRoomKey implements EventContent {
      * has no way to tell that the original room_key actually came from a device which owns the private part of this key unless they
      * have done device verification.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "sender_claimed_ed25519_key",
-        value = "The Ed25519 key of the device which initiated the session originally. It is 'claimed' because"
+        description = "The Ed25519 key of the device which initiated the session originally. It is 'claimed' because"
             + " the receiving device has no way to tell that the original room_key actually came from a device which owns the private part"
             + "of this key unless they have done device verification.",
         required = true
@@ -104,9 +105,9 @@ public class ForwardedRoomKey implements EventContent {
      * the previous sender in the chain is added to the end of the list. For example, if the key is forwarded from A to B to C,
      * this field is empty between A and B, and contains A's Curve25519 key between B and C.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "forwarding_curve25519_key_chain",
-        value = "Chain of Curve25519 keys. It starts out empty, but each time the key is forwarded to another device,"
+        description = "Chain of Curve25519 keys. It starts out empty, but each time the key is forwarded to another device,"
             + " the previous sender in the chain is added to the end of the list. For example, if the key is forwarded from A to B to C,"
             + " this field is empty between A and B, and contains A's Curve25519 key between B and C.",
         required = true

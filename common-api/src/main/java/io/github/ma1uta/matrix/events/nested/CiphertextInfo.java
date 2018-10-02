@@ -16,28 +16,29 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Cipher text info.
  */
-@ApiModel(description = "Cipher text info.")
+@Schema(
+    description = "Cipher text info."
+)
 public class CiphertextInfo {
 
     /**
      * The encrypted payload.
      */
-    @ApiModelProperty(
-        value = "The encrypted payload."
+    @Schema(
+        description = "The encrypted payload."
     )
     private String body;
 
     /**
      * The Olm message type.
      */
-    @ApiModelProperty(
-        value = "The Olm message type."
+    @Schema(
+        description = "The Olm message type."
     )
     private Long type;
 

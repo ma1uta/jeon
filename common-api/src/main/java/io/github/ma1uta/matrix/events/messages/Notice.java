@@ -17,7 +17,7 @@
 package io.github.ma1uta.matrix.events.messages;
 
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The ``m.notice`` type is primarily intended for responses from automated clients. An ``m.notice`` message must be treated
@@ -25,11 +25,13 @@ import io.swagger.annotations.ApiModel;
  * users in a distinct manner, and secondly, ``m.notice`` messages must never be automatically responded to. This helps to prevent
  * infinite-loop situations where two automated clients continuously exchange messages.
  */
-@ApiModel(description = "The ``m.notice`` type is primarily intended for responses from automated clients."
-    + " An ``m.notice`` message must be treated the same way as a regular ``m.text`` message with two exceptions."
-    + " Firstly, clients should present ``m.notice`` messages to users in a distinct manner, and secondly, ``m.notice``"
-    + " messages must never be automatically responded to. This helps to prevent infinite-loop situations where two automated"
-    + " clients continuously exchange messages.")
+@Schema(
+    description = "The ``m.notice`` type is primarily intended for responses from automated clients."
+        + " An ``m.notice`` message must be treated the same way as a regular ``m.text`` message with two exceptions."
+        + " Firstly, clients should present ``m.notice`` messages to users in a distinct manner, and secondly, ``m.notice``"
+        + " messages must never be automatically responded to. This helps to prevent infinite-loop situations where two automated"
+        + " clients continuously exchange messages."
+)
 public class Notice extends FormattedBody {
 
     @Override

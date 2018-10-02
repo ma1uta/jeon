@@ -18,8 +18,7 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * State Event.
@@ -28,14 +27,16 @@ import io.swagger.annotations.ApiModelProperty;
  * <br>
  * Defines how messages sent in this room should be encrypted.
  */
-@ApiModel(description = "State Event. Defines how messages sent in this room should be encrypted.")
+@Schema(
+    description = "State Event. Defines how messages sent in this room should be encrypted."
+)
 public class RoomEncryption implements EventContent {
 
     /**
      * Required. The encryption algorithm to be used to encrypt messages sent in this room. Must be 'm.megolm.v1.aes-sha2'.
      */
-    @ApiModelProperty(
-        value = "The encryption algorithm to be used to encrypt messages sent in this room. Must be 'm.megolm.v1.aes-sha2'.",
+    @Schema(
+        description = "The encryption algorithm to be used to encrypt messages sent in this room. Must be 'm.megolm.v1.aes-sha2'.",
         required = true
     )
     private String algorithm;
@@ -43,9 +44,9 @@ public class RoomEncryption implements EventContent {
     /**
      * How long the session should be used before changing it. 604800000 (a week) is the recommended default.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "rotation_period_ms",
-        value = "How long the session should be used before changing it. 604800000 (a week) is the recommended default."
+        description = "How long the session should be used before changing it. 604800000 (a week) is the recommended default."
     )
     @JsonProperty("rotation_period_ms")
     private Long rotationPeriodMs;
@@ -53,9 +54,9 @@ public class RoomEncryption implements EventContent {
     /**
      * How many messages should be sent before changing the session. 100 is the recommended default.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "rotation_period_msgs",
-        value = "How many messages should be sent before changing the session. 100 is the recommended default."
+        description = "How many messages should be sent before changing the session. 100 is the recommended default."
     )
     @JsonProperty("rotation_period_msgs")
     private Long rotationPeriodMsgs;

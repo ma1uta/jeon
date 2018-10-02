@@ -19,21 +19,22 @@ package io.github.ma1uta.matrix;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.ma1uta.matrix.jackson.StrippedDeserializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Provides information on a subset of state events such as the room name.
  */
-@ApiModel(description = "Provides information on a subset of state events such as the room name.")
+@Schema(
+    description = "Provides information on a subset of state events such as the room name."
+)
 @JsonDeserialize(using = StrippedDeserializer.class)
 public class StrippedState {
 
     /**
      * Required. The content for the event.
      */
-    @ApiModelProperty(
-        value = "The content for the event.",
+    @Schema(
+        description = "The content for the event.",
         required = true
     )
     private EventContent content;
@@ -41,9 +42,9 @@ public class StrippedState {
     /**
      * Required. The state_key for the event.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "state_key",
-        value = "The state_key for the event.",
+        description = "The state_key for the event.",
         required = true
     )
     @JsonProperty("state_key")
@@ -52,8 +53,8 @@ public class StrippedState {
     /**
      * Required. The type for the event.
      */
-    @ApiModelProperty(
-        value = "The type for the event.",
+    @Schema(
+        description = "The type for the event.",
         required = true
     )
     private String type;
@@ -61,8 +62,8 @@ public class StrippedState {
     /**
      * Required. The sender for the event.
      */
-    @ApiModelProperty(
-        value = "The sender for the event.",
+    @Schema(
+        description = "The sender for the event.",
         required = true
     )
     private String sender;

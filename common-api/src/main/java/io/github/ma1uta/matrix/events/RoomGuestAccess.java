@@ -18,23 +18,24 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This event controls whether guest users are allowed to join rooms. If this event is absent, servers should act as if it is present
  * and has the guest_access value "forbidden".
  */
-@ApiModel(description = "This event controls whether guest users are allowed to join rooms. If this event is absent,"
-    + " servers should act as if it is present and has the guest_access value \"forbidden\".")
+@Schema(
+    description = "This event controls whether guest users are allowed to join rooms. If this event is absent,"
+        + " servers should act as if it is present and has the guest_access value \"forbidden\"."
+)
 public class RoomGuestAccess implements EventContent {
 
     /**
      * Whether guests can join the room. One of: ["can_join", "forbidden"].
      */
-    @ApiModelProperty(
+    @Schema(
         name = "guest_access",
-        value = "Whether guests can join the room.",
+        description = "Whether guests can join the room.",
         allowableValues = "can_join, forbidden"
     )
     @JsonProperty("guest_access")

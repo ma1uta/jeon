@@ -18,20 +18,21 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This is the first event in a room and cannot be changed. It acts as the root of all other events.
  */
-@ApiModel(description = "This is the first event in a room and cannot be changed. It acts as the root of all other events.")
+@Schema(
+    description = "This is the first event in a room and cannot be changed. It acts as the root of all other events."
+)
 public class RoomCreate implements EventContent {
 
     /**
      * Required. The user_id of the room creator. This is set by the homeserver.
      */
-    @ApiModelProperty(
-        value = "The user_id of the room creator. This is set by the homeserver.",
+    @Schema(
+        description = "The user_id of the room creator. This is set by the homeserver.",
         required = true
     )
     private String creator;
@@ -39,9 +40,9 @@ public class RoomCreate implements EventContent {
     /**
      * Whether users on other servers can join this room. Defaults to ``true`` if key does not exist.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "m.federate",
-        value = "Whether users on other servers can join this room. Defaults to ``true`` if key does not exist."
+        description = "Whether users on other servers can join this room. Defaults to ``true`` if key does not exist."
     )
     @JsonProperty("m.federate")
     private Boolean federate;
@@ -49,9 +50,9 @@ public class RoomCreate implements EventContent {
     /**
      * The version of the room. Defaults to "1" if the key does not exist.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_version",
-        value = "The version of the room. Defaults to \"1\" if the key does not exist."
+        description = "The version of the room. Defaults to \"1\" if the key does not exist."
     )
     @JsonProperty("room_version")
     private String roomVersion;

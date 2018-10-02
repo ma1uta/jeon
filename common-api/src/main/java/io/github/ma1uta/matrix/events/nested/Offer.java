@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Offer.
  */
-@ApiModel(description = "Offer")
+@Schema(
+    description = "Offer"
+)
 public class Offer {
 
     /**
      * Required. The type of session description. Must be 'offer'.
      */
-    @ApiModelProperty(
-        value = "The type of session description. Must be 'offer'.",
+    @Schema(
+        description = "The type of session description. Must be 'offer'.",
         required = true
     )
     private String type;
@@ -37,8 +38,8 @@ public class Offer {
     /**
      * Required. The SDP text of the session description.
      */
-    @ApiModelProperty(
-        value = "The SDP text of the session description.",
+    @Schema(
+        description = "The SDP text of the session description.",
         required = true
     )
     private String sdp;

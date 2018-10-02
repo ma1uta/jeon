@@ -17,21 +17,22 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Location info.
  */
-@ApiModel(description = "Location info.")
+@Schema(
+    description = "Location info."
+)
 public class LocationInfo {
 
     /**
      * The URL to a thumbnail of the location being represented.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "thumbnail_url",
-        value = "The URL to a thumbnail of the location being represented."
+        description = "The URL to a thumbnail of the location being represented."
     )
     @JsonProperty("thumbnail_url")
     private String thumbnailUrl;
@@ -39,8 +40,8 @@ public class LocationInfo {
     /**
      * Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail is encrypted.
      */
-    @ApiModelProperty(
-        value = "Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail"
+    @Schema(
+        description = "Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail"
             + " is encrypted."
     )
     private EncryptedFile thumbnailFile;
@@ -48,9 +49,9 @@ public class LocationInfo {
     /**
      * Metadata about the image referred to in thumbnail_url.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "thumbnail_info",
-        value = "Metadata about the image referred to in thumbnail_url."
+        description = "Metadata about the image referred to in thumbnail_url."
     )
     @JsonProperty("thumbnail_info")
     private ThumbnailInfo thumbnailInfo;

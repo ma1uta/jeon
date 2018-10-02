@@ -20,20 +20,21 @@ import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.nested.EncryptedFile;
 import io.github.ma1uta.matrix.events.nested.FileInfo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This message represents a generic file.
  */
-@ApiModel(description = "This message represents a generic file.")
+@Schema(
+    description = "This message represents a generic file."
+)
 public class File extends RoomMessage {
 
     /**
      * Required. The original filename of the uploaded file.
      */
-    @ApiModelProperty(
-        value = "The original filename of the uploaded file.",
+    @Schema(
+        description = "The original filename of the uploaded file.",
         required = true
     )
     private String filename;
@@ -41,16 +42,16 @@ public class File extends RoomMessage {
     /**
      * Information about the file referred to in url.
      */
-    @ApiModelProperty(
-        value = "Information about the file referred to in url."
+    @Schema(
+        description = "Information about the file referred to in url."
     )
     private FileInfo info;
 
     /**
      * Required. The URL to the file.
      */
-    @ApiModelProperty(
-        value = "The URL to the file.",
+    @Schema(
+        description = "The URL to the file.",
         required = true
     )
     private String url;
@@ -58,8 +59,8 @@ public class File extends RoomMessage {
     /**
      * Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption.
      */
-    @ApiModelProperty(
-        value = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
+    @Schema(
+        description = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
     )
     private EncryptedFile file;
 

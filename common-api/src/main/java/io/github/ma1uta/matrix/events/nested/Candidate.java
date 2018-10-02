@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Candidate.
  */
-@ApiModel(description = "Candidate.")
+@Schema(
+    description = "Candidate."
+)
 public class Candidate {
 
     /**
      * Required. The SDP media type this candidate is intended for.
      */
-    @ApiModelProperty(
-        value = "The SDP media type this candidate is intended for.",
+    @Schema(
+        description = "The SDP media type this candidate is intended for.",
         required = true
     )
     private String sdpMid;
@@ -37,8 +38,8 @@ public class Candidate {
     /**
      * Required. The index of the SDP 'm' line this candidate is intended for.
      */
-    @ApiModelProperty(
-        value = "The index of the SDP 'm' line this candidate is intended for.",
+    @Schema(
+        description = "The index of the SDP 'm' line this candidate is intended for.",
         required = true
     )
     private Long sdpMLineIndex;
@@ -46,8 +47,8 @@ public class Candidate {
     /**
      * Required. The SDP 'a' line of the candidate.
      */
-    @ApiModelProperty(
-        value = "The SDP 'a' line of the candidate.",
+    @Schema(
+        description = "The SDP 'a' line of the candidate.",
         required = true
     )
     private String candidate;

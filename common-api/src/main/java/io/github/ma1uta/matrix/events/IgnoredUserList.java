@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.
  */
-@ApiModel(description = "A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.")
+@Schema(
+    description = "A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list."
+)
 public class IgnoredUserList implements EventContent {
 
     /**
      * Required. The map of users to ignore.
      */
-    @ApiModelProperty(
-        value = "The map of users to ignore.",
+    @Schema(
+        description = "The map of users to ignore.",
         required = true
     )
     private Map<String, Object> ignoredUsers;

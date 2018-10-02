@@ -17,8 +17,7 @@
 package io.github.ma1uta.matrix.protocol;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
@@ -26,15 +25,17 @@ import java.util.Map;
 /**
  * Protocol metadata.
  */
-@ApiModel(description = "Protocol metadata.")
+@Schema(
+    description = "Protocol metadata."
+)
 public class Protocol {
 
     /**
      * Required. Fields used to identify a third party user.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "user_fields",
-        value = "Fields used to identify a third party user.",
+        description = "Fields used to identify a third party user.",
         required = true
     )
     @JsonProperty("user_fields")
@@ -43,9 +44,9 @@ public class Protocol {
     /**
      * Required. Fields used to identify a third party location.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "location_fields",
-        value = "Fields used to identify a third party location.",
+        description = "Fields used to identify a third party location.",
         required = true
     )
     @JsonProperty("location_fields")
@@ -54,8 +55,8 @@ public class Protocol {
     /**
      * Required. An icon representing the third party protocol.
      */
-    @ApiModelProperty(
-        value = "An icon representing the third party protocol.",
+    @Schema(
+        description = "An icon representing the third party protocol.",
         required = true
     )
     private String icon;
@@ -63,9 +64,9 @@ public class Protocol {
     /**
      * Required. All location or user fields should have an entry here.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "field_types",
-        value = "All location or user fields should have an entry here.",
+        description = "All location or user fields should have an entry here.",
         required = true
     )
     @JsonProperty("field_types")
@@ -75,8 +76,8 @@ public class Protocol {
      * Required. A list of objects representing independent instances of configuration.
      * For instance multiple networks on IRC if multiple are bridged by the same bridge.
      */
-    @ApiModelProperty(
-        value = "A list of objects representing independent instances of configuration. For instance multiple networks"
+    @Schema(
+        description = "A list of objects representing independent instances of configuration. For instance multiple networks"
             + "on IRC if multiple are bridged by the same bridge.",
         required = true
     )

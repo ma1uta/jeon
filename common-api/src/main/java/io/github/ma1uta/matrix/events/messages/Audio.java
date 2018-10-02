@@ -20,28 +20,29 @@ import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.nested.AudioInfo;
 import io.github.ma1uta.matrix.events.nested.EncryptedFile;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This message represents a single audio clip.
  */
-@ApiModel(description = "This message represents a single audio clip.")
+@Schema(
+    description = "This message represents a single audio clip."
+)
 public class Audio extends RoomMessage {
 
     /**
      * Metadata for the audio clip referred to in url.
      */
-    @ApiModelProperty(
-        value = "Metadata for the audio clip referred to in url."
+    @Schema(
+        description = "Metadata for the audio clip referred to in url."
     )
     private AudioInfo info;
 
     /**
      * Required. The URL to the audio clip.
      */
-    @ApiModelProperty(
-        value = "The URL to the audio clip.",
+    @Schema(
+        description = "The URL to the audio clip.",
         required = true
     )
     private String url;
@@ -49,8 +50,8 @@ public class Audio extends RoomMessage {
     /**
      * Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption.
      */
-    @ApiModelProperty(
-        value = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
+    @Schema(
+        description = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
     )
     private EncryptedFile file;
 

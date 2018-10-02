@@ -17,8 +17,7 @@
 package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * A room has an opaque room ID which is not human-friendly to read. A room alias is human-friendly, but not all rooms have room aliases.
@@ -32,18 +31,20 @@ import io.swagger.annotations.ApiModelProperty;
  * An event of this type is automatically created when creating a room using /createRoom with the name key.
  * </p>
  */
-@ApiModel(description = "A room has an opaque room ID which is not human-friendly to read. A room alias is human-friendly, but"
-    + " not all rooms have room aliases. The room name is a human-friendly string designed to be displayed to the end-user."
-    + " The room name is not unique, as multiple rooms can have the same room name set. A room with an m.room.name event with"
-    + " an absent, null, or empty name field should be treated the same as a room with no m.room.name event."
-    + " An event of this type is automatically created when creating a room using /createRoom with the name key.")
+@Schema(
+    description = "A room has an opaque room ID which is not human-friendly to read. A room alias is human-friendly, but"
+        + " not all rooms have room aliases. The room name is a human-friendly string designed to be displayed to the end-user."
+        + " The room name is not unique, as multiple rooms can have the same room name set. A room with an m.room.name event with"
+        + " an absent, null, or empty name field should be treated the same as a room with no m.room.name event."
+        + " An event of this type is automatically created when creating a room using /createRoom with the name key."
+)
 public class RoomName implements EventContent {
 
     /**
      * Required. The name of the room. This MUST NOT exceed 255 bytes.
      */
-    @ApiModelProperty(
-        value = "The name of the room. This MUST NOT exceed 255 bytes.",
+    @Schema(
+        description = "The name of the room. This MUST NOT exceed 255 bytes.",
         required = true
     )
     private String name;

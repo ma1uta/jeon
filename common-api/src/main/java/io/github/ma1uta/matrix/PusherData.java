@@ -16,28 +16,29 @@
 
 package io.github.ma1uta.matrix;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Pusher data.
  */
-@ApiModel(description = "Pusher data.")
+@Schema(
+    description = "Pusher data."
+)
 public class PusherData {
 
     /**
      * Required if kind is http. The URL to use to send notifications to.
      */
-    @ApiModelProperty(
-        value = "Required if kind is http. The URL to use to send notifications to."
+    @Schema(
+        description = "Required if kind is http. The URL to use to send notifications to."
     )
     private String url;
 
     /**
      * The format to use when sending notifications to the Push Gateway.
      */
-    @ApiModelProperty(
-        value = "The format to use when sending notifications to the Push Gateway."
+    @Schema(
+        description = "The format to use when sending notifications to the Push Gateway."
     )
     private String format;
 

@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.protocol;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Instance.
  */
-@ApiModel(description = "Instance.")
+@Schema(
+    description = "Instance."
+)
 public class Instance {
 
     /**
      * Required. A human-readable description for the protocol, such as the name.
      */
-    @ApiModelProperty(
-        value = "Description.",
+    @Schema(
+        description = "Description.",
         required = true
     )
     private String desc;
@@ -40,16 +41,16 @@ public class Instance {
     /**
      * An optional content URI representing the protocol. Overrides the one provided at the higher level Protocol object.
      */
-    @ApiModelProperty(
-        value = "An optional content URI representing the protocol. Overrides the one provided at the higher level Protocol object."
+    @Schema(
+        description = "An optional content URI representing the protocol. Overrides the one provided at the higher level Protocol object."
     )
     private String icon;
 
     /**
      * Required. Preset values for fields the client may use to search by.
      */
-    @ApiModelProperty(
-        value = "Preset values for fields the client may use to search by.",
+    @Schema(
+        description = "Preset values for fields the client may use to search by.",
         required = true
     )
     private Map<String, String> fields;
@@ -57,9 +58,9 @@ public class Instance {
     /**
      * Required. A unique identifier across all instances.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "network_id",
-        value = "A unique identifier across all instances.",
+        description = "A unique identifier across all instances.",
         required = true
     )
     @JsonProperty("network_id")

@@ -18,13 +18,14 @@ package io.github.ma1uta.matrix.events.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.events.RoomMessage;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This message is the most basic message and is used to represent text.
  */
-@ApiModel(description = "This message is the most basic message and is used to represent text.")
+@Schema(
+    description = "This message is the most basic message and is used to represent text."
+)
 public abstract class FormattedBody extends RoomMessage {
 
     /**
@@ -45,17 +46,17 @@ public abstract class FormattedBody extends RoomMessage {
     /**
      * The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported.
      */
-    @ApiModelProperty(
-        value = "The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported."
+    @Schema(
+        description = "The format used in the ``formatted_body``. Currently only ``org.matrix.custom.html`` is supported."
     )
     private String format;
 
     /**
      * The formatted version of the ``body``. This is required if ``format`` is specified.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "formatted_body",
-        value = "The formatted version of the ``body``. This is required if ``format`` is specified.")
+        description = "The formatted version of the ``body``. This is required if ``format`` is specified.")
     @JsonProperty("formatted_body")
     private String formattedBody;
 

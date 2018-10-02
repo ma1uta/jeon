@@ -18,23 +18,24 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The current location of the user's read marker in a room. This event appears in the user's room account data for the room the marker
  * is applicable for.
  */
-@ApiModel(description = "The current location of the user's read marker in a room. This event appears in the user's room account"
-    + " data for the room the marker is applicable for.")
+@Schema(
+    description = "The current location of the user's read marker in a room. This event appears in the user's room account"
+        + " data for the room the marker is applicable for."
+)
 public class FullyRead implements EventContent {
 
     /**
      * Required. The event the user's read marker is located at in the room.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "event_id",
-        value = "The event the user's read marker is located at in the room.",
+        description = "The event the user's read marker is located at in the room.",
         required = true
     )
     @JsonProperty("event_id")

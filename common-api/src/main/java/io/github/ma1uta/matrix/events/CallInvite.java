@@ -19,8 +19,7 @@ package io.github.ma1uta.matrix.events;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.Offer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Message Event.
@@ -28,15 +27,17 @@ import io.swagger.annotations.ApiModelProperty;
  * This event is sent by the caller when they wish to establish a call.
  * </p>
  */
-@ApiModel(description = "This event is sent by the caller when they wish to establish a call.")
+@Schema(
+    description = "This event is sent by the caller when they wish to establish a call."
+)
 public class CallInvite implements EventContent {
 
     /**
      * Required. The ID of the call this event relates to.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "call_id",
-        value = "The ID of the call this event relates to.",
+        description = "The ID of the call this event relates to.",
         required = true
     )
     @JsonProperty("call_id")
@@ -45,8 +46,8 @@ public class CallInvite implements EventContent {
     /**
      * Required. The session description object.
      */
-    @ApiModelProperty(
-        value = "The session description object.",
+    @Schema(
+        description = "The session description object.",
         required = true
     )
     private Offer offer;
@@ -54,8 +55,8 @@ public class CallInvite implements EventContent {
     /**
      * Required. The version of the VoIP specification this message adheres to. This specification is version 0.
      */
-    @ApiModelProperty(
-        value = "The version of the VoIP specification this message adheres to. This specification is version 0.",
+    @Schema(
+        description = "The version of the VoIP specification this message adheres to. This specification is version 0.",
         required = true
     )
     private Long version;
@@ -64,8 +65,8 @@ public class CallInvite implements EventContent {
      * Required. The time in milliseconds that the invite is valid for. Once the invite age exceeds this value,
      * clients should discard it. They should also no longer show the call as awaiting an answer in the UI.
      */
-    @ApiModelProperty(
-        value = "The time in milliseconds that the invite is valid for. Once the invite age exceeds this value,"
+    @Schema(
+        description = "The time in milliseconds that the invite is valid for. Once the invite age exceeds this value,"
             + " clients should discard it. They should also no longer show the call as awaiting an answer in the UI.",
         required = true
     )

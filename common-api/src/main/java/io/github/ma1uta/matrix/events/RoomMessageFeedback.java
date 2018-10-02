@@ -18,8 +18,7 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * **NB: Usage of this event is discouraged in favour of the** `receipts module`_.
@@ -31,14 +30,16 @@ import io.swagger.annotations.ApiModelProperty;
  * @deprecated in favor of {@link Receipt}.
  */
 @Deprecated
-@ApiModel(description = "DEPRECATED. **NB: Usage of this event is discouraged in favour of the** `receipts module`_.")
+@Schema(
+    description = "DEPRECATED. **NB: Usage of this event is discouraged in favour of the** `receipts module`_."
+)
 public class RoomMessageFeedback implements EventContent {
 
     /**
      * The event that this feedback is related to.
      */
-    @ApiModelProperty(
-        value = "The event that this feedback is related to."
+    @Schema(
+        description = "The event that this feedback is related to."
     )
     @JsonProperty("target_event_id")
     private String targetEventId;
@@ -46,8 +47,8 @@ public class RoomMessageFeedback implements EventContent {
     /**
      * The type of feedback.
      */
-    @ApiModelProperty(
-        value = "The type of feedback.",
+    @Schema(
+        description = "The type of feedback.",
         allowableValues = "delivered, read"
     )
     private String type;

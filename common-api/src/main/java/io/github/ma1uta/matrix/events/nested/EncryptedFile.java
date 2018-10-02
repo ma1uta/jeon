@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Encrypted file.
  */
-@ApiModel(description = "Encrypted file.")
+@Schema(
+    description = "Encrypted file."
+)
 public class EncryptedFile {
 
     /**
      * Required. The URL to the file.
      */
-    @ApiModelProperty(
-        value = "the URL to the file.",
+    @Schema(
+        description = "the URL to the file.",
         required = true
     )
     private String url;
@@ -40,8 +41,8 @@ public class EncryptedFile {
     /**
      * Required. A JSON Web Key object.
      */
-    @ApiModelProperty(
-        value = "A JSON Web Key object.",
+    @Schema(
+        description = "A JSON Web Key object.",
         required = true
     )
     private JWK key;
@@ -49,8 +50,8 @@ public class EncryptedFile {
     /**
      * Required. The Initialisation Vector used by AES-CTR, encoded as unpadded base64.
      */
-    @ApiModelProperty(
-        value = " The Initialisation Vector used by AES-CTR, encoded as unpadded base64.",
+    @Schema(
+        description = " The Initialisation Vector used by AES-CTR, encoded as unpadded base64.",
         required = true
     )
     private String iv;
@@ -59,8 +60,8 @@ public class EncryptedFile {
      * Required. A map from an algorithm name to a hash of the ciphertext, encoded as unpadded base64.
      * Clients should support the SHA-256 hash, which uses the key sha256.
      */
-    @ApiModelProperty(
-        value = "A map from an algorithm name to a hash of the ciphertext, encoded as unpadded base64."
+    @Schema(
+        description = "A map from an algorithm name to a hash of the ciphertext, encoded as unpadded base64."
             + " Clients should support the SHA-256 hash, which uses the key sha256."
     )
     private Map<String, String> hashes;
@@ -68,9 +69,9 @@ public class EncryptedFile {
     /**
      * Required. Version of the encrypted attachments protocol. Must be v2.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "v",
-        value = "Version of the encrypted attachments protocol. Must be v2.",
+        description = "Version of the encrypted attachments protocol. Must be v2.",
         required = true
     )
     @JsonProperty("v")

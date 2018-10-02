@@ -27,18 +27,18 @@ import io.github.ma1uta.matrix.events.messages.Notice;
 import io.github.ma1uta.matrix.events.messages.Text;
 import io.github.ma1uta.matrix.events.messages.Video;
 import io.github.ma1uta.matrix.events.nested.Relates;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This event is used when sending messages in a room. Messages are not limited to be text. The ``msgtype`` key outlines the type
  * of message, e.g. text, audio, image, video, etc. The ``body`` key is text and MUST be used with every kind of ``msgtype`` as a
  * fallback mechanism for when a client cannot render a message. This allows clients to display *something* even if it is just plain text.
  */
-@ApiModel(description = "This event is used when sending messages in a room. Messages are not limited to be text."
-    + " The ``msgtype`` key outlines the type of message, e.g. text, audio, image, video, etc. The ``body`` key is text and MUST"
-    + " be used with every kind of ``msgtype`` as a fallback mechanism for when a client cannot render a message."
-    + " This allows clients to display *something* even if it is just plain text.",
+@Schema(
+    description = "This event is used when sending messages in a room. Messages are not limited to be text."
+        + " The ``msgtype`` key outlines the type of message, e.g. text, audio, image, video, etc. The ``body`` key is text and MUST"
+        + " be used with every kind of ``msgtype`` as a fallback mechanism for when a client cannot render a message."
+        + " This allows clients to display *something* even if it is just plain text.",
     subTypes = {
         Audio.class,
         Emote.class,
@@ -48,7 +48,8 @@ import io.swagger.annotations.ApiModelProperty;
         Notice.class,
         Text.class,
         Video.class
-    })
+    }
+)
 public abstract class RoomMessage implements EventContent {
 
     /**
@@ -58,8 +59,8 @@ public abstract class RoomMessage implements EventContent {
      *
      * @return message type.
      */
-    @ApiModelProperty(
-        value = "Message type.",
+    @Schema(
+        description = "Message type.",
         readOnly = true
     )
     @JsonProperty(value = "msgtype", access = JsonProperty.Access.READ_ONLY)
@@ -68,17 +69,17 @@ public abstract class RoomMessage implements EventContent {
     /**
      * The textual representation of this message.
      */
-    @ApiModelProperty(
-        value = "The textual representation of this message."
+    @Schema(
+        description = "The textual representation of this message."
     )
     private String body;
 
     /**
      * Relates (reply, ...).
      */
-    @ApiModelProperty(
+    @Schema(
         name = "m.relates_to",
-        value = "Relates (reply, ...)."
+        description = "Relates (reply, ...)."
     )
     @JsonProperty("m.relates_to")
     private Relates relatesTo;

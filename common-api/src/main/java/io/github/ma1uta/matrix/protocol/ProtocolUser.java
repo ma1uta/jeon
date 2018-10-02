@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.protocol;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Protocol User.
  */
-@ApiModel(description = "Protocol User.")
+@Schema(
+    description = "Protocol User."
+)
 public class ProtocolUser {
 
     /**
      * Required. A Matrix User ID represting a third party user.
      */
-    @ApiModelProperty(
-        value = "A Matrix User ID represting a third party user.",
+    @Schema(
+        description = "A Matrix User ID represting a third party user.",
         required = true
     )
     private String userid;
@@ -39,8 +40,8 @@ public class ProtocolUser {
     /**
      * Required. The protocol ID that the third party location is a part of.
      */
-    @ApiModelProperty(
-        value = "The protocol ID that the third party location is a part of.",
+    @Schema(
+        description = "The protocol ID that the third party location is a part of.",
         required = true
     )
     private String protocol;
@@ -48,8 +49,8 @@ public class ProtocolUser {
     /**
      * Required. Information used to identify this third party location.
      */
-    @ApiModelProperty(
-        value = "Information used to identify this third party location.",
+    @Schema(
+        description = "Information used to identify this third party location.",
         required = true
     )
     private Map<String, String> fields;

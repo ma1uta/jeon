@@ -17,37 +17,38 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * File info.
  */
-@ApiModel(description = "File info.")
+@Schema(
+    description = "File info."
+)
 public class FileInfo {
 
     /**
      * The mimetype of the image, e.g. image/jpeg.
      */
-    @ApiModelProperty(
-        value = "The mimetype of the image, e.g. image/jpeg."
+    @Schema(
+        description = "The mimetype of the image, e.g. image/jpeg."
     )
     private String mimetype;
 
     /**
      * Size of the image in bytes.
      */
-    @ApiModelProperty(
-        value = "Size of the image in bytes."
+    @Schema(
+        description = "Size of the image in bytes."
     )
     private Long size;
 
     /**
      * The URL to a thumbnail of the image.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "thumbnail_url",
-        value = "The URL to a thumbnail of the image."
+        description = "The URL to a thumbnail of the image."
     )
     @JsonProperty("thumbnail_url")
     private String thumbnailUrl;
@@ -61,9 +62,9 @@ public class FileInfo {
     /**
      * Metadata about the image referred to in thumbnail_url.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "thumbnail_info",
-        value = "Metadata about the image referred to in thumbnail_url."
+        description = "Metadata about the image referred to in thumbnail_url."
     )
     @JsonProperty("thumbnail_info")
     private ThumbnailInfo thumbnailInfo;

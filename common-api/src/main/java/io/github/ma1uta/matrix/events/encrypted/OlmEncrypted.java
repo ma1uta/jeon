@@ -19,23 +19,24 @@ package io.github.ma1uta.matrix.events.encrypted;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomEncrypted;
 import io.github.ma1uta.matrix.events.nested.CiphertextInfo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Olm encrypted message.
  */
-@ApiModel(description = "Olm encrypted message.")
+@Schema(
+    description = "Olm encrypted message."
+)
 public class OlmEncrypted extends RoomEncrypted {
 
     /**
      * Required. The encrypted content of the event. A map from the recipient Curve25519 identity key to ciphertext information.
      * For more details, see Messaging Algorithms.
      */
-    @ApiModelProperty(
-        value = "The encrypted content of the event. A map from the recipient Curve25519 identity key to ciphertext information."
+    @Schema(
+        description = "The encrypted content of the event. A map from the recipient Curve25519 identity key to ciphertext information."
             + " For more details, see Messaging Algorithms.",
         required = true
     )

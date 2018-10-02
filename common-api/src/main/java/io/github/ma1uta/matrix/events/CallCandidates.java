@@ -19,8 +19,7 @@ package io.github.ma1uta.matrix.events;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.Candidate;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -31,16 +30,18 @@ import java.util.List;
  * party additional ICE candidates to try using to communicate.
  * </p>
  */
-@ApiModel(description = "This event is sent by callers after sending an invite and by the callee after answering."
-    + " Its purpose is to give the other party additional ICE candidates to try using to communicate.")
+@Schema(
+    description = "This event is sent by callers after sending an invite and by the callee after answering."
+        + " Its purpose is to give the other party additional ICE candidates to try using to communicate."
+)
 public class CallCandidates implements EventContent {
 
     /**
      * Required. The ID of the call this event relates to.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "call_id",
-        value = "The ID of the call this event relates to.",
+        description = "The ID of the call this event relates to.",
         required = true
     )
     @JsonProperty("call_id")
@@ -49,8 +50,8 @@ public class CallCandidates implements EventContent {
     /**
      * Required. Array of objects describing the candidates.
      */
-    @ApiModelProperty(
-        value = "Array of objects describing the candidates.",
+    @Schema(
+        description = "Array of objects describing the candidates.",
         required = true
     )
     private List<Candidate> candidates;
@@ -58,8 +59,8 @@ public class CallCandidates implements EventContent {
     /**
      * Required. The version of the VoIP specification this messages adheres to. This specification is version 0.
      */
-    @ApiModelProperty(
-        value = "The version of the VoIP specification this messages adheres to. This specification is version 0.",
+    @Schema(
+        description = "The version of the VoIP specification this messages adheres to. This specification is version 0.",
         required = true
     )
     private Long version;

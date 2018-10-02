@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.protocol;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Protocol Location.
  */
-@ApiModel(description = "Protocol Location.")
+@Schema(
+    description = "Protocol Location."
+)
 public class ProtocolLocation {
 
     /**
      * Required. An alias for a matrix room.
      */
-    @ApiModelProperty(
-        value = "An alias for a matrix room.",
+    @Schema(
+        description = "An alias for a matrix room.",
         required = true
     )
     private String alias;
@@ -39,8 +40,8 @@ public class ProtocolLocation {
     /**
      * Required. The protocol ID that the third party location is a part of.
      */
-    @ApiModelProperty(
-        value = "The protocol ID that the third party location is a part of.",
+    @Schema(
+        description = "The protocol ID that the third party location is a part of.",
         required = true
     )
     private String protocol;
@@ -48,8 +49,8 @@ public class ProtocolLocation {
     /**
      * Required. Information used to identify this third party location.
      */
-    @ApiModelProperty(
-        value = "Information used to identify this third party location.",
+    @Schema(
+        description = "Information used to identify this third party location.",
         required = true
     )
     private Map<String, String> fields;

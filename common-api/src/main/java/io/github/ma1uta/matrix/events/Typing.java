@@ -18,23 +18,24 @@ package io.github.ma1uta.matrix.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Informs the client of the list of users currently typing.
  */
-@ApiModel(description = "Informs the client of the list of users currently typing.")
+@Schema(
+    description = "Informs the client of the list of users currently typing."
+)
 public class Typing implements EventContent {
 
     /**
      * Required. The list of user IDs typing in this room, if any.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "user_ids",
-        value = "The list of user IDs typing in this room, if any.",
+        description = "The list of user IDs typing in this room, if any.",
         required = true
     )
     @JsonProperty("user_ids")

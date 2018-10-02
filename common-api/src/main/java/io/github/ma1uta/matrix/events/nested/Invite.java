@@ -18,21 +18,22 @@ package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Signed;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Third-party invites.
  */
-@ApiModel(description = "Third-party invites.")
+@Schema(
+    description = "Third-party invites."
+)
 public class Invite {
 
     /**
      * Required. A name which can be displayed to represent the user instead of their third party identifier.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "display_name",
-        value = "A name which can be displayed to represent the user instead of their third party identifier.",
+        description = "A name which can be displayed to represent the user instead of their third party identifier.",
         required = true
     )
     @JsonProperty("display_name")
@@ -41,8 +42,8 @@ public class Invite {
     /**
      * Required. A block of content which has been signed, which servers can use to verify the event. Clients should ignore this.
      */
-    @ApiModelProperty(
-        value = "A block of content which has been signed, which servers can use to verify the event. Clients should ignore this.",
+    @Schema(
+        description = "A block of content which has been signed, which servers can use to verify the event. Clients should ignore this.",
         required = true
     )
     private Signed signed;

@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Tag info.
  */
-@ApiModel(description = "Tag info.")
+@Schema(
+    description = "Tag info."
+)
 public class TagInfo {
 
     /**
      * A number in a range [0,1] describing a relative position of the room under the given tag.
      */
-    @ApiModelProperty(
-        value = "A number in a range [0,1] describing a relative position of the room under the given tag."
+    @Schema(
+        description = "A number in a range [0,1] describing a relative position of the room under the given tag."
     )
     private Long order;
 

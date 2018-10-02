@@ -18,28 +18,29 @@ package io.github.ma1uta.matrix.events;
 
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.ImageInfo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * A picture that is associated with the room. This can be displayed alongside the room information.
  */
-@ApiModel(description = "A picture that is associated with the room. This can be displayed alongside the room information.")
+@Schema(
+    description = "A picture that is associated with the room. This can be displayed alongside the room information."
+)
 public class RoomAvatar implements EventContent {
 
     /**
      * Metadata about the image referred to in url.
      */
-    @ApiModelProperty(
-        value = "Metadata about the image referred to in url."
+    @Schema(
+        description = "Metadata about the image referred to in url."
     )
     private ImageInfo info;
 
     /**
      * Required. The URL to the image.
      */
-    @ApiModelProperty(
-        value = "The URL to the image.",
+    @Schema(
+        description = "The URL to the image.",
         required = true
     )
     private String url;

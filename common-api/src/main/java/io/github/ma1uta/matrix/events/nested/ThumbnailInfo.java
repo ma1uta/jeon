@@ -17,21 +17,22 @@
 package io.github.ma1uta.matrix.events.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Thumbnail info.
  */
-@ApiModel(description = "Thumbnail info.")
+@Schema(
+    description = "Thumbnail info."
+)
 public class ThumbnailInfo {
 
     /**
      * The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "h",
-        value = "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        description = "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
     )
     @JsonProperty("h")
     private Long height;
@@ -39,9 +40,9 @@ public class ThumbnailInfo {
     /**
      * The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "w",
-        value = "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
+        description = "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
     )
     @JsonProperty("w")
     private Long width;
@@ -49,16 +50,16 @@ public class ThumbnailInfo {
     /**
      * The mimetype of the image, e.g. image/jpeg.
      */
-    @ApiModelProperty(
-        value = "The mimetype of the image, e.g. image/jpeg."
+    @Schema(
+        description = "The mimetype of the image, e.g. image/jpeg."
     )
     private String mimetype;
 
     /**
      * Size of the image in bytes.
      */
-    @ApiModelProperty(
-        value = "Size of the image in bytes."
+    @Schema(
+        description = "Size of the image in bytes."
     )
     private Long size;
 
