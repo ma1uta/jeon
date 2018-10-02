@@ -78,7 +78,7 @@
         <maven.project.info.plugin.version>3.0.0</maven.project.info.plugin.version>
         <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
         <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
-        <swagger.maven.plugin.version>3.1.7</swagger.maven.plugin.version>
+        <swagger.maven.plugin.version>2.0.5</swagger.maven.plugin.version>
         <versions.maven.plugin>2.5</versions.maven.plugin>
 
         <slf4j.api.version>1.8.0-beta2</slf4j.api.version>
@@ -86,7 +86,7 @@
         <jackson.annotations.version>2.9.7</jackson.annotations.version>
         <jackson.databind.version>2.9.7</jackson.databind.version>
         <javax.servlet.api.version>4.0.1</javax.servlet.api.version>
-        <swagger.version>1.5.20</swagger.version>
+        <swagger.version>2.0.5</swagger.version>
         <junit5.bom.version>5.3.1</junit5.bom.version>
         <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
         <asm.version>7.0-beta</asm.version>
@@ -268,53 +268,19 @@
                     <version>${maven.project.info.plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.github.kongchen</groupId>
+                    <groupId>io.swagger.core.v3</groupId>
                     <artifactId>swagger-maven-plugin</artifactId>
                     <version>${swagger.maven.plugin.version}</version>
                     <configuration>
-                        <apiSources>
-                            <apiSource>
-                                <springmvc>false</springmvc>
-                                <schemes>
-                                    <schema>https</schema>
-                                </schemes>
-                                <host>matrix.org:8448</host>
-                                <basePath/>
-                                <info>
-                                    <title>${project.name}</title>
-                                    <version>${project.version}</version>
-                                    <description>${project.description}</description>
-                                    <termsOfService>http://www.github.com/kongchen/swagger-maven-plugin</termsOfService>
-                                    <contact>
-                                        <email>sablintolya@gmail.com</email>
-                                        <name>Anatoly</name>
-                                        <url>https://github.com/ma1uta/jeon</url>
-                                    </contact>
-                                    <license>
-                                        <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-                                        <name>Apache 2.0</name>
-                                    </license>
-                                </info>
-                                <securityDefinitions>
-                                    <securityDefinition>
-                                        <type>apiKey</type>
-                                        <in>header</in>
-                                        <name>Authorization</name>
-                                        <description>The value should be 'Bearer &lt;access_token&gt;'</description>
-                                    </securityDefinition>
-                                </securityDefinitions>
-                                <templatePath>config/swagger/strapdown.html.hbs</templatePath>
-                                <outputPath>${basedir}/target/generated/document.html</outputPath>
-                                <swaggerDirectory>${basedir}/target/generated/swagger-ui</swaggerDirectory>
-                                <attachSwaggerArtifact>true</attachSwaggerArtifact>
-                            </apiSource>
-                        </apiSources>
+                        <outputPath>${project.build.directory}/swagger</outputPath>
+                        <outputFormat>JSONANDYAML</outputFormat>
+                        <prettyPrint>true</prettyPrint>
                     </configuration>
                     <executions>
                         <execution>
                             <phase>compile</phase>
                             <goals>
-                                <goal>generate</goal>
+                                <goal>resolve</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -491,21 +457,15 @@
                 <version>${javax.servlet.api.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.swagger</groupId>
+                <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-jaxrs</artifactId>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-jaxrs2</artifactId>
                 <version>${swagger.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.ws.rs</groupId>
-                        <artifactId>jsr311-api</artifactId>
-                    </exclusion>
-                </exclusions>
                 <scope>compile</scope>
             </dependency>
             <dependency>
