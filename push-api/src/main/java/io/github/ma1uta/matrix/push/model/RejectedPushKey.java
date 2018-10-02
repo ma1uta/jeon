@@ -16,15 +16,16 @@
 
 package io.github.ma1uta.matrix.push.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON body response for push api.
  */
-@ApiModel(description = "JSON body response for push api.")
+@Schema(
+    description = "JSON body response for push api."
+)
 public class RejectedPushKey {
 
     /**
@@ -33,8 +34,8 @@ public class RejectedPushKey {
      * pushkeys and remove the associated pushers. It may not necessarily be the notification in the request that failed: it could
      * be that a previous notification to the same pushkey failed.
      */
-    @ApiModelProperty(
-        value = "A list of all pushkeys given in the notification request that are not valid. These could have been"
+    @Schema(
+        description = "A list of all pushkeys given in the notification request that are not valid. These could have been"
             + " rejected by an upstream gateway because they have expired or have never been valid. Homeservers must cease sending"
             + " notification requests for these pushkeys and remove the associated pushers. It may not necessarily be the notification"
             + " in the request that failed: it could be that a previous notification to the same pushkey failed. May be empty.",

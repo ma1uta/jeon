@@ -40,26 +40,17 @@
             <artifactId>common-api</artifactId>
             <version>${common.api.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.kongchen</groupId>
+                <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
                 <configuration>
-                    <apiSources>
-                        <apiSource>
-                            <locations>
-                                <location>io.github.ma1uta.matrix.push.api</location>
-                            </locations>
-                        </apiSource>
-                    </apiSources>
+                    <resourcePackages>
+                        <package>io.github.ma1uta.matrix.push.api</package>
+                    </resourcePackages>
                 </configuration>
             </plugin>
         </plugins>

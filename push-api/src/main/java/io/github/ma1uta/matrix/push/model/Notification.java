@@ -18,15 +18,16 @@ package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Information about the push notification.
  */
-@ApiModel(description = "Information about the push notification.")
+@Schema(
+    description = "Information about the push notification."
+)
 public class Notification {
 
     /**
@@ -53,11 +54,11 @@ public class Notification {
      * It may be omitted for notifications that only contain updated badge counts. This ID can and should be used to detect duplicate
      * notification requests.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "event_id",
-        value = "The Matrix event ID of the event being notified about. This is required if the notification is about a particular Matrix"
-            + " event. It may be omitted for notifications that only contain updated badge counts. This ID can and should be used to detect"
-            + " duplicate notification requests."
+        description = "The Matrix event ID of the event being notified about. This is required if the notification is about a particular"
+            + " Matrix event. It may be omitted for notifications that only contain updated badge counts. This ID can and should be used"
+            + " to detect duplicate notification requests."
     )
     @JsonProperty("event_id")
     private String eventId;
@@ -65,9 +66,9 @@ public class Notification {
     /**
      * The ID of the room in which this event occurred. Required if the notification relates to a specific Matrix event.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_id",
-        value = "The ID of the room in which this event occurred. Required if the notification relates to a specific Matrix event."
+        description = "The ID of the room in which this event occurred. Required if the notification relates to a specific Matrix event."
     )
     @JsonProperty("room_id")
     private String roomId;
@@ -75,25 +76,25 @@ public class Notification {
     /**
      * The type of the event as in the event's type field.
      */
-    @ApiModelProperty(
-        value = "The type of the event as in the event's type field."
+    @Schema(
+        description = "The type of the event as in the event's type field."
     )
     private String type;
 
     /**
      * The sender of the event as in the corresponding event field.
      */
-    @ApiModelProperty(
-        value = "The sender of the event as in the corresponding event field."
+    @Schema(
+        description = "The sender of the event as in the corresponding event field."
     )
     private String sender;
 
     /**
      * The current display name of the sender in the room in which the event occurred.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "sender_display_name",
-        value = "The current display name of the sender in the room in which the event occurred."
+        description = "The current display name of the sender in the room in which the event occurred."
     )
     @JsonProperty("sender_display_name")
     private String senderDisplayName;
@@ -101,9 +102,9 @@ public class Notification {
     /**
      * The name of the room in which the event occurred.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_name",
-        value = "The name of the room in which the event occurred."
+        description = "The name of the room in which the event occurred."
     )
     @JsonProperty("room_name")
     private String roomName;
@@ -111,9 +112,9 @@ public class Notification {
     /**
      * An alias to display for the room in which the event occurred.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "room_alias",
-        value = "An alias to display for the room in which the event occurred."
+        description = "An alias to display for the room in which the event occurred."
     )
     @JsonProperty("room_alias")
     private String roomAlias;
@@ -122,10 +123,10 @@ public class Notification {
      * This is true if the user receiving the notification is the subject of a member event (i.e. the state_key of the member event
      * is equal to the user's Matrix ID).
      */
-    @ApiModelProperty(
+    @Schema(
         name = "user_is_target",
-        value = "This is true if the user receiving the notification is the subject of a member event (i.e. the state_key of the member"
-            + " event is equal to the user's Matrix ID)."
+        description = "This is true if the user receiving the notification is the subject of a member event (i.e. the state_key"
+            + " of the member event is equal to the user's Matrix ID)."
     )
     @JsonProperty("user_is_target")
     private Boolean userIsTarget;
@@ -134,8 +135,8 @@ public class Notification {
      * The priority of the notification. If omitted, high is assumed. This may be used by push gateways to deliver less time-sensitive
      * notifications in a way that will preserve battery power on mobile devices. One of: ["high", "low"].
      */
-    @ApiModelProperty(
-        value = "The priority of the notification. If omitted, high is assumed. This may be used by push gateways to deliver"
+    @Schema(
+        description = "The priority of the notification. If omitted, high is assumed. This may be used by push gateways to deliver"
             + "less time-sensitive notifications in a way that will preserve battery power on mobile devices.",
         allowableValues = "high, low"
     )
@@ -144,8 +145,9 @@ public class Notification {
     /**
      * The content field from the event, if present. If the event had no content field, this field is omitted.
      */
-    @ApiModelProperty(
-        value = "The content field from the event, if present. The pusher may omit this if the event had no content or for any other reas"
+    @Schema(
+        description = "The content field from the event, if present. The pusher may omit this if the event had no content or"
+            + " for any other reas"
     )
     private EventContent content;
 
@@ -153,8 +155,8 @@ public class Notification {
      * This is a dictionary of the current number of unacknowledged communications for the recipient user. Counts whose value is zero
      * are omitted.
      */
-    @ApiModelProperty(
-        value = "This is a dictionary of the current number of unacknowledged communications for the recipient user. Counts whose"
+    @Schema(
+        description = "This is a dictionary of the current number of unacknowledged communications for the recipient user. Counts whose"
             + " value is zero should be omitted."
     )
     private Counts counts;
@@ -162,8 +164,8 @@ public class Notification {
     /**
      * Required. This is an array of devices that the notification should be sent to.
      */
-    @ApiModelProperty(
-        value = "This is an array of devices that the notification should be sent to.",
+    @Schema(
+        description = "This is an array of devices that the notification should be sent to.",
         required = true
     )
     private List<Device> devices;

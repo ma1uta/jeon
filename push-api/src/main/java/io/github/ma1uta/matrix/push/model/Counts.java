@@ -17,29 +17,30 @@
 package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Counts.
  */
-@ApiModel(description = "Counts.")
+@Schema(
+    description = "Counts."
+)
 public class Counts {
 
     /**
      * The number of unread messages a user has across all of the rooms they are a member of.
      */
-    @ApiModelProperty(
-        value = "The number of unread messages a user has across all of the rooms they are a member of."
+    @Schema(
+        description = "The number of unread messages a user has across all of the rooms they are a member of."
     )
     private Long unread;
 
     /**
      * The number of unacknowledged missed calls a user has across all rooms of which they are a member.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "missed_calls",
-        value = "The number of unacknowledged missed calls a user has across all rooms of which they are a member."
+        description = "The number of unacknowledged missed calls a user has across all rooms of which they are a member."
     )
     @JsonProperty("missed_calls")
     private Long missedCalls;

@@ -18,23 +18,24 @@ package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.PusherData;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Device.
  */
-@ApiModel(description = "Device.")
+@Schema(
+    description = "Device."
+)
 public class Device {
 
     /**
      * Required. The app_id given when the pusher was created.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "app_id",
-        value = "The app_id given when the pusher was created.",
+        description = "The app_id given when the pusher was created.",
         required = true
     )
     @JsonProperty("app_id")
@@ -43,9 +44,9 @@ public class Device {
     /**
      * Required. The pushkey given when the pusher was created.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "pushkey",
-        value = "The pushkey given when the pusher was created.",
+        description = "The pushkey given when the pusher was created.",
         required = true
     )
     @JsonProperty("pushkey")
@@ -54,9 +55,9 @@ public class Device {
     /**
      * The unix timestamp (in seconds) when the pushkey was last updated.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "pushkey_ts",
-        value = "The unix timestamp (in seconds) when the pushkey was last updated."
+        description = "The unix timestamp (in seconds) when the pushkey was last updated."
     )
     @JsonProperty("pushkey_ts")
     private Long pushKeyTs;
@@ -65,8 +66,8 @@ public class Device {
      * A dictionary of additional pusher-specific data. For 'http' pushers, this is the data dictionary passed in at pusher creation
      * minus the url key.
      */
-    @ApiModelProperty(
-        value = "A dictionary of additional pusher-specific data. For 'http' pushers, this is the data dictionary passed in at"
+    @Schema(
+        description = "A dictionary of additional pusher-specific data. For 'http' pushers, this is the data dictionary passed in at"
             + " pusher creation minus the url key."
     )
     private PusherData data;
@@ -74,8 +75,8 @@ public class Device {
     /**
      * A dictionary of customisations made to the way this notification is to be presented. These are added by push rules.
      */
-    @ApiModelProperty(
-        value = "A dictionary of customisations made to the way this notification is to be presented. These are added by push rules."
+    @Schema(
+        description = "A dictionary of customisations made to the way this notification is to be presented. These are added by push rules."
     )
     private Map<String, String> tweaks;
 
