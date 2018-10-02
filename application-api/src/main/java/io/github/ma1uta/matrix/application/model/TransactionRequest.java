@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.application.model;
 
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON body request of the transaction api.
  */
-@ApiModel(description = "JSON body request of the transaction api.")
+@Schema(
+    description = "JSON body request of the transaction api."
+)
 public class TransactionRequest {
 
     /**
      * Required. A list of events, formatted as per the Client-Server API.
      */
-    @ApiModelProperty(
-        value = "A list of events, formatted as per the Client-Server API.",
+    @Schema(
+        description = "A list of events, formatted as per the Client-Server API.",
         required = true
     )
     private List<Event> events;

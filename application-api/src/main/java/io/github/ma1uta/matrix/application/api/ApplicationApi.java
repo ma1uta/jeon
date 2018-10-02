@@ -18,13 +18,13 @@ package io.github.ma1uta.matrix.application.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.application.model.TransactionRequest;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -34,15 +34,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Application service APIs which are used by the homeserver. All application services MUST implement these APIs.
  */
-@Api(
-    value = "ApplicationService",
-    description = "All application services MUST implement these APIs."
-)
 @Path("/_matrix/app/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -55,37 +53,45 @@ public interface ApplicationApi {
      * rather than via the event type.
      * <br>
      * Return: {@link EmptyResponse}.
-     * <p>Status code 200: The transaction was processed successfully.</p>
+     * <p>Status responseCode 200: The transaction was processed successfully.</p>
      *
-     * @param txnId          Required. The transaction ID for this set of events. Homeservers generate these IDs and they are used to
-     *                       ensure idempotency of requests.
-     * @param request        JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param txnId         Required. The transaction ID for this set of events. Homeservers generate these IDs and they are used to
+     *                      ensure idempotency of requests.
+     * @param request       JSON body request.
+     * @param uriInfo       Information about the request.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "This API is called by the homeserver when it wants to push an event (or batch of events) to the application service.",
-        notes = "Note that the application service should distinguish state events from message events via the presence of a state_key,"
-            + " rather than via the event type.",
-        response = EmptyResponse.class
+    @Operation(
+        summary = "This API is called by the homeserver when it wants to push an event (or batch of events) to the application service.",
+        description = "Note that the application service should distinguish state events from message events via the presence"
+            + " of a state_key, rather than via the event type.",
+        responses = {
+            @ApiResponse(
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(responseCode = "200", description = "The transaction was processed successfully.")
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The transaction was processed successfully.")
-    })
     @PUT
     @Path("/transactions/{txnId}")
     void transaction(
-        @ApiParam(
+        @Parameter(
             name = "txnId",
-            value = "The transaction ID for this set of events. Homeservers generate these IDs and they are used to ensure"
+            description = "The transaction ID for this set of events. Homeservers generate these IDs and they are used to ensure"
                 + " idempotency of requests.",
             required = true
         ) @PathParam("txnId") String txnId,
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) TransactionRequest request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -95,45 +101,53 @@ public interface ApplicationApi {
      * send this request when it receives a request to join a room alias within the application service's namespace.
      * <br>
      * Return: {@link EmptyResponse}.
-     * <p>Status code 200: The application service indicates that this room alias exists. The application service MUST have
+     * <p>Status responseCode 200: The application service indicates that this room alias exists. The application service MUST have
      * created a room and associated it with the queried room alias using the client-server API. Additional information
      * about the room such as its name and topic can be set before responding.</p>
-     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information can
+     * <p>Status responseCode 401: The homeserver has not supplied credentials to the application service. Optional error information can
      * be included in the body of this response.</p>
-     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
-     * <p>Status code 404: The application service indicates that this room alias does not exist. Optional error information can
+     * <p>Status responseCode 403: The credentials supplied by the homeserver were rejected.</p>
+     * <p>Status responseCode 404: The application service indicates that this room alias does not exist. Optional error information can
      * be included in the body of this response.</p>
      *
-     * @param roomAlias      Required. The room alias being queried.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param roomAlias     Required. The room alias being queried.
+     * @param uriInfo       Information about the request.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "This endpoint is invoked by the homeserver on an application service to query the existence of a given room alias.",
-        notes = "The homeserver will only query room aliases inside the application service's aliases namespace. The homeserver will"
+    @Operation(
+        summary = "This endpoint is invoked by the homeserver on an application service to query the existence of a given room alias.",
+        description = "The homeserver will only query room aliases inside the application service's aliases namespace. The homeserver will"
             + " send this request when it receives a request to join a room alias within the application service's namespace.",
-        response = EmptyResponse.class
+        responses = {
+            @ApiResponse(
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(responseCode = "200", description = "The application service indicates that this room alias exists."
+                + " The application service MUST have created a room and associated it with the queried room alias using"
+                + " the client-server API. Additional information about the room such as its name and topic can be set before responding."),
+            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
+                + " Optional error information can be included in the body of this response."),
+            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
+            @ApiResponse(responseCode = "404", description = "The application service indicates that this room alias does not exist."
+                + " Optional error information can be included in the body of this response.")
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The application service indicates that this room alias exists. The application service MUST"
-            + " have created a room and associated it with the queried room alias using the client-server API. Additional information"
-            + " about the room such as its name and topic can be set before responding."),
-        @ApiResponse(code = 401, message = "The homeserver has not supplied credentials to the application service. Optional error"
-            + " information can be included in the body of this response."),
-        @ApiResponse(code = 403, message = "The credentials supplied by the homeserver were rejected."),
-        @ApiResponse(code = 404, message = "The application service indicates that this room alias does not exist. Optional error"
-            + " information can be included in the body of this response.")
-    })
     @GET
     @Path("/rooms/{roomAlias}")
     void rooms(
-        @ApiParam(
+        @Parameter(
             name = "roomAlias",
-            value = "The room alias being queried.",
+            description = "The room alias being queried.",
             required = true
         ) @PathParam("roomAlias") String roomAlias,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -143,43 +157,51 @@ public interface ApplicationApi {
      * send this request when it receives an event for an unknown user ID in the application service's namespace.
      * <br>
      * Return: {@link EmptyResponse}.
-     * <p>Status code 200: The application service indicates that this user exists. The application service MUST create
+     * <p>Status responseCode 200: The application service indicates that this user exists. The application service MUST create
      * the user using the client-server API.</p>
-     * <p>Status code 401: The homeserver has not supplied credentials to the application service. Optional error information
+     * <p>Status responseCode 401: The homeserver has not supplied credentials to the application service. Optional error information
      * can be included in the body of this response.</p>
-     * <p>Status code 403: The credentials supplied by the homeserver were rejected.</p>
-     * <p>Status code 404: The application service indicates that this user does not exist. Optional error information can be
+     * <p>Status responseCode 403: The credentials supplied by the homeserver were rejected.</p>
+     * <p>Status responseCode 404: The application service indicates that this user does not exist. Optional error information can be
      * included in the body of this response.</p>
      *
-     * @param userId         Required. The user ID being queried.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param userId        Required. The user ID being queried.
+     * @param uriInfo       Information about the request.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "This endpoint is invoked by the homeserver on an application service to query the existence of a given user ID.",
-        notes = "The homeserver will only query user IDs inside the application service's users namespace. The homeserver will"
+    @Operation(
+        summary = "This endpoint is invoked by the homeserver on an application service to query the existence of a given user ID.",
+        description = "The homeserver will only query user IDs inside the application service's users namespace. The homeserver will"
             + " send this request when it receives an event for an unknown user ID in the application service's namespace.",
-        response = EmptyResponse.class
+        responses = {
+            @ApiResponse(
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(responseCode = "200", description = "The application service indicates that this user exists."
+                + " The application service MUST create the user using the client-server API."),
+            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
+                + " Optional error information can be included in the body of this response."),
+            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
+            @ApiResponse(responseCode = "404", description = "The application service indicates that this user does not exist."
+                + " Optional error information can be included in the body of this response.")
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The application service indicates that this user exists. The application service MUST create"
-            + " the user using the client-server API."),
-        @ApiResponse(code = 401, message = "The homeserver has not supplied credentials to the application service. Optional error"
-            + " information can be included in the body of this response."),
-        @ApiResponse(code = 403, message = "The credentials supplied by the homeserver were rejected."),
-        @ApiResponse(code = 404, message = "The application service indicates that this user does not exist. Optional error information"
-            + " can be included in the body of this response.")
-    })
     @GET
     @Path("/users/{userId}")
     void users(
-        @ApiParam(
+        @Parameter(
             name = "userId",
-            value = "The user ID being queried.",
+            description = "The user ID being queried.",
             required = true
         ) @PathParam("userId") String userId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 }
