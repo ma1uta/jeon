@@ -86,13 +86,14 @@ public interface RoomServiceApi {
             + " client's access_token. This API cannot be invoked by users who are not identified as application services.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "The room's directory visibility has been updated.",
                 content = @Content(
                     schema = @Schema(
                         implementation = EmptyResponse.class
                     )
                 )
-            ),
-            @ApiResponse(responseCode = "200", description = "The room's directory visibility has been updated.")
+            )
         }
     )
     @Secured

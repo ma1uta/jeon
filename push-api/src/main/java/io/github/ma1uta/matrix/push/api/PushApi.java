@@ -78,13 +78,14 @@ public interface PushApi {
             + " when the pusher is created.This means that the HTTP path may be different depending on the push gateway.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "A list of rejected push keys.",
                 content = @Content(
                     schema = @Schema(
                         implementation = RejectedPushKey.class
                     )
                 )
-            ),
-            @ApiResponse(responseCode = "200", description = "A list of rejected push keys.")
+            )
         }
     )
     @POST

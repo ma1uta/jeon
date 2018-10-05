@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.application.api;
 
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.protocol.Protocol;
 import io.github.ma1uta.matrix.protocol.ProtocolLocation;
@@ -81,17 +82,42 @@ public interface ProtocolApi {
             + " third party networks that an application service supports.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "The protocol was found and metadata returned.",
                 content = @Content(
                     schema = @Schema(
                         implementation = Protocol.class
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "The protocol was found and metadata returned."),
-            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
-                + " Optional error information can be included in the body of this response."),
-            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
-            @ApiResponse(responseCode = "404", description = "No protocol was found with the given path.The protocol is unknown.")
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver has not supplied credentials to the application service."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials supplied by the homeserver were rejected.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "No protocol was found with the given path.The protocol is unknown.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
         }
     )
     @Secured
@@ -129,6 +155,8 @@ public interface ProtocolApi {
         summary = "Retrieve a list of Matrix portal rooms that lead to the matched third party location.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "At least one portal room was found.",
                 content = @Content(
                     array = @ArraySchema(
                         schema = @Schema(
@@ -137,11 +165,34 @@ public interface ProtocolApi {
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "At least one portal room was found."),
-            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
-                + " Optional error information can be included in the body of this response."),
-            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
-            @ApiResponse(responseCode = "404", description = "No mappings were found with the given parameters.")
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver has not supplied credentials to the application service."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials supplied by the homeserver were rejected.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "No mappings were found with the given parameters.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
         }
     )
     @Secured
@@ -179,6 +230,8 @@ public interface ProtocolApi {
         summary = "Retrieve a Matrix User ID linked to a user on the third party service, given a set of user parameters.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "The Matrix User IDs found with the given parameters.",
                 content = @Content(
                     array = @ArraySchema(
                         schema = @Schema(
@@ -187,11 +240,34 @@ public interface ProtocolApi {
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "The Matrix User IDs found with the given parameters."),
-            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
-                + " Optional error information can be included in the body of this response."),
-            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
-            @ApiResponse(responseCode = "404", description = "No users were found with the given parameters.")
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver has not supplied credentials to the application service."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials supplied by the homeserver were rejected.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "No users were found with the given parameters.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
         }
     )
     @Secured
@@ -229,6 +305,8 @@ public interface ProtocolApi {
         summary = "Retrieve an array of third party network locations from a Matrix room alias.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "At least one portal room was found.",
                 content = @Content(
                     array = @ArraySchema(
                         schema = @Schema(
@@ -237,8 +315,15 @@ public interface ProtocolApi {
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "At least one portal room was found."),
-            @ApiResponse(responseCode = "404", description = "No portal rooms were found.")
+            @ApiResponse(
+                responseCode = "404",
+                description = "No portal rooms were found.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
         }
     )
     @Secured
@@ -276,6 +361,8 @@ public interface ProtocolApi {
         summary = "Retrieve an array of third party users from a Matrix User ID.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "An array of third party users.",
                 content = @Content(
                     array = @ArraySchema(
                         schema = @Schema(
@@ -284,11 +371,34 @@ public interface ProtocolApi {
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "An array of third party users."),
-            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
-                + " Optional error information can be included in the body of this response."),
-            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
-            @ApiResponse(responseCode = "404", description = "No mappings were found with the given parameters.")
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver has not supplied credentials to the application service."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials supplied by the homeserver were rejected.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "No mappings were found with the given parameters.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
         }
     )
     @Secured

@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.application.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.application.model.TransactionRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -68,13 +69,13 @@ public interface ApplicationApi {
             + " of a state_key, rather than via the event type.",
         responses = {
             @ApiResponse(
+                responseCode = "200", description = "The transaction was processed successfully.",
                 content = @Content(
                     schema = @Schema(
                         implementation = EmptyResponse.class
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "The transaction was processed successfully.")
         }
     )
     @PUT
@@ -121,20 +122,45 @@ public interface ApplicationApi {
             + " send this request when it receives a request to join a room alias within the application service's namespace.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "The application service indicates that this room alias exists."
+                    + " The application service MUST have created a room and associated it with the queried room alias using the"
+                    + " client-server API. Additional information about the room such as its name and topic can be set before responding.",
                 content = @Content(
                     schema = @Schema(
                         implementation = EmptyResponse.class
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "The application service indicates that this room alias exists."
-                + " The application service MUST have created a room and associated it with the queried room alias using"
-                + " the client-server API. Additional information about the room such as its name and topic can be set before responding."),
-            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
-                + " Optional error information can be included in the body of this response."),
-            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
-            @ApiResponse(responseCode = "404", description = "The application service indicates that this room alias does not exist."
-                + " Optional error information can be included in the body of this response.")
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver has not supplied credentials to the application service."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials supplied by the homeserver were rejected.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The application service indicates that this room alias does not exist."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
         }
     )
     @GET
@@ -176,19 +202,44 @@ public interface ApplicationApi {
             + " send this request when it receives an event for an unknown user ID in the application service's namespace.",
         responses = {
             @ApiResponse(
+                responseCode = "200",
+                description = "The application service indicates that this user exists."
+                    + " The application service MUST create the user using the client-server API.",
                 content = @Content(
                     schema = @Schema(
                         implementation = EmptyResponse.class
                     )
                 )
             ),
-            @ApiResponse(responseCode = "200", description = "The application service indicates that this user exists."
-                + " The application service MUST create the user using the client-server API."),
-            @ApiResponse(responseCode = "401", description = "The homeserver has not supplied credentials to the application service."
-                + " Optional error information can be included in the body of this response."),
-            @ApiResponse(responseCode = "403", description = "The credentials supplied by the homeserver were rejected."),
-            @ApiResponse(responseCode = "404", description = "The application service indicates that this user does not exist."
-                + " Optional error information can be included in the body of this response.")
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver has not supplied credentials to the application service."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials supplied by the homeserver were rejected.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The application service indicates that this user does not exist."
+                    + " Optional error information can be included in the body of this response.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
         }
     )
     @GET

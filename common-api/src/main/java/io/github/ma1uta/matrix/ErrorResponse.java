@@ -233,23 +233,12 @@ public class ErrorResponse {
      */
     private String error;
 
-    /**
-     * Time to retry send a request.
-     */
-    private Long retryAfterMs;
-
     public ErrorResponse() {
     }
 
     public ErrorResponse(String errcode, String error) {
         this.errcode = errcode;
         this.error = error;
-    }
-
-    public ErrorResponse(String errcode, String error, Long retryAfterMs) {
-        this.errcode = errcode;
-        this.error = error;
-        this.retryAfterMs = retryAfterMs;
     }
 
     public String getErrcode() {
@@ -266,13 +255,5 @@ public class ErrorResponse {
 
     public void setError(String error) {
         this.error = error;
-    }
-
-    public Long getRetryAfterMs() {
-        return retryAfterMs;
-    }
-
-    public void setRetryAfterMs(Long retryAfterMs) {
-        this.retryAfterMs = retryAfterMs;
     }
 }
