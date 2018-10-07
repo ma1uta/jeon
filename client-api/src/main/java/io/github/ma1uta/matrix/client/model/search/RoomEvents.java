@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Room events.
@@ -78,7 +78,7 @@ public class RoomEvents {
     @Schema(
         description = "The string to search events for."
     )
-    @JsonProperty("search_term")
+    @JsonbProperty("search_term")
     private String searchTerm;
 
     /**
@@ -103,7 +103,7 @@ public class RoomEvents {
     @Schema(
         description = "The order in which to search for results."
     )
-    @JsonProperty("order_by")
+    @JsonbProperty("order_by")
     private String orderBy;
 
     /**
@@ -112,7 +112,7 @@ public class RoomEvents {
     @Schema(
         description = "Configures whether any context for the events returned are included in the response."
     )
-    @JsonProperty("event_context")
+    @JsonbProperty("event_context")
     private EventContext eventContext;
 
     /**
@@ -121,7 +121,7 @@ public class RoomEvents {
     @Schema(
         description = "Requests the server return the current state for each room returned."
     )
-    @JsonProperty("include_state")
+    @JsonbProperty("include_state")
     private Boolean includeState;
 
     /**

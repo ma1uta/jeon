@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Joined room.
@@ -59,7 +60,7 @@ public class JoinedRoom {
     @Schema(
         description = "The private data that this user has attached to this room."
     )
-    @JsonProperty("account_data")
+    @JsonbProperty("account_data")
     private AccountData accountData;
 
     /**
@@ -68,7 +69,7 @@ public class JoinedRoom {
     @Schema(
         description = "Counts of unread notifications for this room."
     )
-    @JsonProperty("unread_notifications")
+    @JsonbProperty("unread_notifications")
     private UnreadNotificationCounts unreadNotifications;
 
     public State getState() {

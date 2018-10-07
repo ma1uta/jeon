@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Encrypted file.
@@ -74,7 +74,7 @@ public class EncryptedFile {
         description = "Version of the encrypted attachments protocol. Must be v2.",
         required = true
     )
-    @JsonProperty("v")
+    @JsonbProperty("v")
     private String version;
 
     public String getUrl() {

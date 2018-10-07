@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event controls whether guest users are allowed to join rooms. If this event is absent, servers should act as if it is present
@@ -38,7 +39,7 @@ public class RoomGuestAccess implements EventContent {
         description = "Whether guests can join the room.",
         allowableValues = "can_join, forbidden"
     )
-    @JsonProperty("guest_access")
+    @JsonbProperty("guest_access")
     private String guestAccess;
 
     public String getGuestAccess() {

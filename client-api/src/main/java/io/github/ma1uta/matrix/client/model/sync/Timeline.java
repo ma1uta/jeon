@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Timeline.
@@ -52,7 +52,7 @@ public class Timeline {
     @Schema(
         description = "A token that can be supplied to the from parameter of the rooms/{roomId}/messages endpoint."
     )
-    @JsonProperty("prev_batch")
+    @JsonbProperty("prev_batch")
     private String prevBatch;
 
     public List<Event> getEvents() {

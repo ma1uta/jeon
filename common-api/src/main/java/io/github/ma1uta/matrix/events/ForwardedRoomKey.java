@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event type is used to forward keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
@@ -49,7 +49,7 @@ public class ForwardedRoomKey implements EventContent {
         description = "The room where the key is used.",
         required = true
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**
@@ -60,7 +60,7 @@ public class ForwardedRoomKey implements EventContent {
         description = "Required. The Curve25519 key of the device which initiated the session originally.",
         required = true
     )
-    @JsonProperty("sender_key")
+    @JsonbProperty("sender_key")
     private String senderKey;
 
     /**
@@ -71,7 +71,7 @@ public class ForwardedRoomKey implements EventContent {
         description = "The ID of the session that the key is for.",
         required = true
     )
-    @JsonProperty("session_id")
+    @JsonbProperty("session_id")
     private String sessionId;
 
     /**
@@ -82,7 +82,7 @@ public class ForwardedRoomKey implements EventContent {
         description = "The key to be exchanged.",
         required = true
     )
-    @JsonProperty("session_key")
+    @JsonbProperty("session_key")
     private String sessionKey;
 
     /**
@@ -97,7 +97,7 @@ public class ForwardedRoomKey implements EventContent {
             + "of this key unless they have done device verification.",
         required = true
     )
-    @JsonProperty("sender_claimed_ed25519_key")
+    @JsonbProperty("sender_claimed_ed25519_key")
     private String senderClaimedEd25519Key;
 
     /**
@@ -112,7 +112,7 @@ public class ForwardedRoomKey implements EventContent {
             + " this field is empty between A and B, and contains A's Curve25519 key between B and C.",
         required = true
     )
-    @JsonProperty("forwarding_curve25519_key_chain")
+    @JsonbProperty("forwarding_curve25519_key_chain")
     private List<String> forwardingCurve25519KeyChain;
 
     public String getAlgorithm() {

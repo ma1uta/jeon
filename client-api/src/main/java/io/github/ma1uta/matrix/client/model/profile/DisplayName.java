@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.profile;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request for profile api.
@@ -33,7 +34,7 @@ public class DisplayName {
     @Schema(
         description = "The new display name for this user."
     )
-    @JsonProperty("displayname")
+    @JsonbProperty("displayname")
     private String displayName;
 
     public String getDisplayName() {

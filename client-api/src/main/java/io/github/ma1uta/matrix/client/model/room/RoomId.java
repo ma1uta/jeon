@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body with roomId used in the room apis.
@@ -33,7 +34,7 @@ public class RoomId {
     @Schema(
         description = "The created room's ID."
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     public String getRoomId() {

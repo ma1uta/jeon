@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ma1uta.matrix.EventContent;
 
 /**
@@ -27,16 +26,16 @@ public class RawEvent implements EventContent {
     public RawEvent() {
     }
 
-    public RawEvent(JsonNode content) {
+    public RawEvent(Object content) {
         this.content = content;
     }
 
     /**
      * Content.
      */
-    private JsonNode content;
+    private Object content;
 
-    public JsonNode getContent() {
+    public Object getContent() {
         return content;
     }
 }

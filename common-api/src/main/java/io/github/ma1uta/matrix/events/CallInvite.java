@@ -16,10 +16,11 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.Offer;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Message Event.
@@ -40,7 +41,7 @@ public class CallInvite implements EventContent {
         description = "The ID of the call this event relates to.",
         required = true
     )
-    @JsonProperty("call_id")
+    @JsonbProperty("call_id")
     private String callId;
 
     /**

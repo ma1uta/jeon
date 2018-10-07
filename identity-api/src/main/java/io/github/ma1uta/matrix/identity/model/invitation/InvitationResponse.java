@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.identity.model.invitation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Result of the pending invitation.
@@ -48,7 +48,7 @@ public class InvitationResponse {
         description = "A list of [server's long-term public key, generated ephemeral public key].",
         required = true
     )
-    @JsonProperty("public_keys")
+    @JsonbProperty("public_keys")
     private List<String> publicKeys;
 
     /**
@@ -59,7 +59,7 @@ public class InvitationResponse {
         description = "The generated (redacted) display_name.",
         required = true
     )
-    @JsonProperty("display_name")
+    @JsonbProperty("display_name")
     private String displayName;
 
     public String getToken() {

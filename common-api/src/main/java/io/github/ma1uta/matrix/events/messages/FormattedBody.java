@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events.messages;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This message is the most basic message and is used to represent text.
@@ -57,7 +58,7 @@ public abstract class FormattedBody extends RoomMessage {
     @Schema(
         name = "formatted_body",
         description = "The formatted version of the ``body``. This is required if ``format`` is specified.")
-    @JsonProperty("formatted_body")
+    @JsonbProperty("formatted_body")
     private String formattedBody;
 
     public String getFormat() {

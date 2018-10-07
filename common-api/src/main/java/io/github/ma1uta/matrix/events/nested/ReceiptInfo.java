@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Receipts.
@@ -36,7 +36,7 @@ public class ReceiptInfo {
         name = "m.read",
         description = "A collection of users who have sent m.read receipts for this event."
     )
-    @JsonProperty("m.read")
+    @JsonbProperty("m.read")
     private Map<String, ReceiptTs> read;
 
     public Map<String, ReceiptTs> getRead() {

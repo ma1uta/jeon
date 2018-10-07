@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Categories.
@@ -33,7 +34,7 @@ public class RequestCategories {
     @Schema(
         description = "Mapping of category name to search criteria."
     )
-    @JsonProperty("room_events")
+    @JsonbProperty("room_events")
     private RoomEvents roomEvents;
 
     public RoomEvents getRoomEvents() {

@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Public keys.
@@ -38,7 +39,7 @@ public class PublicKeys {
             + " to validate whether the key has been revoked. The URL must return a JSON object containing a boolean property"
             + " named 'valid'. If this URL is absent, the key must be considered valid indefinitely."
     )
-    @JsonProperty("key_validity_url")
+    @JsonbProperty("key_validity_url")
     private String keyValidityUrl;
 
     /**

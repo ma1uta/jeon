@@ -16,11 +16,12 @@
 
 package io.github.ma1uta.matrix.events.messages;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomMessage;
 import io.github.ma1uta.matrix.events.nested.LocationInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This message represents a real-world location.
@@ -45,7 +46,7 @@ public class Location extends RoomMessage {
         description = "A geo URI representing this location.",
         required = true
     )
-    @JsonProperty("geo_uri")
+    @JsonbProperty("geo_uri")
     private String geoUri;
 
     public LocationInfo getInfo() {

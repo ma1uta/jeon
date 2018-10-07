@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.PusherData;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Pusher.
@@ -54,7 +55,7 @@ public class Pusher {
     @Schema(
         description = "This is a reverse-DNS style identifier for the application. Max length, 64 chars."
     )
-    @JsonProperty("app_id")
+    @JsonbProperty("app_id")
     private String appId;
 
     /**
@@ -63,7 +64,7 @@ public class Pusher {
     @Schema(
         description = "A string that will allow the user to identify what application owns this pusher."
     )
-    @JsonProperty("app_display_name")
+    @JsonbProperty("app_display_name")
     private String appDisplayName;
 
     /**
@@ -72,7 +73,7 @@ public class Pusher {
     @Schema(
         description = "A string that will allow the user to identify what device owns this pusher."
     )
-    @JsonProperty("device_display_name")
+    @JsonbProperty("device_display_name")
     private String deviceDisplayName;
 
     /**
@@ -81,7 +82,7 @@ public class Pusher {
     @Schema(
         description = "This string determines which set of device specific rules this pusher executes."
     )
-    @JsonProperty("profile_tag")
+    @JsonbProperty("profile_tag")
     private String profileTag;
 
     /**

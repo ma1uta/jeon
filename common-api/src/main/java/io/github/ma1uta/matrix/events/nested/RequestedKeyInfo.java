@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Requested key info.
@@ -44,7 +45,7 @@ public class RequestedKeyInfo {
         description = "The room where the key is used.",
         required = true
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**
@@ -55,7 +56,7 @@ public class RequestedKeyInfo {
         description = "The Curve25519 key of the device which initiated the session originally.",
         required = true
     )
-    @JsonProperty("sender_key")
+    @JsonbProperty("sender_key")
     private String senderKey;
 
     /**
@@ -66,7 +67,7 @@ public class RequestedKeyInfo {
         description = "The ID of the session that the key is for.",
         required = true
     )
-    @JsonProperty("session_id")
+    @JsonbProperty("session_id")
     private String sessionId;
 
     public String getAlgorithm() {

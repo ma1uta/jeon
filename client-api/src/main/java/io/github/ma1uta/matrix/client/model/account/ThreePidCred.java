@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * 3Pid credentials.
@@ -41,7 +42,7 @@ public class ThreePidCred {
     @Schema(
         description = "The client secret used in the session with the identity server."
     )
-    @JsonProperty("client_secret")
+    @JsonbProperty("client_secret")
     private String clientSecret;
 
     /**
@@ -50,7 +51,7 @@ public class ThreePidCred {
     @Schema(
         description = "The identity server to use."
     )
-    @JsonProperty("id_server")
+    @JsonbProperty("id_server")
     private String idServer;
 
     public String getSid() {

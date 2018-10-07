@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Thumbnail info.
@@ -34,7 +35,7 @@ public class ThumbnailInfo {
         name = "h",
         description = "The intended display height of the image in pixels. This may differ from the intrinsic dimensions of the image file."
     )
-    @JsonProperty("h")
+    @JsonbProperty("h")
     private Long height;
 
     /**
@@ -44,7 +45,7 @@ public class ThumbnailInfo {
         name = "w",
         description = "The intended display width of the image in pixels. This may differ from the intrinsic dimensions of the image file."
     )
-    @JsonProperty("w")
+    @JsonbProperty("w")
     private Long width;
 
     /**

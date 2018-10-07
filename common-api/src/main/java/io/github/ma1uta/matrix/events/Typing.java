@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Informs the client of the list of users currently typing.
@@ -38,7 +38,7 @@ public class Typing implements EventContent {
         description = "The list of user IDs typing in this room, if any.",
         required = true
     )
-    @JsonProperty("user_ids")
+    @JsonbProperty("user_ids")
     private List<String> userIds;
 
     public List<String> getUserIds() {

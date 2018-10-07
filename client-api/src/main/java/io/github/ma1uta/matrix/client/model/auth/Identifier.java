@@ -16,32 +16,15 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
-import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static io.github.ma1uta.matrix.client.api.AuthApi.IdentifierType.PHONE;
-import static io.github.ma1uta.matrix.client.api.AuthApi.IdentifierType.THIRD_PARTY;
-import static io.github.ma1uta.matrix.client.api.AuthApi.IdentifierType.USER;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Some authentication mechanisms use a user identifier object to identify a user. The user identifier object has a type field
  * to indicate the type of identifier being used, and depending on the type, has other fields giving the information required
  * to identify the user.
  */
-@JsonTypeInfo(
-    use = NAME,
-    property = "type"
-)
-@JsonSubTypes( {
-    @Type(name = USER, value = UserIdentifier.class),
-    @Type(name = THIRD_PARTY, value = ThirdpartyIdentifier.class),
-    @Type(name = PHONE, value = PhoneIdentifier.class)
-})
 @Schema(
     description = "Identifier types."
 )
@@ -55,6 +38,6 @@ public abstract class Identifier {
     @Schema(
         description = "Identifier type."
     )
-    @JsonProperty(value = "type", access = READ_ONLY)
+    @JsonbProperty(value = "type")
     public abstract String getType();
 }

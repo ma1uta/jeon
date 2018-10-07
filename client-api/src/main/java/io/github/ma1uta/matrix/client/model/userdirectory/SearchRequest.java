@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.userdirectory;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request for user directory api (search).
@@ -33,7 +34,7 @@ public class SearchRequest {
     @Schema(
         description = "The term to search for."
     )
-    @JsonProperty("search_term")
+    @JsonbProperty("search_term")
     private String searchTerm;
 
     /**

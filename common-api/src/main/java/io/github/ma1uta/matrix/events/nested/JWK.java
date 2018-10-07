@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON Web Key.
@@ -46,7 +46,7 @@ public class JWK {
         description = "Key operations, Must at least contain encrypt and decrypt.",
         required = true
     )
-    @JsonProperty("key_opts")
+    @JsonbProperty("key_opts")
     private List<String> keyOpts;
 
     /**
@@ -66,7 +66,7 @@ public class JWK {
         description = "The key, encoded as urlsafe unpadded base64.",
         required = true
     )
-    @JsonProperty("k")
+    @JsonbProperty("k")
     private String encodedKey;
 
     /**

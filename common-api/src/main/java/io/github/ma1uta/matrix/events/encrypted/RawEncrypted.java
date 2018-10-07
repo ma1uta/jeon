@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.events.encrypted;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ma1uta.matrix.events.RoomEncrypted;
 
 /**
@@ -24,16 +23,16 @@ import io.github.ma1uta.matrix.events.RoomEncrypted;
  */
 public class RawEncrypted extends RoomEncrypted {
 
-    public RawEncrypted(JsonNode node, String algorithm) {
+    public RawEncrypted(Object node, String algorithm) {
         this.node = node;
         this.algorithm = algorithm;
     }
 
-    private JsonNode node;
+    private Object node;
 
     private String algorithm;
 
-    public JsonNode getNode() {
+    public Object getNode() {
         return node;
     }
 

@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Groupings.
@@ -35,7 +35,7 @@ public class Groupings {
     @Schema(
         description = "List of groups to request."
     )
-    @JsonProperty("group_by")
+    @JsonbProperty("group_by")
     private List<Group> groupBy;
 
     public List<Group> getGroupBy() {

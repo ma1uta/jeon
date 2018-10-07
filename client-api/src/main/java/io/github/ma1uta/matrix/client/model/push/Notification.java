@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Notification.
@@ -52,7 +52,7 @@ public class Notification {
     @Schema(
         description = "The profile tag of the rule that matched this event."
     )
-    @JsonProperty("profile_tag")
+    @JsonbProperty("profile_tag")
     private String profileTag;
 
     /**
@@ -69,7 +69,7 @@ public class Notification {
     @Schema(
         description = "The ID of the room in which the event was posted."
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**

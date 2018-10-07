@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Response format.
@@ -49,7 +49,7 @@ public class ClaimResponse {
         description = "One-time keys for the queried devices. A map from user ID, to a map "
             + "from &lt;algorithm&gt;:&lt;key_id&gt; to the key object."
     )
-    @JsonProperty("one_time_keys")
+    @JsonbProperty("one_time_keys")
     private Map<String, Map<String, Object>> oneTimeKeys;
 
     public Map<String, Object> getFailures() {

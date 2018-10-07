@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.identity.model.key;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * The public key exists.
@@ -35,7 +36,7 @@ public class PublicKeyResponse {
         description = "Unpadded Base64 encoded public key.",
         required = true
     )
-    @JsonProperty("public_key")
+    @JsonbProperty("public_key")
     private String publicKey;
 
     public String getPublicKey() {

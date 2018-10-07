@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body parameters for Claims one-time keys for use in pre-key messages.
@@ -43,7 +43,7 @@ public class ClaimRequest {
     @Schema(
         description = "The keys to be claimed. A map from user ID, to a map from device ID to algorithm name."
     )
-    @JsonProperty("one_time_keys")
+    @JsonbProperty("one_time_keys")
     private Map<String, Map<String, String>> oneTimeKeys;
 
     public Long getTimeout() {

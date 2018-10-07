@@ -16,12 +16,12 @@
 
 package io.github.ma1uta.matrix.client.model.deprecatedsync;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.SecurityContext;
 
@@ -43,7 +43,7 @@ public class DeprecatedRoomInfo {
     @Schema(
         description = "The ID of this room."
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**
@@ -94,7 +94,7 @@ public class DeprecatedRoomInfo {
     @Schema(
         description = "The private data that this user has attached to this room."
     )
-    @JsonProperty("account_data")
+    @JsonbProperty("account_data")
     private List<Event> accountData;
 
     public String getRoomId() {

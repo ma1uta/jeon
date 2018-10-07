@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.events.messages;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ma1uta.matrix.events.RoomMessage;
 
 /**
@@ -24,12 +23,12 @@ import io.github.ma1uta.matrix.events.RoomMessage;
  */
 public class RawMessage extends RoomMessage {
 
-    public RawMessage(JsonNode node, String type) {
+    public RawMessage(Object node, String type) {
         this.node = node;
         this.type = type;
     }
 
-    private JsonNode node;
+    private Object node;
 
     private String type;
 
@@ -38,7 +37,7 @@ public class RawMessage extends RoomMessage {
         return type;
     }
 
-    public JsonNode getNode() {
+    public Object getNode() {
         return node;
     }
 

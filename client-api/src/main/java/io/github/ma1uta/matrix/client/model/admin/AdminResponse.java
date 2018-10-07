@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Response for gets information about a particular user.
@@ -35,7 +35,7 @@ public class AdminResponse {
     @Schema(
         description = "he Matrix user ID of the user."
     )
-    @JsonProperty("user_id")
+    @JsonbProperty("user_id")
     private String userId;
 
     /**

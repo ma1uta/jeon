@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Informs the client of a user's presence state change.
@@ -35,7 +36,7 @@ public class Presence implements EventContent {
         name = "avatar_url",
         description = "The current avatar URL for this user, if any."
     )
-    @JsonProperty("avatar_url")
+    @JsonbProperty("avatar_url")
     private String avatarUrl;
 
     /**
@@ -45,7 +46,7 @@ public class Presence implements EventContent {
         name = "displayname",
         description = "The current display name for this user, if any."
     )
-    @JsonProperty("displayname")
+    @JsonbProperty("displayname")
     private String displayName;
 
     /**
@@ -55,7 +56,7 @@ public class Presence implements EventContent {
         name = "last_active_ago",
         description = "The last time since this used performed some action, in milliseconds."
     )
-    @JsonProperty("last_active_ago")
+    @JsonbProperty("last_active_ago")
     private Long lastActiveAgo;
 
     /**
@@ -75,7 +76,7 @@ public class Presence implements EventContent {
         name = "currently_active",
         description = "Whether the user is currently active."
     )
-    @JsonProperty("currently_active")
+    @JsonbProperty("currently_active")
     private Boolean currentlyActive;
 
     public String getAvatarUrl() {

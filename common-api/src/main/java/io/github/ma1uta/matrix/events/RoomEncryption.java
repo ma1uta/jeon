@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * State Event.
@@ -48,7 +49,7 @@ public class RoomEncryption implements EventContent {
         name = "rotation_period_ms",
         description = "How long the session should be used before changing it. 604800000 (a week) is the recommended default."
     )
-    @JsonProperty("rotation_period_ms")
+    @JsonbProperty("rotation_period_ms")
     private Long rotationPeriodMs;
 
     /**
@@ -58,7 +59,7 @@ public class RoomEncryption implements EventContent {
         name = "rotation_period_msgs",
         description = "How many messages should be sent before changing the session. 100 is the recommended default."
     )
-    @JsonProperty("rotation_period_msgs")
+    @JsonbProperty("rotation_period_msgs")
     private Long rotationPeriodMsgs;
 
     public String getAlgorithm() {

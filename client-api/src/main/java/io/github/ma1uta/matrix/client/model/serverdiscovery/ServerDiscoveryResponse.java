@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.serverdiscovery;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Server discovery information.
@@ -33,7 +34,7 @@ public class ServerDiscoveryResponse {
     @Schema(
         description = "Information about the homeserver to connect to."
     )
-    @JsonProperty("m.homeserver")
+    @JsonbProperty("m.homeserver")
     private HomeserverInfo homeserver;
 
     /**
@@ -42,7 +43,7 @@ public class ServerDiscoveryResponse {
     @Schema(
         description = "Information about the identity server to connect to."
     )
-    @JsonProperty("m.identity_server")
+    @JsonbProperty("m.identity_server")
     private IdentityServerInfo dentityServer;
 
     public HomeserverInfo getHomeserver() {

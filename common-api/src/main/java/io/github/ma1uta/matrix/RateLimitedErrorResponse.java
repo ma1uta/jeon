@@ -16,14 +16,9 @@
 
 package io.github.ma1uta.matrix;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 /**
  * Rate limited error response.
  */
-@JsonPropertyOrder(alphabetic = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RateLimitedErrorResponse extends ErrorResponse {
 
     /**

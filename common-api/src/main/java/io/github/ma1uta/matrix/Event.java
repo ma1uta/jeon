@@ -16,16 +16,16 @@
 
 package io.github.ma1uta.matrix;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.github.ma1uta.matrix.jackson.EventDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Event.
  */
-@Schema(description = "Event.")
-@JsonDeserialize(using = EventDeserializer.class)
+@Schema(
+    description = "Event."
+)
 public class Event {
 
     /**
@@ -510,7 +510,7 @@ public class Event {
         description = "The globally unique event identifier.",
         required = true
     )
-    @JsonProperty("event_id")
+    @JsonbProperty("event_id")
     private String eventId;
 
     /**
@@ -521,7 +521,7 @@ public class Event {
         description = "The ID of the room associated with this event.",
         required = true
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**
@@ -541,7 +541,7 @@ public class Event {
         description = "Timestamp in milliseconds on originating homeserver when this event was sent.",
         required = true
     )
-    @JsonProperty("origin_server_ts")
+    @JsonbProperty("origin_server_ts")
     private Long originServerTs;
 
     /**
@@ -560,7 +560,7 @@ public class Event {
         name = "prev_content",
         description = "The previous content for this event. If there is no previous content, this key will be missing."
     )
-    @JsonProperty("prev_content")
+    @JsonbProperty("prev_content")
     private EventContent prevContent;
 
     /**
@@ -574,7 +574,7 @@ public class Event {
             + "NOT start with '_'.",
         required = true
     )
-    @JsonProperty("state_key")
+    @JsonbProperty("state_key")
     private String stateKey;
 
     public String getEventId() {

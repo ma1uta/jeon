@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body response.
@@ -35,7 +36,7 @@ public class FilterResponse {
         description = "The ID of the filter that was created. Cannot start with a { as this character is used to determine if the filter"
             + " provided is inline JSON or a previously declared filter by homeservers on some APIs."
     )
-    @JsonProperty("filter_id")
+    @JsonbProperty("filter_id")
     private String filterId;
 
     public String getFilterId() {

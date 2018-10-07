@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.identity.model.validation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Validation result.
@@ -53,7 +54,7 @@ public class ValidationResponse {
         description = "Timestamp, in milliseconds, indicating the time that the 3pid was validated.",
         required = true
     )
-    @JsonProperty("validated_at")
+    @JsonbProperty("validated_at")
     private Long validatedAt;
 
     public String getMedium() {

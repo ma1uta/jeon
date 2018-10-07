@@ -16,10 +16,9 @@
 
 package io.github.ma1uta.matrix;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.github.ma1uta.matrix.jackson.StrippedDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Provides information on a subset of state events such as the room name.
@@ -27,7 +26,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
     description = "Provides information on a subset of state events such as the room name."
 )
-@JsonDeserialize(using = StrippedDeserializer.class)
 public class StrippedState {
 
     /**
@@ -47,7 +45,7 @@ public class StrippedState {
         description = "The state_key for the event.",
         required = true
     )
-    @JsonProperty("state_key")
+    @JsonbProperty("state_key")
     private String stateKey;
 
     /**

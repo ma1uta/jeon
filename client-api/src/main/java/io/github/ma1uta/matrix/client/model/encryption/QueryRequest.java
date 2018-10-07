@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body parameters for Returns the current devices and identity keys for the given users.
@@ -46,7 +46,7 @@ public class QueryRequest {
         description = "The keys to be downloaded. A map from user ID, to a list of device IDs, "
             + "or to an empty list to indicate all devices for the corresponding user."
     )
-    @JsonProperty("device_keys")
+    @JsonbProperty("device_keys")
     private Map<String, List<String>> deviceKeys;
 
     /**

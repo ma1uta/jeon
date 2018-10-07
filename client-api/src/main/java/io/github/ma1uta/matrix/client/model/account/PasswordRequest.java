@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Request for changes the password for an account on this homeserver.
@@ -33,7 +34,7 @@ public class PasswordRequest {
     @Schema(
         description = "The new password for the account."
     )
-    @JsonProperty("new_password")
+    @JsonbProperty("new_password")
     private String newPassword;
 
     /**

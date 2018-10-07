@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * UnsignedDeviceInfo.
@@ -33,7 +34,7 @@ public class UnsignedDeviceInfo {
     @Schema(
         description = "The display name which the user set on the device."
     )
-    @JsonProperty("device_display_name")
+    @JsonbProperty("device_display_name")
     private String deviceDisplayName;
 
     public String getDeviceDisplayName() {

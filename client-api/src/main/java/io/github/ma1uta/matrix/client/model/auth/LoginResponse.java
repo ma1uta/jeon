@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Response for the login request.
@@ -33,7 +34,7 @@ public class LoginResponse {
     @Schema(
         description = "The fully-qualified Matrix ID that has been registered."
     )
-    @JsonProperty("user_id")
+    @JsonbProperty("user_id")
     private String userId;
 
     /**
@@ -42,7 +43,7 @@ public class LoginResponse {
     @Schema(
         description = "An access token for the account. This access token can then be used to authorize other requests."
     )
-    @JsonProperty("access_token")
+    @JsonbProperty("access_token")
     private String accessToken;
 
     /**
@@ -55,7 +56,7 @@ public class LoginResponse {
         description = "The hostname of the homeserver on which the account has been registered."
     )
     @Deprecated
-    @JsonProperty("home_server")
+    @JsonbProperty("home_server")
     private String homeServer;
 
     /**
@@ -64,7 +65,7 @@ public class LoginResponse {
     @Schema(
         description = "ID of the logged-in device. Will be the same as the corresponding parameter in the request, if one was specified."
     )
-    @JsonProperty("device_id")
+    @JsonbProperty("device_id")
     private String deviceId;
 
     public String getUserId() {

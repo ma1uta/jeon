@@ -83,6 +83,7 @@
 
         <slf4j.api.version>1.8.0-beta2</slf4j.api.version>
         <javax.ws.rs.api.version>2.1.1</javax.ws.rs.api.version>
+        <javax.json.bind.api.version>1.0</javax.json.bind.api.version>
         <jackson.annotations.version>2.9.7</jackson.annotations.version>
         <jackson.databind.version>2.9.7</jackson.databind.version>
         <javax.servlet.api.version>4.0.1</javax.servlet.api.version>
@@ -368,7 +369,6 @@
                 <module>common-api</module>
                 <module>client-api</module>
                 <module>identity-api</module>
-                <module>server-api</module>
                 <module>application-api</module>
                 <module>push-api</module>
             </modules>
@@ -442,26 +442,21 @@
                 <version>${javax.ws.rs.api.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.annotations.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.databind.version}</version>
+                <groupId>javax.json.bind</groupId>
+                <artifactId>javax.json.bind-api</artifactId>
+                <version>${javax.json.bind.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger.version}</version>
-                <scope>compile</scope>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-jaxrs2</artifactId>
                 <version>${swagger.version}</version>
-                <scope>compile</scope>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit</groupId>

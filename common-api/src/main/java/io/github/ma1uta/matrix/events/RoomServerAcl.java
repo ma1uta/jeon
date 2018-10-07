@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * An event to indicate which servers are permitted to participate in the room. Server ACLs may allow or deny groups of hosts.
@@ -58,7 +58,7 @@ public class RoomServerAcl implements EventContent {
             + " not a boolean. This is strongly recommended to be set to false as servers running with IP literal names are strongly"
             + " discouraged in order to require legitimate homeservers to be backed by a valid registered domain name."
     )
-    @JsonProperty("allow_ip_literals")
+    @JsonbProperty("allow_ip_literals")
     private Boolean allowIpLiterals;
 
     /**

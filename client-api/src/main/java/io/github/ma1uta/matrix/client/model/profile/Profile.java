@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.profile;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body for profile api (profile).
@@ -33,7 +34,7 @@ public class Profile {
     @Schema(
         description = "The user's avatar URL if they have set one, otherwise not present."
     )
-    @JsonProperty("avatar_url")
+    @JsonbProperty("avatar_url")
     private String avatarUrl;
 
     /**
@@ -42,7 +43,7 @@ public class Profile {
     @Schema(
         description = "The user's display name if they have set one, otherwise not present."
     )
-    @JsonProperty("displayname")
+    @JsonbProperty("displayname")
     private String displayName;
 
     public String getAvatarUrl() {

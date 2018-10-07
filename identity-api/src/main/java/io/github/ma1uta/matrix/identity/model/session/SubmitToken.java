@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.identity.model.session;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request of the validation.
@@ -43,7 +44,7 @@ public class SubmitToken {
         description = "The client secret that was supplied to the requestToken call.",
         required = true
     )
-    @JsonProperty("client_secret")
+    @JsonbProperty("client_secret")
     private String clientSecret;
 
     /**

@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Related data.
@@ -34,7 +35,7 @@ public class Relates {
         name = "m.in_reply_to",
         description = "Reply."
     )
-    @JsonProperty("m.in_reply_to")
+    @JsonbProperty("m.in_reply_to")
     private Reply inReplyTo;
 
     public Reply getInReplyTo() {

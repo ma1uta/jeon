@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Invite 3pid.
@@ -34,7 +35,7 @@ public class Invite3pid {
         description = "The hostname+port of the identity server which should be used for third party "
             + "identifier lookups."
     )
-    @JsonProperty("id_server")
+    @JsonbProperty("id_server")
     private String idServer;
 
     /**

@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Invite room.
@@ -42,7 +43,7 @@ public class InvitedRoom {
             + "invite_state and one from the archived state.If the client joins the room then the current state will "
             + "be given as a delta against the archived state not the invite_state."
     )
-    @JsonProperty("invite_state")
+    @JsonbProperty("invite_state")
     private InviteState inviteState;
 
     public InviteState getInviteState() {

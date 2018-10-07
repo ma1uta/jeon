@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Room filter.
@@ -38,7 +38,7 @@ public class RoomFilter {
             + "A matching room will be excluded even if it is listed in the 'rooms' filter. This filter is applied before the filters in "
             + "ephemeral, state, timeline or account_data."
     )
-    @JsonProperty("not_rooms")
+    @JsonbProperty("not_rooms")
     private List<String> notRooms;
 
     /**
@@ -65,7 +65,7 @@ public class RoomFilter {
     @Schema(
         description = "Include rooms that the user has left in the sync, default false."
     )
-    @JsonProperty("include_leave")
+    @JsonbProperty("include_leave")
     private Boolean includeLeave;
 
     /**
@@ -90,7 +90,7 @@ public class RoomFilter {
     @Schema(
         description = "The per user account data to include for rooms."
     )
-    @JsonProperty("account_data")
+    @JsonbProperty("account_data")
     private RoomEventFilter accountData;
 
     public List<String> getNotRooms() {

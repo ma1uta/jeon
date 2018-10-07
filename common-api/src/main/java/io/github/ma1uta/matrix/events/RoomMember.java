@@ -16,11 +16,12 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.Invite;
 import io.github.ma1uta.matrix.events.nested.RoomMemberUnsigned;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Adjusts the membership state for a user in a room. It is preferable to use the membership APIs (/rooms/&lt;room id&gt;/invite etc)
@@ -42,7 +43,7 @@ public class RoomMember implements EventContent {
         name = "avatar_url",
         description = "The avatar URL for this user, if any. This is added by the homeserver."
     )
-    @JsonProperty("avatar_url")
+    @JsonbProperty("avatar_url")
     private String avatarUrl;
 
     /**
@@ -52,7 +53,7 @@ public class RoomMember implements EventContent {
         name = "displayname",
         description = "The display name for this user, if any. This is added by the homeserver."
     )
-    @JsonProperty("displayname")
+    @JsonbProperty("displayname")
     private String displayName;
 
     /**
@@ -73,7 +74,7 @@ public class RoomMember implements EventContent {
         description = "Flag indicating if the room containing this event was created with the intention of being a direct chat."
             + " See Direct Messaging."
     )
-    @JsonProperty("is_direct")
+    @JsonbProperty("is_direct")
     private Boolean isDirect;
 
     /**
@@ -83,7 +84,7 @@ public class RoomMember implements EventContent {
         name = "third_party_invite",
         description = "Third-party invites."
     )
-    @JsonProperty("third_party_invite")
+    @JsonbProperty("third_party_invite")
     private Invite thirdPartyInvite;
 
     /**

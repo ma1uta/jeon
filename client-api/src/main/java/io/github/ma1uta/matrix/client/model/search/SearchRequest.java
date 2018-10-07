@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request for search api.
@@ -33,7 +34,7 @@ public class SearchRequest {
     @Schema(
         description = "Describes which categories to search in and their criteria."
     )
-    @JsonProperty("search_categories")
+    @JsonbProperty("search_categories")
     private RequestCategories searchCategories;
 
     public RequestCategories getSearchCategories() {

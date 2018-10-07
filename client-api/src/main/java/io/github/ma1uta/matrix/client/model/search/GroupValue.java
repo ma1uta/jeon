@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Group value.
@@ -37,7 +37,7 @@ public class GroupValue {
         description = "Token that can be used to get the next batch of results in the group, by passing "
             + "as the next_batch parameter to the next call. If this field is absent, there are no more results in this group."
     )
-    @JsonProperty("next_batch")
+    @JsonbProperty("next_batch")
     private String nextBatch;
 
     /**

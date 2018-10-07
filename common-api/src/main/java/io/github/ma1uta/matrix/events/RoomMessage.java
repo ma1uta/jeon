@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.messages.Audio;
 import io.github.ma1uta.matrix.events.messages.Emote;
@@ -28,6 +27,8 @@ import io.github.ma1uta.matrix.events.messages.Text;
 import io.github.ma1uta.matrix.events.messages.Video;
 import io.github.ma1uta.matrix.events.nested.Relates;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event is used when sending messages in a room. Messages are not limited to be text. The ``msgtype`` key outlines the type
@@ -63,7 +64,7 @@ public abstract class RoomMessage implements EventContent {
         description = "Message type.",
         readOnly = true
     )
-    @JsonProperty(value = "msgtype", access = JsonProperty.Access.READ_ONLY)
+    @JsonbProperty(value = "msgtype")
     public abstract String getMsgtype();
 
     /**
@@ -81,7 +82,7 @@ public abstract class RoomMessage implements EventContent {
         name = "m.relates_to",
         description = "Relates (reply, ...)."
     )
-    @JsonProperty("m.relates_to")
+    @JsonbProperty("m.relates_to")
     private Relates relatesTo;
 
     public String getBody() {

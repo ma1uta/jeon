@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Connection info.
@@ -41,7 +42,7 @@ public class ConnectionInfo {
     @Schema(
         description = "Unix timestamp that the session was last active."
     )
-    @JsonProperty("last_seen")
+    @JsonbProperty("last_seen")
     private Long lastSeen;
 
     /**
@@ -50,7 +51,7 @@ public class ConnectionInfo {
     @Schema(
         description = "User agent string last seen in the session."
     )
-    @JsonProperty("user_agent")
+    @JsonbProperty("user_agent")
     private String userAgent;
 
     public String getIp() {

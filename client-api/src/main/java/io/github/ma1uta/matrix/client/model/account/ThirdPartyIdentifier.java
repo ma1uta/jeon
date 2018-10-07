@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Request for gets a list of the third party identifiers that the homeserver has associated with the user's account.
@@ -50,7 +51,7 @@ public class ThirdPartyIdentifier {
     @Schema(
         description = "The timestamp, in milliseconds, when the identifier was validated by the identity server."
     )
-    @JsonProperty("validated_at")
+    @JsonbProperty("validated_at")
     private Long validatedAt;
 
     /**
@@ -59,7 +60,7 @@ public class ThirdPartyIdentifier {
     @Schema(
         description = "The timestamp, in milliseconds, when the homeserver associated the third party identifier with the user."
     )
-    @JsonProperty("added_at")
+    @JsonbProperty("added_at")
     private Long addedAt;
 
     public String getMedium() {

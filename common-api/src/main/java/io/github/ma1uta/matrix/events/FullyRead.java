@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * The current location of the user's read marker in a room. This event appears in the user's room account data for the room the marker
@@ -38,7 +39,7 @@ public class FullyRead implements EventContent {
         description = "The event the user's read marker is located at in the room.",
         required = true
     )
-    @JsonProperty("event_id")
+    @JsonbProperty("event_id")
     private String eventId;
 
     public String getEventId() {

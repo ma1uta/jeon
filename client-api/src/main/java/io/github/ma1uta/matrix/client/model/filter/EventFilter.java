@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Filter.
@@ -45,7 +45,7 @@ public class EventFilter {
         description = "A list of sender IDs to exclude. If this list is absent then no senders are "
             + "excluded. A matching sender will be excluded even if it is listed in the 'senders' filter."
     )
-    @JsonProperty("not_senders")
+    @JsonbProperty("not_senders")
     private List<String> notSenders;
 
     /**
@@ -57,7 +57,7 @@ public class EventFilter {
             + "are excluded. A matching type will be excluded even if it is listed in the 'types' filter. A '*' can be used as a "
             + "wildcard to match any sequence of characters."
     )
-    @JsonProperty("not_types")
+    @JsonbProperty("not_types")
     private List<String> notTypes;
 
     /**

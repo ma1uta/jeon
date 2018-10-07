@@ -16,11 +16,12 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.encrypted.MegolmEncrypted;
 import io.github.ma1uta.matrix.events.encrypted.OlmEncrypted;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event type is used when sending encrypted events. It can be used either within a room
@@ -49,7 +50,7 @@ public abstract class RoomEncrypted implements EventContent {
         required = true,
         allowableValues = "m.olm.v1.curve25519-aes-sha2, m.megolm.v1.aes-sha2"
     )
-    @JsonProperty(value = "algorithm", access = JsonProperty.Access.READ_ONLY)
+    @JsonbProperty("algorithm")
     public abstract String getAlgorithm();
 
     /**
@@ -60,7 +61,7 @@ public abstract class RoomEncrypted implements EventContent {
         description = "The Curve25519 key of the sender.",
         required = true
     )
-    @JsonProperty("sender_key")
+    @JsonbProperty("sender_key")
     private String senderKey;
 
     /**
@@ -70,7 +71,7 @@ public abstract class RoomEncrypted implements EventContent {
         name = "device_id",
         description = "The ID of the sending device. Required with Megolm."
     )
-    @JsonProperty("device_id")
+    @JsonbProperty("device_id")
     private String deviceId;
 
     /**
@@ -80,7 +81,7 @@ public abstract class RoomEncrypted implements EventContent {
         name = "session_id",
         description = "The ID of the session used to encrypt the message. Required with Megolm."
     )
-    @JsonProperty("session_id")
+    @JsonbProperty("session_id")
     private String sessionId;
 
     public String getSenderKey() {

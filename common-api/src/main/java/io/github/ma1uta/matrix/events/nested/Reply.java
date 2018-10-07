@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Reply model.
@@ -35,7 +36,7 @@ public class Reply {
         description = "The origin event id.",
         required = true
     )
-    @JsonProperty("event_id")
+    @JsonbProperty("event_id")
     private String eventId;
 
     public String getEventId() {

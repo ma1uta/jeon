@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.presence;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request for presence api.
@@ -65,7 +66,7 @@ public class PresenceStatus {
     @Schema(
         description = "The status message to attach to this state."
     )
-    @JsonProperty("status_msg")
+    @JsonbProperty("status_msg")
     private String statusMsg;
 
     /**
@@ -74,7 +75,7 @@ public class PresenceStatus {
     @Schema(
         description = "The length of time in milliseconds since an action was performed by this user."
     )
-    @JsonProperty("last_active_ago")
+    @JsonbProperty("last_active_ago")
     private Long lastActiveAgo;
 
     /**
@@ -83,7 +84,7 @@ public class PresenceStatus {
     @Schema(
         description = "Whether the user is currently active."
     )
-    @JsonProperty("currently_active")
+    @JsonbProperty("currently_active")
     private Boolean currentlyActive;
 
     public String getPresence() {

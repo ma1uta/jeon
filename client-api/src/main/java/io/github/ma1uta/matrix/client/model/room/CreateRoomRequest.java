@@ -16,12 +16,12 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.events.RoomPowerLevels;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request for creation api.
@@ -54,7 +54,7 @@ public class CreateRoomRequest {
             + "room. For example, if this was set to \"foo\" and sent to the homeserver \"example.com\" the complete room alias would "
             + "be #foo:example.com."
     )
-    @JsonProperty("room_alias_name")
+    @JsonbProperty("room_alias_name")
     private String roomAliasName;
 
     /**
@@ -92,7 +92,7 @@ public class CreateRoomRequest {
     @Schema(
         description = "A list of objects representing third party IDs to invite into the room."
     )
-    @JsonProperty("invite_3pid")
+    @JsonbProperty("invite_3pid")
     private List<Invite3pid> invite3pid;
 
     /**
@@ -105,7 +105,7 @@ public class CreateRoomRequest {
             + " If provided, the homeserver will return a 400 error with the errcode M_UNSUPPORTED_ROOM_VERSION if it does not"
             + " support the room version."
     )
-    @JsonProperty("room_version")
+    @JsonbProperty("room_version")
     private String roomVersion;
 
     /**
@@ -117,7 +117,7 @@ public class CreateRoomRequest {
             + "The server will clobber the following keys: creator. Future versions of the specification may allow the server "
             + "to clobber other keys."
     )
-    @JsonProperty("creation_content")
+    @JsonbProperty("creation_content")
     private Object creationContent;
 
     /**
@@ -131,7 +131,7 @@ public class CreateRoomRequest {
             + "override the default state events set in the new room. The expected format of the state events are an object with "
             + "type, state_key and content keys set."
     )
-    @JsonProperty("initial_event")
+    @JsonbProperty("initial_event")
     private List<Event> initialEvent;
 
     /**
@@ -150,7 +150,7 @@ public class CreateRoomRequest {
         description = "This flag makes the server set the is_direct flag on the m.room.member events "
             + "sent to the users in invite and invite_3pid. See Direct Messaging for more information."
     )
-    @JsonProperty("is_direct")
+    @JsonbProperty("is_direct")
     private Boolean isDirect;
 
     /**
@@ -161,7 +161,7 @@ public class CreateRoomRequest {
         description = "The power level content to override in the default power level event. This object is applied on top of"
             + " the generated m.room.power_levels event content prior to it being sent to the room. Defaults to overriding nothing."
     )
-    @JsonProperty("power_level_content_override")
+    @JsonbProperty("power_level_content_override")
     private RoomPowerLevels powerLevelContentOverride;
 
     public String getVisibility() {

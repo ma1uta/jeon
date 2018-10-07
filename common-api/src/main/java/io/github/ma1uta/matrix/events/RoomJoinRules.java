@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * A room may be ``public`` meaning anyone can join the room without any prior action. Alternatively, it can be ``invite`` meaning
@@ -41,7 +42,7 @@ public class RoomJoinRules implements EventContent {
         description = "The type of rules used for users wishing to join this room.",
         allowableValues = {"public", "knock", "invite", "private"}
     )
-    @JsonProperty("join_rule")
+    @JsonbProperty("join_rule")
     private String joinRule;
 
     public String getJoinRule() {

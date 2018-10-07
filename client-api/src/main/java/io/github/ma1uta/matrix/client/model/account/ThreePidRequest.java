@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Request for adds contact information to the user's account.
@@ -33,7 +34,7 @@ public class ThreePidRequest {
     @Schema(
         description = "The third party credentials to associate with the account"
     )
-    @JsonProperty("three_pid_creds")
+    @JsonbProperty("three_pid_creds")
     private ThreePidCred[] threePidCreds;
 
     /**

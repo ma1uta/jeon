@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.push.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Information about the push notification.
@@ -60,7 +60,7 @@ public class Notification {
             + " Matrix event. It may be omitted for notifications that only contain updated badge counts. This ID can and should be used"
             + " to detect duplicate notification requests."
     )
-    @JsonProperty("event_id")
+    @JsonbProperty("event_id")
     private String eventId;
 
     /**
@@ -70,7 +70,7 @@ public class Notification {
         name = "room_id",
         description = "The ID of the room in which this event occurred. Required if the notification relates to a specific Matrix event."
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**
@@ -96,7 +96,7 @@ public class Notification {
         name = "sender_display_name",
         description = "The current display name of the sender in the room in which the event occurred."
     )
-    @JsonProperty("sender_display_name")
+    @JsonbProperty("sender_display_name")
     private String senderDisplayName;
 
     /**
@@ -106,7 +106,7 @@ public class Notification {
         name = "room_name",
         description = "The name of the room in which the event occurred."
     )
-    @JsonProperty("room_name")
+    @JsonbProperty("room_name")
     private String roomName;
 
     /**
@@ -116,7 +116,7 @@ public class Notification {
         name = "room_alias",
         description = "An alias to display for the room in which the event occurred."
     )
-    @JsonProperty("room_alias")
+    @JsonbProperty("room_alias")
     private String roomAlias;
 
     /**
@@ -128,7 +128,7 @@ public class Notification {
         description = "This is true if the user receiving the notification is the subject of a member event (i.e. the state_key"
             + " of the member event is equal to the user's Matrix ID)."
     )
-    @JsonProperty("user_is_target")
+    @JsonbProperty("user_is_target")
     private Boolean userIsTarget;
 
     /**

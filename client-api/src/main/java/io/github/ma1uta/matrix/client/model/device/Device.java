@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.device;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Device.
@@ -33,7 +34,7 @@ public class Device {
     @Schema(
         description = "Identifier of this device."
     )
-    @JsonProperty("device_id")
+    @JsonbProperty("device_id")
     private String deviceId;
 
     /**
@@ -42,7 +43,7 @@ public class Device {
     @Schema(
         description = "Display name set by the user for this device. Absent if no name has been set."
     )
-    @JsonProperty("display_name")
+    @JsonbProperty("display_name")
     private String displayName;
 
     /**
@@ -51,7 +52,7 @@ public class Device {
     @Schema(
         description = "The IP address where this device was last seen. (May be a few minutes out of date, for efficiency reasons)"
     )
-    @JsonProperty("last_seen_ip")
+    @JsonbProperty("last_seen_ip")
     private String lastSeenIp;
 
     /**
@@ -62,7 +63,7 @@ public class Device {
         description = "The timestamp (in milliseconds since the unix epoch) when this devices was last seen."
             + " (May be a few minutes out of date, for efficiency reasons)."
     )
-    @JsonProperty("last_seen_ts")
+    @JsonbProperty("last_seen_ts")
     private Long lastSeenTs;
 
     public String getDeviceId() {

@@ -16,12 +16,12 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Room events results.
@@ -85,7 +85,7 @@ public class RoomEventResults {
         description = "Token that can be used to get the next batch of results, by passing as the "
             + "next_batch parameter to the next call. If this field is absent, there are no more results."
     )
-    @JsonProperty("next_batch")
+    @JsonbProperty("next_batch")
     private String nextBatch;
 
     public Long getCount() {

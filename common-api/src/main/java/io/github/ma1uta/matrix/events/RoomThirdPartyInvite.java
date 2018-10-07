@@ -16,12 +16,12 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.PublicKeys;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Acts as an m.room.member invite event, where there isn't a target user_id to invite. This event contains a token and a
@@ -46,7 +46,7 @@ public class RoomThirdPartyInvite implements EventContent {
             + " between the matrix ID and the third party ID.",
         required = true
     )
-    @JsonProperty("display_name")
+    @JsonbProperty("display_name")
     private String displayName;
 
     /**
@@ -59,7 +59,7 @@ public class RoomThirdPartyInvite implements EventContent {
             + " validate whether the key has been revoked. The URL must return a JSON object containing a boolean property named 'valid'.",
         required = true
     )
-    @JsonProperty("key_validity_url")
+    @JsonbProperty("key_validity_url")
     private String keyValidityUrl;
 
     /**
@@ -72,7 +72,7 @@ public class RoomThirdPartyInvite implements EventContent {
             + " (though a signature from any entry in public_keys is also sufficient). This exists for backwards compatibility.",
         required = true
     )
-    @JsonProperty("public_key")
+    @JsonbProperty("public_key")
     private String publicKey;
 
     /**
@@ -82,7 +82,7 @@ public class RoomThirdPartyInvite implements EventContent {
         name = "public_keys",
         description = "Keys with which the token may be signed."
     )
-    @JsonProperty("public_keys")
+    @JsonbProperty("public_keys")
     private List<PublicKeys> publicKeys;
 
     public String getDisplayName() {

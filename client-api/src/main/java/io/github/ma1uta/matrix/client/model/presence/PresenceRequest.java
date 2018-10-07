@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.presence;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request for presence api.
@@ -41,7 +42,7 @@ public class PresenceRequest {
     @Schema(
         description = "The status message to attach to this state."
     )
-    @JsonProperty("status_msg")
+    @JsonbProperty("status_msg")
     private String statusMsg;
 
     public String getPresence() {

@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Unread notification counts.
@@ -33,7 +34,7 @@ public class UnreadNotificationCounts {
     @Schema(
         description = "The number of unread notifications for this room with the highlight flag set."
     )
-    @JsonProperty("highlight_count")
+    @JsonbProperty("highlight_count")
     private Long highlightCount;
 
     /**
@@ -42,7 +43,7 @@ public class UnreadNotificationCounts {
     @Schema(
         description = "The total number of unread notifications for this room."
     )
-    @JsonProperty("notification_count")
+    @JsonbProperty("notification_count")
     private Long notificationCount;
 
     public Long getHighlightCount() {

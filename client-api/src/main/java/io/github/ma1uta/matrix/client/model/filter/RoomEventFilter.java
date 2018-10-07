@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Room event filter.
@@ -45,7 +45,7 @@ public class RoomEventFilter {
         description = "A list of sender IDs to exclude. If this list is absent then no senders are "
             + "excluded. A matching sender will be excluded even if it is listed in the 'senders' filter."
     )
-    @JsonProperty("not_senders")
+    @JsonbProperty("not_senders")
     private List<String> notSenders;
 
     /**
@@ -57,7 +57,7 @@ public class RoomEventFilter {
             + "are excluded. A matching type will be excluded even if it is listed in the 'types' filter. A '*' can be used as a "
             + "wildcard to match any sequence of characters."
     )
-    @JsonProperty("not_types")
+    @JsonbProperty("not_types")
     private List<String> notTypes;
 
     /**
@@ -86,7 +86,7 @@ public class RoomEventFilter {
         description = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. "
             + "A matching room will be excluded even if it is listed in the 'rooms' filter."
     )
-    @JsonProperty("not_rooms")
+    @JsonbProperty("not_rooms")
     private List<String> notRooms;
 
     /**
@@ -103,7 +103,7 @@ public class RoomEventFilter {
     @Schema(
         description = "If true, includes only events with a url key in their content. If false, excludes those events."
     )
-    @JsonProperty("contains_url")
+    @JsonbProperty("contains_url")
     private Boolean containsUrl;
 
     public Long getLimit() {

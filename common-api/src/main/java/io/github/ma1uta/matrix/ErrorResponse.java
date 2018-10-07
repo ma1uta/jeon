@@ -16,14 +16,9 @@
 
 package io.github.ma1uta.matrix;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 /**
  * Any errors which occur at the Matrix API level MUST return a "standard error response".
  */
-@JsonPropertyOrder(alphabetic = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 
     /**

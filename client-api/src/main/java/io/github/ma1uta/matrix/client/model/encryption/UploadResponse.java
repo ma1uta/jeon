@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Response format.
@@ -36,7 +36,7 @@ public class UploadResponse {
         description = "For each key algorithm, the number of unclaimed one-time keys of that "
             + "type currently held on the server for this device."
     )
-    @JsonProperty("one_time_key_counts")
+    @JsonbProperty("one_time_key_counts")
     private Map<String, Long> oneTimeKeyCounts;
 
     public Map<String, Long> getOneTimeKeyCounts() {

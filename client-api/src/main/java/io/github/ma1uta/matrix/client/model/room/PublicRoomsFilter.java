@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Search filter.
@@ -33,7 +34,7 @@ public class PublicRoomsFilter {
     @Schema(
         description = "A string to search for in the room metadata, e.g. name, topic, canonical alias etc. (Optional)."
     )
-    @JsonProperty("generic_search_term")
+    @JsonbProperty("generic_search_term")
     private String genericSearchTerm;
 
     public String getGenericSearchTerm() {

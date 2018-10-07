@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * File info.
@@ -50,13 +51,13 @@ public class FileInfo {
         name = "thumbnail_url",
         description = "The URL to a thumbnail of the image."
     )
-    @JsonProperty("thumbnail_url")
+    @JsonbProperty("thumbnail_url")
     private String thumbnailUrl;
 
     /**
      * Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail is encrypted.
      */
-    @JsonProperty("thumbnail_file")
+    @JsonbProperty("thumbnail_file")
     private EncryptedFile thumbnailFile;
 
     /**
@@ -66,7 +67,7 @@ public class FileInfo {
         name = "thumbnail_info",
         description = "Metadata about the image referred to in thumbnail_url."
     )
-    @JsonProperty("thumbnail_info")
+    @JsonbProperty("thumbnail_info")
     private ThumbnailInfo thumbnailInfo;
 
     public String getMimetype() {

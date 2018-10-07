@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body response for push notifications.
@@ -37,7 +37,7 @@ public class NotificationResponse {
         description = "The token to supply in the from param of the next /notifications request in "
             + "order to request more events. If this is absent, there are no more results."
     )
-    @JsonProperty("next_token")
+    @JsonbProperty("next_token")
     private String nextToken;
 
     /**

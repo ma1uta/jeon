@@ -16,10 +16,11 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.RequestedKeyInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event type is used to request keys for end-to-end encryption. It is sent as an unencrypted to-device event.
@@ -55,7 +56,7 @@ public class RoomKeyRequest implements EventContent {
         description = "ID of the device requesting the key.",
         required = true
     )
-    @JsonProperty("requesting_device_id")
+    @JsonbProperty("requesting_device_id")
     private String requestingDeviceId;
 
     /**
@@ -67,7 +68,7 @@ public class RoomKeyRequest implements EventContent {
         description = "A random string uniquely identifying the request for a key. If the key is requested multiple times,"
         + " it should be reused. It should also reused in order to cancel a request.",
         required = true)
-    @JsonProperty("request_id")
+    @JsonbProperty("request_id")
     private String requestId;
 
     public RequestedKeyInfo getBody() {

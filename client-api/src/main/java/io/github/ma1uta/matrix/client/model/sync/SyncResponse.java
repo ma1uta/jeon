@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body response for sync api.
@@ -35,7 +35,7 @@ public class SyncResponse {
     @Schema(
         description = "The batch token to supply in the since param of the next /sync request."
     )
-    @JsonProperty("next_batch")
+    @JsonbProperty("next_batch")
     private String nextBatch;
 
     /**
@@ -60,7 +60,7 @@ public class SyncResponse {
     @Schema(
         description = "The global private data created by this user."
     )
-    @JsonProperty("account_data")
+    @JsonbProperty("account_data")
     private AccountData accountData;
 
     /**
@@ -69,7 +69,7 @@ public class SyncResponse {
     @Schema(
         description = "Information on the send-to-device messages for the client device, as defined in Send-to-Device messaging."
     )
-    @JsonProperty("to_device")
+    @JsonbProperty("to_device")
     private ToDevice toDevice;
 
     /**
@@ -78,7 +78,7 @@ public class SyncResponse {
     @Schema(
         description = "Information on end-to-end device updates, as specified in End-to-end encryption."
     )
-    @JsonProperty("device_lists")
+    @JsonbProperty("device_lists")
     private DeviceLists deviceLists;
 
     /**
@@ -87,7 +87,7 @@ public class SyncResponse {
     @Schema(
         description = "Information on end-to-end encryption keys, as specified in End-to-end encryption."
     )
-    @JsonProperty("device_one_time_keys_count")
+    @JsonbProperty("device_one_time_keys_count")
     private Map<String, Long> deviceOneTimeKeysCount;
 
     public String getNextBatch() {

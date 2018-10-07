@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event controls whether a user can see the events that happened in a room from before they joined.
@@ -37,7 +38,7 @@ public class RoomHistoryVisibility implements EventContent {
         required = true,
         allowableValues = "invited, joined, shared, world_readable"
     )
-    @JsonProperty("history_visibility")
+    @JsonbProperty("history_visibility")
     private String historyVisibility;
 
     public String getHistoryVisibility() {

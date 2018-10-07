@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request.
@@ -60,7 +61,7 @@ public class PublicRoomsRequest {
         description = "Whether or not to include all known networks/protocols from application services on the homeserver.",
         defaultValue = "false"
     )
-    @JsonProperty("include_all_networks")
+    @JsonbProperty("include_all_networks")
     private Boolean includeAllNetworks;
 
     /**
@@ -70,7 +71,7 @@ public class PublicRoomsRequest {
         description = "The specific third party network/protocol to request from the homeserver. Can only be used if include_all_networks"
             + " is false."
     )
-    @JsonProperty("third_party_instance_id")
+    @JsonbProperty("third_party_instance_id")
     private String thirdPartyInstanceId;
 
     public Long getLimit() {

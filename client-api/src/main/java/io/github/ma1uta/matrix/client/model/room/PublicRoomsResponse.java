@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body response.
@@ -45,7 +45,7 @@ public class PublicRoomsResponse {
         description = "A pagination token for the response. The absence of this token means there "
             + "are no more results to fetch and the client should stop paginating."
     )
-    @JsonProperty("next_batch")
+    @JsonbProperty("next_batch")
     private String nextBatch;
 
     /**
@@ -56,7 +56,7 @@ public class PublicRoomsResponse {
         description = "A pagination token that allows fetching previous results. The absence of "
             + "this token means there are no results before this batch, i.e. this is the first batch."
     )
-    @JsonProperty("prev_batch")
+    @JsonbProperty("prev_batch")
     private String prevBatch;
 
     /**
@@ -65,7 +65,7 @@ public class PublicRoomsResponse {
     @Schema(
         description = "An estimate on the total number of public rooms, if the server has an estimate."
     )
-    @JsonProperty("total_room_count_estimate")
+    @JsonbProperty("total_room_count_estimate")
     private Long totalRoomCountEstimate;
 
     public List<PublicRoomsChunk> getChunk() {

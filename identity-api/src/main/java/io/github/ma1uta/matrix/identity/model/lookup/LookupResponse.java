@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.identity.model.lookup;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Look up response the Matrix user ID for a 3pid.
@@ -64,7 +64,7 @@ public class LookupResponse {
         description = "A unix timestamp before which the association is not known to be valid.",
         required = true
     )
-    @JsonProperty("not_before")
+    @JsonbProperty("not_before")
     private Long notBefore;
 
     /**
@@ -75,7 +75,7 @@ public class LookupResponse {
         description = "A unix timestamp after which the association is not known to be valid.",
         required = true
     )
-    @JsonProperty("not_after")
+    @JsonbProperty("not_after")
     private Long notAfter;
 
     /**

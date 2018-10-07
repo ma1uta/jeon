@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.eventcontext;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Events that happened just before and after the specified event.
@@ -52,7 +52,7 @@ public class EventContextResponse {
     @Schema(
         description = "A list of room events that happened just before the requested event, in reverse-chronological order."
     )
-    @JsonProperty("events_before")
+    @JsonbProperty("events_before")
     private List<Event> eventsBefore;
 
     /**
@@ -69,7 +69,7 @@ public class EventContextResponse {
     @Schema(
         description = "A list of room events that happened just after the requested event, in chronological order."
     )
-    @JsonProperty("events_after")
+    @JsonbProperty("events_after")
     private List<Event> eventsAfter;
 
     /**

@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Request for register for an account on this homeserver.
@@ -46,7 +47,7 @@ public class RegisterRequest {
     @Schema(
         description = "If true, the server binds the email used for authentication to the Matrix ID with the ID Server."
     )
-    @JsonProperty("bind_email")
+    @JsonbProperty("bind_email")
     private Boolean bindEmail;
 
     /**
@@ -74,7 +75,7 @@ public class RegisterRequest {
         description = "ID of the client device. If this does not correspond to a known client device, a new device will be created."
             + " The server will auto-generate a device_id if this is not specified."
     )
-    @JsonProperty("device_id")
+    @JsonbProperty("device_id")
     private String deviceId;
 
     /**
@@ -83,7 +84,7 @@ public class RegisterRequest {
     @Schema(
         description = "A display name to assign to the newly-created device. Ignored if device_id corresponds to a known device."
     )
-    @JsonProperty("initial_device_display_name")
+    @JsonbProperty("initial_device_display_name")
     private String initialDeviceDisplayName;
 
     /**
@@ -94,7 +95,7 @@ public class RegisterRequest {
         description = "If true, an access_token and device_id should not be returned from this call, therefore preventing"
             + " an automatic login."
     )
-    @JsonProperty("inhibit_login")
+    @JsonbProperty("inhibit_login")
     private Boolean inhibitLogin;
 
     public AuthenticationData getAuth() {

@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Push rule.
@@ -43,7 +43,7 @@ public class PushRule {
     @Schema(
         description = "Whether this is a default rule, or has been set explicitly."
     )
-    @JsonProperty("default")
+    @JsonbProperty("default")
     private Boolean defaultRule;
 
     /**
@@ -60,7 +60,7 @@ public class PushRule {
     @Schema(
         description = "The ID of this rule."
     )
-    @JsonProperty("rule_id")
+    @JsonbProperty("rule_id")
     private String ruleId;
 
     /**

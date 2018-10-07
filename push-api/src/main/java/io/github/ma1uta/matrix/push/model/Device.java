@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.push.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.PusherData;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Device.
@@ -38,7 +38,7 @@ public class Device {
         description = "The app_id given when the pusher was created.",
         required = true
     )
-    @JsonProperty("app_id")
+    @JsonbProperty("app_id")
     private String appId;
 
     /**
@@ -49,7 +49,7 @@ public class Device {
         description = "The pushkey given when the pusher was created.",
         required = true
     )
-    @JsonProperty("pushkey")
+    @JsonbProperty("pushkey")
     private String pushKey;
 
     /**
@@ -59,7 +59,7 @@ public class Device {
         name = "pushkey_ts",
         description = "The unix timestamp (in seconds) when the pushkey was last updated."
     )
-    @JsonProperty("pushkey_ts")
+    @JsonbProperty("pushkey_ts")
     private Long pushKeyTs;
 
     /**

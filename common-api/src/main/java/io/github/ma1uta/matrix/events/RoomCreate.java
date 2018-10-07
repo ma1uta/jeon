@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This is the first event in a room and cannot be changed. It acts as the root of all other events.
@@ -44,7 +45,7 @@ public class RoomCreate implements EventContent {
         name = "m.federate",
         description = "Whether users on other servers can join this room. Defaults to ``true`` if key does not exist."
     )
-    @JsonProperty("m.federate")
+    @JsonbProperty("m.federate")
     private Boolean federate;
 
     /**
@@ -54,7 +55,7 @@ public class RoomCreate implements EventContent {
         name = "room_version",
         description = "The version of the room. Defaults to \"1\" if the key does not exist."
     )
-    @JsonProperty("room_version")
+    @JsonbProperty("room_version")
     private String roomVersion;
 
     public String getCreator() {

@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Event context.
@@ -33,7 +34,7 @@ public class EventContext {
     @Schema(
         description = "How many events before the result are returned."
     )
-    @JsonProperty("before_limit")
+    @JsonbProperty("before_limit")
     private Long beforeLimit;
 
     /**
@@ -42,7 +43,7 @@ public class EventContext {
     @Schema(
         description = "How many events after the result are returned."
     )
-    @JsonProperty("after_limit")
+    @JsonbProperty("after_limit")
     private Long afterLimit;
 
     /**
@@ -52,7 +53,7 @@ public class EventContext {
         description = "Requests that the server returns the historic profile information for the users that sent the events that were"
             + " returned."
     )
-    @JsonProperty("include_profile")
+    @JsonbProperty("include_profile")
     private Boolean includeProfile;
 
     public Long getBeforeLimit() {

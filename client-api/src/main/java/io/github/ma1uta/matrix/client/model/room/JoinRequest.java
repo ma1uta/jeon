@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Join request.
@@ -34,7 +35,7 @@ public class JoinRequest {
         description = "A signature of an m.third_party_invite token to prove that this user owns "
             + "a third party identity which has been invited to the room."
     )
-    @JsonProperty("third_party_signed")
+    @JsonbProperty("third_party_signed")
     private ThirdPartySigned thirdPartySigned;
 
     public ThirdPartySigned getThirdPartySigned() {

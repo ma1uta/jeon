@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.push.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Counts.
@@ -42,7 +43,7 @@ public class Counts {
         name = "missed_calls",
         description = "The number of unacknowledged missed calls a user has across all rooms of which they are a member."
     )
-    @JsonProperty("missed_calls")
+    @JsonbProperty("missed_calls")
     private Long missedCalls;
 
     public Long getUnread() {

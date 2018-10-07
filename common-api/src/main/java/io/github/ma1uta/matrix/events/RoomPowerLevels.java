@@ -16,12 +16,12 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.github.ma1uta.matrix.events.nested.NotificationPowerLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event specifies the minimum level a user must have in order to perform a certain action. It also specifies the levels of
@@ -104,7 +104,7 @@ public class RoomPowerLevels implements EventContent {
         description = "The default level required to send message events. Can be overridden by the events key.",
         defaultValue = "0"
     )
-    @JsonProperty("events_default")
+    @JsonbProperty("events_default")
     private Byte eventsDefault = DEFAULT_LOW_LEVEL;
 
     /**
@@ -143,7 +143,7 @@ public class RoomPowerLevels implements EventContent {
         description = "The default level required to send state events. Can be overridden"
             + " by the events key. Defaults to 50 if unspecified, but 0 if there is no m.room.power_levels event at all."
     )
-    @JsonProperty("state_default")
+    @JsonbProperty("state_default")
     private Byte stateDefault;
 
     /**
@@ -162,7 +162,7 @@ public class RoomPowerLevels implements EventContent {
         description = "The default power level for every user in the room, unless their user_id is mentioned in the users key.",
         defaultValue = "0"
     )
-    @JsonProperty("users_default")
+    @JsonbProperty("users_default")
     private Byte usersDefault = DEFAULT_LOW_LEVEL;
 
     /**

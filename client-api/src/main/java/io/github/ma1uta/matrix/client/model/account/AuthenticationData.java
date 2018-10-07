@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Authentication Data.
@@ -97,7 +98,7 @@ public class AuthenticationData {
     @Schema(
         description = "transaction id."
     )
-    @JsonProperty("txn_id")
+    @JsonbProperty("txn_id")
     private String txnId;
 
     /**

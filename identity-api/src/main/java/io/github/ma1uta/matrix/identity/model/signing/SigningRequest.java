@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.identity.model.signing;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request of the signing api.
@@ -53,7 +54,7 @@ public class SigningRequest {
         description = "The private key, encoded as Unpadded base64.",
         required = true
     )
-    @JsonProperty("private_key")
+    @JsonbProperty("private_key")
     private String privateKey;
 
     public String getMxid() {

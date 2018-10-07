@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.protocol;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Protocol metadata.
@@ -38,7 +38,7 @@ public class Protocol {
         description = "Fields used to identify a third party user.",
         required = true
     )
-    @JsonProperty("user_fields")
+    @JsonbProperty("user_fields")
     private List<String> userFields;
 
     /**
@@ -49,7 +49,7 @@ public class Protocol {
         description = "Fields used to identify a third party location.",
         required = true
     )
-    @JsonProperty("location_fields")
+    @JsonbProperty("location_fields")
     private List<String> locationFields;
 
     /**
@@ -69,7 +69,7 @@ public class Protocol {
         description = "All location or user fields should have an entry here.",
         required = true
     )
-    @JsonProperty("field_types")
+    @JsonbProperty("field_types")
     private Map<String, FieldMetadata> fieldTypes;
 
     /**

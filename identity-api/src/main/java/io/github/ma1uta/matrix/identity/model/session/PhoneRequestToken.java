@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.identity.model.session;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request of the creating an phone association.
@@ -37,7 +38,7 @@ public class PhoneRequestToken {
             + " consisting of the characters [0-9a-zA-Z.=_-]. Its length must not exceed 255 characters and it must not be empty.",
         required = true
     )
-    @JsonProperty("client_secret")
+    @JsonbProperty("client_secret")
     private String clientSecret;
 
     /**
@@ -57,7 +58,7 @@ public class PhoneRequestToken {
         description = "The phone number to validate.",
         required = true
     )
-    @JsonProperty("phone_number")
+    @JsonbProperty("phone_number")
     private String phoneNumber;
 
     /**
@@ -74,7 +75,7 @@ public class PhoneRequestToken {
             + " a new email(e.g.a reminder) to be sent.",
         required = true
     )
-    @JsonProperty("send_attempt")
+    @JsonbProperty("send_attempt")
     private Long sendAttempt;
 
     /**
@@ -84,7 +85,7 @@ public class PhoneRequestToken {
         name = "next_link",
         description = "When the validation is completed, the identity server will redirect the user to this URL."
     )
-    @JsonProperty("next_link")
+    @JsonbProperty("next_link")
     private String nextLink;
 
     public String getClientSecret() {

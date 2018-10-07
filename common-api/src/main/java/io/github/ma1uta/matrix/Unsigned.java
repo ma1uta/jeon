@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * UnsignedData.
@@ -48,7 +48,7 @@ public class Unsigned {
         name = "redacted_because",
         description = "The event that redacted this event, if any."
     )
-    @JsonProperty("redacted_because")
+    @JsonbProperty("redacted_because")
     private Event redactedBecause;
 
     /**
@@ -58,7 +58,7 @@ public class Unsigned {
         name = "transaction_id",
         description = "The client-supplied transaction ID, if the client being given the event is the same one which sent it."
     )
-    @JsonProperty("transaction_id")
+    @JsonbProperty("transaction_id")
     private String transactionId;
 
     /**
@@ -70,7 +70,7 @@ public class Unsigned {
         description = "The previous content for this state. This will be present only for state events "
             + "appearing in the timeline. If this is not a state event, or there is no previous content, this key will be missing."
     )
-    @JsonProperty("prev_content")
+    @JsonbProperty("prev_content")
     private EventContent prevContent;
 
     /**
@@ -81,7 +81,7 @@ public class Unsigned {
         description = "This contains an array of StrippedState Events. These events provide information on a subset of state events"
             + " such as the room name."
     )
-    @JsonProperty("invite_room_state")
+    @JsonbProperty("invite_room_state")
     private List<StrippedState> inviteRoomState;
 
     public Long getAge() {

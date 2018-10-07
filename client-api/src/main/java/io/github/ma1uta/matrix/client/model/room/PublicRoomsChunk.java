@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Public rooms chunk.
@@ -43,7 +43,7 @@ public class PublicRoomsChunk {
     @Schema(
         description = "The canonical alias of the room, if any."
     )
-    @JsonProperty("canonical_alias")
+    @JsonbProperty("canonical_alias")
     private String canonicalAlias;
 
     /**
@@ -60,7 +60,7 @@ public class PublicRoomsChunk {
     @Schema(
         description = "The number of members joined to the room."
     )
-    @JsonProperty("num_joined_members")
+    @JsonbProperty("num_joined_members")
     private Long numJoinedMembers;
 
     /**
@@ -69,7 +69,7 @@ public class PublicRoomsChunk {
     @Schema(
         description = "The ID of the room."
     )
-    @JsonProperty("room_id")
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**
@@ -86,7 +86,7 @@ public class PublicRoomsChunk {
     @Schema(
         description = "Whether the room may be viewed by guest users without joining."
     )
-    @JsonProperty("world_readable")
+    @JsonbProperty("world_readable")
     private Boolean worldReadable;
 
     /**
@@ -97,7 +97,7 @@ public class PublicRoomsChunk {
         description = "Whether guest users may join the room and participate in it. If they can, "
             + "they will be subject to ordinary power level rules like any other user."
     )
-    @JsonProperty("guest_can_join")
+    @JsonbProperty("guest_can_join")
     private Boolean guestCanJoin;
 
     /**
@@ -106,7 +106,7 @@ public class PublicRoomsChunk {
     @Schema(
         description = "The URL for the room's avatar, if one is set."
     )
-    @JsonProperty("avatar_url")
+    @JsonbProperty("avatar_url")
     private String avatarUrl;
 
     public List<String> getAliases() {

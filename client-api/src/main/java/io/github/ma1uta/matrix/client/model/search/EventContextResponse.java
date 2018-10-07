@@ -16,13 +16,13 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.client.model.profile.Profile;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Event context.
@@ -56,7 +56,7 @@ public class EventContextResponse {
     @Schema(
         description = "The historic profile information of the users that sent the events returned."
     )
-    @JsonProperty("profile_info")
+    @JsonbProperty("profile_info")
     private Map<String, Profile> profileInfo;
 
     /**
@@ -65,7 +65,7 @@ public class EventContextResponse {
     @Schema(
         description = "Events just before the result."
     )
-    @JsonProperty("events_before")
+    @JsonbProperty("events_before")
     private List<Event> eventsBefore;
 
     /**
@@ -74,7 +74,7 @@ public class EventContextResponse {
     @Schema(
         description = "Events just after the result."
     )
-    @JsonProperty("events_after")
+    @JsonbProperty("events_after")
     private List<Event> eventsAfter;
 
     public String getStart() {

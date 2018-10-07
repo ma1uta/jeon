@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Device Keys.
@@ -36,7 +36,7 @@ public class DeviceKeys {
     @Schema(
         description = "The ID of the user the device belongs to. Must match the user ID used when logging in."
     )
-    @JsonProperty("user_id")
+    @JsonbProperty("user_id")
     private String userId;
 
     /**
@@ -45,7 +45,7 @@ public class DeviceKeys {
     @Schema(
         description = "The ID of the device these keys belong to. Must match the device ID used when logging in."
     )
-    @JsonProperty("device_id")
+    @JsonbProperty("device_id")
     private String deviceId;
 
     /**

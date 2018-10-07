@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.protocol;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Instance.
@@ -63,7 +63,7 @@ public class Instance {
         description = "A unique identifier across all instances.",
         required = true
     )
-    @JsonProperty("network_id")
+    @JsonbProperty("network_id")
     private String networkId;
 
     public String getDesc() {

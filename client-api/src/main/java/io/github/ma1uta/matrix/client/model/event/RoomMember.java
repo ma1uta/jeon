@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.event;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Room member.
@@ -33,7 +34,7 @@ public class RoomMember {
     @Schema(
         description = "The display name of the user this object is representing."
     )
-    @JsonProperty("display_name")
+    @JsonbProperty("display_name")
     private String displayName;
 
     /**
@@ -42,7 +43,7 @@ public class RoomMember {
     @Schema(
         description = "The mxc avatar url of the user this object is representing."
     )
-    @JsonProperty("avatar_url")
+    @JsonbProperty("avatar_url")
     private String avatarUrl;
 
     public String getDisplayName() {

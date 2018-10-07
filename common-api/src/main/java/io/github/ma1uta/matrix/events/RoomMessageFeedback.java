@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * **NB: Usage of this event is discouraged in favour of the** `receipts module`_.
@@ -41,7 +42,7 @@ public class RoomMessageFeedback implements EventContent {
     @Schema(
         description = "The event that this feedback is related to."
     )
-    @JsonProperty("target_event_id")
+    @JsonbProperty("target_event_id")
     private String targetEventId;
 
     /**

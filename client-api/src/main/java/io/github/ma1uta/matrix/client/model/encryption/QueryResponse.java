@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Response format.
@@ -51,7 +51,7 @@ public class QueryResponse {
             + "device ID to device information. For each device, the information returned will be the same as uploaded via "
             + "/keys/upload, with the addition of an unsigned property."
     )
-    @JsonProperty("device_keys")
+    @JsonbProperty("device_keys")
     private Map<String, Map<String, DeviceKeys>> deviceKeys;
 
     public Map<String, Object> getFailures() {

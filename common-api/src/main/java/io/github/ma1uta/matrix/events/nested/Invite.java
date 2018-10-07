@@ -16,9 +16,10 @@
 
 package io.github.ma1uta.matrix.events.nested;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Signed;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Third-party invites.
@@ -36,7 +37,7 @@ public class Invite {
         description = "A name which can be displayed to represent the user instead of their third party identifier.",
         required = true
     )
-    @JsonProperty("display_name")
+    @JsonbProperty("display_name")
     private String displayName;
 
     /**

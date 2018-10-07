@@ -16,10 +16,10 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body parameters for Publishes end-to-end encryption keys for the device.
@@ -35,7 +35,7 @@ public class UploadRequest {
     @Schema(
         description = "Identity keys for the device. May be absent if no new identity keys are required."
     )
-    @JsonProperty("device_keys")
+    @JsonbProperty("device_keys")
     private DeviceKeys deviceKeys;
 
     /**
@@ -48,7 +48,7 @@ public class UploadRequest {
         description = "One-time public keys for \"pre-key\" messages. The names of the properties "
             + "should be in the format (algorithm):(key_id). The format of the key is determined by the key algorithm."
     )
-    @JsonProperty("one_time_keys")
+    @JsonbProperty("one_time_keys")
     private Map<String, Object> oneTimeKeys;
 
     public DeviceKeys getDeviceKeys() {

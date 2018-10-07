@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.openid;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body response of the OpenID API.
@@ -35,7 +36,7 @@ public class OpenIdResponse {
         description = "An access token the consumer may use to verify the identity of the person who generated the token."
             + " This is given to the federation API GET /openid/userinfo."
     )
-    @JsonProperty("access_token")
+    @JsonbProperty("access_token")
     private String accessToken;
 
     /**
@@ -44,7 +45,7 @@ public class OpenIdResponse {
     @Schema(
         description = "The string Bearer."
     )
-    @JsonProperty("token_type")
+    @JsonbProperty("token_type")
     private String tokenType;
 
     /**
@@ -53,7 +54,7 @@ public class OpenIdResponse {
     @Schema(
         description = "The homeserver domain the consumer should use when attempting to verify the user's identity."
     )
-    @JsonProperty("matrix_server_name")
+    @JsonbProperty("matrix_server_name")
     private String matrixServerName;
 
     /**
@@ -62,7 +63,7 @@ public class OpenIdResponse {
     @Schema(
         description = "The number of seconds before this token expires and a new one must be generated."
     )
-    @JsonProperty("expires_in")
+    @JsonbProperty("expires_in")
     private Long expiresIn;
 
     public String getAccessToken() {

@@ -16,8 +16,9 @@
 
 package io.github.ma1uta.matrix.client.model.device;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * The new display name for this device. If not given, the display name is unchanged.
@@ -33,7 +34,7 @@ public class DeviceUpdateRequest {
     @Schema(
         description = "The new display name."
     )
-    @JsonProperty("display_name")
+    @JsonbProperty("display_name")
     private String displayName;
 
     public String getDisplayName() {
