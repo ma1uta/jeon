@@ -197,12 +197,7 @@ public interface ContentApi {
         responses = {
             @ApiResponse(
                 responseCode = "200",
-                description = "The content that was previously uploaded.",
-                content = @Content(
-                    schema = @Schema(
-                        implementation = OutputStream.class
-                    )
-                )
+                description = "The content that was previously uploaded."
             ),
             @ApiResponse(
                 responseCode = "429",
@@ -218,6 +213,7 @@ public interface ContentApi {
     @GET
     @RateLimit
     @Path("/download/{serverName}/{mediaId}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     void download(
         @Parameter(
             description = "The server name from the mxc:// URI (the authoritory component).",
@@ -278,12 +274,7 @@ public interface ContentApi {
         responses = {
             @ApiResponse(
                 responseCode = "200",
-                description = "The content that was previously uploaded.",
-                content = @Content(
-                    schema = @Schema(
-                        implementation = OutputStream.class
-                    )
-                )
+                description = "The content that was previously uploaded."
             ),
             @ApiResponse(
                 responseCode = "429",
@@ -299,6 +290,7 @@ public interface ContentApi {
     @GET
     @RateLimit
     @Path("/download/{serverName}/{mediaId}/{fileName}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     void downloadFile(
         @Parameter(
             description = "The server name from the mxc:// URI (the authoritory component).",
@@ -360,12 +352,7 @@ public interface ContentApi {
         responses = {
             @ApiResponse(
                 responseCode = "200",
-                description = "The content that was previously uploaded.",
-                content = @Content(
-                    schema = @Schema(
-                        implementation = OutputStream.class
-                    )
-                )
+                description = "The content that was previously uploaded."
             ),
             @ApiResponse(
                 responseCode = "429",
@@ -381,6 +368,7 @@ public interface ContentApi {
     @GET
     @RateLimit
     @Path("/thumbnail/{serverName}/{mediaId}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     void thumbnail(
         @Parameter(
             description = "The server name from the mxc:// URI (the authoritory component).",
