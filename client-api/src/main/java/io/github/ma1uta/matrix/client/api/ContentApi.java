@@ -16,21 +16,24 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.content.ContentConfig;
 import io.github.ma1uta.matrix.client.model.content.ContentUri;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -42,8 +45,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * This module allows users to upload content to their homeserver which is retrievable from other homeservers.
@@ -59,11 +64,6 @@ import javax.ws.rs.core.SecurityContext;
  * Key is downloaded from the recipient's local homeserver, which must first transfer the content from the origin homeserver
  * using the same API (unless the origin and destination homeservers are the same).
  */
-@Api(
-    value = "Content",
-    description = "This module allows users to upload content to their homeserver which is retrievable from other homeservers."
-        + " Its' purpose is to allow users to share attachments in a room. Key locations are represented as Matrix Key (MXC) URIs."
-)
 @Path("/_matrix/media/r0")
 public interface ContentApi {
 
@@ -101,19 +101,39 @@ public interface ContentApi {
      * @param inputStream     The file content.
      * @param filename        The name of the file being uploaded.
      * @param contentType     The content type of the file being uploaded.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Upload some content to the content repository.",
-        response = ContentUri.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Upload some content to the content repository.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The MXC URI for the uploaded content.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ContentUri.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The MXC URI for the uploaded content."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
@@ -121,17 +141,18 @@ public interface ContentApi {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     void upload(
-        @ApiParam(
-            value = "The file content"
+        @RequestBody(
+            description = "The file content"
         ) InputStream inputStream,
-        @ApiParam(
-            value = "The name of the file being uploaded."
+        @Parameter(
+            description = "The name of the file being uploaded."
         ) @QueryParam("filename") String filename,
-        @ApiParam(
-            value = "The content type of the file being uploaded"
+        @Parameter(
+            description = "The content type of the file being uploaded"
         ) @HeaderParam("Content-Type") String contentType,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -163,39 +184,56 @@ public interface ContentApi {
      * <p>Status code 200: The content that was previously uploaded.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param serverName     Required. The server name from the mxc:// URI (the authoritory component).
-     * @param mediaId        Required. The media ID from the mxc:// URI (the path component).
-     * @param allowRemote    Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
-     *                       This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param serverName    Required. The server name from the mxc:// URI (the authoritory component).
+     * @param mediaId       Required. The media ID from the mxc:// URI (the path component).
+     * @param allowRemote   Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
+     *                      This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Download content from the content repository.",
-        response = OutputStream.class
+    @Operation(
+        summary = "Download content from the content repository.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The content that was previously uploaded.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = OutputStream.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @GET
     @RateLimit
     @Path("/download/{serverName}/{mediaId}")
     void download(
-        @ApiParam(
-            value = "The server name from the mxc:// URI (the authoritory component).",
+        @Parameter(
+            description = "The server name from the mxc:// URI (the authoritory component).",
             required = true
         ) @PathParam("serverName") String serverName,
-        @ApiParam(
-            value = "The media ID from the mxc:// URI (the path component).",
+        @Parameter(
+            description = "The media ID from the mxc:// URI (the path component).",
             required = true
         ) @PathParam("mediaId") String mediaId,
-        @ApiParam(
-            value = "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
+        @Parameter(
+            description = "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
                 + "This is to prevent routing loops where the server contacts itself. Defaults to true if not provided."
         ) @QueryParam("allow_remote") Boolean allowRemote,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -226,44 +264,61 @@ public interface ContentApi {
      * <p>Status code 200: The content that was previously uploaded.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param serverName     Required. The server name from the mxc:// URI (the authoritory component).
-     * @param mediaId        Required. The media ID from the mxc:// URI (the path component).
-     * @param filename       Required. The filename to give in the Content-Disposition.
-     * @param allowRemote    Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
-     *                       This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param serverName    Required. The server name from the mxc:// URI (the authoritory component).
+     * @param mediaId       Required. The media ID from the mxc:// URI (the path component).
+     * @param filename      Required. The filename to give in the Content-Disposition.
+     * @param allowRemote   Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
+     *                      This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Download content from the content repository as a given filename.",
-        response = OutputStream.class
+    @Operation(
+        summary = "Download content from the content repository as a given filename.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The content that was previously uploaded.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = OutputStream.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @GET
     @RateLimit
     @Path("/download/{serverName}/{mediaId}/{fileName}")
     void downloadFile(
-        @ApiParam(
-            value = "The server name from the mxc:// URI (the authoritory component).",
+        @Parameter(
+            description = "The server name from the mxc:// URI (the authoritory component).",
             required = true
         ) @PathParam("serverName") String serverName,
-        @ApiParam(
-            value = "The media ID from the mxc:// URI (the path component).",
+        @Parameter(
+            description = "The media ID from the mxc:// URI (the path component).",
             required = true
         ) @PathParam("mediaId") String mediaId,
-        @ApiParam(
-            value = "The filename to give in the Content-Disposition.",
+        @Parameter(
+            description = "The filename to give in the Content-Disposition.",
             required = true
         ) @PathParam("fileName") String filename,
-        @ApiParam(
-            value = "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
+        @Parameter(
+            description = "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
                 + "This is to prevent routing loops where the server contacts itself. Defaults to true if not provided."
         ) @QueryParam("allow_remote") Boolean allowRemote,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -289,41 +344,76 @@ public interface ContentApi {
      * <p>Status code 200: The content that was previously uploaded.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param serverName     Required. The server name from the mxc:// URI (the authoritory component).
-     * @param mediaId        Required. The media ID from the mxc:// URI (the path component)
-     * @param width          The desired width of the thumbnail. The actual thumbnail may not match the size specified.
-     * @param height         The desired height of the thumbnail. The actual thumbnail may not match the size specified.
-     * @param method         The desired resizing method. One of: ["crop", "scale"].
-     * @param allowRemote    Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
-     *                       This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param serverName    Required. The server name from the mxc:// URI (the authoritory component).
+     * @param mediaId       Required. The media ID from the mxc:// URI (the path component)
+     * @param width         The desired width of the thumbnail. The actual thumbnail may not match the size specified.
+     * @param height        The desired height of the thumbnail. The actual thumbnail may not match the size specified.
+     * @param method        The desired resizing method. One of: ["crop", "scale"].
+     * @param allowRemote   Indicates to the server that it should not attempt to fetch the media if it is deemed remote.
+     *                      This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Download a thumbnail of the content from the content repository.",
-        response = OutputStream.class
+    @Operation(
+        summary = "Download a thumbnail of the content from the content repository.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The content that was previously uploaded.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = OutputStream.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @GET
     @RateLimit
     @Path("/thumbnail/{serverName}/{mediaId}")
-    void thumbnail(@ApiParam(value = "The server name from the mxc:// URI (the authoritory component).", required = true)
-                   @PathParam("serverName") String serverName,
-                   @ApiParam(value = "The media ID from the mxc:// URI (the path component)", required = true)
-                   @PathParam("mediaId") String mediaId,
-                   @ApiParam("he desired width of the thumbnail. The actual thumbnail may not match the size specified.")
-                   @QueryParam("width") Long width,
-                   @ApiParam("The desired height of the thumbnail. The actual thumbnail may not match the size specified.")
-                   @QueryParam("height") Long height,
-                   @ApiParam(value = "The desired resizing method.", allowableValues = "['crop','scale']")
-                   @QueryParam("method") String method,
-                   @ApiParam("Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
-                       + "This is to prevent routing loops where the server contacts itself. Defaults to true if not provided.")
-                   @QueryParam("allow_remote") Boolean allowRemote,
-                   @Context HttpServletRequest servletRequest, @Suspended AsyncResponse asyncResponse);
+    void thumbnail(
+        @Parameter(
+            description = "The server name from the mxc:// URI (the authoritory component).",
+            required = true
+        ) @PathParam("serverName") String serverName,
+        @Parameter(
+            description = "The media ID from the mxc:// URI (the path component)",
+            required = true
+        ) @PathParam("mediaId") String mediaId,
+        @Parameter(
+            description = "The desired width of the thumbnail. The actual thumbnail may not match the size specified."
+        ) @QueryParam("width") Long width,
+        @Parameter(
+            description = "The desired height of the thumbnail. The actual thumbnail may not match the size specified."
+        ) @QueryParam("height") Long height,
+        @Parameter(
+            description = "The desired resizing method.",
+            schema = @Schema(
+                allowableValues = {
+                    "crop",
+                    "scale"
+                }
+            )
+        ) @QueryParam("method") String method,
+        @Parameter(
+            description = "Indicates to the server that it should not attempt to fetch the media if it is deemed remote. "
+                + "This is to prevent routing loops where the server contacts itself. Defaults to true if not provided."
+        ) @QueryParam("allow_remote") Boolean allowRemote,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * Get information about a PATH for a client.
@@ -357,35 +447,56 @@ public interface ContentApi {
      * @param url             Required. The PATH to get a preview of.
      * @param ts              The preferred point in time to return a preview for. The server may return a newer version if it does not
      *                        have the requested version available.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Get information about a PATH for a client.",
-        response = Map.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Get information about a PATH for a client.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The content that was previously uploaded.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = Map.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The content that was previously uploaded."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @GET
     @RateLimit
     @Secured
     @Path("/preview_url")
     @Produces(MediaType.APPLICATION_JSON)
     void previewUrl(
-        @ApiParam(
-            value = "The PATH to get a preview of.",
+        @Parameter(
+            description = "The PATH to get a preview of.",
             required = true
         ) @QueryParam("url") String url,
-        @ApiParam(
-            value = "The preferred point in time to return a preview for. The server may return a newer "
+        @Parameter(
+            description = "The preferred point in time to return a preview for. The server may return a newer "
                 + "version if it does not have the requested version available."
         ) @QueryParam("ts") String ts,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -406,32 +517,53 @@ public interface ContentApi {
      * <p>Status code 200: The public content repository configuration for the matrix server.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "his endpoint allows clients to retrieve the configuration of the content repository, such"
+    @Operation(
+        summary = "his endpoint allows clients to retrieve the configuration of the content repository, such"
             + "as upload limitations.",
-        notes = "Clients SHOULD use this as a guide when using content repository endpoints. All values are intentionally left optional."
-            + " Clients SHOULD follow the advice given in the field description when the field is not available."
+        description = "Clients SHOULD use this as a guide when using content repository endpoints. All values are intentionally left"
+            + " optional. Clients SHOULD follow the advice given in the field description when the field is not available."
             + " NOTE: Both clients and server administrators should be aware that proxies between the client and the server may affect"
             + " the apparent behaviour of content repository APIs, for example, proxies may enforce a lower upload size limit than is"
             + " advertised by the server on this endpoint.",
-        response = ContentConfig.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The public content repository configuration for the matrix server.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ContentConfig.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The public content repository configuration for the matrix server."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @GET
     @RateLimit
     @Secured
     @Path("/config")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     void config(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

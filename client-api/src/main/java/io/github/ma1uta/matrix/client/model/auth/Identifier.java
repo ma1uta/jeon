@@ -16,12 +16,17 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
+import static com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+import static io.github.ma1uta.matrix.client.api.AuthApi.IdentifierType.PHONE;
+import static io.github.ma1uta.matrix.client.api.AuthApi.IdentifierType.THIRD_PARTY;
+import static io.github.ma1uta.matrix.client.api.AuthApi.IdentifierType.USER;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import io.github.ma1uta.matrix.client.api.AuthApi;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Some authentication mechanisms use a user identifier object to identify a user. The user identifier object has a type field
@@ -29,20 +34,16 @@ import io.swagger.annotations.ApiModelProperty;
  * to identify the user.
  */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
+    use = NAME,
     property = "type"
 )
 @JsonSubTypes( {
-    @JsonSubTypes.Type(name = AuthApi.IdentifierType.USER, value = UserIdentifier.class),
-    @JsonSubTypes.Type(name = AuthApi.IdentifierType.THIRD_PARTY, value = ThirdpartyIdentifier.class),
-    @JsonSubTypes.Type(name = AuthApi.IdentifierType.PHONE, value = PhoneIdentifier.class)
+    @Type(name = USER, value = UserIdentifier.class),
+    @Type(name = THIRD_PARTY, value = ThirdpartyIdentifier.class),
+    @Type(name = PHONE, value = PhoneIdentifier.class)
 })
-@ApiModel(description = "Identifier types.",
-    subTypes = {
-        UserIdentifier.class,
-        ThirdpartyIdentifier.class,
-        PhoneIdentifier.class
-    }
+@Schema(
+    description = "Identifier types."
 )
 public abstract class Identifier {
 
@@ -51,10 +52,9 @@ public abstract class Identifier {
      *
      * @return The identifier type.
      */
-    @ApiModelProperty(
-        value = "Identifier type.",
-        required = true
+    @Schema(
+        description = "Identifier type."
     )
-    @JsonProperty(value = "type", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "type", access = READ_ONLY)
     public abstract String getType();
 }

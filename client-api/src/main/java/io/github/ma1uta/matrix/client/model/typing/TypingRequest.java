@@ -16,29 +16,29 @@
 
 package io.github.ma1uta.matrix.client.model.typing;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Typing body request.
  */
-@ApiModel(description = "Typing body request.")
+@Schema(
+    description = "Typing body request."
+)
 public class TypingRequest {
 
     /**
      * Required. Whether the user is typing or not. If false, the timeout key can be omitted.
      */
-    @ApiModelProperty(
-        value = "Whether the user is typing or not. If false, the timeout key can be omitted.",
-        required = true
+    @Schema(
+        description = "Whether the user is typing or not. If false, the timeout key can be omitted."
     )
     private Boolean typing;
 
     /**
      * The length of time in milliseconds to mark this user as typing.
      */
-    @ApiModelProperty(
-        value = "The length of time in milliseconds to mark this user as typing."
+    @Schema(
+        description = "The length of time in milliseconds to mark this user as typing."
     )
     private Long timeout;
 

@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Login type.
  */
-@ApiModel(description = "Login type.")
+@Schema(
+    description = "Login type."
+)
 public class LoginType {
 
     /**
      * Type of the authentication stage.
      */
-    @ApiModelProperty(
-        value = "Type of the authentication stage."
+    @Schema(
+        description = "Type of the authentication stage."
     )
     private String type;
 

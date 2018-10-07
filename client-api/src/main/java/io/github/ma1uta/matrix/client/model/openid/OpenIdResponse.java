@@ -17,24 +17,23 @@
 package io.github.ma1uta.matrix.client.model.openid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body response of the OpenID API.
  */
-@ApiModel(description = "JSON body response of the OpenID API.")
+@Schema(
+    description = "JSON body response of the OpenID API."
+)
 public class OpenIdResponse {
 
     /**
      * Required. An access token the consumer may use to verify the identity of the person who generated the token.
      * This is given to the federation API GET /openid/userinfo.
      */
-    @ApiModelProperty(
-        name = "access_token",
-        value = "An access token the consumer may use to verify the identity of the person who generated the token."
-            + " This is given to the federation API GET /openid/userinfo.",
-        required = true
+    @Schema(
+        description = "An access token the consumer may use to verify the identity of the person who generated the token."
+            + " This is given to the federation API GET /openid/userinfo."
     )
     @JsonProperty("access_token")
     private String accessToken;
@@ -42,10 +41,8 @@ public class OpenIdResponse {
     /**
      * Required. The string Bearer.
      */
-    @ApiModelProperty(
-        name = "token_type",
-        value = "The string Bearer.",
-        required = true
+    @Schema(
+        description = "The string Bearer."
     )
     @JsonProperty("token_type")
     private String tokenType;
@@ -53,10 +50,8 @@ public class OpenIdResponse {
     /**
      * Required. The homeserver domain the consumer should use when attempting to verify the user's identity.
      */
-    @ApiModelProperty(
-        name = "matrix_server_name",
-        value = "The homeserver domain the consumer should use when attempting to verify the user's identity.",
-        required = true
+    @Schema(
+        description = "The homeserver domain the consumer should use when attempting to verify the user's identity."
     )
     @JsonProperty("matrix_server_name")
     private String matrixServerName;
@@ -64,10 +59,8 @@ public class OpenIdResponse {
     /**
      * Required. The number of seconds before this token expires and a new one must be generated.
      */
-    @ApiModelProperty(
-        name = "expires_in",
-        value = "The number of seconds before this token expires and a new one must be generated.",
-        required = true
+    @Schema(
+        description = "The number of seconds before this token expires and a new one must be generated."
     )
     @JsonProperty("expires_in")
     private Long expiresIn;

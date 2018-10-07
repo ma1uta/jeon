@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.client.model.event;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Joined room members.
  */
-@ApiModel(description = "Joined room members.")
+@Schema(
+    description = "Joined room members."
+)
 public class JoinedMembersResponse {
 
     /**
      * A map from user ID to a RoomMember object.
      */
-    @ApiModelProperty(
-        value = "A map from user ID to a RoomMember object."
+    @Schema(
+        description = "A map from user ID to a RoomMember object."
     )
     private Map<String, RoomMember> joined;
 

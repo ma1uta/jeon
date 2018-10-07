@@ -17,7 +17,9 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.room.CreateRoomRequest;
 import io.github.ma1uta.matrix.client.model.room.InviteRequest;
@@ -30,15 +32,15 @@ import io.github.ma1uta.matrix.client.model.room.RoomId;
 import io.github.ma1uta.matrix.client.model.room.RoomResolveResponse;
 import io.github.ma1uta.matrix.client.model.room.RoomVisibility;
 import io.github.ma1uta.matrix.client.model.room.UnbanRequest;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -51,15 +53,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Rooms API.
  */
-@Api(
-    value = "Room"
-)
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -166,30 +167,51 @@ public interface RoomApi {
      * </ul>
      *
      * @param createRoomRequest JSON body parameters.
-     * @param servletRequest    Servlet request.
+     * @param uriInfo           Request Information.
+     * @param httpHeaders       Http headers.
      * @param asyncResponse     Asynchronous response.
      * @param securityContext   Security context.
      */
-    @ApiOperation(
-        value = "Create a new room with various configuration options.",
-        notes = "The server MUST apply the normal state resolution rules when creating the new room, including checking power "
+    @Operation(
+        summary = "Create a new room with various configuration options.",
+        description = "The server MUST apply the normal state resolution rules when creating the new room, including checking power "
             + "levels for each event.",
-        response = RoomId.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Information about the newly created room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RoomId.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The request is invalid. A meaningful errcode and description error text will be returned.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "Information about the newly created room."),
-        @ApiResponse(code = 400, message = "The request is invalid. A meaningful errcode and description error text will be returned.")
-    })
     @POST
     @Secured
     @Path("/createRoom")
     void create(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) CreateRoomRequest createRoomRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -205,32 +227,53 @@ public interface RoomApi {
      *
      * @param roomAlias       Required. The room alias to set.
      * @param roomId          json body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Create a new mapping from room alias to room ID.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Create a new mapping from room alias to room ID.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The mapping was created.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "409",
+                description = "A room alias with that name already exists.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The mapping was created."),
-        @ApiResponse(code = 409, message = "A room alias with that name already exists.")
-    })
     @PUT
     @Secured
     @Path("/directory/room/{roomAlias}")
     void createAlias(
-        @ApiParam(
-            value = "The room alias to set",
+        @Parameter(
+            description = "The room alias to set",
             required = true
         ) @PathParam("roomAlias") String roomAlias,
-        @ApiParam(
-            value = "JSON body request"
+        @RequestBody(
+            description = "JSON body request"
         ) RoomId roomId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -245,28 +288,45 @@ public interface RoomApi {
      * <p>Status code 200: The room ID and other information for this alias.</p>
      * <p>Status code 404: There is no mapped room ID for this room alias.</p>
      *
-     * @param roomAlias      Required. The room alias.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param roomAlias     Required. The room alias.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Requests that the server resolve a room alias to a room ID. The server will use the federation API to "
+    @Operation(
+        summary = "Requests that the server resolve a room alias to a room ID. The server will use the federation API to "
             + "resolve the alias if the domain part of the alias does not correspond to the server's own domain.",
-        response = RoomResolveResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The room ID and other information for this alias.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RoomResolveResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "There is no mapped room ID for this room alias.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The room ID and other information for this alias."),
-        @ApiResponse(code = 404, message = "There is no mapped room ID for this room alias.")
-    })
     @GET
     @Path("/directory/room/{roomAlias}")
     void resolveAlias(
-        @ApiParam(
-            value = "The room alias",
+        @Parameter(
+            description = "The room alias",
             required = true
         ) @PathParam("roomAlias") String roomAlias,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -282,28 +342,41 @@ public interface RoomApi {
      * <p>Status code 200: The mapping was deleted.</p>
      *
      * @param roomAlias       Required. The room alias to remove.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Remove a mapping of room alias to room ID.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Remove a mapping of room alias to room ID.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The mapping was deleted.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The mapping was deleted.")
-    })
     @DELETE
     @Secured
     @Path("/directory/room/{roomAlias}")
     void deleteAlias(
-        @ApiParam(
-            value = "The room alias to remove.",
+        @Parameter(
+            description = "The room alias to remove.",
             required = true
         ) @PathParam("roomAlias") String roomAlias,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -316,23 +389,36 @@ public interface RoomApi {
      * Return: {@link JoinedRoomsResponse}.
      * <p>Status code 200: A list of the rooms the user is in.</p>
      *
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API returns a list of the user's current rooms.",
-        response = JoinedRoomsResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "This API returns a list of the user's current rooms.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A list of the rooms the user is in.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = JoinedRoomsResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "A list of the rooms the user is in.")
-    })
     @GET
     @Secured
     @Path("/joined_rooms")
     void joinedRooms(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -366,36 +452,65 @@ public interface RoomApi {
      *
      * @param roomId          Required. The room identifier (not alias) to which to invite the user.
      * @param inviteRequest   JSON body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API invites a user to participate in a particular room. They do not start participating in the "
+    @Operation(
+        summary = "This API invites a user to participate in a particular room. They do not start participating in the "
             + "room until they actually join the room.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The user has been invited to join the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "You do not have permission to invite the user to the room. A meaningful errcode and "
+                    + "description error text will be returned. ",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The user has been invited to join the room."),
-        @ApiResponse(code = 403, message = "You do not have permission to invite the user to the room. A meaningful errcode and "
-            + "description error text will be returned. "),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
     @Path("/rooms/{roomId}/invite")
     void invite(
-        @ApiParam(
-            value = "The room identifier (not alias) to which to invite the user.",
+        @Parameter(
+            description = "The room identifier (not alias) to which to invite the user.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "JSON body request"
+        @RequestBody(
+            description = "JSON body request"
         ) InviteRequest inviteRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -429,37 +544,66 @@ public interface RoomApi {
      *
      * @param roomId          Required. The room identifier (not alias) to join.
      * @param joinRequest     JSON body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API starts a user participating in a particular room, if that user is allowed to participate in "
+    @Operation(
+        summary = "This API starts a user participating in a particular room, if that user is allowed to participate in "
             + "that room. After this call, the client is allowed to see all current state events in the room, and all subsequent "
             + "events associated with the room until the user leaves the room.",
-        response = RoomId.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The room has been joined. The joined room ID must be returned in the room_id field.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RoomId.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "You do not have permission to join the room. A meaningful errcode and description "
+                    + "error text will be returned.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The room has been joined. The joined room ID must be returned in the room_id field."),
-        @ApiResponse(code = 403, message = "You do not have permission to join the room. A meaningful errcode and description "
-            + "error text will be returned."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
     @Path("/rooms/{roomId}/join")
     void joinById(
-        @ApiParam(
-            value = "The room identifier (not alias) to join.",
+        @Parameter(
+            description = "The room identifier (not alias) to join.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "JSON body request"
+        @RequestBody(
+            description = "JSON body request"
         ) JoinRequest joinRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -494,41 +638,70 @@ public interface RoomApi {
      * @param roomIdOrAlias   Required. The room identifier or alias to join.
      * @param joinRequest     JSON body request.
      * @param serverName      The servers to attempt to join the room through. One of the servers must be participating in the room.
-     * @param servletRequest  Servlet request.
+     * @param httpHeaders     Http headers.
+     * @param uriInfo         Request Information.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API starts a user participating in a particular room, if that user is allowed to participate in "
+    @Operation(
+        summary = "This API starts a user participating in a particular room, if that user is allowed to participate in "
             + "that room. After this call, the client is allowed to see all current state events in the room, and all subsequent "
             + "events associated with the room until the user leaves the room.",
-        response = RoomId.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The room has been joined. The joined room ID must be returned in the room_id field.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RoomId.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "You do not have permission to join the room. A meaningful errcode and description "
+                    + "error text will be returned.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The room has been joined. The joined room ID must be returned in the room_id field."),
-        @ApiResponse(code = 403, message = "You do not have permission to join the room. A meaningful errcode and description "
-            + "error text will be returned."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
     @Path("/join/{roomIdOrAlias}")
     void joinByIdOrAlias(
-        @ApiParam(
-            value = "The room identifier or alias to join.",
+        @Parameter(
+            description = "The room identifier or alias to join.",
             required = true
         ) @PathParam("roomIdOrAlias") String roomIdOrAlias,
-        @ApiParam(
+        @Parameter(
             name = "server_name",
-            value = "The servers to attempt to join the room through. One of the servers must be participating in the room."
+            description = "The servers to attempt to join the room through. One of the servers must be participating in the room."
         ) @QueryParam("server_name") List<String> serverName,
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) JoinRequest joinRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -552,34 +725,56 @@ public interface RoomApi {
      * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param roomId          Required. The room identifier to leave.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API stops a user participating in a particular room. If the user was already in the room, "
+    @Operation(
+        summary = "This API stops a user participating in a particular room.",
+        description = "If the user was already in the room, "
             + "they will no longer be able to see new events in the room. If the room requires an invite to join, they will need "
             + "to be re-invited before they can re-join. If the user was invited to the room, but had not joined, this call serves "
             + "to reject the invite.The user will still be allowed to retrieve history from the room which they were previously "
             + "allowed to see.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The room has been left.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The room has been left."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
     @Path("/rooms/{roomId}/leave")
     void leave(
-        @ApiParam(
-            value = "The room identifier to leave.",
+        @Parameter(
+            description = "The room identifier to leave.",
             required = true
         ) @PathParam("roomId") String roomId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -603,33 +798,62 @@ public interface RoomApi {
      * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param roomId          Required. The room identifier to forget.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API stops a user remembering about a particular room. In general, history is a first class "
+    @Operation(
+        summary = "This API stops a user remembering about a particular room. In general, history is a first class "
             + "citizen in Matrix. After this API is called, however, a user will no longer be able to retrieve history for this "
             + "room. If all users on a homeserver forget a room, the room is eligible for deletion from that homeserver.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The room has been forgotten.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The user has not left the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The room has been forgotten."),
-        @ApiResponse(code = 400, message = "The user has not left the room."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
     @Path("/rooms/{roomId}/forget")
     void forget(
-        @ApiParam(
-            value = "The room identifier to forget.",
+        @Parameter(
+            description = "The room identifier to forget.",
             required = true
         ) @PathParam("roomId") String roomId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -657,33 +881,54 @@ public interface RoomApi {
      *
      * @param roomId          Required. The room identifier (not alias) from which the user should be kicked.
      * @param kickRequest     JSON body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Kick a user from the room.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Kick a user from the room.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The user has been kicked from the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "You do not have permission to kick the user from the room. A meaningful errcode "
+                    + "and description error text will be returned.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The user has been kicked from the room."),
-        @ApiResponse(code = 403, message = "You do not have permission to kick the user from the room. A meaningful errcode "
-            + "and description error text will be returned.")
-    })
     @POST
     @Secured
     @Path("/rooms/{roomId}/kick")
     void kick(
-        @ApiParam(
-            value = "The room identifier (not alias) from which the user should be kicked.",
+        @Parameter(
+            description = "The room identifier (not alias) from which the user should be kicked.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "JSON body request"
+        @RequestBody(
+            description = "JSON body request"
         ) KickRequest kickRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -708,33 +953,54 @@ public interface RoomApi {
      *
      * @param roomId          Required. The room identifier (not alias) from which the user should be banned.
      * @param banRequest      JSON body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Ban a user in the room. If the user is currently in the room, also kick them.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Ban a user in the room. If the user is currently in the room, also kick them.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The user has been kicked and banned from the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "You do not have permission to ban the user from the room. A meaningful errcode "
+                    + "and description error text will be returned.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The user has been kicked and banned from the room."),
-        @ApiResponse(code = 403, message = "You do not have permission to ban the user from the room. A meaningful errcode "
-            + "and description error text will be returned.")
-    })
     @POST
     @Secured
     @Path("/rooms/{roomId}/ban")
     void ban(
-        @ApiParam(
-            value = "The room identifier (not alias) from which the user should be banned.",
+        @Parameter(
+            description = "The room identifier (not alias) from which the user should be banned.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) KickRequest banRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -757,34 +1023,55 @@ public interface RoomApi {
      *
      * @param roomId          Required. The room identifier (not alias) from which the user should be unbanned.
      * @param unbanRequest    JSON body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Unban a user from the room. This allows them to be invited to the room, and join if they would "
+    @Operation(
+        summary = "Unban a user from the room. This allows them to be invited to the room, and join if they would "
             + "otherwise be allowed to join according to its join rules.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The user has been unbanned from the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "You do not have permission to unban the user from the room. A meaningful errcode "
+                    + "and description error text will be returned.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The user has been unbanned from the room."),
-        @ApiResponse(code = 403, message = "You do not have permission to unban the user from the room. A meaningful errcode "
-            + "and description error text will be returned.")
-    })
     @POST
     @Secured
     @Path("/rooms/{roomId}/unban")
     void unban(
-        @ApiParam(
-            value = "The room identifier (not alias) from which the user should be unbanned.",
+        @Parameter(
+            description = "The room identifier (not alias) from which the user should be unbanned.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) UnbanRequest unbanRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -796,27 +1083,44 @@ public interface RoomApi {
      * <p>Status code 200: The visibility of the room in the directory.</p>
      * <p>Status code 404: The room is not known to the server.</p>
      *
-     * @param roomId         Required. The room ID.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param roomId        Required. The room ID.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Gets the visibility of a given room on the server's public room directory.",
-        response = RoomVisibility.class
+    @Operation(
+        summary = "Gets the visibility of a given room on the server's public room directory.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The visibility of the room in the directory",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RoomVisibility.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The room is not known to the server",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The visibility of the room in the directory"),
-        @ApiResponse(code = 404, message = "The room is not known to the server")
-    })
     @GET
     @Path("/directory/list/room/{roomId}")
     void getVisibility(
-        @ApiParam(
-            value = "The room ID.",
+        @Parameter(
+            description = "The room ID.",
             required = true
         ) @PathParam("roomId") String roomId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -834,32 +1138,53 @@ public interface RoomApi {
      *
      * @param roomId          Required. The room ID.
      * @param visibility      json body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Sets the visibility of a given room in the server's public room directory.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Sets the visibility of a given room in the server's public room directory.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The visibility was updated, or no change was needed.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The room is not known to the server.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The visibility was updated, or no change was needed."),
-        @ApiResponse(code = 404, message = "The room is not known to the server.")
-    })
     @PUT
     @Secured
     @Path("/directory/list/room/{roomId}")
     void setVisibility(
-        @ApiParam(
-            value = "The room ID.",
+        @Parameter(
+            description = "The room ID.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) RoomVisibility visibility,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -872,36 +1197,45 @@ public interface RoomApi {
      * Return: {@link PublicRoomsResponse}.
      * <p>Status code 200: A list of the rooms on the server.</p>
      *
-     * @param limit          Limit the number of results returned.
-     * @param since          A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms.
-     *                       The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.
-     * @param server         The server to fetch the public room lists from. Defaults to the local server.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param limit         Limit the number of results returned.
+     * @param since         A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms.
+     *                      The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.
+     * @param server        The server to fetch the public room lists from. Defaults to the local server.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Lists the public rooms on the server. This API returns paginated responses. The rooms are ordered "
+    @Operation(
+        summary = "Lists the public rooms on the server. This API returns paginated responses. The rooms are ordered "
             + "by the number of joined members, with the largest rooms first.",
-        response = PublicRoomsResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A list of the rooms on the server.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = PublicRoomsResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "A list of the rooms on the server.")
-    })
     @GET
     @Path("/publicRooms")
     void showPublicRooms(
-        @ApiParam(
-            value = "Limit the number of results returned."
+        @Parameter(
+            description = "Limit the number of results returned."
         ) @QueryParam("limit") Long limit,
-        @ApiParam(
-            value = "A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms. "
+        @Parameter(
+            description = "A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms. "
                 + "The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag."
         ) @QueryParam("since") String since,
-        @ApiParam(
-            value = "The server to fetch the public room lists from. Defaults to the local server."
+        @Parameter(
+            description = "The server to fetch the public room lists from. Defaults to the local server."
         ) @QueryParam("server") String server,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -917,32 +1251,45 @@ public interface RoomApi {
      *
      * @param server             The server to fetch the public room lists from. Defaults to the local server.
      * @param publicRoomsRequest JSON body request.
-     * @param servletRequest     Servlet request.
+     * @param uriInfo            Request Information.
+     * @param httpHeaders        Http headers.
      * @param asyncResponse      Asynchronous response.
      * @param securityContext    Security context.
      */
-    @ApiOperation(
-        value = "Lists the public rooms on the server, with optional filter. This API returns paginated responses. "
+    @Operation(
+        summary = "Lists the public rooms on the server, with optional filter. This API returns paginated responses. "
             + "The rooms are ordered by the number of joined members, with the largest rooms first.",
-        response = PublicRoomsResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A list of the rooms on the server.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = PublicRoomsResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "A list of the rooms on the server.")
-    })
     @POST
     @Secured
     @Path("/publicRooms")
     void searchPublicRooms(
-        @ApiParam(
-            value = "The server to fetch the public room lists from. Defaults to the local server."
+        @Parameter(
+            description = "The server to fetch the public room lists from. Defaults to the local server."
         ) @QueryParam("server") String server,
 
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) PublicRoomsRequest publicRoomsRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

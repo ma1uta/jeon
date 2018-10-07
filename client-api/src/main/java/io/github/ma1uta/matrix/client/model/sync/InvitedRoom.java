@@ -17,13 +17,14 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Invite room.
  */
-@ApiModel(description = "Invite room.")
+@Schema(
+    description = "Invite room."
+)
 public class InvitedRoom {
 
     /**
@@ -33,9 +34,8 @@ public class InvitedRoom {
      * the archived state. If the client joins the room then the current state will be given as a delta against the archived state not
      * the invite_state.
      */
-    @ApiModelProperty(
-        name = "invite_state",
-        value = "The state of a room that the user has been invited to. "
+    @Schema(
+        description = "The state of a room that the user has been invited to. "
             + "These state events may only have the sender, type, state_key and content keys present. These events "
             + "do not replace any state that the client already has for the room, for example if the client has "
             + "archived the room. Instead the client should keep two separate copies of the state: the one from the "

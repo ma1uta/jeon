@@ -17,31 +17,29 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * 3Pid credentials.
  */
-@ApiModel(description = "3pid credentials")
+@Schema(
+    description = "3pid credentials"
+)
 public class ThreePidCred {
 
     /**
      * Required. The session identifier given by the identity server.
      */
-    @ApiModelProperty(
-        value = "The session identifier given by the identity server.",
-        required = true
+    @Schema(
+        description = "The session identifier given by the identity server."
     )
     private String sid;
 
     /**
      * Required. The client secret used in the session with the identity server.
      */
-    @ApiModelProperty(
-        name = "client_secret",
-        value = "The client secret used in the session with the identity server.",
-        required = true
+    @Schema(
+        description = "The client secret used in the session with the identity server."
     )
     @JsonProperty("client_secret")
     private String clientSecret;
@@ -49,10 +47,8 @@ public class ThreePidCred {
     /**
      * The identity server to use.
      */
-    @ApiModelProperty(
-        name = "id_server",
-        value = "The identity server to use.",
-        required = true
+    @Schema(
+        description = "The identity server to use."
     )
     @JsonProperty("id_server")
     private String idServer;

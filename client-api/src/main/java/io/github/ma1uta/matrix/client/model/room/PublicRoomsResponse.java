@@ -17,23 +17,23 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON body response.
  */
-@ApiModel(description = "JSON body request.")
+@Schema(
+    description = "JSON body request."
+)
 public class PublicRoomsResponse {
 
     /**
      * Required. A paginated chunk of public rooms.
      */
-    @ApiModelProperty(
-        value = "A paginated chunk of public rooms.",
-        required = true
+    @Schema(
+        description = "A paginated chunk of public rooms."
     )
     private List<PublicRoomsChunk> chunk;
 
@@ -41,9 +41,8 @@ public class PublicRoomsResponse {
      * A pagination token for the response. The absence of this token means there are no more results to fetch and the client
      * should stop paginating.
      */
-    @ApiModelProperty(
-        name = "next_batch",
-        value = "A pagination token for the response. The absence of this token means there "
+    @Schema(
+        description = "A pagination token for the response. The absence of this token means there "
             + "are no more results to fetch and the client should stop paginating."
     )
     @JsonProperty("next_batch")
@@ -53,9 +52,8 @@ public class PublicRoomsResponse {
      * A pagination token that allows fetching previous results. The absence of this token means there are no results before
      * this batch, i.e. this is the first batch.
      */
-    @ApiModelProperty(
-        name = "prev_batch",
-        value = "A pagination token that allows fetching previous results. The absence of "
+    @Schema(
+        description = "A pagination token that allows fetching previous results. The absence of "
             + "this token means there are no results before this batch, i.e. this is the first batch."
     )
     @JsonProperty("prev_batch")
@@ -64,9 +62,8 @@ public class PublicRoomsResponse {
     /**
      * An estimate on the total number of public rooms, if the server has an estimate.
      */
-    @ApiModelProperty(
-        name = "total_room_count_estimate",
-        value = "An estimate on the total number of public rooms, if the server has an estimate."
+    @Schema(
+        description = "An estimate on the total number of public rooms, if the server has an estimate."
     )
     @JsonProperty("total_room_count_estimate")
     private Long totalRoomCountEstimate;

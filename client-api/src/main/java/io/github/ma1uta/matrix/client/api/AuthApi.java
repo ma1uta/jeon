@@ -17,19 +17,20 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.auth.LoginRequest;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;
 import io.github.ma1uta.matrix.client.model.auth.SupportedLoginResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -38,18 +39,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * A client can obtain access tokens using the /login API.
  * <br>
  * Note that this endpoint does not currently use the user-interactive authentication API.
  */
-@Api(
-    value = "Authentication",
-    description = "A client can obtain access tokens using the /login API"
-)
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -135,23 +134,40 @@ public interface AuthApi {
      * <p>Status code 200: The login types the homeserver supports.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Gets the homeserver's supported login types to authenticate users.",
-        notes = "Clients should pick one of these and supply it as the type when logging in.",
-        response = SupportedLoginResponse.class
+    @Operation(
+        summary = "Gets the homeserver's supported login types to authenticate users.",
+        description = "Clients should pick one of these and supply it as the type when logging in.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The login types the homeserver supports.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SupportedLoginResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The login types the homeserver supports."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @GET
     @RateLimit
     @Path("/login")
     void supportedLoginTypes(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -171,32 +187,65 @@ public interface AuthApi {
      * <p>Status code 401: The login attempt failed. For example, the password may have been incorrect.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param loginRequest   JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param loginRequest  JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests",
-        notes = "If the client does not supply a device_id, the server must auto-generate one. "
+    @Operation(
+        summary = "Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests",
+        description = "If the client does not supply a device_id, the server must auto-generate one. "
             + "The returned access token must be associated with the device_id supplied by the client or generated by the server. "
             + "The server may invalidate any access token previously associated with that device",
-        response = LoginResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The user has been authenticated",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = LoginResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Part of the request was invalid. For example, the login type may not be recognised",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The login attempt failed. For example, the password may have been incorrect.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The user has been authenticated"),
-        @ApiResponse(code = 400, message = "Part of the request was invalid. For example, the login type may not be recognised"),
-        @ApiResponse(code = 401, message = "The login attempt failed. For example, the password may have been incorrect."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Path("/login")
     void login(
-        @ApiParam(
-            value = "login request."
+        @RequestBody(
+            description = "login request."
         ) LoginRequest loginRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -210,23 +259,36 @@ public interface AuthApi {
      * Return: {@link EmptyResponse}.
      * <p>Status code 200: The access token used in the request was succesfully invalidated.</p>
      *
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Invalidates an existing access token, so that it can no longer be used for authorization.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Invalidates an existing access token, so that it can no longer be used for authorization.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The access token used in the request was succesfully invalidated",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The access token used in the request was succesfully invalidated")
-    })
     @POST
     @Secured
     @Path("/logout")
     void logout(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -244,27 +306,41 @@ public interface AuthApi {
      * Return: {@link EmptyResponse}.
      * <p>Status code 200: The user's access tokens were succesfully invalidated.</p>
      *
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Invalidates all access tokens for a user, so that they can no longer be used for authorization. "
+    @Operation(
+        summary = "Invalidates all access tokens for a user, so that they can no longer be used for authorization. "
             + "This includes the access token that made this request",
-        notes = "This endpoint does not require UI authorization because UI authorization is designed to protect against attacks where the "
-            + "someone gets hold of a single access token then takes over the account. This endpoint invalidates all access tokens for the "
-            + "user, including the token used in the request, and therefore the attacker is unable to take over the account in this way.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        description = "This endpoint does not require UI authorization because UI authorization is designed to protect against attacks"
+            + " where the someone gets hold of a single access token then takes over the account. This endpoint invalidates all access"
+            + " tokens for the user, including the token used in the request, and therefore the attacker is unable to take over"
+            + " the account in this way.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The user's access tokens were succesfully invalidated",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The user's access tokens were succesfully invalidated")
-    })
     @POST
     @Secured
     @Path("/logout/all")
     void logoutAll(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

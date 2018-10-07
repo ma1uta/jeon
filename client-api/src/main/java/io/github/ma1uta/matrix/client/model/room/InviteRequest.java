@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Invite request.
  */
-@ApiModel(description = "Invite request.")
+@Schema(
+    description = "Invite request."
+)
 public class InviteRequest {
 
     /**
      * Required. The fully qualified user ID of the invitee.
      */
-    @ApiModelProperty(
-        name = "user_id",
-        value = "The fully qualified user ID of the invitee.",
-        required = true
+    @Schema(
+        description = "The fully qualified user ID of the invitee."
     )
     @JsonProperty("user_id")
     private String userId;
@@ -40,11 +39,9 @@ public class InviteRequest {
     /**
      * Required. The hostname+port of the identity server which should be used for third party identifier lookups.
      */
-    @ApiModelProperty(
-        name = "id_server",
-        value = "The hostname+port of the identity server which should be used for third "
-            + "party identifier lookups.",
-        required = true
+    @Schema(
+        description = "The hostname+port of the identity server which should be used for third "
+            + "party identifier lookups."
     )
     @JsonProperty("id_server")
     private String idServer;
@@ -52,18 +49,16 @@ public class InviteRequest {
     /**
      * Required. The kind of address being passed in the address field, for example email.
      */
-    @ApiModelProperty(
-        value = "The kind of address being passed in the address field, for example email.",
-        required = true
+    @Schema(
+        description = "The kind of address being passed in the address field, for example email."
     )
     private String medium;
 
     /**
      * Required. The invitee's third party identifier.
      */
-    @ApiModelProperty(
-        value = "The invitee's third party identifier.",
-        required = true
+    @Schema(
+        description = "The invitee's third party identifier."
     )
     private String address;
 

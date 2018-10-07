@@ -17,16 +17,16 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.openid.OpenIdResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -35,19 +35,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * This module allows users to verify their identity with a third party service. The third party service does need to be matrix-aware
  * in that it will need to know to resolve matrix homeservers to exchange the user's token for identity information.
  */
-@Api(
-    value = "OpenID",
-    description = "This module allows users to verify their identity with a third party service."
-        + " The third party service does need to be matrix-aware in that it will need to know to resolve matrix homeservers to exchange"
-        + " the user's token for identity information."
-)
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -70,35 +66,57 @@ public interface OpenIdApi {
      * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param userId          Required. The user to request and OpenID token for. Should be the user who is authenticated for the request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Gets an OpenID token object that the requester may supply to another service to verify their identity in Matrix.",
-        notes = "The generated token is only valid for exchanging for user information from the federation API for OpenID."
+    @Operation(
+        summary = "Gets an OpenID token object that the requester may supply to another service to verify their identity in Matrix.",
+        description = "The generated token is only valid for exchanging for user information from the federation API for OpenID."
             + " The access token generated is only valid for the OpenID API."
             + " It cannot be used to request another OpenID access token or call /sync, for example.",
-        response = OpenIdResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "OpenID token information. This response is nearly compatible with the response documented"
+                    + " in the OpenID 1.0 Specification with the only difference being the lack of an id_token."
+                    + " Instead, the Matrix homeserver's name is provided.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = OpenIdResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "OpenID token information. This response is nearly compatible with the response documented"
-            + " in the OpenID 1.0 Specification with the only difference being the lack of an id_token."
-            + " Instead, the Matrix homeserver's name is provided."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @Secured
     @RateLimit
     @Path("/user/{userId}/openid/request_token")
     void requestToken(
-        @ApiParam(
-            value = "The user to request and OpenID token for. Should be the user who is authenticated for the request.",
+        @Parameter(
+            description = "The user to request and OpenID token for. Should be the user who is authenticated for the request.",
             required = true
         ) @PathParam("userId") String userId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
-        @Context SecurityContext securityContext);
+        @Context SecurityContext securityContext
+    );
 }

@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.client.model.device;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Information about all devices for the current user.
  */
-@ApiModel(description = "Information about all devices for the current user.")
+@Schema(
+    description = "Information about all devices for the current user."
+)
 public class DevicesResponse {
 
     /**
      * A list of all registered devices for this user.
      */
-    @ApiModelProperty(
-        value = "A list of all registered devices for this user."
+    @Schema(
+        description = "A list of all registered devices for this user."
     )
     private List<Device> devices;
 

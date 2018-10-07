@@ -17,21 +17,21 @@
 package io.github.ma1uta.matrix.client.model.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The MXC URI for the uploaded content.
  */
-@ApiModel(description = "The MXC URI for the uploaded content")
+@Schema(
+    description = "The MXC URI for the uploaded content"
+)
 public class ContentUri {
 
     /**
      * MXC URI.
      */
-    @ApiModelProperty(
-        name = "content_uri",
-        value = "MXC URI."
+    @Schema(
+        description = "MXC URI."
     )
     @JsonProperty("content_uri")
     private String contentUri;

@@ -17,85 +17,85 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Authentication Data.
  */
-@ApiModel(description = "Authentication Data.")
+@Schema(
+    description = "Authentication Data."
+)
 public class AuthenticationData {
 
     /**
      * AuthType.
      */
-    @ApiModelProperty(
-        value = "Auth type."
+    @Schema(
+        description = "Auth type."
     )
     private String type;
 
     /**
      * Session.
      */
-    @ApiModelProperty(
-        value = "Session."
+    @Schema(
+        description = "Session."
     )
     private String session;
 
     /**
      * User id.
      */
-    @ApiModelProperty(
-        value = "user id."
+    @Schema(
+        description = "user id."
     )
     private String user;
 
     /**
      * Password.
      */
-    @ApiModelProperty(
-        value = "password."
+    @Schema(
+        description = "password."
     )
     private String password;
 
     /**
      * 3Pid address type.
      */
-    @ApiModelProperty(
-        value = "3pid address type."
+    @Schema(
+        description = "3pid address type."
     )
     private String medium;
 
     /**
      * 3Pid address.
      */
-    @ApiModelProperty(
-        value = "3pid address."
+    @Schema(
+        description = "3pid address."
     )
     private String address;
 
     /**
      * Capthca response.
      */
-    @ApiModelProperty(
-        value = "Captcha response."
+    @Schema(
+        description = "Captcha response."
     )
     private String response;
 
     /**
      * Auth token.
      */
-    @ApiModelProperty(
-        value = "Auth token."
+    @Schema(
+        description = "Auth token."
     )
     private String token;
 
     /**
      * Transaction id.
      */
-    @ApiModelProperty(
-        name = "txn_id",
-        value = "transaction id."
+    @Schema(
+        description = "transaction id."
     )
     @JsonProperty("txn_id")
     private String txnId;
@@ -103,16 +103,16 @@ public class AuthenticationData {
     /**
      * OAuth uri.
      */
-    @ApiModelProperty(
-        value = "OAuth uri."
+    @Schema(
+        description = "OAuth uri."
     )
     private String uri;
 
     /**
      * 3Pids credentials.
      */
-    @ApiModelProperty(
-        value = "3pids credentials."
+    @Schema(
+        description = "3pids credentials."
     )
     private ThreePidCred[] threepidCreds;
 

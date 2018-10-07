@@ -17,21 +17,21 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * UnsignedDeviceInfo.
  */
-@ApiModel(description = "Unsigned device info.")
+@Schema(
+    description = "Unsigned device info."
+)
 public class UnsignedDeviceInfo {
 
     /**
      * The display name which the user set on the device.
      */
-    @ApiModelProperty(
-        name = "device_display_name",
-        value = "The display name which the user set on the device."
+    @Schema(
+        description = "The display name which the user set on the device."
     )
     @JsonProperty("device_display_name")
     private String deviceDisplayName;

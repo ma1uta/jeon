@@ -17,20 +17,21 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body request.
  */
-@ApiModel(description = "JSON body request.")
+@Schema(
+    description = "JSON body request."
+)
 public class PublicRoomsRequest {
 
     /**
      * Limit the number of results returned.
      */
-    @ApiModelProperty(
-        value = "Limit the number of results returned."
+    @Schema(
+        description = "Limit the number of results returned."
     )
     private Long limit;
 
@@ -38,8 +39,8 @@ public class PublicRoomsRequest {
      * A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms.
      * The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag.
      */
-    @ApiModelProperty(
-        value = "A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms. "
+    @Schema(
+        description = "A pagination token from a previous request, allowing clients to get the next (or previous) batch of rooms. "
             + "The direction of pagination is specified solely by which token is supplied, rather than via an explicit flag."
     )
     private String since;
@@ -47,17 +48,17 @@ public class PublicRoomsRequest {
     /**
      * Filter to apply to the results.
      */
-    @ApiModelProperty(
-        value = "Filter to apply to the results."
+    @Schema(
+        description = "Filter to apply to the results."
     )
     private PublicRoomsFilter filter;
 
     /**
      * Whether or not to include all known networks/protocols from application services on the homeserver. Defaults to false.
      */
-    @ApiModelProperty(
-        name = "include_all_networks",
-        value = "Whether or not to include all known networks/protocols from application services on the homeserver. Defaults to false."
+    @Schema(
+        description = "Whether or not to include all known networks/protocols from application services on the homeserver.",
+        defaultValue = "false"
     )
     @JsonProperty("include_all_networks")
     private Boolean includeAllNetworks;
@@ -65,9 +66,8 @@ public class PublicRoomsRequest {
     /**
      * The specific third party network/protocol to request from the homeserver. Can only be used if include_all_networks is false.
      */
-    @ApiModelProperty(
-        name = "third_party_instance_id",
-        value = "The specific third party network/protocol to request from the homeserver. Can only be used if include_all_networks"
+    @Schema(
+        description = "The specific third party network/protocol to request from the homeserver. Can only be used if include_all_networks"
             + " is false."
     )
     @JsonProperty("third_party_instance_id")

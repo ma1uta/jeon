@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.client.model.event;
 
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * The list of members for this room.
  */
-@ApiModel(description = "The list of members for this room.")
+@Schema(
+    description = "The list of members for this room."
+)
 public class MembersResponse {
 
     /**
      * MemberEvent.
      */
-    @ApiModelProperty(
-        value = "Member events."
+    @Schema(
+        description = "Member events."
     )
     private List<Event> chunk;
 

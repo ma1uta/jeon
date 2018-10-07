@@ -18,15 +18,15 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -35,16 +35,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Client Behaviour.
  */
-@Api(
-    value = "ClientConfig",
-    description = "Client Behaviour"
-)
 @Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -63,37 +61,51 @@ public interface ClientConfigApi {
      *                        requests for this user id.
      * @param type            Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
      * @param accountData     Account data.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Set some account_data for the client.",
-        notes = "This config is only visible to the user that set the account_data. The config will be "
+    @Operation(
+        summary = "Set some account_data for the client.",
+        description = "This config is only visible to the user that set the account_data. The config will be "
             + "synced to clients in the top-level account_data.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The account_data was successfully added.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The account_data was successfully added.")
-    })
     @PUT
     @Secured
     @Path("/{userId}/account_data/{type}")
     void addConfig(
-        @ApiParam(
-            value = "The id of the user to set account_data for. The access token must be authorized to make requests for this user id.",
+        @Parameter(
+            description = "The id of the user to set account_data for. The access token must be authorized to make requests"
+                + " for this user id.",
             required = true
         ) @PathParam("userId") String userId,
-        @ApiParam(
-            value = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
+        @Parameter(
+            description = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
             required = true
         ) @PathParam("type") String type,
-        @ApiParam(
-            value = "Account data"
+        @RequestBody(
+            description = "Account data"
         ) Map<String, String> accountData,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -112,41 +124,55 @@ public interface ClientConfigApi {
      * @param roomId          Required. The id of the room to set account_data on.
      * @param type            Required. The event type of the account_data to set. Custom types should be namespaced to avoid clashes.
      * @param accountData     account data.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Set some account_data for the client on a given room.",
-        notes = "This config is only visible to the user that set the account_data. The config will be synced to clients in the "
+    @Operation(
+        summary = "Set some account_data for the client on a given room.",
+        description = "This config is only visible to the user that set the account_data. The config will be synced to clients in the "
             + "per-room account_data.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The account_data was successfully added.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The account_data was successfully added.")
-    })
     @PUT
     @Secured
     @Path("/{userId}/rooms/{roomId}/account_data/{type}")
     void addRoomConfig(
-        @ApiParam(
-            value = "The id of the user to set account_data for. The access token must be authorized to make requests for this user id.",
+        @Parameter(
+            description = "The id of the user to set account_data for. The access token must be authorized to make requests"
+                + " for this user id.",
             required = true
         ) @PathParam("userId") String userId,
-        @ApiParam(
-            value = "The id of the room to set account_data on.",
+        @Parameter(
+            description = "The id of the room to set account_data on.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
+        @Parameter(
+            description = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
             required = true
         ) @PathParam("type") String type,
-        @ApiParam(
-            value = "Account data"
+        @RequestBody(
+            description = "Account data"
         ) Map<String, String> accountData,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

@@ -16,21 +16,22 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Response for gets a list of the third party identifiers that the homeserver has associated with the user's account.
  */
-@ApiModel(description = "Response for gets a list of the third party identifiers that the homeserver has associated with the user's"
-    + " account")
+@Schema(
+    description = "Response for gets a list of the third party identifiers that the homeserver has associated with the user's"
+        + " account"
+)
 public class ThreePidResponse {
 
     /**
      * All 3Pids.
      */
-    @ApiModelProperty(
-        value = "All 3pids"
+    @Schema(
+        description = "All 3pids"
     )
     private ThirdPartyIdentifier[] threepids;
 

@@ -24,14 +24,14 @@ import io.github.ma1uta.matrix.client.model.encryption.QueryRequest;
 import io.github.ma1uta.matrix.client.model.encryption.QueryResponse;
 import io.github.ma1uta.matrix.client.model.encryption.UploadRequest;
 import io.github.ma1uta.matrix.client.model.encryption.UploadResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,18 +41,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Matrix optionally supports end-to-end encryption, allowing rooms to be created whose conversation contents is not decryptable or
  * interceptable on any of the participating homeservers.
  */
-@Api(
-    value = "Encryption",
-    description = "Matrix optionally supports end-to-end encryption, allowing rooms to be created whose "
-        + "conversation contents is not decryptable or interceptable on any of the participating homeservers."
-)
 @Path("/_matrix/client/r0/keys")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -67,27 +64,40 @@ public interface EncryptionApi {
      * <p>Status code 200: The provided keys were sucessfully uploaded.</p>
      *
      * @param uploadRequest   JSON body parameters.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Publishes end-to-end encryption keys for the device.",
-        response = UploadResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Publishes end-to-end encryption keys for the device.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The provided keys were sucessfully uploaded.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = UploadResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The provided keys were sucessfully uploaded.")
-    })
     @POST
     @Secured
     @Path("/upload")
     void uploadKey(
-        @ApiParam(
-            value = "JSON body request"
+        @RequestBody(
+            description = "JSON body request"
         ) UploadRequest uploadRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -101,27 +111,40 @@ public interface EncryptionApi {
      * <p>Status code 200: The device information.</p>
      *
      * @param queryRequest    JSON body parameters.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Returns the current devices and identity keys for the given users.",
-        response = QueryResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Returns the current devices and identity keys for the given users.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The device information.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = QueryResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The device information.")
-    })
     @POST
     @Secured
     @Path("/query")
     void query(
-        @ApiParam(
-            value = "JSON body request"
+        @RequestBody(
+            description = "JSON body request"
         ) QueryRequest queryRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -135,27 +158,40 @@ public interface EncryptionApi {
      * <p>Status code 200: The claimed keys.</p>
      *
      * @param claimRequest    JSON body parameters.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Claims one-time keys for use in pre-key messages.",
-        response = ClaimResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Claims one-time keys for use in pre-key messages.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The claimed keys.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ClaimResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The claimed keys.")
-    })
     @POST
     @Secured
     @Path("/claim")
     void claim(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) ClaimRequest claimRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -179,39 +215,52 @@ public interface EncryptionApi {
      * @param to              Required. The desired end point of the list. Should be the next_batch field from a recent call to /sync -
      *                        typically the most recent such call. This may be used by the server as a hint to check its caches are up to
      *                        date.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Gets a list of users who have updated their device identity keys since a previous sync token.",
-        notes = "The server should include in the results any users who currently share a room with the calling user (ie, both "
+    @Operation(
+        summary = "Gets a list of users who have updated their device identity keys since a previous sync token.",
+        description = "The server should include in the results any users who currently share a room with the calling user (ie, both "
             + "users have membership state join); and added new device identity keys or removed an existing device with identity "
             + "keys, between from and to.",
-        response = ChangesResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The list of users who updated their devices.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ChangesResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The list of users who updated their devices.")
-    })
     @GET
     @Secured
     @Path("/changes")
     void changes(
-        @ApiParam(
-            value = "The desired start point of the list. Should be the next_batch field from a response"
+        @Parameter(
+            description = "The desired start point of the list. Should be the next_batch field from a response"
                 + " to an earlier call to /sync. Users who have not uploaded new device identity keys since this point, nor deleted"
                 + " existing devices with identity keys since then, will be excluded from the results.",
             required = true
         ) @QueryParam("from") String from,
-        @ApiParam(
-            value = "The desired end point of the list. Should be the next_batch field from a recent call "
+        @Parameter(
+            description = "The desired end point of the list. Should be the next_batch field from a recent call "
                 + "to /sync - typically the most recent such call. This may be used by the server as a hint to check "
                 + "its caches are up to date.",
             required = true
         ) @QueryParam("to") String to,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

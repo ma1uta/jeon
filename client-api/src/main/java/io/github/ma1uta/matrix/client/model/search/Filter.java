@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Filter.
  */
-@ApiModel(description = "Filter.")
+@Schema(
+    description = "Filter."
+)
 public class Filter {
 
     /**
      * The maximum number of events to return.
      */
-    @ApiModelProperty(
-        value = "The maximum number of events to return."
+    @Schema(
+        description = "The maximum number of events to return."
     )
     private Long limit;
 
@@ -40,9 +41,8 @@ public class Filter {
      * A list of sender IDs to exclude. If this list is absent then no senders are excluded. A matching sender will be excluded even
      * if it is listed in the 'senders' filter.
      */
-    @ApiModelProperty(
-        name = "not_senders",
-        value = "A list of sender IDs to exclude. If this list is absent then no senders are "
+    @Schema(
+        description = "A list of sender IDs to exclude. If this list is absent then no senders are "
             + "excluded. A matching sender will be excluded even if it is listed in the 'senders' filter."
     )
     @JsonProperty("not_senders")
@@ -52,9 +52,8 @@ public class Filter {
      * A list of event types to exclude. If this list is absent then no event types are excluded. A matching type will be excluded
      * even if it is listed in the 'types' filter. A '*' can be used as a wildcard to match any sequence of characters.
      */
-    @ApiModelProperty(
-        name = "not_types",
-        value = "A list of event types to exclude. If this list is absent then no event types "
+    @Schema(
+        description = "A list of event types to exclude. If this list is absent then no event types "
             + "are excluded. A matching type will be excluded even if it is listed in the 'types' filter. A '*' can be used as a "
             + "wildcard to match any sequence of characters."
     )
@@ -64,8 +63,8 @@ public class Filter {
     /**
      * A list of senders IDs to include. If this list is absent then all senders are included.
      */
-    @ApiModelProperty(
-        value = "A list of senders IDs to include. If this list is absent then all senders are included."
+    @Schema(
+        description = "A list of senders IDs to include. If this list is absent then all senders are included."
     )
     private List<String> senders;
 
@@ -73,8 +72,8 @@ public class Filter {
      * A list of event types to include. If this list is absent then all event types are included. A '*' can be used as a wildcard to
      * match any sequence of characters.
      */
-    @ApiModelProperty(
-        value = "A list of event types to include. If this list is absent then all event types are included. A '*' can "
+    @Schema(
+        description = "A list of event types to include. If this list is absent then all event types are included. A '*' can "
             + "be used as a wildcard to match any sequence of characters."
     )
     private List<String> types;
@@ -83,10 +82,9 @@ public class Filter {
      * A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even if it is
      * listed in the 'rooms' filter.
      */
-    @ApiModelProperty(
-        name = "not_rooms",
-        value = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even"
-            + " if it is listed in the 'rooms' filter."
+    @Schema(
+        description = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded"
+        + " even if it is listed in the 'rooms' filter."
     )
     @JsonProperty("not_rooms")
     private List<String> notRooms;
@@ -94,17 +92,16 @@ public class Filter {
     /**
      * A list of room IDs to include. If this list is absent then all rooms are included.
      */
-    @ApiModelProperty(
-        value = "A list of room IDs to include. If this list is absent then all rooms are included."
+    @Schema(
+        description = "A list of room IDs to include. If this list is absent then all rooms are included."
     )
     private List<String> rooms;
 
     /**
      * If true, includes only events with a url key in their content. If false, excludes those events. Defaults to false.
      */
-    @ApiModelProperty(
-        name = "contains_url",
-        value = "If true, includes only events with a url key in their content. If false, excludes those events. Defaults to false."
+    @Schema(
+        description = "If true, includes only events with a url key in their content. If false, excludes those events. Defaults to false."
     )
     @JsonProperty("contains_url")
     private Boolean containsUrl;

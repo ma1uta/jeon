@@ -17,31 +17,29 @@
 package io.github.ma1uta.matrix.client.model.presence;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body request for presence api.
  */
-@ApiModel(description = "JSON body request for presence api.")
+@Schema(
+    description = "JSON body request for presence api."
+)
 public class PresenceRequest {
 
     /**
      * Required. The new presence state. One of: ["online", "offline", "unavailable"].
      */
-    @ApiModelProperty(
-        value = "The new presence state.",
-        required = true,
-        allowableValues = "online, offline, unavailable"
+    @Schema(
+        description = "The new presence state."
     )
     private String presence;
 
     /**
      * The status message to attach to this state.
      */
-    @ApiModelProperty(
-        name = "status_msg",
-        value = "The status message to attach to this state."
+    @Schema(
+        description = "The status message to attach to this state."
     )
     @JsonProperty("status_msg")
     private String statusMsg;

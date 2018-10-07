@@ -17,20 +17,21 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.device.Device;
 import io.github.ma1uta.matrix.client.model.device.DeviceDeleteRequest;
 import io.github.ma1uta.matrix.client.model.device.DeviceUpdateRequest;
 import io.github.ma1uta.matrix.client.model.device.DevicesDeleteRequest;
 import io.github.ma1uta.matrix.client.model.device.DevicesResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,18 +43,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Clients that implement this module should offer the user a list of registered devices, as well as the means to update their
  * display names. Clients should also allow users to delete disused devices.
  */
-@Api(
-    value = "Device",
-    description = "Clients that implement this module should offer the user a list of registered devices, as well "
-        + "as the means to update their display names. Clients should also allow users to delete disused devices."
-)
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -67,23 +65,36 @@ public interface DeviceApi {
      * Return: {@link DevicesResponse}.
      * <p>Status code 200: A list of all registered devices for this user.</p>
      *
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Gets information about all devices for the current user.",
-        response = DevicesResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Gets information about all devices for the current user.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A list of all registered devices for this user.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = DevicesResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "A list of all registered devices for this user.")
-    })
     @GET
     @Secured
     @Path("/devices")
     void devices(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -98,29 +109,50 @@ public interface DeviceApi {
      * <p>Status code 404: The current user has no device with the given ID.</p>
      *
      * @param deviceId        Required. The device to retrieve.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Gets information on a single device, by device id.",
-        response = Device.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Gets information on a single device, by device id.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Device information.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = Device.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The current user has no device with the given ID.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "Device information."),
-        @ApiResponse(code = 404, message = "The current user has no device with the given ID.")
-    })
     @GET
     @Secured
     @Path("/devices/{deviceId}")
     void device(
-        @ApiParam(
-            value = "The device to retrieve",
+        @Parameter(
+            description = "The device to retrieve",
             required = true
         ) @PathParam("deviceId") String deviceId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -136,32 +168,53 @@ public interface DeviceApi {
      *
      * @param deviceId            Required. The device to update.
      * @param deviceUpdateRequest The new display name for this device. If not given, the display name is unchanged.
-     * @param servletRequest      Servlet request.
+     * @param uriInfo             Request Information.
+     * @param httpHeaders         Http headers.
      * @param asyncResponse       Asynchronous response.
      * @param securityContext     Security context.
      */
-    @ApiOperation(
-        value = "Updates the metadata on the given device.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Updates the metadata on the given device.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The device was successfully updated.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The current user has no device with the given ID.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The device was successfully updated."),
-        @ApiResponse(code = 404, message = "The current user has no device with the given ID.")
-    })
     @PUT
     @Secured
     @Path("/devices/{deviceId}")
     void updateDevice(
-        @ApiParam(
-            value = "The device to update.",
+        @Parameter(
+            description = "The device to update.",
             required = true
         ) @PathParam("deviceId") String deviceId,
-        @ApiParam(
-            value = "The new display name for this device. If not given, the display name is unchanged."
+        @RequestBody(
+            description = "The new display name for this device. If not given, the display name is unchanged."
         ) DeviceUpdateRequest deviceUpdateRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -179,33 +232,54 @@ public interface DeviceApi {
      *
      * @param deviceId            Required. The device to delete.
      * @param deviceDeleteRequest Additional authentication information for the user-interactive authentication API.
-     * @param servletRequest      Servlet request.
+     * @param uriInfo             Request Information.
+     * @param httpHeaders         Http headers.
      * @param asyncResponse       Asynchronous response.
      * @param securityContext     Security context.
      */
-    @ApiOperation(
-        value = "Deletes the given device, and invalidates any access token associated with it.",
-        notes = "This API endpoint uses the User-Interactive Authentication API.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Deletes the given device, and invalidates any access token associated with it.",
+        description = "This API endpoint uses the User-Interactive Authentication API.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The device was successfully removed, or had been removed previously.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver requires additional authentication information.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The device was successfully removed, or had been removed previously."),
-        @ApiResponse(code = 401, message = "The homeserver requires additional authentication information.")
-    })
     @DELETE
     @Secured
     @Path("/devices/{deviceId}")
     void deleteDevice(
-        @ApiParam(
-            value = "The device to delete",
+        @Parameter(
+            description = "The device to delete",
             required = true
         ) @PathParam("deviceId") String deviceId,
-        @ApiParam(
-            value = "Additional authentication information for the user-interactive authentication API."
+        @RequestBody(
+            description = "Additional authentication information for the user-interactive authentication API."
         ) DeviceDeleteRequest deviceDeleteRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -222,27 +296,50 @@ public interface DeviceApi {
      * <p>Status code 401: The homeserver requires additional authentication information.</p>
      *
      * @param devicesDeleteRequest JSON body request.
-     * @param servletRequest       Servlet request.
+     * @param uriInfo              Request Information.
+     * @param httpHeaders          Http headers.
      * @param asyncResponse        Asynchronous response.
      * @param securityContext      Security context.
      */
-    @ApiOperation(
-        value = "Deletes the given devices, and invalidates any access token associated with them.",
-        notes = "This API endpoint uses the User-Interactive Authentication API.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Deletes the given devices, and invalidates any access token associated with them.",
+        description = "This API endpoint uses the User-Interactive Authentication API.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The devices were successfully removed, or had been removed previously.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver requires additional authentication information.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The devices were successfully removed, or had been removed previously."),
-        @ApiResponse(code = 401, message = "The homeserver requires additional authentication information.")
-    })
     @POST
     @Secured
     @Path("/delete_devices")
     void deleteDevices(
-        @ApiParam("JSON body request") DevicesDeleteRequest devicesDeleteRequest,
+        @RequestBody(
+            description = "JSON body request"
+        ) DevicesDeleteRequest devicesDeleteRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

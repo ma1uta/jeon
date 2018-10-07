@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON body response of the room response api.
  */
-@ApiModel(description = "JSON body response of the room response api.")
+@Schema(
+    description = "JSON body response of the room response api."
+)
 public class RoomResolveResponse extends RoomId {
 
     /**
      * A list of servers that are aware of this room alias.
      */
-    @ApiModelProperty(
-        value = "A list of servers that are aware of this room alias."
+    @Schema(
+        description = "A list of servers that are aware of this room alias."
     )
     private List<String> servers;
 

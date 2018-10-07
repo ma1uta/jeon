@@ -18,14 +18,13 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.admin.AdminResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -33,16 +32,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Gets information about a particular user.
  */
-@Api(
-    value = "Admin",
-    description = "Gets information about a particular user"
-)
 @Path("/_matrix/client/r0/admin")
 @Produces(MediaType.APPLICATION_JSON)
 public interface AdminApi {
@@ -57,29 +54,42 @@ public interface AdminApi {
      * <p>Status code 200: The lookup was successful.</p>
      *
      * @param userId          Required. The user to look up.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API may be restricted to only be called by the user being looked up, or by a server admin. "
+    @Operation(
+        summary = "This API may be restricted to only be called by the user being looked up, or by a server admin. "
             + "Server-local administrator privileges are not specified in this document.",
-        response = AdminResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The lookup was successful.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = AdminResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The lookup was successful.")
-    })
     @GET
     @Secured
     @Path("/whois/{userId}")
     void whois(
-        @ApiParam(
-            value = "The use to look up",
+        @Parameter(
+            description = "The use to look up",
             required = true
         ) @PathParam("userId") String userId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

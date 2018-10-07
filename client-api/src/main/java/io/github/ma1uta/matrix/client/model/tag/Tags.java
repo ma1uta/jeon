@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.client.model.tag;
 
 import io.github.ma1uta.matrix.events.nested.TagInfo;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * TagInfo request.
  */
-@ApiModel(description = "TagInfo request.")
+@Schema(
+    description = "TagInfo request."
+)
 public class Tags {
 
     /**
      * Tags.
      */
-    @ApiModelProperty(
-        value = "Tags."
+    @Schema(
+        description = "Tags."
     )
     private Map<String, TagInfo> tags;
 

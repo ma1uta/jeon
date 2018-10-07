@@ -17,21 +17,21 @@
 package io.github.ma1uta.matrix.client.model.device;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The new display name for this device. If not given, the display name is unchanged.
  */
-@ApiModel(description = "The new display name for this device. If not given, the display name is unchanged.")
+@Schema(
+    description = "The new display name for this device. If not given, the display name is unchanged."
+)
 public class DeviceUpdateRequest {
 
     /**
      * The new display name.
      */
-    @ApiModelProperty(
-        name = "display_name",
-        value = "The new display name."
+    @Schema(
+        description = "The new display name."
     )
     @JsonProperty("display_name")
     private String displayName;

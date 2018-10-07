@@ -17,15 +17,16 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Response format.
  */
-@ApiModel(description = "Claim response format.")
+@Schema(
+    description = "Claim response format."
+)
 public class ClaimResponse {
 
     /**
@@ -35,8 +36,8 @@ public class ClaimResponse {
      * If the homeserver could be reached, but the user or device was unknown, no failure is recorded. Instead, the corresponding
      * user or device is missing from the one_time_keys result.
      */
-    @ApiModelProperty(
-        value = "If any remote homeservers could not be reached, they are recorded here. The names of the properties "
+    @Schema(
+        description = "If any remote homeservers could not be reached, they are recorded here. The names of the properties "
             + "are the names of the unreachable servers."
     )
     private Map<String, Object> failures;
@@ -44,9 +45,8 @@ public class ClaimResponse {
     /**
      * One-time keys for the queried devices. A map from user ID, to a map from &lt;algorithm&gt;:&lt;key_id&gt; to the key object.
      */
-    @ApiModelProperty(
-        name = "one_time_keys",
-        value = "One-time keys for the queried devices. A map from user ID, to a map "
+    @Schema(
+        description = "One-time keys for the queried devices. A map from user ID, to a map "
             + "from &lt;algorithm&gt;:&lt;key_id&gt; to the key object."
     )
     @JsonProperty("one_time_keys")

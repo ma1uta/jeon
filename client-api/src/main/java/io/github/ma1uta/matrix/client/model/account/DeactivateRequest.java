@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Request for deactivate the user's account, removing all ability for the user to login again.
  */
-@ApiModel(description = "Request for deactivate the user's account, removing all ability for the user to login again.")
+@Schema(
+    description = "Request for deactivate the user's account, removing all ability for the user to login again."
+)
 public class DeactivateRequest {
 
     /**
      * Additional authentication information for the user-interactive authentication API.
      */
-    @ApiModelProperty(
-        value = "Additional authentication information for the user-interactive authentication API."
+    @Schema(
+        description = "Additional authentication information for the user-interactive authentication API."
     )
     private AuthenticationData auth;
 

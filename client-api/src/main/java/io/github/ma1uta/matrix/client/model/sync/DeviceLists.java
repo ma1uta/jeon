@@ -16,30 +16,31 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Device lists.
  */
-@ApiModel(description = "Device lists.")
+@Schema(
+    description = "Device lists."
+)
 public class DeviceLists {
 
     /**
      * List of users who have updated their device identity keys since the previous sync response.
      */
-    @ApiModelProperty(
-        value = "List of users who have updated their device identity keys since the previous sync response."
+    @Schema(
+        description = "List of users who have updated their device identity keys since the previous sync response."
     )
     private List<String> changed;
 
     /**
      * List of users with whom we do not share any encrypted rooms anymore since the previous sync response.
      */
-    @ApiModelProperty(
-        value = "List of users with whom we do not share any encrypted rooms anymore since the previous sync response."
+    @Schema(
+        description = "List of users with whom we do not share any encrypted rooms anymore since the previous sync response."
     )
     private List<String> left;
 

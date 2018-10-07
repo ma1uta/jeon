@@ -17,29 +17,29 @@
 package io.github.ma1uta.matrix.client.model.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Connection info.
  */
-@ApiModel(description = "Connection info.")
+@Schema(
+    description = "Connection info."
+)
 public class ConnectionInfo {
 
     /**
      * Most recently seen IP address of the session.
      */
-    @ApiModelProperty(
-        value = "Most recently seen IP address of the session."
+    @Schema(
+        description = "Most recently seen IP address of the session."
     )
     private String ip;
 
     /**
      * Unix timestamp that the session was last active.
      */
-    @ApiModelProperty(
-        name = "last_seen",
-        value = "Unix timestamp that the session was last active."
+    @Schema(
+        description = "Unix timestamp that the session was last active."
     )
     @JsonProperty("last_seen")
     private Long lastSeen;
@@ -47,9 +47,8 @@ public class ConnectionInfo {
     /**
      * User agent string last seen in the session.
      */
-    @ApiModelProperty(
-        name = "user_agent",
-        value = "User agent string last seen in the session."
+    @Schema(
+        description = "User agent string last seen in the session."
     )
     @JsonProperty("user_agent")
     private String userAgent;

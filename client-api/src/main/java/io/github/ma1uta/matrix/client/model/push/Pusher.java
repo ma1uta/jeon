@@ -18,8 +18,7 @@ package io.github.ma1uta.matrix.client.model.push;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.PusherData;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Pusher.
@@ -27,32 +26,33 @@ import io.swagger.annotations.ApiModelProperty;
  * A pusher is a worker on the homeserver that manages the sending of HTTP notifications for a user.
  * A user can have multiple pushers: one per device.
  */
-@ApiModel(description = "Pusher. A pusher is a worker on the homeserver that manages the sending of HTTP notifications for a user. "
-    + "A user can have multiple pushers: one per device.")
+@Schema(
+    description = "Pusher. A pusher is a worker on the homeserver that manages the sending of HTTP notifications for a user. "
+        + "A user can have multiple pushers: one per device."
+)
 public class Pusher {
 
     /**
      * This is a unique identifier for this pusher. See /set for more detail. Max length, 512 bytes.
      */
-    @ApiModelProperty(
-        value = "This is a unique identifier for this pusher. See /set for more detail. Max length, 512 bytes."
+    @Schema(
+        description = "This is a unique identifier for this pusher. See /set for more detail. Max length, 512 bytes."
     )
     private String pushkey;
 
     /**
      * The kind of pusher. "http" is a pusher that sends HTTP pokes.
      */
-    @ApiModelProperty(
-        value = "The kind of pusher. \"http\" is a pusher that sends HTTP pokes."
+    @Schema(
+        description = "The kind of pusher. \"http\" is a pusher that sends HTTP pokes."
     )
     private String kind;
 
     /**
      * This is a reverse-DNS style identifier for the application. Max length, 64 chars.
      */
-    @ApiModelProperty(
-        name = "app_id",
-        value = "This is a reverse-DNS style identifier for the application. Max length, 64 chars."
+    @Schema(
+        description = "This is a reverse-DNS style identifier for the application. Max length, 64 chars."
     )
     @JsonProperty("app_id")
     private String appId;
@@ -60,9 +60,8 @@ public class Pusher {
     /**
      * A string that will allow the user to identify what application owns this pusher.
      */
-    @ApiModelProperty(
-        name = "app_display_name",
-        value = "A string that will allow the user to identify what application owns this pusher."
+    @Schema(
+        description = "A string that will allow the user to identify what application owns this pusher."
     )
     @JsonProperty("app_display_name")
     private String appDisplayName;
@@ -70,9 +69,8 @@ public class Pusher {
     /**
      * A string that will allow the user to identify what device owns this pusher.
      */
-    @ApiModelProperty(
-        name = "device_display_name",
-        value = "A string that will allow the user to identify what device owns this pusher."
+    @Schema(
+        description = "A string that will allow the user to identify what device owns this pusher."
     )
     @JsonProperty("device_display_name")
     private String deviceDisplayName;
@@ -80,9 +78,8 @@ public class Pusher {
     /**
      * This string determines which set of device specific rules this pusher executes.
      */
-    @ApiModelProperty(
-        name = "profile_tag",
-        value = "This string determines which set of device specific rules this pusher executes."
+    @Schema(
+        description = "This string determines which set of device specific rules this pusher executes."
     )
     @JsonProperty("profile_tag")
     private String profileTag;
@@ -90,16 +87,16 @@ public class Pusher {
     /**
      * The preferred language for receiving notifications (e.g. 'en' or 'en-US')
      */
-    @ApiModelProperty(
-        value = "The preferred language for receiving notifications (e.g. 'en' or 'en-US')"
+    @Schema(
+        description = "The preferred language for receiving notifications (e.g. 'en' or 'en-US')"
     )
     private String lang;
 
     /**
      * A dictionary of information for the pusher implementation itself.
      */
-    @ApiModelProperty(
-        value = "A dictionary of information for the pusher implementation itself."
+    @Schema(
+        description = "A dictionary of information for the pusher implementation itself."
     )
     private PusherData data;
 

@@ -16,30 +16,28 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.client.model.serverdiscovery.ServerDiscoveryResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * In order to allow users to connect to a Matrix server without needing to explicitly specify the homeserver's URL or other parameters,
  * clients SHOULD use an auto-discovery mechanism to determine the server's URL based on a user's Matrix ID. Auto-discovery should only
  * be done at login time.
  */
-@Api(
-    value = "ServerDiscovery",
-    description = "Gets discovery information about the domain."
-)
 @Path("/.well-known/matrix/client")
 @Produces(MediaType.APPLICATION_JSON)
 public interface ServerDiscoveryApi {
@@ -56,21 +54,38 @@ public interface ServerDiscoveryApi {
      * <p>Status code 200: Server discovery information.</p>
      * <p>Status code 404: No server discovery information available.</p>
      *
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Gets discovery information about the domain.",
-        response = ServerDiscoveryResponse.class
+    @Operation(
+        summary = "Gets discovery information about the domain.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Server discovery information.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ServerDiscoveryResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "No server discovery information available.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "Server discovery information."),
-        @ApiResponse(code = 404, message = "No server discovery information available.")
-    })
     @GET
     @Path("/")
     void serverDiscovery(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 }

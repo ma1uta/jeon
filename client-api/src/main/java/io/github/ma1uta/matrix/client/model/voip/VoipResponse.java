@@ -16,50 +16,47 @@
 
 package io.github.ma1uta.matrix.client.model.voip;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * The TURN server credentials.
  */
-@ApiModel(description = "The TURN server credentials.")
+@Schema(
+    description = "The TURN server credentials."
+)
 public class VoipResponse {
 
     /**
      * Required. The username to use.
      */
-    @ApiModelProperty(
-        value = "The username to use.",
-        required = true
+    @Schema(
+        description = "The username to use."
     )
     private String username;
 
     /**
      * Required. The password to use.
      */
-    @ApiModelProperty(
-        value = "The password to use.",
-        required = true
+    @Schema(
+        description = "The password to use."
     )
     private String password;
 
     /**
      * Required. A list of TURN URIs.
      */
-    @ApiModelProperty(
-        value = "A list of TURN URIs.",
-        required = true
+    @Schema(
+        description = "A list of TURN URIs."
     )
     private List<String> uris;
 
     /**
      * Required. The time-to-live in seconds.
      */
-    @ApiModelProperty(
-        value = "The time-to-live in seconds.",
-        required = true
+    @Schema(
+        description = "The time-to-live in seconds."
     )
     private Long ttl;
 

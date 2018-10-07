@@ -16,31 +16,29 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body request to delete 3pid.
  */
-@ApiModel(description = "JSON body request to delte 3pid.")
+@Schema(
+    description = "JSON body request to delte 3pid."
+)
 public class Delete3PidRequest {
 
     /**
      * Required. The medium of the third party identifier being removed. One of: ["email", "msisdn"].
      */
-    @ApiModelProperty(
-        value = "The medium of the third party identifier being removed",
-        required = true,
-        allowableValues = "email, msisdn"
+    @Schema(
+        description = "The medium of the third party identifier being removed"
     )
     private String medium;
 
     /**
      * Required. The third party address being removed.
      */
-    @ApiModelProperty(
-        value = "The third party address neing removed.",
-        required = true
+    @Schema(
+        description = "The third party address neing removed."
     )
     private String address;
 

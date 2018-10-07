@@ -17,23 +17,23 @@
 package io.github.ma1uta.matrix.client.model.auth;
 
 import io.github.ma1uta.matrix.client.api.AuthApi;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The user is identified by their Matrix ID.
  */
-@ApiModel(description = "The user is identified by their Matrix ID.")
+@Schema(
+    description = "The user is identified by their Matrix ID."
+)
 public class UserIdentifier extends Identifier {
 
     /**
      * A client can identify a user using their Matrix ID. This can either be the fully qualified Matrix user ID,
      * or just the localpart of the user ID.
      */
-    @ApiModelProperty(
-        value = "A client can identify a user using their Matrix ID. This can either be the fully qualified Matrix user ID,"
-            + " or just the localpart of the user ID.",
-        required = true
+    @Schema(
+        description = "A client can identify a user using their Matrix ID. This can either be the fully qualified Matrix user ID,"
+            + " or just the localpart of the user ID."
     )
     private String user;
 

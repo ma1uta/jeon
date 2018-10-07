@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Unban JSON body request.
  */
-@ApiModel(description = "Unban JSON body request.")
+@Schema(
+    description = "Unban JSON body request."
+)
 public class UnbanRequest {
 
     /**
      * Required. The fully qualified user ID of the user being unbanned.
      */
-    @ApiModelProperty(
-        name = "user_id",
-        value = "The fully qualified user ID of the user being unbanned.",
-        required = true
+    @Schema(
+        description = "The fully qualified user ID of the user being unbanned."
     )
     @JsonProperty("user_id")
     private String userId;

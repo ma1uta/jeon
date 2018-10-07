@@ -16,19 +16,20 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Push condition.
  */
-@ApiModel(description = "Push condition.")
+@Schema(
+    description = "Push condition."
+)
 public class PushCondition {
 
     /**
      * Required. One of: ["event_match", "contains_display_name", "room_member_count"].
      */
-    @ApiModelProperty(
+    @Schema(
         required = true,
         allowableValues = "event_match, contains_display_name, room_member_count]"
     )
@@ -37,8 +38,8 @@ public class PushCondition {
     /**
      * Required for event_match conditions. The dot- separated field of the event to match.
      */
-    @ApiModelProperty(
-        value = "Required for event_match conditions. The dot- separated field of the event to match."
+    @Schema(
+        description = "Required for event_match conditions. The dot- separated field of the event to match."
     )
     private String key;
 
@@ -46,8 +47,8 @@ public class PushCondition {
      * Required for event_match conditions. The glob- style pattern to match against. Patterns with no special glob characters should
      * be treated as having asterisks prepended and appended when testing the condition.
      */
-    @ApiModelProperty(
-        value = "Required for event_match conditions. The glob- style pattern to match against. Patterns with no special glob "
+    @Schema(
+        description = "Required for event_match conditions. The glob- style pattern to match against. Patterns with no special glob "
             + "characters should be treated as having asterisks prepended and appended when testing the condition."
     )
     private String pattern;
@@ -57,8 +58,8 @@ public class PushCondition {
      * A prefix of < matches rooms where the member count is strictly less than the given number and so forth.
      * If no prefix is present, this parameter defaults to ==.
      */
-    @ApiModelProperty(
-        value = "Required for room_member_count conditions. A decimal integer optionally prefixed by one of, ==, <, >, >= or <=. "
+    @Schema(
+        description = "Required for room_member_count conditions. A decimal integer optionally prefixed by one of, ==, <, >, >= or <=. "
             + "A prefix of < matches rooms where the member count is strictly less than the given number and so forth. "
             + "If no prefix is present, this parameter defaults to==."
     )

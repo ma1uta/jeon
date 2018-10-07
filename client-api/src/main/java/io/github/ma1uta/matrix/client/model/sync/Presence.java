@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Presence.
  */
-@ApiModel(description = "Presence.")
+@Schema(
+    description = "Presence."
+)
 public class Presence {
 
     /**
      * List of events.
      */
-    @ApiModelProperty(
-        value = "List of events."
+    @Schema(
+        description = "List of events."
     )
     private List<Event> events;
 

@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body response for search api.
  */
-@ApiModel(description = "JSON body response for search api.")
+@Schema(
+    description = "JSON body response for search api."
+)
 public class SearchResponse {
 
     /**
      * Required. Describes which categories to search in and their criteria.
      */
-    @ApiModelProperty(
-        name = "search_categories",
-        value = "Describes which categories to search in and their criteria.",
-        required = true
+    @Schema(
+        description = "Describes which categories to search in and their criteria."
     )
     @JsonProperty("search_categories")
     private ResponseCategories searchCategories;

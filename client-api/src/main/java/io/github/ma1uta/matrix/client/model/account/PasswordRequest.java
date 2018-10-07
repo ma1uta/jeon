@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Request for changes the password for an account on this homeserver.
  */
-@ApiModel(description = "Request for changes the password for an account on this homeserver.")
+@Schema(
+    description = "Request for changes the password for an account on this homeserver."
+)
 public class PasswordRequest {
 
     /**
      * Required. The new password for the account.
      */
-    @ApiModelProperty(
-        name = "new_password",
-        value = "The new password for the account.",
-        required = true
+    @Schema(
+        description = "The new password for the account."
     )
     @JsonProperty("new_password")
     private String newPassword;
@@ -40,8 +39,8 @@ public class PasswordRequest {
     /**
      * Additional authentication information for the user-interactive authentication API.
      */
-    @ApiModelProperty(
-        value = "Additional authentication information for the user-interactive authentication API."
+    @Schema(
+        description = "Additional authentication information for the user-interactive authentication API."
     )
     private AuthenticationData auth;
 

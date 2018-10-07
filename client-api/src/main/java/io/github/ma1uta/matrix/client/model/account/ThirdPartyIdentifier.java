@@ -17,42 +17,38 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Request for gets a list of the third party identifiers that the homeserver has associated with the user's account.
  */
-@ApiModel(description = "Request for gets a list of the third party identifiers that the homeserver has associated with the user's "
-    + "account.")
+@Schema(
+    description = "Request for gets a list of the third party identifiers that the homeserver has associated with the user's "
+        + "account."
+)
 public class ThirdPartyIdentifier {
 
     /**
      * Required. The medium of the third party identifier. One of: ['email', 'msisdn'].
      */
-    @ApiModelProperty(
-        value = "The medium of the third party identifier. Must be 'email'",
-        required = true,
-        allowableValues = "email, msisdn"
+    @Schema(
+        description = "The medium of the third party identifier. Must be 'email'"
     )
     private String medium;
 
     /**
      * Required. The third party identifier address.
      */
-    @ApiModelProperty(
-        value = "The third party identifier address",
-        required = true
+    @Schema(
+        description = "The third party identifier address"
     )
     private String address;
 
     /**
      * Required. The timestamp, in milliseconds, when the identifier was validated by the identity server.
      */
-    @ApiModelProperty(
-        notes = "validated_at",
-        value = "The timestamp, in milliseconds, when the identifier was validated by the identity server.",
-        required = true
+    @Schema(
+        description = "The timestamp, in milliseconds, when the identifier was validated by the identity server."
     )
     @JsonProperty("validated_at")
     private Long validatedAt;
@@ -60,10 +56,8 @@ public class ThirdPartyIdentifier {
     /**
      * Required. The timestamp, in milliseconds, when the homeserver associated the third party identifier with the user.
      */
-    @ApiModelProperty(
-        name = "added_at",
-        value = "The timestamp, in milliseconds, when the homeserver associated the third party identifier with the user.",
-        required = true
+    @Schema(
+        description = "The timestamp, in milliseconds, when the homeserver associated the third party identifier with the user."
     )
     @JsonProperty("added_at")
     private Long addedAt;

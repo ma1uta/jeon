@@ -16,17 +16,18 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.FilterResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -36,18 +37,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Filters can be created on the server and can be passed as as a parameter to APIs which return events. These filters alter the
  * data returned from those APIs. Not all APIs accept filters.
  */
-@Api(
-    value = "Filter",
-    description = "Filters can be created on the server and can be passed as as a parameter to APIs which return "
-        + "events. These filters alter the data returned from those APIs. Not all APIs accept filters."
-)
 @Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -65,33 +63,50 @@ public interface FilterApi {
      * @param userId          Required. The id of the user uploading the filter. The access token must be authorized to make requests for
      *                        this user id.
      * @param filterData      JSON body parameters.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Uploads a new filter definition to the homeserver.",
-        notes = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client.",
-        response = FilterResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Uploads a new filter definition to the homeserver.",
+        description = "Returns a filter ID that may be used in future requests to restrict which events are returned to the client.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The filter was created.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = FilterResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The filter was created.")
-    })
     @POST
     @Secured
     @Path("/{userId}/filter")
-    void uploadFilter(
-        @ApiParam(
-            value = "The id of the user uploading the filter. The access token must be authorized to make requests for this user id.",
+    default void uploadFilter(
+        @Parameter(
+            description = "The id of the user uploading the filter. The access token must be authorized to make requests for this user id.",
             required = true
         ) @PathParam("userId") String userId,
-        @ApiParam("JSON body parameters") FilterData filterData,
+        @RequestBody(
+            description = "JSON body parameters"
+        ) FilterData filterData,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
-    );
+    ) {
+
+    }
 
     /**
      * Download a filter.
@@ -104,33 +119,54 @@ public interface FilterApi {
      *
      * @param userId          Required. The user ID to download a filter for.
      * @param filterId        Required. The filter ID to download.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Download a filter.",
-        response = FilterData.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Download a filter.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The filter definition.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = FilterData.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Unknown filter.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The filter definition."),
-        @ApiResponse(code = 404, message = "Unknown filter.")
-    })
     @GET
     @Secured
     @Path("/{userId}/filter/{filterId}")
     void getFilter(
-        @ApiParam(
-            value = "The user ID to download a filter for.",
+        @Parameter(
+            description = "The user ID to download a filter for.",
             required = true
         ) @PathParam("userId") String userId,
-        @ApiParam(
-            value = "The filter ID to download.",
+        @Parameter(
+            description = "The filter ID to download.",
             required = true
         ) @PathParam("filterId") String filterId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

@@ -16,13 +16,14 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Group.
  */
-@ApiModel(description = "Group.")
+@Schema(
+    description = "Group."
+)
 public class Group {
 
     /**
@@ -38,9 +39,8 @@ public class Group {
     /**
      * Key that defines the group. One of: ["room_id", "sender"]
      */
-    @ApiModelProperty(
-        value = "Key that defines the group.",
-        allowableValues = "room_id, sender"
+    @Schema(
+        description = "Key that defines the group."
     )
     private String key;
 

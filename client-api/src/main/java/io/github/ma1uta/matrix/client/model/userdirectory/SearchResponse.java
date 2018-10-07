@@ -16,32 +16,31 @@
 
 package io.github.ma1uta.matrix.client.model.userdirectory;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON body response for user directory api (search result).
  */
-@ApiModel(description = "JSON body response for user directory api (search result).")
+@Schema(
+    description = "JSON body response for user directory api (search result)."
+)
 public class SearchResponse {
 
     /**
      * Required. Ordered by rank and then whether or not profile info is available.
      */
-    @ApiModelProperty(
-        value = "Ordered by rank and then whether or not profile info is available.",
-        required = true
+    @Schema(
+        description = "Ordered by rank and then whether or not profile info is available."
     )
     private List<User> results;
 
     /**
      * Required. Indicates if the result list has been truncated by the limit.
      */
-    @ApiModelProperty(
-        value = "Indicates if the result list has been truncated by the limit.",
-        required = true
+    @Schema(
+        description = "Indicates if the result list has been truncated by the limit."
     )
     private Boolean limit;
 

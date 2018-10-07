@@ -16,25 +16,24 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON body request for push update api.
  */
-@ApiModel(description = "JSON body request for push update api.")
+@Schema(
+    description = "JSON body request for push update api."
+)
 public class PushUpdateRequest {
 
     /**
      * Required. The action(s) to perform when the conditions for this rule are met. One of: ["notify", "dont_notify", "coalesce",
      * "set_tweak"].
      */
-    @ApiModelProperty(
-        value = "The action(s) to perform when the conditions for this rule are met.",
-        required = true,
-        allowableValues = "notify, dont_notify, coalesce, set_tweak"
+    @Schema(
+        description = "The action(s) to perform when the conditions for this rule are met."
     )
     private List<String> actions;
 
@@ -42,8 +41,8 @@ public class PushUpdateRequest {
      * The conditions that must hold true for an event in order for a rule to be applied to an event. A rule with no conditions
      * always matches. Only applicable to underride and override rules.
      */
-    @ApiModelProperty(
-        value = "The conditions that must hold true for an event in order for a rule to be applied to an event. "
+    @Schema(
+        description = "The conditions that must hold true for an event in order for a rule to be applied to an event. "
             + "A rule with no conditions always matches. Only applicable to underride and override rules."
     )
     private List<PushCondition> conditions;
@@ -51,8 +50,8 @@ public class PushUpdateRequest {
     /**
      * Only applicable to content rules. The glob- style pattern to match against.
      */
-    @ApiModelProperty(
-        value = "Only applicable to content rules. The glob- style pattern to match against."
+    @Schema(
+        description = "Only applicable to content rules. The glob- style pattern to match against."
     )
     private String pattern;
 

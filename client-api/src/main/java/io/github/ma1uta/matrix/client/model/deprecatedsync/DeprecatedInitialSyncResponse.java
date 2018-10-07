@@ -17,11 +17,9 @@
 package io.github.ma1uta.matrix.client.model.deprecatedsync;
 
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.SecurityContext;
 
@@ -29,46 +27,45 @@ import javax.ws.rs.core.SecurityContext;
  * JSON body response of the deprecated initial sync.
  *
  * @deprecated in favor of {@link io.github.ma1uta.matrix.client.api.SyncApi#sync(String, String, Boolean, String, Long,
- * HttpServletRequest, AsyncResponse, SecurityContext)}.
+ * javax.ws.rs.core.UriInfo, javax.ws.rs.core.HttpHeaders, AsyncResponse, SecurityContext)}.
  */
 @Deprecated
-@ApiModel(description = "JSON body response of the deprecated initial sync.")
+@Schema(
+    description = "JSON body response of the deprecated initial sync."
+)
 public class DeprecatedInitialSyncResponse {
 
     /**
      * Required. A token which correlates to the last value in chunk. This token should be used with the /events API to listen
      * for new events.
      */
-    @ApiModelProperty(
-        value = "A token which correlates to the last value in chunk. This token should be used with the /events API to listen"
-            + " for new events.",
-        required = true
+    @Schema(
+        description = "A token which correlates to the last value in chunk. This token should be used with the /events API to listen"
+            + " for new events."
     )
     private String end;
 
     /**
      * Required. A list of presence events.
      */
-    @ApiModelProperty(
-        value = "A list of presence events.",
-        required = true
+    @Schema(
+        description = "A list of presence events."
     )
     private List<Event> presence;
 
     /**
      * Required. Rooms info.
      */
-    @ApiModelProperty(
-        value = "Rooms info.",
-        required = true
+    @Schema(
+        description = "Rooms info."
     )
     private List<DeprecatedRoomInfo> rooms;
 
     /**
      * The global private data created by this user.
      */
-    @ApiModelProperty(
-        value = "The global private data create by this user."
+    @Schema(
+        description = "The global private data create by this user."
     )
     private List<Event> accountData;
 

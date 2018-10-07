@@ -16,30 +16,29 @@
 
 package io.github.ma1uta.matrix.client.model.report;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON Body for report request.
  */
-@ApiModel(description = "JSON Body for report request.")
+@Schema(
+    description = "JSON Body for report request."
+)
 public class ReportRequest {
 
     /**
      * Required. The score to rate this content as where -100 is most offensive and 0 is inoffensive.
      */
-    @ApiModelProperty(
-        value = "The score to rate this content as where -100 is most offensive and 0 is inoffensive.",
-        required = true
+    @Schema(
+        description = "The score to rate this content as where -100 is most offensive and 0 is inoffensive."
     )
     private Integer score;
 
     /**
      * Required. The reason the content is being reported. May be blank.
      */
-    @ApiModelProperty(
-        value = "The reason the content is being reported. May be blank.",
-        required = true
+    @Schema(
+        description = "The reason the content is being reported. May be blank."
     )
     private String reason;
 

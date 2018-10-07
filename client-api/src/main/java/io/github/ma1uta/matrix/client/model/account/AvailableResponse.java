@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON response for available api.
  */
-@ApiModel(description = "JSON response for available api")
+@Schema(
+    description = "JSON response for available api"
+)
 public class AvailableResponse {
 
     /**
      * A flag to indicate that the username is available. This should always be true when the server replies with 200 OK.
      */
-    @ApiModelProperty(
-        value = "A flag to indicate that the username is available. This should always be true when the server replies with 200 OK."
+    @Schema(
+        description = "A flag to indicate that the username is available. This should always be true when the server replies with 200 OK."
     )
     private Boolean available;
 

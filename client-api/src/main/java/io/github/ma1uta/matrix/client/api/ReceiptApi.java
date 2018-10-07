@@ -18,16 +18,17 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.receipt.ReadMarkersRequest;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -35,8 +36,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * This module adds in support for receipts. These receipts are a form of acknowledgement of an event. This module defines a single
@@ -47,11 +50,6 @@ import javax.ws.rs.core.SecurityContext;
  * "up to and including" the event specified. For example, marking an event as "read" would indicate that the user had read all
  * events up to the referenced event.
  */
-@Api(
-    value = "Receipt",
-    description = "This module adds in support for receipts. These receipts are a form of acknowledgement of an event. "
-        + "This module defines a single acknowledgement: m.read which indicates that the user has read up to a given event."
-)
 @Path("/_matrix/client/r0/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 public interface ReceiptApi {
@@ -84,39 +82,64 @@ public interface ReceiptApi {
      * @param roomId          Required. The room in which to send the event.
      * @param receiptType     Required. The type of receipt to send. One of: ["m.read"]
      * @param eventId         Required. The event ID to acknowledge up to.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "This API updates the marker for the given receipt type to the event ID specified.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "This API updates the marker for the given receipt type to the event ID specified.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The receipt was sent.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The receipt was sent."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
     @Path("/{roomId}/receipt/{receiptType}/{eventId}")
     void receipt(
-        @ApiParam(
-            value = "The room in which to send the event.",
+        @Parameter(
+            description = "The room in which to send the event.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "The type of receipt to send.",
+        @Parameter(
+            description = "The type of receipt to send.",
             required = true,
-            allowableValues = "m.read"
+            schema = @Schema(
+                allowableValues = {
+                    "m.read"
+                }
+            )
         ) @PathParam("receiptType") String receiptType,
-        @ApiParam(
-            value = "The event ID to acknowledge up to.",
+        @Parameter(
+            description = "The event ID to acknowledge up to.",
             required = true
         ) @PathParam("eventId") String eventId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -134,33 +157,54 @@ public interface ReceiptApi {
      *
      * @param roomId          Required. The room ID to set the read marker in for the user.
      * @param request         JSON body request.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Sets the position of the read marker for a given room, and optionally the read receipt's location.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Sets the position of the read marker for a given room, and optionally the read receipt's location.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The read marker, and read receipt if provided, have been updated.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The read marker, and read receipt if provided, have been updated."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @Secured
     @RateLimit
     @Path("/{roomId}/read_markers")
     void readMarkers(
-        @ApiParam(
-            value = "The room ID to set the read marker in for the user.",
+        @Parameter(
+            description = "The room ID to set the read marker in for the user.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) ReadMarkersRequest request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

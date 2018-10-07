@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.serverdiscovery;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Server discovery information.
  */
-@ApiModel(description = "Server discovery information.")
+@Schema(
+    description = "Server discovery information."
+)
 public class ServerDiscoveryResponse {
 
     /**
      * Required. Information about the homeserver to connect to.
      */
-    @ApiModelProperty(
-        name = "m.homeserver",
-        value = "Information about the homeserver to connect to.",
-        required = true
+    @Schema(
+        description = "Information about the homeserver to connect to."
     )
     @JsonProperty("m.homeserver")
     private HomeserverInfo homeserver;
@@ -40,9 +39,8 @@ public class ServerDiscoveryResponse {
     /**
      * Optional. Information about the identity server to connect to.
      */
-    @ApiModelProperty(
-        name = "m.identity_server",
-        value = "Information about the identity server to connect to."
+    @Schema(
+        description = "Information about the identity server to connect to."
     )
     @JsonProperty("m.identity_server")
     private IdentityServerInfo dentityServer;

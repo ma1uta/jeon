@@ -17,30 +17,29 @@
 package io.github.ma1uta.matrix.client.model.auth;
 
 import io.github.ma1uta.matrix.client.api.AuthApi;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The user is identified by a phone number.
  */
-@ApiModel(description = "The user is identified by a phone number.")
+@Schema(
+    description = "The user is identified by a phone number."
+)
 public class PhoneIdentifier extends Identifier {
 
     /**
      * The country that the phone number is from.
      */
-    @ApiModelProperty(
-        value = "The country that the phone number is from.",
-        required = true
+    @Schema(
+        description = "The country that the phone number is from."
     )
     private String country;
 
     /**
      * The phone number.
      */
-    @ApiModelProperty(
-        value = "The phone number.",
-        required = true
+    @Schema(
+        description = "The phone number."
     )
     private String phone;
 

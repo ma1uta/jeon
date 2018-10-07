@@ -18,39 +18,39 @@ package io.github.ma1uta.matrix.client.model.eventcontext;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Events that happened just before and after the specified event.
  */
-@ApiModel(description = "Events that happened just before and after the specified event.")
+@Schema(
+    description = "Events that happened just before and after the specified event."
+)
 public class EventContextResponse {
 
     /**
      * A token that can be used to paginate backwards with.
      */
-    @ApiModelProperty(
-        value = "A token that can be used to paginate backwards with."
+    @Schema(
+        description = "A token that can be used to paginate backwards with."
     )
     private String start;
 
     /**
      * A token that can be used to paginate forwards with.
      */
-    @ApiModelProperty(
-        value = "A token that can be used to paginate forwards with."
+    @Schema(
+        description = "A token that can be used to paginate forwards with."
     )
     private String end;
 
     /**
      * A list of room events that happened just before the requested event, in reverse-chronological order.
      */
-    @ApiModelProperty(
-        name = "events_before",
-        value = "A list of room events that happened just before the requested event, in reverse-chronological order."
+    @Schema(
+        description = "A list of room events that happened just before the requested event, in reverse-chronological order."
     )
     @JsonProperty("events_before")
     private List<Event> eventsBefore;
@@ -58,17 +58,16 @@ public class EventContextResponse {
     /**
      * Details of the requested event.
      */
-    @ApiModelProperty(
-        value = "Details of the requested event."
+    @Schema(
+        description = "Details of the requested event."
     )
     private Event event;
 
     /**
      * A list of room events that happened just after the requested event, in chronological order.
      */
-    @ApiModelProperty(
-        name = "events_after",
-        value = "A list of room events that happened just after the requested event, in chronological order."
+    @Schema(
+        description = "A list of room events that happened just after the requested event, in chronological order."
     )
     @JsonProperty("events_after")
     private List<Event> eventsAfter;
@@ -76,8 +75,8 @@ public class EventContextResponse {
     /**
      * The state of the room at the last event returned.
      */
-    @ApiModelProperty(
-        value = "The state of the room at the last event returned."
+    @Schema(
+        description = "The state of the room at the last event returned."
     )
     private Event state;
 

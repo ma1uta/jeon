@@ -17,30 +17,29 @@
 package io.github.ma1uta.matrix.client.model.auth;
 
 import io.github.ma1uta.matrix.client.api.AuthApi;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The user is identified by a third-party identifer in canonicalised form.
  */
-@ApiModel(description = "The user is identified by a third-party identifer in canonicalised form.")
+@Schema(
+    description = "The user is identified by a third-party identifer in canonicalised form."
+)
 public class ThirdpartyIdentifier extends Identifier {
 
     /**
      * The medium of the third party identifier.
      */
-    @ApiModelProperty(
-        value = "The medium of the third party identifier.",
-        required = true
+    @Schema(
+        description = "The medium of the third party identifier."
     )
     private String medium;
 
     /**
      * The canonicalised third party address of the user.
      */
-    @ApiModelProperty(
-        value = "The canonicalised third party address of the user.",
-        required = true
+    @Schema(
+        description = "The canonicalised third party address of the user."
     )
     private String address;
 

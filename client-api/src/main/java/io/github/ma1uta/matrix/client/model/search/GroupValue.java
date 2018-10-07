@@ -17,24 +17,24 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Group value.
  */
-@ApiModel(description = "Group value.")
+@Schema(
+    description = "Group value."
+)
 public class GroupValue {
 
     /**
      * Token that can be used to get the next batch of results in the group, by passing as the next_batch parameter to the next call.
      * If this field is absent, there are no more results in this group.
      */
-    @ApiModelProperty(
-        name = "next_batch",
-        value = "Token that can be used to get the next batch of results in the group, by passing "
+    @Schema(
+        description = "Token that can be used to get the next batch of results in the group, by passing "
             + "as the next_batch parameter to the next call. If this field is absent, there are no more results in this group."
     )
     @JsonProperty("next_batch")
@@ -43,16 +43,16 @@ public class GroupValue {
     /**
      * Key that can be used to order different groups.
      */
-    @ApiModelProperty(
-        value = "Key that can be used to order different groups."
+    @Schema(
+        description = "Key that can be used to order different groups."
     )
     private Long order;
 
     /**
      * Which results are in this group.
      */
-    @ApiModelProperty(
-        value = "Which results are in this group."
+    @Schema(
+        description = "Which results are in this group."
     )
     private List<String> results;
 

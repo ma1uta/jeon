@@ -20,14 +20,14 @@ import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.tag.Tags;
 import io.github.ma1uta.matrix.events.nested.TagInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,18 +38,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Users can add tags to rooms. Tags are short strings used to label rooms, e.g. "work", "family". A room may have multiple tags.
  * Tags are only visible to the user that set them but are shared across all their devices.
  */
-@Api(
-    value = "Tag",
-    description = "Users can add tags to rooms. Tags are short strings used to label rooms, e.g. \"work\", \"family\". "
-        + "A room may have multiple tags. Tags are only visible to the user that set them but are shared across all their devices."
-)
 @Path("/_matrix/client/r0/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -85,32 +82,45 @@ public interface TagApi {
      * @param userId          Required. The id of the user to get tags for. The access token must be authorized to make requests for this
      *                        user id.
      * @param roomId          Required. The id of the room to get tags for.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "List the tags set by a user on a room.",
-        response = Tags.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "List the tags set by a user on a room.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The list of tags for the user for the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = Tags.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The list of tags for the user for the room.")
-    })
     @GET
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags")
     void showTags(
-        @ApiParam(
-            value = "The id of the user to get tags for. The access token must be authorized to make requests for this user id.",
+        @Parameter(
+            description = "The id of the user to get tags for. The access token must be authorized to make requests for this user id.",
             required = true
         ) @PathParam("userId") String userId,
-        @ApiParam(
-            value = "The id of the room to get tags for.",
+        @Parameter(
+            description = "The id of the room to get tags for.",
             required = true
         ) @PathParam("roomId") String roomId,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -128,39 +138,52 @@ public interface TagApi {
      * @param roomId          Required. The id of the room to add a tag to.
      * @param tag             Required. The tag to add.
      * @param tagData         tag data.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Add a tag to the room.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Add a tag to the room.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The tag was successfully added.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The tag was successfully added.")
-    })
     @PUT
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags/{tag}")
     void addTag(
-        @ApiParam(
-            value = "The id of the user to add a tag for. The access token must be authorized to make requests for this user id.",
+        @Parameter(
+            description = "The id of the user to add a tag for. The access token must be authorized to make requests for this user id.",
             required = true
         ) @PathParam("userId") String userId,
-        @ApiParam(
-            value = "The id of the room to add a tag to.",
+        @Parameter(
+            description = "The id of the room to add a tag to.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "The tag to add.",
+        @Parameter(
+            description = "The tag to add.",
             required = true
         ) @PathParam("tag") String tag,
-        @ApiParam(
-            value = "TagInfo data."
+        @RequestBody(
+            description = "TagInfo data."
         ) TagInfo tagData,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -177,36 +200,49 @@ public interface TagApi {
      *                        for this user id.
      * @param roomId          Required. The id of the room to remove a tag from.
      * @param tag             Required. The tag to remove.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Remove a tag from the room.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Remove a tag from the room.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The tag was successfully removed.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The tag was successfully removed.")
-    })
     @DELETE
     @Secured
     @Path("/{userId}/rooms/{roomId}/tags/{tag}")
     void deleteTag(
-        @ApiParam(
-            value = "The id of the user to remove a tag for. The access token must be authorized to make requests for this user id.",
+        @Parameter(
+            description = "The id of the user to remove a tag for. The access token must be authorized to make requests for this user id.",
             required = true
         ) @PathParam("userId") String userId,
-        @ApiParam(
-            value = "The id of the room to remove a tag from.",
+        @Parameter(
+            description = "The id of the room to remove a tag from.",
             required = true
         ) @PathParam("roomId") String roomId,
-        @ApiParam(
-            value = "The tag to remove.",
+        @Parameter(
+            description = "The tag to remove.",
             required = true
         ) @PathParam("tag") String tag,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

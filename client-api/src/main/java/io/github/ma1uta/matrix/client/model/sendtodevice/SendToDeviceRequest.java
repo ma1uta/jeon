@@ -17,23 +17,24 @@
 package io.github.ma1uta.matrix.client.model.sendtodevice;
 
 import io.github.ma1uta.matrix.EventContent;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Sent to device body request.
  */
-@ApiModel(description = "Sent to device body request.")
+@Schema(
+    description = "Sent to device body request."
+)
 public class SendToDeviceRequest {
 
     /**
      * The messages to send. A map from user ID, to a map from device ID to message body. The device ID may also be *, meaning all
      * known devices for the user.
      */
-    @ApiModelProperty(
-        value = "The messages to send. A map from user ID, to a map from device ID to message body. The device ID may also "
+    @Schema(
+        description = "The messages to send. A map from user ID, to a map from device ID to message body. The device ID may also "
             + "be *, meaning all known devices for the user."
     )
     private Map<String, Map<String, EventContent>> messages;

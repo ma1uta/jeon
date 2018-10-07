@@ -17,32 +17,31 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * JSON body parameters for Claims one-time keys for use in pre-key messages.
  */
-@ApiModel(description = "JSON body parameters for Claims one-time keys for use in pre-key messages.")
+@Schema(
+    description = "JSON body parameters for Claims one-time keys for use in pre-key messages."
+)
 public class ClaimRequest {
 
     /**
      * The time (in milliseconds) to wait when downloading keys from remote servers. 10 seconds is the recommended default.
      */
-    @ApiModelProperty(
-        value = "The time (in milliseconds) to wait when downloading keys from remote servers. 10 seconds is the recommended default."
+    @Schema(
+        description = "The time (in milliseconds) to wait when downloading keys from remote servers. 10 seconds is the recommended default."
     )
     private Long timeout;
 
     /**
      * Required. The keys to be claimed. A map from user ID, to a map from device ID to algorithm name.
      */
-    @ApiModelProperty(
-        name = "one_time_keys",
-        value = "The keys to be claimed. A map from user ID, to a map from device ID to algorithm name.",
-        required = true
+    @Schema(
+        description = "The keys to be claimed. A map from user ID, to a map from device ID to algorithm name."
     )
     @JsonProperty("one_time_keys")
     private Map<String, Map<String, String>> oneTimeKeys;

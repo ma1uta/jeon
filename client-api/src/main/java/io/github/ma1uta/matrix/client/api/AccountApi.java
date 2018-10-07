@@ -17,7 +17,9 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.RateLimit;
+import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.account.AvailableResponse;
 import io.github.ma1uta.matrix.client.model.account.DeactivateRequest;
@@ -31,14 +33,14 @@ import io.github.ma1uta.matrix.client.model.account.ThreePidResponse;
 import io.github.ma1uta.matrix.client.model.account.WhoamiResponse;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;
 import io.github.ma1uta.matrix.thirdpid.SessionResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -48,16 +50,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Account registration and management.
  */
-@Api(
-    value = "Account",
-    description = "Account registration and management"
-)
 @Path("/_matrix/client/r0")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -85,8 +85,6 @@ public interface AccountApi {
     /**
      * Register for an account on this homeserver.
      * <br>
-     * <b>Requires auth</b>: Yes.
-     * <br>
      * Return: {@link LoginResponse}.
      * <p>Status code 200: The account has been registered.</p>
      * <p>Status code 400: Part of the request was invalid. This may include one of the following error codes:</p>
@@ -109,33 +107,76 @@ public interface AccountApi {
      *
      * @param kind            The kind of account to register. Defaults to user. One of: ["guest", "user"].
      * @param registerRequest JSON body parameters.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      */
-    @ApiOperation(
-        value = "Register for an account on this homeserver.",
-        response = LoginResponse.class
+    @Operation(
+        summary = "Register for an account on this homeserver.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The account has been registered",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = LoginResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Part of the request was invalid.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver requires additional authentication information.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = RateLimitedErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "The account has been registered"),
-        @ApiResponse(code = 400, message = "Part of the request was invalid."),
-        @ApiResponse(code = 401, message = "The homeserver requires additional authentication information."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Path("/register")
     void register(
-        @ApiParam(
-            value = "The kind of account to register.",
-            defaultValue = "user",
-            allowableValues = "guest, user"
+        @Parameter(
+            description = "The kind of account to register.",
+            schema = @Schema(
+                allowableValues = {"guest", "user"},
+                defaultValue = "user"
+            )
         ) @QueryParam("kind") String kind,
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) RegisterRequest registerRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -158,29 +199,59 @@ public interface AccountApi {
      * <p>Status code 403: The homeserver does not permit the address to be bound.</p>
      *
      * @param emailRequestToken JSON body request.
-     * @param servletRequest    Servlet request.
+     * @param uriInfo           Request Information.
+     * @param httpHeaders       Http headers.
      * @param asyncResponse     Asynchronous response.
      */
-    @ApiOperation(
-        value = "Request email token.",
-        notes = "Proxies the identity server API validate/email/emailRequestToken, but first checks that the given email address is not"
-            + " already associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects, though"
-            + " the Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further information.",
-        response = SessionResponse.class
+    @Operation(
+        summary = "Request email token.",
+        description = "Proxies the identity server API validate/email/emailRequestToken, but first checks that the given email address"
+            + " is not already associated with an account on this Home Server. Note that, for consistency, this API takes JSON objects,"
+            + " though the Identity Server API takes x-www-form-urlencoded parameters. See the Identity Server API for further"
+            + " information.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An email has been sent to the specified address.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Part of the request was invalid.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The homeserver does not permit the address to be bound.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "An email has been sent to the specified address."),
-        @ApiResponse(code = 400, message = "Part of the request was invalid."),
-        @ApiResponse(code = 403, message = "The homeserver does not permit the address to be bound.")
-    })
     @POST
     @Path("/register/email/requestToken")
     void emailRequestToken(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) EmailRequestToken emailRequestToken,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -202,28 +273,57 @@ public interface AccountApi {
      * <p>Status code 403: The homeserver does not permit the address to be bound.</p>
      *
      * @param msisdnRequestToken JSON body request.
-     * @param servletRequest     Servlet request.
+     * @param uriInfo            Request Information.
+     * @param httpHeaders        Http headers.
      * @param asyncResponse      Asynchronous response.
      */
-    @ApiOperation(
-        value = "Request msisdn token.",
-        notes = "Proxies the Identity Service API validate/msisdn/requestToken, but first checks that the given phone number is"
+    @Operation(
+        summary = "Request msisdn token.",
+        description = "Proxies the Identity Service API validate/msisdn/requestToken, but first checks that the given phone number is"
             + " not already associated with an account on this homeserver. See the Identity Service API for further information.",
-        response = SessionResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An SMS message has been sent to the specified phone number.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Part of the request was invalid.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The homeserver does not permit the address to be bound.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "An SMS message has been sent to the specified phone number."),
-        @ApiResponse(code = 400, message = "Part of the request was invalid."),
-        @ApiResponse(code = 403, message = "The homeserver does not permit the address to be bound.")
-    })
     @POST
     @Path("/register/msisdn/requestToken")
     void msisdnRequestToken(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) MsisdnRequestToken msisdnRequestToken,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -246,32 +346,66 @@ public interface AccountApi {
      * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param passwordRequest Password.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(value = "Changes the password for an account on this homeserver.",
-        notes = "This API endpoint uses the User-Interactive Authentication API. An access token should be submitted to this"
+    @Operation(
+        summary = "Changes the password for an account on this homeserver.",
+        description = "This API endpoint uses the User-Interactive Authentication API. An access token should be submitted to this"
             + " endpoint if the client has an active session. The homeserver may change the flows available depending on"
             + " whether a valid access token is provided.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The password has been changed.", content = @Content(
+                schema = @Schema(
+                    implementation = EmptyResponse.class
+                )
+            )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver requires additional authentication information.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = RateLimitedErrorResponse.class
+                        )
+                    )
+                }
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The password has been changed."),
-        @ApiResponse(code = 401, message = "The homeserver requires additional authentication information."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
+    @SecurityRequirement(name = "Authorization")
     @POST
     @RateLimit
     @Secured
     @Path("/account/password")
     void password(
-        @ApiParam(
-            value = "password."
+        @RequestBody(
+            description = "password."
         ) PasswordRequest passwordRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -289,34 +423,61 @@ public interface AccountApi {
      * <p>Status code 400: The referenced third party identifier is not recognised by the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
      *
-     * @param requestToken   JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param requestToken  JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address"
+    @Operation(
+        summary = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address"
             + " is associated with an account on this Home Server.",
-        notes = "This API should be used to request validation tokens when authenticating"
+        description = "This API should be used to request validation tokens when authenticating"
             + " for the account/password endpoint. This API's parameters and response are identical to that of the HS API"
             + " /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email"
             + " address could be found. The server may instead send an email to the given address prompting the user to create an account."
             + " M_THREEPID_IN_USE may not be returned.",
-        response = SessionResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An email was sent to the given address", content = @Content(
+                schema = @Schema(
+                    implementation = SessionResponse.class
+                )
+            )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The referenced third party identifier is not recognised by the homeserver, or the request was invalid.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The homeserver does not allow the third party identifier as a contact option.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "An email was sent to the given address"),
-        @ApiResponse(code = 400, message = "The referenced third party identifier is not recognised by the homeserver, or the request"
-            + " was invalid."),
-        @ApiResponse(code = 403, message = "The homeserver does not allow the third party identifier as a contact option.")
-    })
     @POST
     @Path("/account/password/email/requestToken")
     void passwordEmailRequestToken(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) EmailRequestToken requestToken,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -332,34 +493,62 @@ public interface AccountApi {
      * <p>Status code 400: The referenced third party identifier is not recognised by the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
      *
-     * @param requestToken   JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param requestToken  JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address"
+    @Operation(
+        summary = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address"
             + " is associated with an account on this Home Server.",
-        notes = "This API should be used to request validation tokens when authenticating"
+        description = "This API should be used to request validation tokens when authenticating"
             + " for the account/password endpoint. This API's parameters and response are identical to that of the HS API"
             + " /register/email/requestToken except that M_THREEPID_NOT_FOUND may be returned if no account matching the given email"
             + " address could be found. The server may instead send an email to the given address prompting the user to create an account."
             + " M_THREEPID_IN_USE may not be returned.",
-        response = SessionResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An SMS message was sent to the given phone number.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The referenced third party identifier is not recognised by the homeserver, or the request was invalid.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The homeserver does not allow the third party identifier as a contact option.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "An SMS message was sent to the given phone number."),
-        @ApiResponse(code = 400, message = "The referenced third party identifier is not recognised by the homeserver, or the request"
-            + " was invalid."),
-        @ApiResponse(code = 403, message = "The homeserver does not allow the third party identifier as a contact option.")
-    })
     @POST
     @Path("/account/password/msisdn/requestToken")
     void passwordMsisdnRequestToken(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) MsisdnRequestToken requestToken,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -382,33 +571,66 @@ public interface AccountApi {
      * <p>Status code 429: This request was rate-limited.</p>
      *
      * @param deactivateRequest JSON body request.
-     * @param servletRequest    Servlet request.
+     * @param uriInfo           Request Information.
+     * @param httpHeaders       Http headers.
      * @param asyncResponse     Asynchronous response.
      * @param securityContext   Security context.
      */
-    @ApiOperation(
-        value = "Deactivate the user's account, removing all ability for the user to login again.",
-        notes = "This API endpoint uses the User-Interactive Authentication API."
+    @Operation(
+        summary = "Deactivate the user's account, removing all ability for the user to login again.",
+        description = "This API endpoint uses the User-Interactive Authentication API."
             + "An access token should be submitted to this endpoint if the client has an active session."
             + "The homeserver may change the flows available depending on whether a valid access token is provided.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The account has been deactivated.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver requires additional authentication information.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = RateLimitedErrorResponse.class
+                        )
+                    )
+                }
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The account has been deactivated."),
-        @ApiResponse(code = 401, message = "The homeserver requires additional authentication information."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @POST
     @RateLimit
     @Secured
     @Path("/account/deactivate")
     void deactivate(
-        @ApiParam(
-            value = "request"
+        @RequestBody(
+            description = "request"
         ) DeactivateRequest deactivateRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -437,35 +659,64 @@ public interface AccountApi {
      * </ul>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param username       Required. The username to check the availability of.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param username      Required. The username to check the availability of.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Checks to see if a username is available, and valid, for the server.",
-        notes = "he server should check to ensure that, at the time of the request, the username requested is available for use."
+    @Operation(
+        summary = "Checks to see if a username is available, and valid, for the server.",
+        description = "he server should check to ensure that, at the time of the request, the username requested is available for use."
             + "This includes verifying that an application service has not claimed the username and that the username fits the server's"
             + "desired requirements (for example, a server could dictate that it does not permit usernames with underscores)."
             + "Matrix clients may wish to use this API prior to attempting registration, however the clients must also be aware"
             + "that using this API does not normally reserve the username. This can mean that the username becomes unavailable"
             + "between checking its availability and attempting to register it.",
-        response = AvailableResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The username is available.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = AvailableResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Part of the request was invalid or the username is not available",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = RateLimitedErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The username is available."),
-        @ApiResponse(code = 400, message = "Part of the request was invalid or the username is not available"),
-        @ApiResponse(code = 429, message = "This request was rate-limited")
-    })
     @GET
     @RateLimit
     @Path("/register/available")
     void available(
-        @ApiParam(
-            value = "The username to check the availability of",
+        @Parameter(
+            description = "The username to check the availability of",
             required = true
         ) @QueryParam("username") String username,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -482,26 +733,39 @@ public interface AccountApi {
      * Return: {@link ThreePidResponse}.
      * <p>Status code 200: The lookup was successful.</p>
      *
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext security context.
      */
-    @ApiOperation(
-        value = "Gets a list of the third party identifiers that the homeserver has associated with the user's account",
-        notes = "This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers. "
+    @Operation(
+        summary = "Gets a list of the third party identifiers that the homeserver has associated with the user's account",
+        description = "This is not the same as the list of third party identifiers bound to the user's Matrix ID in Identity Servers. "
             + "Identifiers in this list may be used by the homeserver as, for example, identifiers that it will accept to reset the user's "
             + "account password.",
-        response = ThreePidResponse.class,
-        authorizations = @Authorization("Authorization")
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The lookup was successful",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ThreePidResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The lookup was successful")
-    })
     @GET
     @Secured
     @Path("/account/3pid")
     void getThreePid(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -516,28 +780,51 @@ public interface AccountApi {
      * <p>Status code 403: The credentials could not be verified with the identity server.</p>
      *
      * @param threePidRequest New contact information.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Adds contact information to the user's account",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Adds contact information to the user's account",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The addition was successful.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials could not be verified with the identity server.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The addition was successful."),
-        @ApiResponse(code = 403, message = "The credentials could not be verified with the identity server.")
-    })
     @POST
     @Secured
     @Path("/account/3pid")
     void updateThreePid(
-        @ApiParam(
-            value = "New contact information."
+        @RequestBody(
+            description = "New contact information."
         ) ThreePidRequest threePidRequest,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -551,28 +838,41 @@ public interface AccountApi {
      * <p>Status code 200: The homeserver has disassociated the third party identifier from the user.</p>
      *
      * @param request         JSON body request to delete 3pid.
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Removes a third party identifier from the user's account.",
-        notes = "This might not cause an unbind of the identifier from the identity server.",
-        response = EmptyResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Removes a third party identifier from the user's account.",
+        description = "This might not cause an unbind of the identifier from the identity server.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The homeserver has disassociated the third party identifier from the user.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The homeserver has disassociated the third party identifier from the user.")
-    })
     @POST
     @Secured
     @Path("/account/3pid/delete")
     void deleteThreePid(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) Delete3PidRequest request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
@@ -587,31 +887,60 @@ public interface AccountApi {
      * <p>Status code 400: The third party identifier is already in use on the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
      *
-     * @param requestToken   JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param requestToken  JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Proxies the identity server API validate/email/requestToken",
-        notes = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not already "
-            + "associated with an account on this Home Server. This API should be used to request validation tokens when adding an email "
-            + "address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken "
-            + "endpoint.",
-        response = SessionResponse.class
+    @Operation(
+        summary = "Proxies the identity server API validate/email/requestToken",
+        description = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not"
+            + " already associated with an account on this Home Server. This API should be used to request validation tokens when adding"
+            + " an email address to an account. This API's parameters and response is identical to that of the HS API "
+            + " /register/email/requestToken endpoint.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An email was sent to the given address",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The third party identifier is already in use on the homeserver, or the request was invalid.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The homeserver does not allow the third party identifier as a contact option.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "An email was sent to the given address"),
-        @ApiResponse(code = 400, message = "The third party identifier is already in use on the homeserver, or the request was invalid."),
-        @ApiResponse(code = 403, message = "The homeserver does not allow the third party identifier as a contact option.")
-    })
     @POST
     @Path("/account/3pid/email/requestToken")
     void threePidEmailRequestToken(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) EmailRequestToken requestToken,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -625,31 +954,60 @@ public interface AccountApi {
      * <p>Status code 400: The third party identifier is already in use on the homeserver, or the request was invalid.</p>
      * <p>Status code 403: The homeserver does not allow the third party identifier as a contact option.</p>
      *
-     * @param requestToken   JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param requestToken  JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Proxies the identity server API validate/email/requestToken",
-        notes = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not already "
-            + "associated with an account on this Home Server. This API should be used to request validation tokens when adding an email "
-            + "address to an account. This API's parameters and response is identical to that of the HS API /register/email/requestToken "
-            + "endpoint.",
-        response = SessionResponse.class
+    @Operation(
+        summary = "Proxies the identity server API validate/email/requestToken",
+        description = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not"
+            + " already associated with an account on this Home Server. This API should be used to request validation tokens when adding"
+            + " an email address to an account. This API's parameters and response is identical to that of the HS API "
+            + " /register/email/requestToken endpoint.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An SMS message was sent to the given phone number.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The third party identifier is already in use on the homeserver, or the request was invalid.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The homeserver does not allow the third party identifier as a contact option.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "An SMS message was sent to the given phone number."),
-        @ApiResponse(code = 400, message = "The third party identifier is already in use on the homeserver, or the request was invalid."),
-        @ApiResponse(code = 403, message = "The homeserver does not allow the third party identifier as a contact option.")
-    })
     @POST
     @Path("/account/3pid/msisdn/requestToken")
     void threePidMsisdnRequestToken(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) MsisdnRequestToken requestToken,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -670,30 +1028,73 @@ public interface AccountApi {
      * <p>Status code 403: The appservice cannot masquerade as the user or has not registered them.</p>
      * <p>Status code 429: This request was rate-limited.</p>
      *
-     * @param servletRequest  Servlet request.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      */
-    @ApiOperation(
-        value = "Gets information about the owner of a given access token",
-        notes = "Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their namespace "
-            + "by giving a user_id query parameter. In this situation, the server should verify that the given user_id is registered by "
-            + "the appservice, and return it in the response body.",
-        response = WhoamiResponse.class,
-        authorizations = @Authorization("Authorization")
+    @Operation(
+        summary = "Gets information about the owner of a given access token",
+        description = "Note that, as with the rest of the Client-Server API, Application Services may masquerade as users within their"
+            + " namespace  by giving a user_id query parameter. In this situation, the server should verify that the given user_id"
+            + " is registered by the appservice, and return it in the response body.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The token belongs to a known user",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = WhoamiResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The token is not recognised.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The appservice cannot masquerade as the user or has not registered them.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = ErrorResponse.class
+                        )
+                    )
+                }
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = {
+                    @Content(
+                        schema = @Schema(
+                            implementation = RateLimitedErrorResponse.class
+                        )
+                    )
+                }
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The token belongs to a known user"),
-        @ApiResponse(code = 401, message = "The token is not recognised."),
-        @ApiResponse(code = 403, message = "The appservice cannot masquerade as the user or has not registered them."),
-        @ApiResponse(code = 429, message = "This request was rate-limited.")
-    })
     @GET
     @RateLimit
     @Secured
     @Path("/account/whoami")
     void whoami(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );

@@ -17,25 +17,24 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Response format.
  */
-@ApiModel(description = "Response format.")
+@Schema(
+    description = "Response format."
+)
 public class UploadResponse {
 
     /**
      * Required. For each key algorithm, the number of unclaimed one-time keys of that type currently held on the server for this device.
      */
-    @ApiModelProperty(
-        name = "one_time_key_counts",
-        value = "For each key algorithm, the number of unclaimed one-time keys of that "
-            + "type currently held on the server for this device.",
-        required = true
+    @Schema(
+        description = "For each key algorithm, the number of unclaimed one-time keys of that "
+            + "type currently held on the server for this device."
     )
     @JsonProperty("one_time_key_counts")
     private Map<String, Long> oneTimeKeyCounts;

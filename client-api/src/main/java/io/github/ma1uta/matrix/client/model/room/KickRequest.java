@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Kick JSON body request.
  */
-@ApiModel(description = "Kick JSON body request.")
+@Schema(
+    description = "Kick JSON body request."
+)
 public class KickRequest {
 
     /**
      * Required. The fully qualified user ID of the user being kicked.
      */
-    @ApiModelProperty(
-        name = "user_id",
-        value = "The fully qualified user ID of the user being kicked.",
-        required = true
+    @Schema(
+        description = "The fully qualified user ID of the user being kicked."
     )
     @JsonProperty("user_id")
     private String userId;
@@ -40,8 +39,8 @@ public class KickRequest {
     /**
      * The reason the user has been kicked. This will be supplied as the ``reason`` on the target's updated `m.room.member`_ event.
      */
-    @ApiModelProperty(
-        value = "The reason the user has been kicked."
+    @Schema(
+        description = "The reason the user has been kicked."
     )
     private String reason;
 

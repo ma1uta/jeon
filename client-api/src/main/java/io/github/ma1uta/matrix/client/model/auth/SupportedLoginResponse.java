@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Supported login types.
  */
-@ApiModel(description = "Supported login types.")
+@Schema(
+    description = "Supported login types."
+)
 public class SupportedLoginResponse {
 
     /**
      * Supported login types.
      */
-    @ApiModelProperty(
-        value = "Supported login types."
+    @Schema(
+        description = "Supported login types."
     )
     private List<LoginType> flows;
 

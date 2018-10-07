@@ -17,21 +17,21 @@
 package io.github.ma1uta.matrix.client.model.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Room member.
  */
-@ApiModel(description = "Room member.")
+@Schema(
+    description = "Room member."
+)
 public class RoomMember {
 
     /**
      * The display name of the user this object is representing.
      */
-    @ApiModelProperty(
-        name = "display_name",
-        value = "The display name of the user this object is representing."
+    @Schema(
+        description = "The display name of the user this object is representing."
     )
     @JsonProperty("display_name")
     private String displayName;
@@ -39,9 +39,8 @@ public class RoomMember {
     /**
      * The mxc avatar url of the user this object is representing.
      */
-    @ApiModelProperty(
-        name = "avatar_url",
-        value = "The mxc avatar url of the user this object is representing."
+    @Schema(
+        description = "The mxc avatar url of the user this object is representing."
     )
     @JsonProperty("avatar_url")
     private String avatarUrl;

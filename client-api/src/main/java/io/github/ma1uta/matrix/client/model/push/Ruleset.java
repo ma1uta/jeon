@@ -16,54 +16,55 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Ruleset.
  */
-@ApiModel(description = "Ruleset.")
+@Schema(
+    description = "Ruleset."
+)
 public class Ruleset {
 
     /**
      * Content rules.
      */
-    @ApiModelProperty(
-        value = "Content rules."
+    @Schema(
+        description = "Content rules."
     )
     private List<PushRule> content;
 
     /**
      * Override rules.
      */
-    @ApiModelProperty(
-        value = "Override rules."
+    @Schema(
+        description = "Override rules."
     )
     private List<PushRule> override;
 
     /**
      * Room rules.
      */
-    @ApiModelProperty(
-        value = "Room rules."
+    @Schema(
+        description = "Room rules."
     )
     private List<PushRule> room;
 
     /**
      * Sender rules.
      */
-    @ApiModelProperty(
-        value = "Sender rules."
+    @Schema(
+        description = "Sender rules."
     )
     private List<PushRule> sender;
 
     /**
      * Underride rules.
      */
-    @ApiModelProperty(
-        value = "Underride rules."
+    @Schema(
+        description = "Underride rules."
     )
     private List<PushRule> underride;
 

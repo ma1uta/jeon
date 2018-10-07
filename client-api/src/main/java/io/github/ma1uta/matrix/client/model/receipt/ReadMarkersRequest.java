@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.receipt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body of the read marker request.
  */
-@ApiModel(description = "JSON body of the read marker request.")
+@Schema(
+    description = "JSON body of the read marker request."
+)
 public class ReadMarkersRequest {
 
     /**
      * Required. The event ID the read marker should be located at. The event MUST belong to the room.
      */
-    @ApiModelProperty(
-        name = "m.fully_read",
-        value = "The event ID the read marker should be located at. The event MUST belong to the room.",
-        required = true
+    @Schema(
+        description = "The event ID the read marker should be located at. The event MUST belong to the room."
     )
     @JsonProperty("m.fully_read")
     private String fullyRead;
@@ -41,10 +40,9 @@ public class ReadMarkersRequest {
      * The event ID to set the read receipt location at. This is equivalent to calling /receipt/m.read/$elsewhere:domain.com
      * and is provided here to save that extra call.
      */
-    @ApiModelProperty(
-        name = "m.read",
-        value = "The event ID to set the read receipt location at. This is equivalent to calling /receipt/m.read/$elsewhere:domain.com"
-            + " and is provided here to save that extra call."
+    @Schema(
+        description = "The event ID to set the read receipt location at. This is equivalent to calling"
+            + " /receipt/m.read/$elsewhere:domain.com and is provided here to save that extra call."
     )
     @JsonProperty("m.read")
     private String read;

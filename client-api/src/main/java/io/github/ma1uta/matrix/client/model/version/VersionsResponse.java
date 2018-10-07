@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.client.model.version;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The versions supported by the server.
  *
  * @author ma1uta
  */
-@ApiModel(description = "The versions supported by the server.")
+@Schema(
+    description = "The versions supported by the server."
+)
 public class VersionsResponse {
 
     /**
      * The supported versions.
      */
-    @ApiModelProperty(
-        value = "The supported versions."
+    @Schema(
+        description = "The supported versions."
     )
     private String[] versions;
 

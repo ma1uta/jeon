@@ -17,24 +17,24 @@
 package io.github.ma1uta.matrix.client.model.filter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Room filter.
  */
-@ApiModel(description = "Room filter.")
+@Schema(
+    description = "Room filter."
+)
 public class RoomFilter {
 
     /**
      * A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even if it
      * is listed in the 'rooms' filter. This filter is applied before the filters in ephemeral, state, timeline or account_data.
      */
-    @ApiModelProperty(
-        name = "not_rooms",
-        value = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. "
+    @Schema(
+        description = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. "
             + "A matching room will be excluded even if it is listed in the 'rooms' filter. This filter is applied before the filters in "
             + "ephemeral, state, timeline or account_data."
     )
@@ -45,8 +45,8 @@ public class RoomFilter {
      * A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied before the filters
      * in ephemeral, state, timeline or account_data.
      */
-    @ApiModelProperty(
-        value = "A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied "
+    @Schema(
+        description = "A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied "
             + "before the filters in ephemeral, state, timeline or account_data."
     )
     private List<String> rooms;
@@ -54,17 +54,16 @@ public class RoomFilter {
     /**
      * The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms.
      */
-    @ApiModelProperty(
-        value = "The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms."
+    @Schema(
+        description = "The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms."
     )
     private RoomEventFilter ephemeral;
 
     /**
      * Include rooms that the user has left in the sync, default false.
      */
-    @ApiModelProperty(
-        name = "include_leave",
-        value = "Include rooms that the user has left in the sync, default false."
+    @Schema(
+        description = "Include rooms that the user has left in the sync, default false."
     )
     @JsonProperty("include_leave")
     private Boolean includeLeave;
@@ -72,25 +71,24 @@ public class RoomFilter {
     /**
      * The state events to include for rooms.
      */
-    @ApiModelProperty(
-        value = "The state events to include for rooms."
+    @Schema(
+        description = "The state events to include for rooms."
     )
     private RoomEventFilter state;
 
     /**
      * The message and state update events to include for rooms.
      */
-    @ApiModelProperty(
-        value = "The message and state update events to include for rooms."
+    @Schema(
+        description = "The message and state update events to include for rooms."
     )
     private RoomEventFilter timeline;
 
     /**
      * The per user account data to include for rooms.
      */
-    @ApiModelProperty(
-        name = "account_data",
-        value = "The per user account data to include for rooms."
+    @Schema(
+        description = "The per user account data to include for rooms."
     )
     @JsonProperty("account_data")
     private RoomEventFilter accountData;

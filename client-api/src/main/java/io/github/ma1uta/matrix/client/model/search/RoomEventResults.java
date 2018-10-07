@@ -18,8 +18,7 @@ package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
@@ -27,30 +26,32 @@ import java.util.Map;
 /**
  * Room events results.
  */
-@ApiModel(description = "Room events results.")
+@Schema(
+    description = "Room events results."
+)
 public class RoomEventResults {
 
     /**
      * An approximate count of the total number of results found.
      */
-    @ApiModelProperty(
-        value = "An approximate count of the total number of results found."
+    @Schema(
+        description = "An approximate count of the total number of results found."
     )
     private Long count;
 
     /**
      * List of words which should be highlighted, useful for stemming which may change the query terms.
      */
-    @ApiModelProperty(
-        value = "List of words which should be highlighted, useful for stemming which may change the query terms."
+    @Schema(
+        description = "List of words which should be highlighted, useful for stemming which may change the query terms."
     )
     private List<String> highlights;
 
     /**
      * List of results in the requested order.
      */
-    @ApiModelProperty(
-        value = "List of results in the requested order."
+    @Schema(
+        description = "List of results in the requested order."
     )
     private List<Result> results;
 
@@ -59,8 +60,8 @@ public class RoomEventResults {
      * <p/>
      * The string key is the room ID for which the State Event array belongs to.
      */
-    @ApiModelProperty(
-        value = "The current state for every room in the results. This is included if the request had the include_state key set with"
+    @Schema(
+        description = "The current state for every room in the results. This is included if the request had the include_state key set with"
             + " a value of true."
     )
     private Map<String, List<Event>> state;
@@ -71,8 +72,8 @@ public class RoomEventResults {
      * The outer string key is the group key requested (eg: room_id or sender). The inner string key is the grouped value
      * (eg: a room's ID or a user's ID).
      */
-    @ApiModelProperty(
-        value = "Any groups that were requested."
+    @Schema(
+        description = "Any groups that were requested."
     )
     private Map<String, Map<String, GroupValue>> groups;
 
@@ -80,9 +81,8 @@ public class RoomEventResults {
      * Token that can be used to get the next batch of results, by passing as the next_batch parameter to the next call. If this field
      * is absent, there are no more results.
      */
-    @ApiModelProperty(
-        name = "next_batch",
-        value = "Token that can be used to get the next batch of results, by passing as the "
+    @Schema(
+        description = "Token that can be used to get the next batch of results, by passing as the "
             + "next_batch parameter to the next call. If this field is absent, there are no more results."
     )
     @JsonProperty("next_batch")

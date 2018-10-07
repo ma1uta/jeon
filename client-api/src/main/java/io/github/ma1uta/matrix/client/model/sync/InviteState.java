@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import io.github.ma1uta.matrix.StrippedState;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Invite state.
  */
-@ApiModel(description = "Invite state.")
+@Schema(
+    description = "Invite state."
+)
 public class InviteState {
 
     /**
      * List of events.
      */
-    @ApiModelProperty(
-        value = "List of events."
+    @Schema(
+        description = "List of events."
     )
     private List<StrippedState> events;
 

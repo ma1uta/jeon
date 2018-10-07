@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * To device.
  */
-@ApiModel(description = "To device.")
+@Schema(
+    description = "To device."
+)
 public class ToDevice {
 
     /**
      * List of sent-to-device messages.
      */
-    @ApiModelProperty(
-        value = "List of send-to-device messages."
+    @Schema(
+        description = "List of send-to-device messages."
     )
     private List<Event> events;
 

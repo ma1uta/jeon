@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Device info.
  */
-@ApiModel(description = "Device info")
+@Schema(
+    description = "Device info"
+)
 public class DeviceInfo {
 
     /**
      * A user's sessions (i.e. what they did with an access token from one login).
      */
-    @ApiModelProperty(
-        value = "A user's sessions (i.e. what they did with an access token from one login)"
+    @Schema(
+        description = "A user's sessions (i.e. what they did with an access token from one login)"
     )
     private List<SessionInfo> sessions;
 

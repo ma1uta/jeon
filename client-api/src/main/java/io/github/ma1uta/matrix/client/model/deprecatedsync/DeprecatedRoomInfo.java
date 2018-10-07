@@ -19,11 +19,9 @@ package io.github.ma1uta.matrix.client.model.deprecatedsync;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.SecurityContext;
 
@@ -31,19 +29,19 @@ import javax.ws.rs.core.SecurityContext;
  * Deprecated room info.
  *
  * @deprecated in favor of {@link io.github.ma1uta.matrix.client.api.SyncApi#sync(String, String, Boolean, String, Long,
- * HttpServletRequest, AsyncResponse, SecurityContext)}.
+ * javax.ws.rs.core.UriInfo, javax.ws.rs.core.HttpHeaders, AsyncResponse, SecurityContext)}.
  */
 @Deprecated
-@ApiModel(description = "Deprecated room info.")
+@Schema(
+    description = "Deprecated room info."
+)
 public class DeprecatedRoomInfo {
 
     /**
      * Required. The ID of this room.
      */
-    @ApiModelProperty(
-        notes = "room_id",
-        value = "The ID of this room.",
-        required = true
+    @Schema(
+        description = "The ID of this room."
     )
     @JsonProperty("room_id")
     private String roomId;
@@ -51,26 +49,24 @@ public class DeprecatedRoomInfo {
     /**
      * Required. The user's membership state in this room. One of: ["invite", "join", "leave", "ban"]
      */
-    @ApiModelProperty(
-        value = "The user's membership state in this room.",
-        required = true,
-        allowableValues = "invite, join, leave, ban"
+    @Schema(
+        description = "The user's membership state in this room."
     )
     private String membership;
 
     /**
      * The invite event if membership is invite.
      */
-    @ApiModelProperty(
-        value = "The invite event if membership is invite."
+    @Schema(
+        description = "The invite event if membership is invite."
     )
     private Event invite;
 
     /**
      * The pagination chunk for this room.
      */
-    @ApiModelProperty(
-        value = "The pagination chunk for this room."
+    @Schema(
+        description = "The pagination chunk for this room."
     )
     private Page<Event> messages;
 
@@ -78,8 +74,8 @@ public class DeprecatedRoomInfo {
      * If the user is a member of the room this will be the current state of the room as a list of events.
      * If the user has left the room this will be the state of the room when they left it.
      */
-    @ApiModelProperty(
-        value = "If the user is a member of the room this will be the current state of the room as a list of events."
+    @Schema(
+        description = "If the user is a member of the room this will be the current state of the room as a list of events."
             + " If the user has left the room this will be the state of the room when they left it."
     )
     private List<Event> state;
@@ -87,18 +83,16 @@ public class DeprecatedRoomInfo {
     /**
      * Whether this room is visible to the /publicRooms API or not." One of: ["private", "public"].
      */
-    @ApiModelProperty(
-        value = "Whether this room is visible to the /publicRooms API or not.",
-        allowableValues = "private, public"
+    @Schema(
+        description = "Whether this room is visible to the /publicRooms API or not."
     )
     private String visibility;
 
     /**
      * The private data that this user has attached to this room.
      */
-    @ApiModelProperty(
-        notes = "account_data",
-        value = "The private data that this user has attached to this room."
+    @Schema(
+        description = "The private data that this user has attached to this room."
     )
     @JsonProperty("account_data")
     private List<Event> accountData;

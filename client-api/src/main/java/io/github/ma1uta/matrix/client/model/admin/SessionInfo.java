@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Session info.
  */
-@ApiModel(description = "Session info.")
+@Schema(
+    description = "Session info."
+)
 public class SessionInfo {
 
     /**
      * Information particular connections in the session.
      */
-    @ApiModelProperty(
-        value = "Information particular connections in the session."
+    @Schema(
+        description = "Information particular connections in the session."
     )
     private List<ConnectionInfo> connections;
 

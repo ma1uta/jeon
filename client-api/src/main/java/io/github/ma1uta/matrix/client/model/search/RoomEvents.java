@@ -17,15 +17,16 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Room events.
  */
-@ApiModel(description = "Room events.")
+@Schema(
+    description = "Room events."
+)
 public class RoomEvents {
 
     /**
@@ -74,10 +75,8 @@ public class RoomEvents {
     /**
      * Required. The string to search events for.
      */
-    @ApiModelProperty(
-        name = "search_term",
-        value = "The string to search events for.",
-        required = true
+    @Schema(
+        description = "The string to search events for."
     )
     @JsonProperty("search_term")
     private String searchTerm;
@@ -85,27 +84,24 @@ public class RoomEvents {
     /**
      * The keys to search. Defaults to all. One of: ["content.body", "content.name", "content.topic"]
      */
-    @ApiModelProperty(
-        value = "The keys to search.",
-        allowableValues = "content.body, content.name, content.topic"
+    @Schema(
+        description = "The keys to search."
     )
     private List<String> keys;
 
     /**
      * This takes a filter.
      */
-    @ApiModelProperty(
-        value = "This takes a filter."
+    @Schema(
+        description = "This takes a filter."
     )
     private Filter filter;
 
     /**
      * The order in which to search for results. One of: ["recent", "rank"]
      */
-    @ApiModelProperty(
-        name = "order_by",
-        value = "The order in which to search for results.",
-        allowableValues = "recent, rank"
+    @Schema(
+        description = "The order in which to search for results."
     )
     @JsonProperty("order_by")
     private String orderBy;
@@ -113,9 +109,8 @@ public class RoomEvents {
     /**
      * Configures whether any context for the events returned are included in the response.
      */
-    @ApiModelProperty(
-        name = "event_context",
-        value = "Configures whether any context for the events returned are included in the response."
+    @Schema(
+        description = "Configures whether any context for the events returned are included in the response."
     )
     @JsonProperty("event_context")
     private EventContext eventContext;
@@ -123,9 +118,8 @@ public class RoomEvents {
     /**
      * Requests the server return the current state for each room returned.
      */
-    @ApiModelProperty(
-        name = "include_state",
-        value = "Requests the server return the current state for each room returned."
+    @Schema(
+        description = "Requests the server return the current state for each room returned."
     )
     @JsonProperty("include_state")
     private Boolean includeState;
@@ -133,8 +127,8 @@ public class RoomEvents {
     /**
      * Requests that the server partitions the result set based on the provided list of keys.
      */
-    @ApiModelProperty(
-        value = "Requests that the server partitions the result set based on the provided list of keys."
+    @Schema(
+        description = "Requests that the server partitions the result set based on the provided list of keys."
     )
     private Groupings groupings;
 

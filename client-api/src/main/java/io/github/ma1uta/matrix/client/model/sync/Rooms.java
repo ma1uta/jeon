@@ -16,38 +16,39 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Rooms.
  */
-@ApiModel(description = "Rooms.")
+@Schema(
+    description = "Rooms."
+)
 public class Rooms {
 
     /**
      * The rooms that the user has joined.
      */
-    @ApiModelProperty(
-        value = "The rooms that the user has joined."
+    @Schema(
+        description = "The rooms that the user has joined."
     )
     private Map<String, JoinedRoom> join;
 
     /**
      * The rooms that the user has been invited to.
      */
-    @ApiModelProperty(
-        value = "The rooms that the user has been invited to."
+    @Schema(
+        description = "The rooms that the user has been invited to."
     )
     private Map<String, InvitedRoom> invite;
 
     /**
      * The rooms that the user has left or been banned from.
      */
-    @ApiModelProperty(
-        value = "The rooms that the user has left or been banned from."
+    @Schema(
+        description = "The rooms that the user has left or been banned from."
     )
     private Map<String, LeftRoom> leave;
 

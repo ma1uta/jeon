@@ -16,50 +16,47 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Third party signed.
  */
-@ApiModel(description = "Third party signed.")
+@Schema(
+    description = "Third party signed."
+)
 public class ThirdPartySigned {
 
     /**
      * Required. The Matrix ID of the user who issued the invite.
      */
-    @ApiModelProperty(
-        value = "The Matrix ID of the user who issued the invite.",
-        required = true
+    @Schema(
+        description = "The Matrix ID of the user who issued the invite."
     )
     private String sender;
 
     /**
      * Required. The Matrix ID of the invitee.
      */
-    @ApiModelProperty(
-        value = "The Matrix ID of the invitee.",
-        required = true
+    @Schema(
+        description = "The Matrix ID of the invitee."
     )
     private String mxid;
 
     /**
      * Required. The state key of the m.third_party_invite event.
      */
-    @ApiModelProperty(
-        value = "The state key of the m.third_party_invite event.",
-        required = true
+    @Schema(
+        description = "The state key of the m.third_party_invite event."
     )
     private String token;
 
     /**
      * Required. A signatures object containing a signature of the entire signed object.
      */
-    @ApiModelProperty(
-        value = "A signatures object containing a signature of the entire signed object.",
-        required = true
+    @Schema(
+        description = "A signatures object containing a signature of the entire signed object."
     )
     private Map<String, Map<String, String>> signatures;
 

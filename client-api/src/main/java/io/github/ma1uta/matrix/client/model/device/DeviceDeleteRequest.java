@@ -17,20 +17,21 @@
 package io.github.ma1uta.matrix.client.model.device;
 
 import io.github.ma1uta.matrix.client.model.account.AuthenticationData;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Additional authentication information for the user-interactive authentication API.
  */
-@ApiModel(description = "Additional authentication information for the user-interactive authentication API.")
+@Schema(
+    description = "Additional authentication information for the user-interactive authentication API."
+)
 public class DeviceDeleteRequest {
 
     /**
      * Authentication information.
      */
-    @ApiModelProperty(
-        value = "Authentication information."
+    @Schema(
+        description = "Authentication information."
     )
     private AuthenticationData auth;
 

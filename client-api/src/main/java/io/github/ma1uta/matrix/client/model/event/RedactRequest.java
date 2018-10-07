@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.client.model.event;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Request for the redaction.
  */
-@ApiModel(description = "Request for the redaction.")
+@Schema(
+    description = "Request for the redaction."
+)
 public class RedactRequest {
 
     /**
      * The reason for the event being redacted.
      */
-    @ApiModelProperty(
-        value = "The reason for the event being redacted."
+    @Schema(
+        description = "The reason for the event being redacted."
     )
     private String reason;
 

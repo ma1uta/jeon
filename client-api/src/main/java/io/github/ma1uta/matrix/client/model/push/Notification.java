@@ -18,41 +18,39 @@ package io.github.ma1uta.matrix.client.model.push;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Notification.
  */
-@ApiModel(description = "Notification")
+@Schema(
+    description = "Notification"
+)
 public class Notification {
 
     /**
      * Required. The action(s) to perform when the conditions for this rule are met. See Push Rules: API.
      */
-    @ApiModelProperty(
-        value = "The action(s) to perform when the conditions for this rule are met. See Push Rules: API.",
-        required = true
+    @Schema(
+        description = "The action(s) to perform when the conditions for this rule are met. See Push Rules: API."
     )
     private List<Object> actions;
 
     /**
      * Required. The Event object for the event that triggered the notification.
      */
-    @ApiModelProperty(
-        value = "The Event object for the event that triggered the notification.",
-        required = true
+    @Schema(
+        description = "The Event object for the event that triggered the notification."
     )
     private Event event;
 
     /**
      * The profile tag of the rule that matched this event.
      */
-    @ApiModelProperty(
-        name = "profile_tag",
-        value = "The profile tag of the rule that matched this event."
+    @Schema(
+        description = "The profile tag of the rule that matched this event."
     )
     @JsonProperty("profile_tag")
     private String profileTag;
@@ -60,19 +58,16 @@ public class Notification {
     /**
      * Required. Indicates whether the user has sent a read receipt indicating that they have read this message.
      */
-    @ApiModelProperty(
-        value = "Indicates whether the user has sent a read receipt indicating that they have read this message.",
-        required = true
+    @Schema(
+        description = "Indicates whether the user has sent a read receipt indicating that they have read this message."
     )
     private Boolean read;
 
     /**
      * Required. The ID of the room in which the event was posted.
      */
-    @ApiModelProperty(
-        name = "room_id",
-        value = "The ID of the room in which the event was posted.",
-        required = true
+    @Schema(
+        description = "The ID of the room in which the event was posted."
     )
     @JsonProperty("room_id")
     private String roomId;
@@ -80,9 +75,8 @@ public class Notification {
     /**
      * Required. The unix timestamp at which the event notification was sent, in milliseconds.
      */
-    @ApiModelProperty(
-        value = "The unix timestamp at which the event notification was sent, in milliseconds.",
-        required = true
+    @Schema(
+        description = "The unix timestamp at which the event notification was sent, in milliseconds."
     )
     private Long ts;
 

@@ -17,21 +17,21 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body with roomId used in the room apis.
  */
-@ApiModel(description = "JSON body with roomId used in the room apis.")
+@Schema(
+    description = "JSON body with roomId used in the room apis."
+)
 public class RoomId {
 
     /**
      * The created room's ID.
      */
-    @ApiModelProperty(
-        name = "room_id",
-        value = "The created room's ID."
+    @Schema(
+        description = "The created room's ID."
     )
     @JsonProperty("room_id")
     private String roomId;

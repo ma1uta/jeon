@@ -19,8 +19,7 @@ package io.github.ma1uta.matrix.client.model.search;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.client.model.profile.Profile;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
@@ -28,22 +27,24 @@ import java.util.Map;
 /**
  * Event context.
  */
-@ApiModel(description = "Event context.")
+@Schema(
+    description = "Event context."
+)
 public class EventContextResponse {
 
     /**
      * Pagination token for the start of the chunk.
      */
-    @ApiModelProperty(
-        value = "Pagination token for the start of the chunk."
+    @Schema(
+        description = "Pagination token for the start of the chunk."
     )
     private String start;
 
     /**
      * Pagination token for the end of the chunk.
      */
-    @ApiModelProperty(
-        value = "Pagination token for the end of the chunk."
+    @Schema(
+        description = "Pagination token for the end of the chunk."
     )
     private String end;
 
@@ -52,9 +53,8 @@ public class EventContextResponse {
      * <p/>
      * The string key is the user ID for which the profile belongs to.
      */
-    @ApiModelProperty(
-        name = "profile_info",
-        value = "The historic profile information of the users that sent the events returned."
+    @Schema(
+        description = "The historic profile information of the users that sent the events returned."
     )
     @JsonProperty("profile_info")
     private Map<String, Profile> profileInfo;
@@ -62,9 +62,8 @@ public class EventContextResponse {
     /**
      * Events just before the result.
      */
-    @ApiModelProperty(
-        name = "events_before",
-        value = "Events just before the result."
+    @Schema(
+        description = "Events just before the result."
     )
     @JsonProperty("events_before")
     private List<Event> eventsBefore;
@@ -72,9 +71,8 @@ public class EventContextResponse {
     /**
      * Events just after the result.
      */
-    @ApiModelProperty(
-        name = "events_after",
-        value = "Events just after the result."
+    @Schema(
+        description = "Events just after the result."
     )
     @JsonProperty("events_after")
     private List<Event> eventsAfter;

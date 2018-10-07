@@ -17,21 +17,21 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Search filter.
  */
-@ApiModel(description = "Search filter.")
+@Schema(
+    description = "Search filter."
+)
 public class PublicRoomsFilter {
 
     /**
      * A string to search for in the room metadata, e.g. name, topic, canonical alias etc. (Optional).
      */
-    @ApiModelProperty(
-        name = "generic_search_term",
-        value = "A string to search for in the room metadata, e.g. name, topic, canonical alias etc. (Optional)."
+    @Schema(
+        description = "A string to search for in the room metadata, e.g. name, topic, canonical alias etc. (Optional)."
     )
     @JsonProperty("generic_search_term")
     private String genericSearchTerm;

@@ -17,37 +17,37 @@
 package io.github.ma1uta.matrix.client.model.sync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Left room.
  */
-@ApiModel(description = "Left room.")
+@Schema(
+    description = "Left room."
+)
 public class LeftRoom {
 
     /**
      * The state updates for the room up to the start of the timeline.
      */
-    @ApiModelProperty(
-        value = "The state updates for the room up to the start of the timeline."
+    @Schema(
+        description = "The state updates for the room up to the start of the timeline."
     )
     private State state;
 
     /**
      * The timeline of messages and state changes in the room up to the point when the user left.
      */
-    @ApiModelProperty(
-        value = "The timeline of messages and state changes in the room up to the point when the user left."
+    @Schema(
+        description = "The timeline of messages and state changes in the room up to the point when the user left."
     )
     private Timeline timeline;
 
     /**
      * The private data that this user has attached to this room.
      */
-    @ApiModelProperty(
-        name = "account_data",
-        value = "The private data that this user has attached to this room."
+    @Schema(
+        description = "The private data that this user has attached to this room."
     )
     @JsonProperty("account_data")
     private AccountData accountData;

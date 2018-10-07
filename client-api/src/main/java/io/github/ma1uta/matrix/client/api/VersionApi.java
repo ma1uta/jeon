@@ -17,19 +17,20 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.client.model.version.VersionsResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Gets the versions of the specification supported by the server.
@@ -39,10 +40,6 @@ import javax.ws.rs.core.MediaType;
  * Only the latest Z value will be reported for each supported X.Y value.
  * i.e. if the server implements r0.0.0, r0.0.1, and r1.2.0, it will report r0.0.1 and r1.2.0.
  */
-@Api(
-    value = "Version",
-    description = "Gets the versions of the specification supported by the server."
-)
 @Path("/_matrix/client/versions")
 @Produces(MediaType.APPLICATION_JSON)
 public interface VersionApi {
@@ -53,20 +50,29 @@ public interface VersionApi {
      * Return: {@link VersionsResponse}.
      * <p>Status code 200: The versions supported by the server.</p>
      *
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Gets the versions of the specification supported by the server.",
-        response = VersionsResponse.class
+    @Operation(
+        summary = "Gets the versions of the specification supported by the server.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The versions supported by the server.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = VersionsResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The versions supported by the server.")
-    })
     @GET
     @Path("/")
     void versions(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 }

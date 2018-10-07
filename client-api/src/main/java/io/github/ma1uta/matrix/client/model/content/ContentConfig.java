@@ -17,22 +17,22 @@
 package io.github.ma1uta.matrix.client.model.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Content config.
  */
-@ApiModel(description = "Content config.")
+@Schema(
+    description = "Content config."
+)
 public class ContentConfig {
 
     /**
      * The maximum size an upload can be in bytes. Clients SHOULD use this as a guide when uploading content.
      * If not listed or null, the size limit should be treated as unknown.
      */
-    @ApiModelProperty(
-        name = "m.upload.size",
-        value = "The maximum size an upload can be in bytes. Clients SHOULD use this as a"
+    @Schema(
+        description = "The maximum size an upload can be in bytes. Clients SHOULD use this as a"
             + "guide when uploading content. If not listed or null, the size limit should be treated as unknown."
     )
     @JsonProperty("m.upload.size")

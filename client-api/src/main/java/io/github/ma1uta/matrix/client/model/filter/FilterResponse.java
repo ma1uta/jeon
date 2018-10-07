@@ -17,24 +17,23 @@
 package io.github.ma1uta.matrix.client.model.filter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body response.
  */
-@ApiModel(description = "JSON body response.")
+@Schema(
+    description = "JSON body response."
+)
 public class FilterResponse {
 
     /**
      * Required. The ID of the filter that was created. Cannot start with a { as this character is used to determine if the filter
      * provided is inline JSON or a previously declared filter by homeservers on some APIs.
      */
-    @ApiModelProperty(
-        name = "filter_id",
-        value = "The ID of the filter that was created. Cannot start with a { as this character is used to determine if the filter"
-            + " provided is inline JSON or a previously declared filter by homeservers on some APIs.",
-        required = true
+    @Schema(
+        description = "The ID of the filter that was created. Cannot start with a { as this character is used to determine if the filter"
+            + " provided is inline JSON or a previously declared filter by homeservers on some APIs."
     )
     @JsonProperty("filter_id")
     private String filterId;

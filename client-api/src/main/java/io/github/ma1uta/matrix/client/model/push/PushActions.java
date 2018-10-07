@@ -16,15 +16,16 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * JSON body request/response for action push api.
  */
-@ApiModel(description = "JSON body request/response for action push api.")
+@Schema(
+    description = "JSON body request/response for action push api."
+)
 public class PushActions {
 
     /**
@@ -32,10 +33,8 @@ public class PushActions {
      * <p/>
      * One of: ["notify", "dont_notify", "coalesce", "set_tweak"].
      */
-    @ApiModelProperty(
-        value = "The action(s) to perform for this rule.",
-        required = true,
-        allowableValues = "notify, dont_notify, coalesce, set_tweak"
+    @Schema(
+        description = "The action(s) to perform for this rule."
     )
     private List<String> actions;
 

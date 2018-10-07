@@ -17,22 +17,21 @@
 package io.github.ma1uta.matrix.client.model.serverdiscovery;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Identity Server information.
  */
-@ApiModel(description = "Identity server information.")
+@Schema(
+    description = "Identity server information."
+)
 public class IdentityServerInfo {
 
     /**
      * Required. The base URL for the identity server for client-server connections.
      */
-    @ApiModelProperty(
-        name = "base_url",
-        value = "The base URL for the identity server for client-server connections.",
-        required = true
+    @Schema(
+        description = "The base URL for the identity server for client-server connections."
     )
     @JsonProperty("base_url")
     private String baseUrl;
