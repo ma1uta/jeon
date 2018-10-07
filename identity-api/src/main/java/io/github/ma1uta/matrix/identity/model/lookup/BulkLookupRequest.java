@@ -16,22 +16,23 @@
 
 package io.github.ma1uta.matrix.identity.model.lookup;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 /**
  * Request of the lookup Matrix user IDs for a list of 3pids.
  */
-@ApiModel(description = "Request of the lookup Matrix user IDs for a list of 3pids.")
+@Schema(
+    description = "Request of the lookup Matrix user IDs for a list of 3pids."
+)
 public class BulkLookupRequest {
 
     /**
      * Required. An array of arrays containing the 3PID Types with the medium in first position and the address in second position.
      */
-    @ApiModelProperty(
-        value = "An array of arrays containing the 3PID Types with the medium in first position and the address in second position.",
+    @Schema(
+        description = "An array of arrays containing the 3PID Types with the medium in first position and the address in second position.",
         required = true
     )
     private List<List<String>> threepids;

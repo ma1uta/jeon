@@ -17,20 +17,21 @@
 package io.github.ma1uta.matrix.identity.model.signing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body request of the signing api.
  */
-@ApiModel(description = "JSON body request of the signing api.")
+@Schema(
+    description = "JSON body request of the signing api."
+)
 public class SigningRequest {
 
     /**
      * Required. The Matrix user ID of the user accepting the invitation.
      */
-    @ApiModelProperty(
-        value = "The Matrix user ID of the user accepting the invitation.",
+    @Schema(
+        description = "The Matrix user ID of the user accepting the invitation.",
         required = true
     )
     private String mxid;
@@ -38,8 +39,8 @@ public class SigningRequest {
     /**
      * Required. The token from the call to store-invite.
      */
-    @ApiModelProperty(
-        value = "The token from the call to store-invite.",
+    @Schema(
+        description = "The token from the call to store-invite.",
         required = true
     )
     private String token;
@@ -47,9 +48,9 @@ public class SigningRequest {
     /**
      * Required. The private key, encoded as Unpadded base64.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "private_key",
-        value = "The private key, encoded as Unpadded base64.",
+        description = "The private key, encoded as Unpadded base64.",
         required = true
     )
     @JsonProperty("private_key")

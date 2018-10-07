@@ -17,20 +17,21 @@
 package io.github.ma1uta.matrix.identity.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Validation result.
  */
-@ApiModel(description = "Validation result.")
+@Schema(
+    description = "Validation result."
+)
 public class ValidationResponse {
 
     /**
      * Required. The medium type of the 3pid.
      */
-    @ApiModelProperty(
-        value = "The medium type of the 3pid.",
+    @Schema(
+        description = "The medium type of the 3pid.",
         required = true
     )
     private String medium;
@@ -38,8 +39,8 @@ public class ValidationResponse {
     /**
      * Required. The address of the 3pid being looked up.
      */
-    @ApiModelProperty(
-        value = "The address of the 3pid being looked up.",
+    @Schema(
+        description = "The address of the 3pid being looked up.",
         required = true
     )
     private String address;
@@ -47,9 +48,9 @@ public class ValidationResponse {
     /**
      * Required. Timestamp, in milliseconds, indicating the time that the 3pid was validated.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "validated_at",
-        value = "Timestamp, in milliseconds, indicating the time that the 3pid was validated.",
+        description = "Timestamp, in milliseconds, indicating the time that the 3pid was validated.",
         required = true
     )
     @JsonProperty("validated_at")

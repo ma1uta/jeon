@@ -16,15 +16,15 @@
 
 package io.github.ma1uta.matrix.identity.api;
 
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.signing.SigningRequest;
 import io.github.ma1uta.matrix.identity.model.signing.SigningResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -32,18 +32,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * To aid clients who may not be able to perform crypto themselves, the identity server offers some crypto functionality to help
  * in accepting invitations. This is less secure than the client doing it itself, but may be useful where this isn't possible.
  */
-@Api(
-    value = "EphemeralInvitationSigning",
-    description = "To aid clients who may not be able to perform crypto themselves, the identity server offers some crypto functionality"
-        + " to help in accepting invitations. This is less secure than the client doing it itself, but may be useful where this"
-        + " isn't possible."
-)
 @Path("/_matrix/identity/api/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -58,28 +54,46 @@ public interface SigningApi {
      * <p>Status code 200: The signed JSON of the mxid, sender, and token.</p>
      * <p>Status code 404: The token was not found.</p>
      *
-     * @param request        JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param request       JSON body request.
+     * @param uriInfo       Request information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Sign invitation details.",
-        notes = "The identity server will look up token which was stored in a call to store-invite, and fetch the sender of the invite.",
-        response = SigningResponse.class
+    @Operation(
+        summary = "Sign invitation details.",
+        description = "The identity server will look up token which was stored in a call to store-invite, and fetch the sender"
+            + " of the invite.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The signed JSON of the mxid, sender, and token.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SigningResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The token was not found.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The signed JSON of the mxid, sender, and token."),
-        @ApiResponse(code = 404, message = "The token was not found.")
-    })
     @POST
     @Path("/sign-ed25519")
     void sign(
-        @ApiParam(
-            value = "JSON body request.",
+        @RequestBody(
+            description = "JSON body request.",
             required = true
         ) SigningRequest request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 }

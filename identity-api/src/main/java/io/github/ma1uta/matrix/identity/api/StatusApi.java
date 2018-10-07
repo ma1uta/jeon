@@ -17,27 +17,24 @@
 package io.github.ma1uta.matrix.identity.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Checks that an Identity server is available at this API endpoint.
  */
-@Api(
-    value = "Status",
-    description = "Checks that an Identity server is available at this API endpoint."
-)
 @Path("/_matrix/identity/api/v1")
 @Produces(MediaType.APPLICATION_JSON)
 public interface StatusApi {
@@ -50,23 +47,33 @@ public interface StatusApi {
      * Return: {@link EmptyResponse}.
      * <p>Status code 200: An identity server is ready to serve requests.</p>
      *
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param uriInfo       Request information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "To discover that an Identity server is available at a specific URL, this endpoint can be queried and will return an"
+    @Operation(
+        summary = "To discover that an Identity server is available at a specific URL, this endpoint can be queried and will return an"
             + " empty object.",
-        notes = "This is primarly used for auto-discovery and health check purposes by entities acting as a client for"
+        description = "This is primarly used for auto-discovery and health check purposes by entities acting as a client for"
             + " the Identity server.",
-        response = EmptyResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An identity server is ready to serve requests.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "An identity server is ready to serve requests.")
-    })
     @GET
     @Path("")
     void v1Status(
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 }

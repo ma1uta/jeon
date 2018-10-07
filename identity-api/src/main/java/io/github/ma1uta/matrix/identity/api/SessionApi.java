@@ -17,18 +17,19 @@
 package io.github.ma1uta.matrix.identity.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.associations.ValidationResponse;
 import io.github.ma1uta.matrix.identity.model.session.EmailRequestToken;
 import io.github.ma1uta.matrix.identity.model.session.PhoneRequestToken;
 import io.github.ma1uta.matrix.identity.model.session.SubmitToken;
 import io.github.ma1uta.matrix.thirdpid.SessionResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -38,14 +39,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * The flow for creating an association is session-based.
  */
-@Api(
-    value = "Session"
-)
 @Path("/_matrix/identity/api/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -69,31 +69,55 @@ public interface SessionApi {
      * <li>M_EMAIL_SEND_ERROR: The validation email could not be sent.</li>
      * </ul>
      *
-     * @param request        JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param request       JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Create a session for validating an email address.",
-        notes = "The identity server will send an email containing a token. If that token is presented to the identity server in"
+    @Operation(
+        summary = "Create a session for validating an email address.",
+        description = "The identity server will send an email containing a token. If that token is presented to the identity server in"
             + " the future, it indicates that that user was able to read the email for that email address, and so we validate ownership"
             + " of the email address.\nNote that homeservers offer APIs that proxy this API, adding additional behaviour on top,"
             + " for example,/register/email/requestToken is designed specifically for use when registering an account and therefore will"
             + " inform the user if the email address given is already registered on the server.",
-        response = SessionResponse.class
+        responses = {
+            @ApiResponse(
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "200",
+                description = "Session created.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "An error ocurred.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "Session created."),
-        @ApiResponse(code = 400, message = "An error ocurred.")
-    })
     @POST
     @Path("/validate/email/requestToken")
     void createEmailSession(
-        @ApiParam(
-            value = "JSON body request."
+        @RequestBody(
+            description = "JSON body request."
         ) EmailRequestToken request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -111,31 +135,40 @@ public interface SessionApi {
      * Return: {@link ValidationResponse}.
      * <p>Status code 200: The success of the validation.</p>
      *
-     * @param request        JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param request       JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Validate ownership of an email address.",
-        notes = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is"
-            + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
-            + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
+    @Operation(
+        summary = "Validate ownership of an email address.",
+        description = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address"
+            + " is considered to have been validated. This does not publish any information publicly, or associate the email address with"
+            + " any Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
             + " an implementation detail for the identity server. Clients must always pass on the token without modification.",
-        response = ValidationResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The success of the validation.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ValidationResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The success of the validation.")
-    })
     @POST
     @Path("/validate/email/submitToken")
     void postValidateEmail(
-        @ApiParam(
-            value = "JSON body request.",
+        @RequestBody(
+            description = "JSON body request.",
             required = true
         ) SubmitToken request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -154,44 +187,69 @@ public interface SessionApi {
      * The user must be redirected to the URL provided by the next_link parameter.</p>
      * <p>Status code 4xx: Validation failed.</p>
      *
-     * @param sid            Required. The session ID, generated by the requestToken call.
-     * @param clientSecret   Required. The client secret that was supplied to the requestToken call.
-     * @param token          Required. The token generated by the requestToken call and emailed to the user.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param sid           Required. The session ID, generated by the requestToken call.
+     * @param clientSecret  Required. The client secret that was supplied to the requestToken call.
+     * @param token         Required. The token generated by the requestToken call and emailed to the user.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Validate ownership of an email address.",
-        notes = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is"
-            + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
-            + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
+    @Operation(
+        summary = "Validate ownership of an email address.",
+        description = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address"
+            + " is considered to have been validated. This does not publish any information publicly, or associate the email address with"
+            + " any Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
             + " an implementation detail for the identity server. Clients must always pass on the token without modification.",
-        response = EmptyResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Email address is validated.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "302",
+                description = "Email address is validated, and the next_link parameter was provided to the requestToken call."
+                    + " The user must be redirected to the URL provided by the next_link parameter.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Validation failed.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "Email address is validated."),
-        @ApiResponse(code = 302, message = "Email address is validated, and the next_link parameter was provided to the requestToken call."
-            + " The user must be redirected to the URL provided by the next_link parameter."),
-        @ApiResponse(code = 400, message = "Validation failed.")
-    })
     @GET
     @Path("/validate/email/submitToken")
     void getValidateEmail(
-        @ApiParam(
-            value = "The session ID, generated by the requestToken call.",
+        @Parameter(
+            description = "The session ID, generated by the requestToken call.",
             required = true
         ) @QueryParam("sid") String sid,
-        @ApiParam(
-            value = "The client secret that was supplied to the requestToken call.",
+        @Parameter(
+            description = "The client secret that was supplied to the requestToken call.",
             required = true
         ) @QueryParam("client_secret") String clientSecret,
-        @ApiParam(
-            value = "The token generated by the requestToken call and emailed to the user.",
+        @Parameter(
+            description = "The token generated by the requestToken call and emailed to the user.",
             required = true
         ) @QueryParam("token") String token,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -214,32 +272,49 @@ public interface SessionApi {
      * <li>M_DESTINATION_REJECTED: The identity server cannot deliver an SMS to the provided country or region.</li>
      * </ul>
      *
-     * @param request        JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param request       JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Create a session for validating a phone number.",
-        notes = "The identity server will send an SMS message containing a token. If that token is presented to the identity server"
+    @Operation(
+        summary = "Create a session for validating a phone number.",
+        description = "The identity server will send an SMS message containing a token. If that token is presented to the identity server"
             + " in the future, it indicates that that user was able to read the SMS for that phone number, and so we validate ownership"
             + " of the phone number.\nNote that homeservers offer APIs that proxy this API, adding additional behaviour on top,"
             + " for example, /register/msisdn/requestToken is designed specifically for use when registering an account and therefore will"
             + " inform the user if the phone number given is already registered on the server.",
-        response = SessionResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Session created.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = SessionResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "An error occured.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "Session created."),
-        @ApiResponse(code = 400, message = "An error occured.")
-    })
     @POST
     @Path("/validate/msisdn/requestToken")
     void createPhoneSession(
-        @ApiParam(
-            value = "JSON body request",
+        @RequestBody(
+            description = "JSON body request",
             required = true
         ) PhoneRequestToken request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -257,31 +332,40 @@ public interface SessionApi {
      * Return: {@link ValidationResponse}.
      * <p>Status code 200: The success of the validation.</p>
      *
-     * @param request        JSON body request.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param request       JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Validate ownership of a phone number.",
-        notes = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is"
-            + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
-            + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
+    @Operation(
+        summary = "Validate ownership of a phone number.",
+        description = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address"
+            + " is considered to have been validated. This does not publish any information publicly, or associate the email address with"
+            + " any Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
             + " an implementation detail for the identity server. Clients must always pass on the token without modification.",
-        response = ValidationResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The success of the validation.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ValidationResponse.class
+                    )
+                )
+            )
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The success of the validation.")
-    })
     @POST
     @Path("/validate/msisdn/submitToken")
     void postValidatePhone(
-        @ApiParam(
-            value = "JSON body request.",
+        @RequestBody(
+            description = "JSON body request.",
             required = true
         ) SubmitToken request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -300,46 +384,72 @@ public interface SessionApi {
      * The user must be redirected to the URL provided by the next_link parameter.</p>
      * <p>Status code 4xx: Validation failed.</p>
      *
-     * @param sid            Required. The session ID, generated by the requestToken call.
-     * @param clientSecret   Required. The client secret that was supplied to the requestToken call.
-     * @param token          Required. The token generated by the requestToken call and sent to the user.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param sid           Required. The session ID, generated by the requestToken call.
+     * @param clientSecret  Required. The client secret that was supplied to the requestToken call.
+     * @param token         Required. The token generated by the requestToken call and sent to the user.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Validate ownership of an email address.",
-        notes = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address is"
-            + " considered to have been validated. This does not publish any information publicly, or associate the email address with any"
-            + " Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
+    @Operation(
+        summary = "Validate ownership of an email address.",
+        description = "If the three parameters are consistent with a set generated by a requestToken call, ownership of the email address"
+            + " is considered to have been validated. This does not publish any information publicly, or associate the email address with"
+            + " any Matrix user ID. Specifically, calls to /lookup will not show a binding.\nThe identity server is free to match the token"
             + " case-insensitively, or carry out other mapping operations such as unicode normalisation. Whether to do so is"
             + " an implementation detail for the identity server. Clients must always pass on the token without modification.\n"
             + " Note: for backwards compatibility with previous drafts of this specification, the parameters may also be specified"
             + "as application/x-form-www-urlencoded data. However, this usage is deprecated.",
-        response = EmptyResponse.class
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Phone number is validated.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "302",
+                description = "Email address is validated, and the next_link parameter was provided to the requestToken call."
+                    + " The user must be redirected to the URL provided by the next_link parameter.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Validation failed.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "Phone number is validated."),
-        @ApiResponse(code = 302, message = "Email address is validated, and the next_link parameter was provided to the requestToken call."
-            + " The user must be redirected to the URL provided by the next_link parameter."),
-        @ApiResponse(code = 400, message = "Validation failed.")
-    })
     @GET
     @Path("/validate/msisdn/submitToken")
     void getValidatePhone(
-        @ApiParam(
-            value = "The session ID, generated by the requestToken call.",
+        @Parameter(
+            description = "The session ID, generated by the requestToken call.",
             required = true
         ) @QueryParam("sid") String sid,
-        @ApiParam(
-            value = "The client secret that was supplied to the requestToken call.",
+        @Parameter(
+            description = "The client secret that was supplied to the requestToken call.",
             required = true
         ) @QueryParam("client_secret") String clientSecret,
-        @ApiParam(
-            value = "The token generated by the requestToken call and sent to the user.",
+        @Parameter(
+            description = "The token generated by the requestToken call and sent to the user.",
             required = true
         ) @QueryParam("token") String token,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 }

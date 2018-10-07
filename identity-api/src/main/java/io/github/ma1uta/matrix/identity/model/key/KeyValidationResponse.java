@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.identity.model.key;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The validity of the public key.
  */
-@ApiModel(description = "The validity of the public key.")
+@Schema(
+    description = "The validity of the public key."
+)
 public class KeyValidationResponse {
 
     /**
      * Required. Whether the public key is recognised and is currently valid.
      */
-    @ApiModelProperty(
-        value = "Whether the public key is recognised and is currently valid.",
+    @Schema(
+        description = "Whether the public key is recognised and is currently valid.",
         required = true
     )
     private Boolean valid;

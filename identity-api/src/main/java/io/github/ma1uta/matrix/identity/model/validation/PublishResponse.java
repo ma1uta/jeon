@@ -17,22 +17,23 @@
 package io.github.ma1uta.matrix.identity.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
 
 /**
  * Result of the publishing association.
  */
-@ApiModel(description = "Result of the publishing association.")
+@Schema(
+    description = "Result of the publishing association."
+)
 public class PublishResponse {
 
     /**
      * Required. The 3pid address of the user being looked up.
      */
-    @ApiModelProperty(
-        value = "The 3pid address of the user being looked up.",
+    @Schema(
+        description = "The 3pid address of the user being looked up.",
         required = true
     )
     private String address;
@@ -40,8 +41,8 @@ public class PublishResponse {
     /**
      * Required. The medium type of the 3pid.
      */
-    @ApiModelProperty(
-        value = "The medium type of the 3pid.",
+    @Schema(
+        description = "The medium type of the 3pid.",
         required = true
     )
     private String medium;
@@ -49,8 +50,8 @@ public class PublishResponse {
     /**
      * Required. The Matrix user ID associated with the 3pid.
      */
-    @ApiModelProperty(
-        value = "The Matrix user ID associated with the 3pid.",
+    @Schema(
+        description = "The Matrix user ID associated with the 3pid.",
         required = true
     )
     private String mxid;
@@ -58,9 +59,9 @@ public class PublishResponse {
     /**
      * Required. A unix timestamp before which the association is not known to be valid.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "not_before",
-        value = "A unix timestamp before which the association is not known to be valid.",
+        description = "A unix timestamp before which the association is not known to be valid.",
         required = true
     )
     @JsonProperty("not_before")
@@ -69,9 +70,9 @@ public class PublishResponse {
     /**
      * Required. A unix timestamp after which the association is not known to be valid.
      */
-    @ApiModelProperty(
+    @Schema(
         name = "not_after",
-        value = "A unix timestamp after which the association is not known to be valid.",
+        description = "A unix timestamp after which the association is not known to be valid.",
         required = true
     )
     @JsonProperty("not_after")
@@ -80,8 +81,8 @@ public class PublishResponse {
     /**
      * Required. The unix timestamp at which the association was verified.
      */
-    @ApiModelProperty(
-        value = "The unix timestamp at which the association was verified.",
+    @Schema(
+        description = "The unix timestamp at which the association was verified.",
         required = true
     )
     private Long ts;
@@ -90,8 +91,8 @@ public class PublishResponse {
      * Required. The signatures of the verifying identity servers which show that the association should be trusted, if you trust
      * the verifying identity services.
      */
-    @ApiModelProperty(
-        value = "The signatures of the verifying identity servers which show that the association should be trusted, if you trust"
+    @Schema(
+        description = "The signatures of the verifying identity servers which show that the association should be trusted, if you trust"
             + " the verifying identity services.",
         required = true
     )

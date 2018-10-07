@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.identity.model.associations;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Result of the 3pid validation.
  */
-@ApiModel(description = "Result of the 3pid validation.")
+@Schema(
+    description = "Result of the 3pid validation."
+)
 public class ValidationResponse {
 
     /**
      * Required. Whether the validation was successful or not.
      */
-    @ApiModelProperty(
-        value = "Whether the validation was successful or not.",
+    @Schema(
+        description = "Whether the validation was successful or not.",
         required = true
     )
     private Boolean validated;

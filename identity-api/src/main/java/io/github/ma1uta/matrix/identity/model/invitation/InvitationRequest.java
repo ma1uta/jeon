@@ -16,20 +16,21 @@
 
 package io.github.ma1uta.matrix.identity.model.invitation;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * JSON body request of the invitation api.
  */
-@ApiModel(description = "JSON boy requesst of the invitation api.")
+@Schema(
+    description = "JSON boy requesst of the invitation api."
+)
 public class InvitationRequest {
 
     /**
      * Required. The literal string email.
      */
-    @ApiModelProperty(
-        value = "The literal string email",
+    @Schema(
+        description = "The literal string email",
         required = true
     )
     private String medium;
@@ -37,8 +38,8 @@ public class InvitationRequest {
     /**
      * Required. The email address of the invited user.
      */
-    @ApiModelProperty(
-        value = "The email address of the invited user.",
+    @Schema(
+        description = "The email address of the invited user.",
         required = true
     )
     private String address;
@@ -46,8 +47,8 @@ public class InvitationRequest {
     /**
      * Required. The Matrix room ID to which the user is invited.
      */
-    @ApiModelProperty(
-        value = "The Matrix room ID to which the user is invited.",
+    @Schema(
+        description = "The Matrix room ID to which the user is invited.",
         required = true
     )
     private String roomId;
@@ -55,8 +56,8 @@ public class InvitationRequest {
     /**
      * Required. The Matrix user ID of the inviting user.
      */
-    @ApiModelProperty(
-        value = "The Matrix user ID of the inviting user.",
+    @Schema(
+        description = "The Matrix user ID of the inviting user.",
         required = true
     )
     private String sender;

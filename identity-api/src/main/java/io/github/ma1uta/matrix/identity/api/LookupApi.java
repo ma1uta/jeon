@@ -19,13 +19,12 @@ package io.github.ma1uta.matrix.identity.api;
 import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupRequest;
 import io.github.ma1uta.matrix.identity.model.lookup.BulkLookupResponse;
 import io.github.ma1uta.matrix.identity.model.lookup.LookupResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -35,14 +34,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Association lookup.
  */
-@Api(
-    value = "AssociationLookup"
-)
 @Path("/_matrix/identity/api/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -54,33 +52,43 @@ public interface LookupApi {
      * Return: {@link LookupResponse}.
      * <p>Status code 200: The association for that 3pid, or the empty object if no association is known.</p>
      *
-     * @param medium         Required. The medium type of the 3pid. See the 3PID Types Appendix.
-     * @param address        Required. The address of the 3pid being looked up. See the 3PID Types Appendix.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param medium        Required. The medium type of the 3pid. See the 3PID Types Appendix.
+     * @param address       Required. The address of the 3pid being looked up. See the 3PID Types Appendix.
+     * @param uriInfo       Request information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Look up the Matrix user ID for a 3pid.",
-        response = LookupResponse.class
+    @Operation(
+        summary = "Look up the Matrix user ID for a 3pid.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The association for that 3pid, or an empty object if no association is known.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = LookupResponse.class
+                    )
+                )
+            )
+
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "The association for that 3pid, or an empty object if no association is known.")
-    })
     @GET
     @Path("/lookup")
     void lookup(
-        @ApiParam(
+        @Parameter(
             name = "medium",
-            value = "The medium type of the 3pid. See the 3PID Types Appendix.",
+            description = "The medium type of the 3pid. See the 3PID Types Appendix.",
             required = true
         ) @QueryParam("medium") String medium,
-        @ApiParam(
+        @Parameter(
             name = "address",
-            value = "The address of the 3pid being looked up. See the 3PID Types Appendix.",
+            description = "The address of the 3pid being looked up. See the 3PID Types Appendix.",
             required = true
         ) @QueryParam("address") String address,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 
@@ -90,27 +98,38 @@ public interface LookupApi {
      * Return: {@link BulkLookupResponse}.
      * <p>Status code 200: A list of known 3PID mappings for the supplied 3PIDs.</p>
      *
-     * @param request        Required. An array of arrays containing the 3PID Types with the medium in first position and the
-     *                       address in second position.
-     * @param servletRequest Servlet request.
-     * @param asyncResponse  Asynchronous response.
+     * @param request       Required. An array of arrays containing the 3PID Types with the medium in first position and the
+     *                      address in second position.
+     * @param uriInfo       Request information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
-    @ApiOperation(
-        value = "Lookup Matrix user IDs for a list of 3pids.",
-        response = BulkLookupResponse.class
+    @Operation(
+        summary = "Lookup Matrix user IDs for a list of 3pids.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A list of known 3PID mappings for the supplied 3PIDs.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = BulkLookupResponse.class
+                    )
+                )
+            )
+
+        }
     )
-    @ApiResponses( {
-        @ApiResponse(code = 200, message = "A list of known 3PID mappings for the supplied 3PIDs.")
-    })
     @POST
     @Path("/bulk_lookup")
     void bulkLookup(
-        @ApiParam(
-            value = "An array of arrays containing the 3PID Types with the medium in first position and the address in second position.",
+        @Parameter(
+            description = "An array of arrays containing the 3PID Types with the medium in first position and the address"
+                + " in second position.",
             required = true
         ) BulkLookupRequest request,
 
-        @Context HttpServletRequest servletRequest,
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
 }
