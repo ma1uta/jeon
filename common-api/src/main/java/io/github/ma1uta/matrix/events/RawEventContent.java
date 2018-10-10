@@ -21,13 +21,11 @@ import io.github.ma1uta.matrix.EventContent;
 /**
  * Raw message for all unknown messages.
  */
-public class RawEvent implements EventContent {
+public class RawEventContent implements EventContent {
 
-    public RawEvent() {
-    }
-
-    public RawEvent(Object content) {
+    public RawEventContent(Object content, String type) {
         this.content = content;
+        this.type = type;
     }
 
     /**
@@ -35,7 +33,16 @@ public class RawEvent implements EventContent {
      */
     private Object content;
 
+    /**
+     * Event content type.
+     */
+    private String type;
+
     public Object getContent() {
         return content;
+    }
+
+    public String getType() {
+        return type;
     }
 }
