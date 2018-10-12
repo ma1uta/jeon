@@ -17,7 +17,7 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import io.github.ma1uta.matrix.Event;
-import io.github.ma1uta.matrix.events.RoomPowerLevels;
+import io.github.ma1uta.matrix.event.content.RoomPowerLevelsContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -144,11 +144,11 @@ public class CreateRoomRequest {
 
     /**
      * This flag makes the server set the is_direct flag on the m.room.member events sent to the users in invite and invite_3pid.
-     * See Direct Messaging for more information.
+     * See DirectContent Messaging for more information.
      */
     @Schema(
         description = "This flag makes the server set the is_direct flag on the m.room.member events "
-            + "sent to the users in invite and invite_3pid. See Direct Messaging for more information."
+            + "sent to the users in invite and invite_3pid. See DirectContent Messaging for more information."
     )
     @JsonbProperty("is_direct")
     private Boolean isDirect;
@@ -162,7 +162,7 @@ public class CreateRoomRequest {
             + " the generated m.room.power_levels event content prior to it being sent to the room. Defaults to overriding nothing."
     )
     @JsonbProperty("power_level_content_override")
-    private RoomPowerLevels powerLevelContentOverride;
+    private RoomPowerLevelsContent powerLevelContentOverride;
 
     public String getVisibility() {
         return visibility;
@@ -252,11 +252,11 @@ public class CreateRoomRequest {
         isDirect = direct;
     }
 
-    public RoomPowerLevels getPowerLevelContentOverride() {
+    public RoomPowerLevelsContent getPowerLevelContentOverride() {
         return powerLevelContentOverride;
     }
 
-    public void setPowerLevelContentOverride(RoomPowerLevels powerLevelContentOverride) {
+    public void setPowerLevelContentOverride(RoomPowerLevelsContent powerLevelContentOverride) {
         this.powerLevelContentOverride = powerLevelContentOverride;
     }
 }

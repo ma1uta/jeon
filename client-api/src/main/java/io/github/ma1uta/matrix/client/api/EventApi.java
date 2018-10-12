@@ -18,7 +18,7 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Event;
-import io.github.ma1uta.matrix.EventContent;
+import io.github.ma1uta.matrix.event.content.EventContent;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.event.JoinedMembersResponse;

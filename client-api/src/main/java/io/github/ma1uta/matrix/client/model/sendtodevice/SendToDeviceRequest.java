@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sendtodevice;
 
-import io.github.ma1uta.matrix.EventContent;
+import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;

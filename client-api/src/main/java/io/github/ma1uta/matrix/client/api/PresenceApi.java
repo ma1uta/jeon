@@ -61,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
  * <br>
  * This information is collated from both per-device (online, idle, last_active) and per-user (status) data, aggregated
  * by the user's homeserver and transmitted as an m.presence event. This is one of the few events which are sent outside
- * the context of a room. Presence events are sent to all users who subscribe to this user's presence through a presence
+ * the context of a room. PresenceContent events are sent to all users who subscribe to this user's presence through a presence
  * list or by sharing membership of a room.
  * <br>
  * A presence list is a list of user IDs whose presence the user wants to follow. To be added to this list, the user being

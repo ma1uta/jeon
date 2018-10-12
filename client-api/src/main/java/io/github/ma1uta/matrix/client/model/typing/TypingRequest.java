@@ -19,10 +19,10 @@ package io.github.ma1uta.matrix.client.model.typing;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Typing body request.
+ * TypingContent body request.
  */
 @Schema(
-    description = "Typing body request."
+    description = "TypingContent body request."
 )
 public class TypingRequest {
 

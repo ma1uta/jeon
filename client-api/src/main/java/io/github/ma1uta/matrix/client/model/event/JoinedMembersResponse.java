@@ -29,10 +29,10 @@ import java.util.Map;
 public class JoinedMembersResponse {
 
     /**
-     * A map from user ID to a RoomMember object.
+     * A map from user ID to a RoomMemberContent object.
      */
     @Schema(
-        description = "A map from user ID to a RoomMember object."
+        description = "A map from user ID to a RoomMemberContent object."
     )
     private Map<String, RoomMember> joined;
 

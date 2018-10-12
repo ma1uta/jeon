@@ -22,10 +22,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
- * Presence.
+ * PresenceContent.
  */
 @Schema(
-    description = "Presence."
+    description = "PresenceContent."
 )
 public class Presence {
 

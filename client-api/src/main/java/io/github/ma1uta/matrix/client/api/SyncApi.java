@@ -54,7 +54,7 @@ import javax.ws.rs.core.UriInfo;
 public interface SyncApi {
 
     /**
-     * Presence.
+     * PresenceContent.
      */
     class Presence {
 

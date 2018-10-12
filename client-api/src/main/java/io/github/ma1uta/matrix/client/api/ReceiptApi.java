@@ -55,7 +55,7 @@ import javax.ws.rs.core.UriInfo;
 public interface ReceiptApi {
 
     /**
-     * Receipt types.
+     * ReceiptContent types.
      */
     class Receipt {
 

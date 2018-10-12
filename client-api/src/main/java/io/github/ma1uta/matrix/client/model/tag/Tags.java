@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.tag;
 
-import io.github.ma1uta.matrix.events.nested.TagInfo;
+import io.github.ma1uta.matrix.event.nested.TagInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;

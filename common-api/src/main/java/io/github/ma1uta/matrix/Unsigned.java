@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix;
 
+import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;

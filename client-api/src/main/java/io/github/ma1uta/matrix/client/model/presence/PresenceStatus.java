@@ -29,7 +29,7 @@ import javax.json.bind.annotation.JsonbProperty;
 public class PresenceStatus {
 
     /**
-     * Presence types.
+     * PresenceContent types.
      */
     public static class PresenceType {
 
