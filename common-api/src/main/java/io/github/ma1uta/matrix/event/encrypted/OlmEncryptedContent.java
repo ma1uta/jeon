@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.event.encrypted;
 
-import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
 import io.github.ma1uta.matrix.event.nested.CiphertextInfo;
 import io.swagger.v3.oas.annotations.media.Schema;

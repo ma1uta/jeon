@@ -17,14 +17,14 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Event;
-import io.github.ma1uta.matrix.event.content.EventContent;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.event.JoinedMembersResponse;
 import io.github.ma1uta.matrix.client.model.event.MembersResponse;
 import io.github.ma1uta.matrix.client.model.event.RedactRequest;
 import io.github.ma1uta.matrix.client.model.event.SendEventResponse;
+import io.github.ma1uta.matrix.event.Event;
+import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

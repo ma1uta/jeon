@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.event.message;
 
-import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
 import io.github.ma1uta.matrix.event.nested.VideoInfo;

@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
-import io.github.ma1uta.matrix.StrippedState;
+import io.github.ma1uta.matrix.event.StrippedState;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;

@@ -21,9 +21,8 @@ package io.github.ma1uta.matrix.event.content;
  */
 public class RawEventContent implements EventContent {
 
-    public RawEventContent(Object content, String type) {
+    public RawEventContent(Object content) {
         this.content = content;
-        this.type = type;
     }
 
     /**
@@ -31,16 +30,7 @@ public class RawEventContent implements EventContent {
      */
     private Object content;
 
-    /**
-     * Event content type.
-     */
-    private String type;
-
     public Object getContent() {
         return content;
-    }
-
-    public String getType() {
-        return type;
     }
 }

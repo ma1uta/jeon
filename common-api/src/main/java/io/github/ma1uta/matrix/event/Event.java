@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
+package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.json.bind.annotation.JsonbProperty;
-
 /**
  * Event.
+ *
+ * @param <C> type of the event content.
  */
 @Schema(
     description = "Event."
 )
-public class Event {
+public abstract class Event<C extends EventContent> {
 
     /**
      * Event types.
@@ -481,7 +481,6 @@ public class Event {
         public static final String CANCEL_REQUEST = "cancel_request";
     }
 
-    // ---- Common properties ----
     /**
      * The fields in this object will vary depending on the type of event. When interacting with the REST API, this is the HTTP body.
      */
@@ -490,163 +489,25 @@ public class Event {
             + "is the HTTP body.",
         implementation = EventContent.class
     )
-    private EventContent content;
+    private C content;
+
+    public C getContent() {
+        return content;
+    }
+
+    public void setContent(C content) {
+        this.content = content;
+    }
 
     /**
      * Required. The type of event. This SHOULD be namespaced similar to Java package naming conventions e.g.
-     * 'com.example.subdomain.event.type'
+     * 'com.example.subdomain.event.type'.
+     *
+     * @return The type of the event.
      */
     @Schema(
         description = "The type of event. This SHOULD be namespaced similar to Java package naming conventions.",
         required = true
     )
-    private String type;
-
-    // ---- Room events ----
-    /**
-     * Required. The globally unique event identifier.
-     */
-    @Schema(
-        name = "event_id",
-        description = "The globally unique event identifier.",
-        required = true
-    )
-    @JsonbProperty("event_id")
-    private String eventId;
-
-    /**
-     * Required. The ID of the room associated with this event.
-     */
-    @Schema(
-        name = "room_id",
-        description = "The ID of the room associated with this event.",
-        required = true
-    )
-    @JsonbProperty("room_id")
-    private String roomId;
-
-    /**
-     * Required. Contains the fully-qualified ID of the user who sent this event.
-     */
-    @Schema(
-        description = "Contains the fully-qualified ID of the user who sent this event.",
-        required = true
-    )
-    private String sender;
-
-    /**
-     * Required. Timestamp in milliseconds on originating homeserver when this event was sent.
-     */
-    @Schema(
-        name = "origin_server_ts",
-        description = "Timestamp in milliseconds on originating homeserver when this event was sent.",
-        required = true
-    )
-    @JsonbProperty("origin_server_ts")
-    private Long originServerTs;
-
-    /**
-     * Contains optional extra information about the event.
-     */
-    @Schema(
-        description = "Contains optional extra information about the event."
-    )
-    private Unsigned unsigned;
-
-    // ---- State events ----
-    /**
-     * Optional. The previous content for this event. If there is no previous content, this key will be missing.
-     */
-    @Schema(
-        name = "prev_content",
-        description = "The previous content for this event. If there is no previous content, this key will be missing."
-    )
-    @JsonbProperty("prev_content")
-    private EventContent prevContent;
-
-    /**
-     * Required. A unique key which defines the overwriting semantics for this piece of room state. This value is often a
-     * zero-length string. The presence of this key makes this event a State Event. The key MUST NOT start with '_'.
-     */
-    @Schema(
-        name = "state_key",
-        description = " A unique key which defines the overwriting semantics for this piece of room "
-            + "state. This value is often a zero-length string. The presence of this key makes this event a State Event. The key MUST "
-            + "NOT start with '_'.",
-        required = true
-    )
-    @JsonbProperty("state_key")
-    private String stateKey;
-
-    public String getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
-
-    public EventContent getContent() {
-        return content;
-    }
-
-    public void setContent(EventContent content) {
-        this.content = content;
-    }
-
-    public Long getOriginServerTs() {
-        return originServerTs;
-    }
-
-    public void setOriginServerTs(Long originServerTs) {
-        this.originServerTs = originServerTs;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getStateKey() {
-        return stateKey;
-    }
-
-    public void setStateKey(String stateKey) {
-        this.stateKey = stateKey;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Unsigned getUnsigned() {
-        return unsigned;
-    }
-
-    public void setUnsigned(Unsigned unsigned) {
-        this.unsigned = unsigned;
-    }
-
-    public EventContent getPrevContent() {
-        return prevContent;
-    }
-
-    public void setPrevContent(EventContent prevContent) {
-        this.prevContent = prevContent;
-    }
+    public abstract String getType();
 }

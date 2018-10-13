@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.deprecatedsync;
 
-import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
+import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;

@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import io.github.ma1uta.matrix.Event;
+import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomPowerLevelsContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
