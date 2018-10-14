@@ -25,6 +25,8 @@ public class RawEvent extends Event<RawEventContent> {
 
     private String type;
 
+    private Object properties;
+
     @Override
     public String getType() {
         return type;
@@ -32,5 +34,13 @@ public class RawEvent extends Event<RawEventContent> {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Object getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Object properties) {
+        this.properties = properties;
     }
 }

@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
-import io.github.ma1uta.matrix.event.StrippedState;
+import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -44,13 +44,13 @@ public class RoomMemberUnsigned {
             + " events here. If they are set on the room, at least the state for m.room.avatar, m.room.canonical_alias, m.room.join_rules,"
             + " and m.room.name SHOULD be included."
     )
-    private List<StrippedState> events;
+    private List<Event> events;
 
-    public List<StrippedState> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<StrippedState> events) {
+    public void setEvents(List<Event> events) {
         this.events = events;
     }
 }

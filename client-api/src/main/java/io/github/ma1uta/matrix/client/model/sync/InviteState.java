@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import io.github.ma1uta.matrix.event.StrippedState;
+import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -35,13 +35,13 @@ public class InviteState {
     @Schema(
         description = "List of events."
     )
-    private List<StrippedState> events;
+    private List<Event> events;
 
-    public List<StrippedState> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<StrippedState> events) {
+    public void setEvents(List<Event> events) {
         this.events = events;
     }
 }

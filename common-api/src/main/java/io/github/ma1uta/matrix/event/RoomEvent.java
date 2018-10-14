@@ -79,7 +79,7 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
     @Schema(
         description = "Contains optional extra information about the event."
     )
-    private Unsigned unsigned;
+    private Unsigned<C> unsigned;
 
     public String getEventId() {
         return eventId;
@@ -105,11 +105,11 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         this.sender = sender;
     }
 
-    public Unsigned getUnsigned() {
+    public Unsigned<C> getUnsigned() {
         return unsigned;
     }
 
-    public void setUnsigned(Unsigned unsigned) {
+    public void setUnsigned(Unsigned<C> unsigned) {
         this.unsigned = unsigned;
     }
 
