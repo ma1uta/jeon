@@ -16,10 +16,13 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.github.ma1uta.matrix.event.Event;
+import io.github.ma1uta.matrix.support.EventDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Unsigned data.
@@ -45,6 +48,13 @@ public class RoomMemberUnsigned {
             + " and m.room.name SHOULD be included."
     )
     private List<Event> events;
+
+    public RoomMemberUnsigned() {
+    }
+
+    public RoomMemberUnsigned(Map props) {
+        this.events = DeserializerUtil.toList(props, "events", eventProps -> EventDeserializer.getInstance().deserialize((Map) eventProps));
+    }
 
     public List<Event> getEvents() {
         return events;

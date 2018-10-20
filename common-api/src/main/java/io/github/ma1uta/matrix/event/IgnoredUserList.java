@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.IgnoredUserListContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.
@@ -26,6 +29,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list."
 )
 public class IgnoredUserList extends Event<IgnoredUserListContent> {
+
+    public IgnoredUserList() {
+    }
+
+    public IgnoredUserList(Map props) {
+        setContent(DeserializerUtil.toObject(props, "content", IgnoredUserListContent::new));
+    }
 
     @Override
     public String getType() {

@@ -18,6 +18,8 @@ package io.github.ma1uta.matrix.event.nested;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
+
 /**
  * Answer.
  */
@@ -43,6 +45,14 @@ public class Answer {
         required = true
     )
     private String sdp;
+
+    public Answer() {
+    }
+
+    public Answer(Map props) {
+        this.type = (String) props.get("type");
+        this.sdp = (String) props.get("sdp");
+    }
 
     public String getType() {
         return type;

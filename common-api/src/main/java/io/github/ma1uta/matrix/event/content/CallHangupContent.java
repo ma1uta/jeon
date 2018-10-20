@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -29,7 +31,7 @@ import javax.json.bind.annotation.JsonbProperty;
  */
 @Schema(
     description = "Sent by either party to signal their termination of the call. This can be sent either once the call has has been"
-    + " established or before to abort the call."
+        + " established or before to abort the call."
 )
 public class CallHangupContent implements EventContent {
 
@@ -51,6 +53,14 @@ public class CallHangupContent implements EventContent {
         required = true
     )
     private Long version;
+
+    public CallHangupContent() {
+    }
+
+    public CallHangupContent(Map props) {
+        this.callId = DeserializerUtil.toString(props, "call_id");
+        this.version = DeserializerUtil.toLong(props, "version");
+    }
 
     public String getCallId() {
         return callId;

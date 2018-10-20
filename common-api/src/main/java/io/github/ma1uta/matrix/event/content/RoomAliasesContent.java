@@ -16,9 +16,11 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This event is sent by a homeserver directly to inform of changes to the list of aliases it knows about for that room.
@@ -46,6 +48,13 @@ public class RoomAliasesContent implements EventContent {
         required = true
     )
     private List<String> aliases;
+
+    public RoomAliasesContent() {
+    }
+
+    public RoomAliasesContent(Map props) {
+        this.aliases = DeserializerUtil.toList(props, "aliases", String::valueOf);
+    }
 
     public List<String> getAliases() {
         return aliases;

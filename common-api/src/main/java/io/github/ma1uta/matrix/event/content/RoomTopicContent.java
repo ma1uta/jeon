@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * A topic is a short message detailing what is currently being discussed in the room. It can also be used as a way to display extra
@@ -38,6 +41,13 @@ public class RoomTopicContent implements EventContent {
         required = true
     )
     private String topic;
+
+    public RoomTopicContent() {
+    }
+
+    public RoomTopicContent(Map props) {
+        this.topic = DeserializerUtil.toString(props, "topic");
+    }
 
     public String getTopic() {
         return topic;

@@ -17,9 +17,12 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.EventContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
+import io.github.ma1uta.matrix.support.EventDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -86,6 +89,18 @@ public class Unsigned<C extends EventContent> {
     )
     @JsonbProperty("invite_room_state")
     private List<Event> inviteRoomState;
+
+    public Unsigned() {
+    }
+
+    public Unsigned(Map props, String type) {
+        this.age = DeserializerUtil.toLong(props, "age");
+        EventDeserializer deserializer = EventDeserializer.getInstance();
+        this.redactedBecause = deserializer.deserialize((Map) props.get("redacted_because"));
+        this.transactionId = DeserializerUtil.toString(props, "transaction_id");
+        this.prevContent = null; //TODO
+        this.inviteRoomState = DeserializerUtil.toList(props, "invite_room_state", invite -> deserializer.deserialize((Map) invite));
+    }
 
     public Long getAge() {
         return age;

@@ -28,6 +28,16 @@ import java.util.Map;
 )
 public class Signed {
 
+    public Signed() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public Signed(Map props) {
+        this.mxid = (String) props.get("mxid");
+        this.token = (String) props.get("token");
+        this.signatures = (Map<String, Map<String, String>>) props.get("signatures");
+    }
+
     /**
      * Required. The invited matrix user ID. Must be equal to the user_id property of the event.
      */

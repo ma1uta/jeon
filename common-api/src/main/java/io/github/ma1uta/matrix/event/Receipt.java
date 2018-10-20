@@ -17,8 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.ReceiptContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -46,6 +48,14 @@ public class Receipt extends Event<ReceiptContent> {
     )
     @JsonbProperty("room_id")
     private String roomId;
+
+    public Receipt() {
+    }
+
+    public Receipt(Map props) {
+        this.roomId = DeserializerUtil.toString(props, "room_id");
+        setContent(DeserializerUtil.toObject(props, "content", ReceiptContent::new));
+    }
 
     public String getRoomId() {
         return roomId;

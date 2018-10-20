@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -47,6 +49,15 @@ public class ImageInfo extends FileInfo {
     )
     @JsonbProperty("w")
     private Long width;
+
+    public ImageInfo() {
+    }
+
+    public ImageInfo(Map props) {
+        super(props);
+        this.height = DeserializerUtil.toLong(props, "h");
+        this.width = DeserializerUtil.toLong(props, "w");
+    }
 
     public Long getHeight() {
         return height;

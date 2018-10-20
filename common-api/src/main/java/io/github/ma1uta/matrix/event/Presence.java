@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.PresenceContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Informs the client of a user's presence state change.
@@ -35,6 +38,14 @@ public class Presence extends Event<PresenceContent> {
         required = true
     )
     private String sender;
+
+    public Presence() {
+    }
+
+    public Presence(Map props) {
+        this.sender = DeserializerUtil.toString(props, "sender");
+        setContent(DeserializerUtil.toObject(props, "content", PresenceContent::new));
+    }
 
     public String getSender() {
         return sender;

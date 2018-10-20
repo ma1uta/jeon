@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -69,6 +71,17 @@ public class FileInfo {
     )
     @JsonbProperty("thumbnail_info")
     private ThumbnailInfo thumbnailInfo;
+
+    public FileInfo() {
+    }
+
+    public FileInfo(Map props) {
+        this.mimetype = DeserializerUtil.toString(props, "mimetype");
+        this.size = DeserializerUtil.toLong(props, "size");
+        this.thumbnailUrl = DeserializerUtil.toString(props, "thumbnail_url");
+        this.thumbnailFile = DeserializerUtil.toObject(props, "thumbnail_file", EncryptedFile::new);
+        this.thumbnailInfo = DeserializerUtil.toObject(props, "thumbnail_info", ThumbnailInfo::new);
+    }
 
     public String getMimetype() {
         return mimetype;

@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -38,6 +40,13 @@ public class Reply {
     )
     @JsonbProperty("event_id")
     private String eventId;
+
+    public Reply() {
+    }
+
+    public Reply(Map props) {
+        this.eventId = DeserializerUtil.toString(props, "event_id");
+    }
 
     public String getEventId() {
         return eventId;

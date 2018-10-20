@@ -17,8 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.EventContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -80,6 +82,17 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         description = "Contains optional extra information about the event."
     )
     private Unsigned<C> unsigned;
+
+    public RoomEvent() {
+    }
+
+    public RoomEvent(Map props) {
+        this.eventId = DeserializerUtil.toString(props, "event_id");
+        this.roomId = DeserializerUtil.toString(props, "room_id");
+        this.sender = DeserializerUtil.toString(props, "sender");
+        this.originServerTs = DeserializerUtil.toLong(props, "origin_server_ts");
+        this.unsigned = DeserializerUtil.toObject(props, "unsigned", map -> new Unsigned<>(map, getType()));
+    }
 
     public String getEventId() {
         return eventId;

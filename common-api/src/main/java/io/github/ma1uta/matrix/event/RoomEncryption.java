@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomEncryptionContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * State Event.
@@ -30,6 +33,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "State Event. Defines how messages sent in this room should be encrypted."
 )
 public class RoomEncryption extends StateEvent<RoomEncryptionContent> {
+
+    public RoomEncryption() {
+    }
+
+    public RoomEncryption(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", RoomEncryptionContent::new));
+    }
 
     @Override
     public String getType() {

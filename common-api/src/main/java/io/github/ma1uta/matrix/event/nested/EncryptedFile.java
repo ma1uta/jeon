@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -76,6 +77,19 @@ public class EncryptedFile {
     )
     @JsonbProperty("v")
     private String version;
+
+    public EncryptedFile() {
+    }
+
+    public EncryptedFile(Map props) {
+        this.url = DeserializerUtil.toString(props, "url");
+        this.key = DeserializerUtil.toObject(props, "key", JWK::new);
+        this.iv = DeserializerUtil.toString(props, "iv");
+        this.hashes = DeserializerUtil.toMap(props, "hashes",
+            entry -> (String) entry.getKey(),
+            entry -> (String) entry.getValue()
+        );
+    }
 
     public String getUrl() {
         return url;

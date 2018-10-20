@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Events can be redacted by either room or server admins. Redacting an event means that all keys not required by the protocol
@@ -41,6 +44,13 @@ public class RoomRedactionContent implements EventContent {
         description = "The reason for the redaction, if any."
     )
     private String reason;
+
+    public RoomRedactionContent() {
+    }
+
+    public RoomRedactionContent(Map props) {
+        this.reason = DeserializerUtil.toString(props, "reason");
+    }
 
     public String getReason() {
         return reason;

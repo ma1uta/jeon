@@ -16,10 +16,13 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import static java.util.stream.Collectors.toMap;
+
 import io.github.ma1uta.matrix.event.nested.ReceiptInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an event of type m.direct.
@@ -36,4 +39,14 @@ import java.util.HashMap;
 )
 public class ReceiptContent extends HashMap<String, ReceiptInfo> implements EventContent {
 
+    public ReceiptContent() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public ReceiptContent(Map props) {
+        super((Map<String, ReceiptInfo>) props.entrySet().parallelStream().collect(toMap(
+            o -> ((Map.Entry) o).getKey(),
+            o -> new ReceiptInfo((Map) ((Map.Entry) o).getValue())
+        )));
+    }
 }

@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -69,6 +71,16 @@ public class RequestedKeyInfo {
     )
     @JsonbProperty("session_id")
     private String sessionId;
+
+    public RequestedKeyInfo() {
+    }
+
+    public RequestedKeyInfo(Map props) {
+        this.algorithm = DeserializerUtil.toString(props, "algorithm");
+        this.roomId = DeserializerUtil.toString(props, "room_id");
+        this.senderKey = DeserializerUtil.toString(props, "sender_key");
+        this.sessionId = DeserializerUtil.toString(props, "session_id");
+    }
 
     public String getAlgorithm() {
         return algorithm;

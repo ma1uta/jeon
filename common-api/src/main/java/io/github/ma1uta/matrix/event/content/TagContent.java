@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import static java.util.stream.Collectors.toMap;
+
 import io.github.ma1uta.matrix.event.nested.TagInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -36,6 +38,17 @@ public class TagContent implements EventContent {
         description = "The tags on the room and their contents."
     )
     private Map<String, TagInfo> tags;
+
+    public TagContent() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public TagContent(Map props) {
+        this.tags = (Map<String, TagInfo>) props.entrySet().parallelStream().collect(toMap(
+            entry -> (String) ((Map.Entry) entry).getKey(),
+            entry -> new TagInfo((Map) ((Map.Entry) entry).getValue())
+        ));
+    }
 
     public Map<String, TagInfo> getTags() {
         return tags;

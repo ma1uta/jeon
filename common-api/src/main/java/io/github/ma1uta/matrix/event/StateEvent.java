@@ -17,8 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.EventContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -54,6 +56,15 @@ public abstract class StateEvent<C extends EventContent> extends RoomEvent<C> {
     )
     @JsonbProperty("state_key")
     private String stateKey;
+
+    public StateEvent() {
+    }
+
+    public StateEvent(Map props) {
+        super(props);
+        this.prevContent = null; //TODO
+        this.stateKey = DeserializerUtil.toString(props, "state_key");
+    }
 
     public String getStateKey() {
         return stateKey;

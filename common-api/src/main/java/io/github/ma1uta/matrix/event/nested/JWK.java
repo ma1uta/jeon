@@ -16,9 +16,12 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -77,6 +80,17 @@ public class JWK {
         required = true
     )
     private Boolean ext;
+
+    public JWK() {
+    }
+
+    public JWK(Map props) {
+        this.key = DeserializerUtil.toString(props, "key");
+        this.keyOpts = DeserializerUtil.toList(props, "key_opts", Function.identity());
+        this.alg = DeserializerUtil.toString(props, "alg");
+        this.encodedKey = DeserializerUtil.toString(props, "k");
+        this.ext = DeserializerUtil.toBoolean(props, "ext");
+    }
 
     public String getKey() {
         return key;

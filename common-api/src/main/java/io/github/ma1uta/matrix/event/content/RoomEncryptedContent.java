@@ -18,8 +18,10 @@ package io.github.ma1uta.matrix.event.content;
 
 import io.github.ma1uta.matrix.event.encrypted.MegolmEncryptedContent;
 import io.github.ma1uta.matrix.event.encrypted.OlmEncryptedContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -82,6 +84,15 @@ public abstract class RoomEncryptedContent implements EventContent {
     )
     @JsonbProperty("session_id")
     private String sessionId;
+
+    public RoomEncryptedContent() {
+    }
+
+    public RoomEncryptedContent(Map props) {
+        this.senderKey = DeserializerUtil.toString(props, "sender_key");
+        this.deviceId = DeserializerUtil.toString(props, "device_id");
+        this.sessionId = DeserializerUtil.toString(props, "session_id");
+    }
 
     public String getSenderKey() {
         return senderKey;

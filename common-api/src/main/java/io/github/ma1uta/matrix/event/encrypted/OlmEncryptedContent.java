@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.encrypted;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
 import io.github.ma1uta.matrix.event.nested.CiphertextInfo;
@@ -41,6 +42,17 @@ public class OlmEncryptedContent extends RoomEncryptedContent {
         required = true
     )
     private Map<String, CiphertextInfo> ciphertext;
+
+    public OlmEncryptedContent() {
+    }
+
+    public OlmEncryptedContent(Map props) {
+        super(props);
+        this.ciphertext = DeserializerUtil.toMap(props, "ciphertext",
+            entry -> (String) entry.getKey(),
+            entry -> new CiphertextInfo((Map) entry.getValue())
+        );
+    }
 
     public Map<String, CiphertextInfo> getCiphertext() {
         return ciphertext;

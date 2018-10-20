@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomCanonicalAliasContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This event is used to inform the room about which alias should be considered the canonical one. This could be for display purposes
@@ -34,6 +37,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
         + " with no m.room.canonical_alias event."
 )
 public class RoomCanonicalAlias extends StateEvent<RoomCanonicalAliasContent> {
+
+    public RoomCanonicalAlias() {
+    }
+
+    public RoomCanonicalAlias(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", RoomCanonicalAliasContent::new));
+    }
 
     @Override
     public String getType() {

@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomCreateContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This is the first event in a room and cannot be changed. It acts as the root of all other events.
@@ -26,6 +29,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "This is the first event in a room and cannot be changed. It acts as the root of all other events."
 )
 public class RoomCreate extends StateEvent<RoomCreateContent> {
+
+    public RoomCreate() {
+    }
+
+    public RoomCreate(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", RoomCreateContent::new));
+    }
 
     @Override
     public String getType() {

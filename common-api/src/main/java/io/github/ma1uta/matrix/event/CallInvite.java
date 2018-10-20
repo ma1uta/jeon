@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.CallInviteContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Message Event.
@@ -29,6 +32,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "This event is sent by the caller when they wish to establish a call."
 )
 public class CallInvite extends RoomEvent<CallInviteContent> {
+
+    public CallInvite() {
+    }
+
+    public CallInvite(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", CallInviteContent::new));
+    }
 
     @Override
     public String getType() {

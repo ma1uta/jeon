@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -49,7 +51,16 @@ public class PublicKeys {
         description = "A base-64 encoded ed25519 key with which token may be signed.",
         required = true
     )
+    @JsonbProperty("public_key")
     private String publicKey;
+
+    public PublicKeys() {
+    }
+
+    public PublicKeys(Map props) {
+        this.keyValidityUrl = DeserializerUtil.toString(props, "key_validity_url");
+        this.publicKey = DeserializerUtil.toString(props, "public_key");
+    }
 
     public String getKeyValidityUrl() {
         return keyValidityUrl;

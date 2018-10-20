@@ -19,6 +19,7 @@ package io.github.ma1uta.matrix.event.content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.
@@ -35,7 +36,16 @@ public class IgnoredUserListContent implements EventContent {
         description = "The map of users to ignore.",
         required = true
     )
+    @JsonbProperty("ignored_users")
     private Map<String, Object> ignoredUsers;
+
+    public IgnoredUserListContent() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public IgnoredUserListContent(Map props) {
+        this.ignoredUsers = (Map<String, Object>) props.get("ignored_users");
+    }
 
     public Map<String, Object> getIgnoredUsers() {
         return ignoredUsers;

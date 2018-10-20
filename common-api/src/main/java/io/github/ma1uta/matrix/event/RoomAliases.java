@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomAliasesContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This event is sent by a homeserver directly to inform of changes to the list of aliases it knows about for that room.
@@ -36,6 +39,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
         + " to confirm whether it receives the correct room ID."
 )
 public class RoomAliases extends StateEvent<RoomAliasesContent> {
+
+    public RoomAliases() {
+    }
+
+    public RoomAliases(Map props) {
+        setContent(DeserializerUtil.toObject(props, "content", RoomAliasesContent::new));
+    }
 
     @Override
     public String getType() {

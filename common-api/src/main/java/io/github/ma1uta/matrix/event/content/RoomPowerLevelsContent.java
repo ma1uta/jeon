@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import io.github.ma1uta.matrix.event.nested.NotificationPowerLevel;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -172,6 +173,28 @@ public class RoomPowerLevelsContent implements EventContent {
             + " notifications key."
     )
     private NotificationPowerLevel notifications;
+
+    public RoomPowerLevelsContent() {
+    }
+
+    public RoomPowerLevelsContent(Map props) {
+        this.ban = DeserializerUtil.toByte(props, "ban", DEFAULT_MEDIUM_LEVEL);
+        this.events = DeserializerUtil.toMap(props, "events",
+            entry -> (String) entry.getKey(),
+            entry -> DeserializerUtil.parseByte(entry.getValue())
+        );
+        this.eventsDefault = DeserializerUtil.toByte(props, "events_default", DEFAULT_LOW_LEVEL);
+        this.invite = DeserializerUtil.toByte(props, "invite", DEFAULT_MEDIUM_LEVEL);
+        this.kick = DeserializerUtil.toByte(props, "kick", DEFAULT_MEDIUM_LEVEL);
+        this.redact = DeserializerUtil.toByte(props, "redact", DEFAULT_MEDIUM_LEVEL);
+        this.stateDefault = DeserializerUtil.toByte(props, "state_default");
+        this.users = DeserializerUtil.toMap(props, "users",
+            entry -> (String) entry.getKey(),
+            entry -> DeserializerUtil.parseByte(entry.getValue())
+        );
+        this.usersDefault = DeserializerUtil.toByte(props, "users_default", DEFAULT_LOW_LEVEL);
+        this.notifications = DeserializerUtil.toObject(props, "notifications", NotificationPowerLevel::new);
+    }
 
     public Byte getBan() {
         return ban;

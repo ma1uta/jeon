@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -43,6 +45,13 @@ public class RoomJoinRulesContent implements EventContent {
     )
     @JsonbProperty("join_rule")
     private String joinRule;
+
+    public RoomJoinRulesContent() {
+    }
+
+    public RoomJoinRulesContent(Map props) {
+        this.joinRule = DeserializerUtil.toString(props, "join_rule");
+    }
 
     public String getJoinRule() {
         return joinRule;

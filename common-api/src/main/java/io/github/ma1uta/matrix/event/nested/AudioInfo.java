@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Audio type.
@@ -49,6 +52,15 @@ public class AudioInfo {
         description = "The size of the audio clip in bytes."
     )
     private Long size;
+
+    public AudioInfo() {
+    }
+
+    public AudioInfo(Map props) {
+        this.duration = DeserializerUtil.toLong(props, "duration");
+        this.mimetype = DeserializerUtil.toString(props, "mimetype");
+        this.size = DeserializerUtil.toLong(props, "size");
+    }
 
     public Long getDuration() {
         return duration;

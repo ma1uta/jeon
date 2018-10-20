@@ -17,9 +17,11 @@
 package io.github.ma1uta.matrix.event.content;
 
 import io.github.ma1uta.matrix.event.nested.Candidate;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -63,6 +65,15 @@ public class CallCandidatesContent implements EventContent {
         required = true
     )
     private Long version;
+
+    public CallCandidatesContent() {
+    }
+
+    public CallCandidatesContent(Map props) {
+        this.callId = DeserializerUtil.toString(props, "call_id");
+        this.candidates = DeserializerUtil.toList(props, "candidates", map -> new Candidate((Map) map));
+        this.version = DeserializerUtil.toLong(props, "version");
+    }
 
     public String getCallId() {
         return callId;

@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Candidate.
@@ -52,6 +55,15 @@ public class Candidate {
         required = true
     )
     private String candidate;
+
+    public Candidate() {
+    }
+
+    public Candidate(Map props) {
+        this.sdpMid = (String) props.get("sdpMid");
+        this.sdpMLineIndex = DeserializerUtil.toLong(props, "sdpMLineIndex");
+        this.candidate = (String) props.get("candidate");
+    }
 
     public String getSdpMid() {
         return sdpMid;

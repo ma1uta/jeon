@@ -17,6 +17,9 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RawEventContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
+
+import java.util.Map;
 
 /**
  * Raw message for all unknown messages.
@@ -26,6 +29,14 @@ public class RawEvent extends Event<RawEventContent> {
     private String type;
 
     private Object properties;
+
+    public RawEvent() {
+    }
+
+    public RawEvent(Map props) {
+        this.type = DeserializerUtil.toString(props, "type");
+        this.properties = props;
+    }
 
     @Override
     public String getType() {

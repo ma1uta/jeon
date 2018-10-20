@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * TagContent info.
@@ -33,6 +36,13 @@ public class TagInfo {
         description = "A number in a range [0,1] describing a relative position of the room under the given tag."
     )
     private Long order;
+
+    public TagInfo() {
+    }
+
+    public TagInfo(Map props) {
+        this.order = DeserializerUtil.toLong(props, "order");
+    }
 
     public Long getOrder() {
         return order;

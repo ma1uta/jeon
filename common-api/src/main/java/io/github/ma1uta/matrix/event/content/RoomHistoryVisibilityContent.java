@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -39,6 +41,13 @@ public class RoomHistoryVisibilityContent implements EventContent {
     )
     @JsonbProperty("history_visibility")
     private String historyVisibility;
+
+    public RoomHistoryVisibilityContent() {
+    }
+
+    public RoomHistoryVisibilityContent(Map props) {
+        this.historyVisibility = DeserializerUtil.toString(props, "history_visibility");
+    }
 
     public String getHistoryVisibility() {
         return historyVisibility;

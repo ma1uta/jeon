@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.CallCandidatesContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Message Event.
@@ -31,6 +34,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
         + " Its purpose is to give the other party additional ICE candidates to try using to communicate."
 )
 public class CallCandidates extends RoomEvent<CallCandidatesContent> {
+
+    public CallCandidates() {
+    }
+
+    public CallCandidates(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", CallCandidatesContent::new));
+    }
 
     @Override
     public String getType() {

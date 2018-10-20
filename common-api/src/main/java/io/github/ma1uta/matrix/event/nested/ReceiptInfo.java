@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -38,6 +39,17 @@ public class ReceiptInfo {
     )
     @JsonbProperty("m.read")
     private Map<String, ReceiptTs> read;
+
+    public ReceiptInfo() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public ReceiptInfo(Map props) {
+        this.read = DeserializerUtil.toMap(props, "m.read",
+            e -> (String) e.getKey(),
+            v -> new ReceiptTs((Map) v.getValue())
+        );
+    }
 
     public Map<String, ReceiptTs> getRead() {
         return read;

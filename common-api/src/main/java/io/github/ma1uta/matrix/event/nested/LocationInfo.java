@@ -16,8 +16,10 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -45,6 +47,7 @@ public class LocationInfo {
         description = "Information on the encrypted thumbnail file, as specified in End-to-end encryption. Only present if the thumbnail"
             + " is encrypted."
     )
+    @JsonbProperty("thumbnail_file")
     private EncryptedFile thumbnailFile;
 
     /**
@@ -56,6 +59,15 @@ public class LocationInfo {
     )
     @JsonbProperty("thumbnail_info")
     private ThumbnailInfo thumbnailInfo;
+
+    public LocationInfo() {
+    }
+
+    public LocationInfo(Map props) {
+        this.thumbnailUrl = DeserializerUtil.toString(props, "thumbnail_url");
+        this.thumbnailFile = DeserializerUtil.toObject(props, "thumbnail_file", EncryptedFile::new);
+        this.thumbnailInfo = DeserializerUtil.toObject(props, "thumbnail_info", ThumbnailInfo::new);
+    }
 
     public String getThumbnailUrl() {
         return thumbnailUrl;

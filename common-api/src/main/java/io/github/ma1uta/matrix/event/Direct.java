@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.DirectContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an event of type m.direct.
@@ -33,6 +36,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
         + " of room ID strings of the 'direct' rooms for that user ID."
 )
 public class Direct extends Event<DirectContent> {
+
+    public Direct() {
+    }
+
+    public Direct(Map props) {
+        setContent(DeserializerUtil.toObject(props, "content", DirectContent::new));
+    }
 
     @Override
     public String getType() {
