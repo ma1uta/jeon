@@ -16,10 +16,14 @@
 
 package io.github.ma1uta.matrix.push.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.EventContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
+import io.github.ma1uta.matrix.support.EventContentDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -146,8 +150,7 @@ public class Notification {
      * The content field from the event, if present. If the event had no content field, this field is omitted.
      */
     @Schema(
-        description = "The content field from the event, if present. The pusher may omit this if the event had no content or"
-            + " for any other reas"
+        description = "The content field from the event, if present. If the event had no content field, this field is omitted."
     )
     private EventContent content;
 
@@ -170,6 +173,28 @@ public class Notification {
     )
     private List<Device> devices;
 
+    public Notification() {
+    }
+
+    public Notification(Map props) {
+        this.eventId = DeserializerUtil.toString(props, "event_id");
+        this.roomId = DeserializerUtil.toString(props, "room_id");
+        this.type = DeserializerUtil.toString(props, "type");
+        this.sender = DeserializerUtil.toString(props, "sender");
+        this.senderDisplayName = DeserializerUtil.toString(props, "sender_display_name");
+        this.roomName = DeserializerUtil.toString(props, "room_name");
+        this.roomAlias = DeserializerUtil.toString(props, "room_alias");
+        this.userIsTarget = DeserializerUtil.toBoolean(props, "user_is_target");
+        this.prio = DeserializerUtil.toString(props, "prio");
+        if (props.get("content") != null) {
+            this.content = DeserializerUtil
+                .toObject(props, "content", map -> EventContentDeserializer.getInstance().deserialize((Map) props.get("content"), type));
+        }
+        this.counts = DeserializerUtil.toObject(props, "counts", Counts::new);
+        this.devices = DeserializerUtil.toList(props, "devices", map -> new Device((Map) map));
+    }
+
+    @JsonProperty("event_id")
     public String getEventId() {
         return eventId;
     }
@@ -178,6 +203,7 @@ public class Notification {
         this.eventId = eventId;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
@@ -202,6 +228,7 @@ public class Notification {
         this.sender = sender;
     }
 
+    @JsonProperty("sender_display_name")
     public String getSenderDisplayName() {
         return senderDisplayName;
     }
@@ -210,6 +237,7 @@ public class Notification {
         this.senderDisplayName = senderDisplayName;
     }
 
+    @JsonProperty("room_name")
     public String getRoomName() {
         return roomName;
     }
@@ -218,6 +246,7 @@ public class Notification {
         this.roomName = roomName;
     }
 
+    @JsonProperty("room_alias")
     public String getRoomAlias() {
         return roomAlias;
     }
@@ -226,6 +255,7 @@ public class Notification {
         this.roomAlias = roomAlias;
     }
 
+    @JsonProperty("user_is_target")
     public Boolean getUserIsTarget() {
         return userIsTarget;
     }

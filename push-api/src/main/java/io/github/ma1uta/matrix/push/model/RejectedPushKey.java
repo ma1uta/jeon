@@ -16,9 +16,12 @@
 
 package io.github.ma1uta.matrix.push.model;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * JSON body response for push api.
@@ -42,6 +45,13 @@ public class RejectedPushKey {
         required = true
     )
     private List<String> rejected;
+
+    public RejectedPushKey() {
+    }
+
+    public RejectedPushKey(Map props) {
+        this.rejected = DeserializerUtil.toList(props, "rejected", Function.identity());
+    }
 
     public List<String> getRejected() {
         return rejected;
