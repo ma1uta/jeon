@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.application.model;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * JSON body request of the room service api.
@@ -35,6 +38,13 @@ public class RoomVisibility {
         allowableValues = {"public", "private"}
     )
     private String visibility;
+
+    public RoomVisibility() {
+    }
+
+    public RoomVisibility(Map props) {
+        this.visibility = DeserializerUtil.toString(props, "visibility");
+    }
 
     public String getVisibility() {
         return visibility;

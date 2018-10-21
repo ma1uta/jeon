@@ -17,9 +17,12 @@
 package io.github.ma1uta.matrix.application.model;
 
 import io.github.ma1uta.matrix.event.Event;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
+import io.github.ma1uta.matrix.support.EventDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * JSON body request of the transaction api.
@@ -37,6 +40,13 @@ public class TransactionRequest {
         required = true
     )
     private List<Event> events;
+
+    public TransactionRequest() {
+    }
+
+    public TransactionRequest(Map props) {
+        this.events = DeserializerUtil.toList(props, "events", map -> EventDeserializer.getInstance().deserialize((Map) map));
+    }
 
     public List<Event> getEvents() {
         return events;

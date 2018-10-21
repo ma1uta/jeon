@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.info.License;
             email = "sablintolya@gmail.com"
         ),
         license = @License(
-            url = "http://www.apache.org/licenses/LICENSE-2.0.html",
+            url = "https://www.apache.org/licenses/LICENSE-2.0.html",
             name = "Apache 2.0"
         )
     )
