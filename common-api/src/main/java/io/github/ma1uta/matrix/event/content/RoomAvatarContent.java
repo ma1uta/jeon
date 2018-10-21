@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.github.ma1uta.matrix.event.nested.ImageInfo;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;

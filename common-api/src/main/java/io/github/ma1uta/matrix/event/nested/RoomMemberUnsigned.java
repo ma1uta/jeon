@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.github.ma1uta.matrix.event.Event;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.github.ma1uta.matrix.support.EventDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
