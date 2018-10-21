@@ -92,7 +92,7 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
+                <!--plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-toolchains-plugin</artifactId>
                     <version>${maven.toolchain.plugin}</version>
@@ -110,7 +110,7 @@
                             </jdk>
                         </toolchains>
                     </configuration>
-                </plugin>
+                </plugin-->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
@@ -129,7 +129,7 @@
                     </configuration>
                     <executions>
                         <!-- for Java 11 -->
-                        <execution>
+                        <!--execution>
                             <id>java11</id>
                             <phase/>
                             <goals>
@@ -145,7 +145,7 @@
                                 </compileSourceRoots>
                                 <multiReleaseOutput>true</multiReleaseOutput>
                             </configuration>
-                        </execution>
+                        </execution-->
                     </executions>
                     <dependencies>
                         <dependency>
@@ -346,10 +346,10 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-toolchains-plugin</artifactId>
-            </plugin>
+            </plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -483,7 +483,7 @@
         </profile>
 
         <!-- enable java11 compilation -->
-        <profile>
+        <!--profile>
             <id>compile-java11</id>
             <activation>
                 <jdk>[11,)</jdk>
@@ -513,14 +513,14 @@
             </activation>
 
             <build>
-                <plugins>
+                <plugins-->
                     <!-- Run the unit tests with the JVM used to run maven -->
-                    <plugin>
+                    <!--plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <jvm>${env.JAVA_HOME}/bin/java</jvm>
+                            <jvm>${env.JAVA_HOME}/bin/java</jvm-->
                             <!-- this shows that the Java 11 code isn't tested -->
-                            <testFailureIgnore>true</testFailureIgnore>
+                            <!--testFailureIgnore>true</testFailureIgnore>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -536,9 +536,9 @@
             </activation>
 
             <build>
-                <plugins>
+                <plugins-->
                     <!-- enable java11 compilations -->
-                    <plugin>
+                    <!--plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <executions>
@@ -547,10 +547,10 @@
                                 <phase>compile</phase>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin-->
 
                     <!-- add the multi-release:true manifest entry -->
-                    <plugin>
+                    <!--plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
                         <configuration>
@@ -567,7 +567,7 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
+        </profile-->
     </profiles>
 
     <dependencyManagement>
