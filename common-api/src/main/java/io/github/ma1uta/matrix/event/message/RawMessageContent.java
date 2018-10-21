@@ -17,20 +17,28 @@
 package io.github.ma1uta.matrix.event.message;
 
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
+
+import java.util.Map;
 
 /**
  * Raw message for unknown messages.
  */
 public class RawMessageContent extends RoomMessageContent {
 
+    private Object node;
+
+    private String type;
+
+    public RawMessageContent(Map props) {
+        this.node = props;
+        this.type = DeserializerUtil.toString(props, "msgtype");
+    }
+
     public RawMessageContent(Object node, String type) {
         this.node = node;
         this.type = type;
     }
-
-    private Object node;
-
-    private String type;
 
     @Override
     public String getMsgtype() {

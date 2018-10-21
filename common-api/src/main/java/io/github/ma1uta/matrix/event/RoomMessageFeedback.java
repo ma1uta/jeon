@@ -18,7 +18,10 @@ package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.ReceiptContent;
 import io.github.ma1uta.matrix.event.content.RoomMessageFeedbackContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * **NB: Usage of this event is discouraged in favour of the** `receipts module`_.
@@ -34,6 +37,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "DEPRECATED. **NB: Usage of this event is discouraged in favour of the** `receipts module`_."
 )
 public class RoomMessageFeedback extends RoomEvent<RoomMessageFeedbackContent> {
+
+    public RoomMessageFeedback() {
+    }
+
+    public RoomMessageFeedback(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", RoomMessageFeedbackContent::new));
+    }
 
     @Override
     public String getType() {

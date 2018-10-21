@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomPinnedContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This event is used to "pin" particular events in a room for other participants to review later. The order of the pinned
@@ -33,6 +36,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
         + " display it if it cannot be pinned in the client."
 )
 public class RoomPinned extends StateEvent<RoomPinnedContent> {
+
+    public RoomPinned() {
+    }
+
+    public RoomPinned(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", RoomPinnedContent::new));
+    }
 
     @Override
     public String getType() {

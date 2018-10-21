@@ -20,7 +20,10 @@ import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
 import io.github.ma1uta.matrix.event.nested.FileInfo;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This message represents a generic file.
@@ -63,6 +66,16 @@ public class File extends RoomMessageContent {
         description = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
     )
     private EncryptedFile file;
+
+    public File() {
+    }
+
+    public File(Map props) {
+        super(props);
+        this.filename = DeserializerUtil.toString(props, "filename");
+        this.info = DeserializerUtil.toObject(props, "info", FileInfo::new);
+        this.url = DeserializerUtil.toString(props, "url");
+    }
 
     public String getFilename() {
         return filename;

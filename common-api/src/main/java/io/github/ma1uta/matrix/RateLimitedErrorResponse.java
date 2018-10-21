@@ -16,6 +16,11 @@
 
 package io.github.ma1uta.matrix;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
+
+import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
+
 /**
  * Rate limited error response.
  */
@@ -24,6 +29,7 @@ public class RateLimitedErrorResponse extends ErrorResponse {
     /**
      * Time to retry send a request.
      */
+    @JsonbProperty("retry_after_ms")
     private Long retryAfterMs;
 
     public RateLimitedErrorResponse() {
@@ -31,6 +37,11 @@ public class RateLimitedErrorResponse extends ErrorResponse {
 
     public RateLimitedErrorResponse(String errcode, String error) {
         super(errcode, error);
+    }
+
+    public RateLimitedErrorResponse(Map props) {
+        super(props);
+        this.retryAfterMs = DeserializerUtil.toLong(props, "retry_after_ms");
     }
 
     public RateLimitedErrorResponse(String errcode, String error, Long retryAfterMs) {

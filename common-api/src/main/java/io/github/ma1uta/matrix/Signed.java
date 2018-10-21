@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -33,9 +34,12 @@ public class Signed {
 
     @SuppressWarnings("unchecked")
     public Signed(Map props) {
-        this.mxid = (String) props.get("mxid");
-        this.token = (String) props.get("token");
-        this.signatures = (Map<String, Map<String, String>>) props.get("signatures");
+        this.mxid = DeserializerUtil.toString(props, "mxid");
+        this.token = DeserializerUtil.toString(props, "token");
+        this.signatures = DeserializerUtil.toMap(props, "signatures",
+            entry -> (String) entry.getKey(),
+            entry -> (Map<String, String>) entry.getValue()
+        );
     }
 
     /**

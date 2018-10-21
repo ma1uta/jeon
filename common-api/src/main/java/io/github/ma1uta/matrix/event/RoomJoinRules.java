@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomJoinRulesContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * A room may be ``public`` meaning anyone can join the room without any prior action. Alternatively, it can be ``invite`` meaning
@@ -31,6 +34,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
         + " reserved keywords which are not implemented."
 )
 public class RoomJoinRules extends StateEvent<RoomJoinRulesContent> {
+
+    public RoomJoinRules() {
+    }
+
+    public RoomJoinRules(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", RoomJoinRulesContent::new));
+    }
 
     @Override
     public String getType() {

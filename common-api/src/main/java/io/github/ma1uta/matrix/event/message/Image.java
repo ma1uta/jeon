@@ -20,7 +20,10 @@ import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
 import io.github.ma1uta.matrix.event.nested.ImageInfo;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This message represents a single image and an optional thumbnail.
@@ -54,6 +57,16 @@ public class Image extends RoomMessageContent {
         description = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
     )
     private EncryptedFile file;
+
+    public Image() {
+    }
+
+    public Image(Map props) {
+        super(props);
+        this.info = DeserializerUtil.toObject(props, "info", ImageInfo::new);
+        this.url = DeserializerUtil.toString(props, "url");
+        this.file = DeserializerUtil.toObject(props, "file", EncryptedFile::new);
+    }
 
     public ImageInfo getInfo() {
         return info;

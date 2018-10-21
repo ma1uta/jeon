@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.protocol;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Definition of valid values for a field.
@@ -43,6 +46,14 @@ public class FieldMetadata {
         required = true
     )
     private String placeholder;
+
+    public FieldMetadata() {
+    }
+
+    public FieldMetadata(Map props) {
+        this.regexp = DeserializerUtil.toString(props, "regexp");
+        this.placeholder = DeserializerUtil.toString(props, "placeholder");
+    }
 
     public String getRegexp() {
         return regexp;

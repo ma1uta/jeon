@@ -16,10 +16,12 @@
 
 package io.github.ma1uta.matrix.protocol;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -82,6 +84,20 @@ public class Protocol {
         required = true
     )
     private List<Instance> instances;
+
+    public Protocol() {
+    }
+
+    public Protocol(Map props) {
+        this.userFields = DeserializerUtil.toList(props, "user_fields", Function.identity());
+        this.locationFields = DeserializerUtil.toList(props, "location_fields", Function.identity());
+        this.icon = DeserializerUtil.toString(props, "icon");
+        this.fieldTypes = DeserializerUtil.toMap(props, "field_types",
+            entry -> (String) entry.getKey(),
+            entry -> new FieldMetadata((Map) entry.getValue())
+        );
+        this.instances = DeserializerUtil.toList(props, "instances", map -> new Instance((Map) map));
+    }
 
     public List<String> getUserFields() {
         return userFields;

@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
+import io.github.ma1uta.matrix.support.EventContentDeserializer;
 import io.github.ma1uta.matrix.support.EventDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -98,7 +99,7 @@ public class Unsigned<C extends EventContent> {
         EventDeserializer deserializer = EventDeserializer.getInstance();
         this.redactedBecause = deserializer.deserialize((Map) props.get("redacted_because"));
         this.transactionId = DeserializerUtil.toString(props, "transaction_id");
-        this.prevContent = null; //TODO
+        this.prevContent = EventContentDeserializer.getInstance().deserialize(props, type);
         this.inviteRoomState = DeserializerUtil.toList(props, "invite_room_state", invite -> deserializer.deserialize((Map) invite));
     }
 

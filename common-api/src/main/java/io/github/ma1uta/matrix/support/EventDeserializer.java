@@ -150,65 +150,65 @@ public abstract class EventDeserializer {
             case CALL_INVITE:
                 return new CallInvite(props);
             case DIRECT:
-                return codec.readValue(eventParser, Direct.class);
+                return new Direct(props);
             case FORWARDED_ROOM_KEY:
-                return codec.readValue(eventParser, ForwardedRoomKey.class);
+                return new ForwardedRoomKey(props);
             case FULLY_READ:
-                return codec.readValue(eventParser, FullyRead.class);
+                return new FullyRead(props);
             case IGNORED_USER_LIST:
-                return codec.readValue(eventParser, IgnoredUserList.class);
+                return new IgnoredUserList(props);
             case PRESENCE:
-                return codec.readValue(eventParser, Presence.class);
+                return new Presence(props);
             case RECEIPT:
-                return codec.readValue(eventParser, Receipt.class);
+                return new Receipt(props);
             case ROOM_ALIASES:
-                return codec.readValue(eventParser, RoomAliases.class);
+                return new RoomAliases(props);
             case ROOM_AVATAR:
-                return codec.readValue(eventParser, RoomAvatar.class);
+                return new RoomAvatar(props);
             case ROOM_CANONICAL_ALIAS:
-                return codec.readValue(eventParser, RoomCanonicalAlias.class);
+                return new RoomCanonicalAlias(props);
             case ROOM_CREATE:
-                return codec.readValue(eventParser, RoomCreate.class);
+                return new RoomCreate(props);
             case ROOM_GUEST_ACCESS:
-                return codec.readValue(eventParser, RoomGuestAccess.class);
+                return new RoomGuestAccess(props);
             case ROOM_ENCRIPTION:
-                return codec.readValue(eventParser, RoomEncryption.class);
+                return new RoomEncryption(props);
             case ROOM_ENCRYPTED:
-                return codec.readValue(eventParser, RoomEncrypted.class);
+                return new RoomEncrypted(props);
             case ROOM_HISTORY_VISIBILITY:
-                return codec.readValue(eventParser, RoomHistoryVisibility.class);
+                return new RoomHistoryVisibility(props);
             case ROOM_JOIN_RULES:
-                return codec.readValue(eventParser, RoomJoinRules.class);
+                return new RoomJoinRules(props);
             case ROOM_KEY:
-                return codec.readValue(eventParser, RoomKey.class);
+                return new RoomKey(props);
             case ROOM_KEY_REQUEST:
-                return codec.readValue(eventParser, RoomKeyRequest.class);
+                return new RoomKeyRequest(props);
             case ROOM_MEMBER:
-                return codec.readValue(eventParser, RoomMember.class);
+                return new RoomMember(props);
             case ROOM_MESSAGE:
-                return codec.readValue(eventParser, RoomMessage.class);
+                return new RoomMessage(props);
             case ROOM_MESSAGE_FEEDBACK:
-                return codec.readValue(eventParser, RoomMessageFeedback.class);
+                return new RoomMessageFeedback(props);
             case ROOM_NAME:
-                return codec.readValue(eventParser, RoomName.class);
+                return new RoomName(props);
             case ROOM_PINNED_EVENTS:
-                return codec.readValue(eventParser, RoomPinned.class);
+                return new RoomPinned(props);
             case ROOM_POWER_LEVELS:
-                return codec.readValue(eventParser, RoomPowerLevels.class);
+                return new RoomPowerLevels(props);
             case ROOM_REDACTION:
-                return codec.readValue(eventParser, RoomRedaction.class);
+                return new RoomRedaction(props);
             case ROOM_THIRD_PARTY_INVITE:
-                return codec.readValue(eventParser, RoomThirdPartyInvite.class);
+                return new RoomThirdPartyInvite(props);
             case ROOM_TOPIC:
-                return codec.readValue(eventParser, RoomTopic.class);
+                return new RoomTopic(props);
             case STICKER:
-                return codec.readValue(eventParser, Sticker.class);
+                return new Sticker(props);
             case TAG:
-                return codec.readValue(eventParser, Tag.class);
+                return new Tag(props);
             case TYPING:
-                return codec.readValue(eventParser, Typing.class);
+                return new Typing(props);
             case ROOM_SERVER_ACL:
-                return codec.readValue(eventParser, RoomServerAcl.class);
+                return new RoomServerAcl(props);
             default:
                 return parse(props, type);
         }

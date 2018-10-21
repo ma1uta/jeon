@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.StickerContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This message represents a single sticker image.
@@ -26,6 +29,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "This message represents a single sticker image."
 )
 public class Sticker extends RoomEvent<StickerContent> {
+
+    public Sticker() {
+    }
+
+    public Sticker(Map props) {
+        super(props);
+        setContent(DeserializerUtil.toObject(props, "content", StickerContent::new));
+    }
 
     @Override
     public String getType() {

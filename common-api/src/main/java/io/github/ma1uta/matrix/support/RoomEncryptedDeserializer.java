@@ -16,8 +16,15 @@
 
 package io.github.ma1uta.matrix.support;
 
-import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
+import static io.github.ma1uta.matrix.event.Event.Encryption.MEGOLM;
+import static io.github.ma1uta.matrix.event.Event.Encryption.OLM;
 
+import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
+import io.github.ma1uta.matrix.event.encrypted.MegolmEncryptedContent;
+import io.github.ma1uta.matrix.event.encrypted.OlmEncryptedContent;
+import io.github.ma1uta.matrix.event.encrypted.RawEncryptedContent;
+
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -52,10 +59,69 @@ public abstract class RoomEncryptedDeserializer {
     }
 
     /**
-     * Deserialize the room encrypted content.
+     * Deserialize a room encrypted event.
      *
-     * @param props property map.
-     * @return the event instance.
+     * @param props the room encrypted event properties.
+     * @return the room encrypted event instance.
      */
-    public abstract RoomEncryptedContent deserialize(Map props);
+    public RoomEncryptedContent deserialize(Map props) {
+        if (props == null) {
+            return null;
+        }
+
+        String algorithm = (String) props.get("algorithm");
+
+        if (algorithm == null) {
+            throw new RuntimeException("Missing the algorithm.");
+        }
+
+        switch (algorithm) {
+            case OLM:
+                return new OlmEncryptedContent(props);
+            case MEGOLM:
+                return new MegolmEncryptedContent(props);
+            default:
+                return parse(props);
+        }
+    }
+
+    /**
+     * Deserialize a room encrypted event.
+     *
+     * @param bytes the room encrypted event.
+     * @return the room encrypted event instance.
+     */
+    public RoomEncryptedContent deserialize(byte[] bytes) {
+        return deserialize(bytesToMap(bytes));
+    }
+
+    /**
+     * Deserialize a room encrypted event.
+     *
+     * @param inputStream the room encrypted event.
+     * @return the room encrypted event instance.
+     */
+    public RoomEncryptedContent deserialize(InputStream inputStream) {
+        return deserialize(streamToMap(inputStream));
+    }
+
+    protected RoomEncryptedContent parse(Map props) {
+        return new RawEncryptedContent(props);
+    }
+
+    /**
+     * Convert a byte array to the property map.
+     *
+     * @param bytes byte array.
+     * @return the property map.
+     */
+    protected abstract Map bytesToMap(byte[] bytes);
+
+    /**
+     * Convert a input stream to the property map.
+     *
+     * @param inputStream the input stream.
+     * @return the property map.
+     */
+    protected abstract Map streamToMap(InputStream inputStream);
 }

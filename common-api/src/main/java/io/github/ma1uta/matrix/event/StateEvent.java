@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
+import io.github.ma1uta.matrix.support.EventContentDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -60,9 +61,12 @@ public abstract class StateEvent<C extends EventContent> extends RoomEvent<C> {
     public StateEvent() {
     }
 
+    @SuppressWarnings("unchecked")
     public StateEvent(Map props) {
         super(props);
-        this.prevContent = null; //TODO
+        if (props != null) {
+            this.prevContent = EventContentDeserializer.getInstance().deserialize((Map) props.get("content"), (String) props.get("type"));
+        }
         this.stateKey = DeserializerUtil.toString(props, "state_key");
     }
 

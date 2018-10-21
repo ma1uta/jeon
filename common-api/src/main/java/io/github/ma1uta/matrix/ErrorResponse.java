@@ -16,6 +16,10 @@
 
 package io.github.ma1uta.matrix;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
+
+import java.util.Map;
+
 /**
  * Any errors which occur at the Matrix API level MUST return a "standard error response".
  */
@@ -234,6 +238,11 @@ public class ErrorResponse {
     public ErrorResponse(String errcode, String error) {
         this.errcode = errcode;
         this.error = error;
+    }
+
+    public ErrorResponse(Map props) {
+        this.errcode = DeserializerUtil.toString(props, "errcode");
+        this.error = DeserializerUtil.toString(props, "error");
     }
 
     public String getErrcode() {

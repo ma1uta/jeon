@@ -17,7 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomKeyRequestContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * This event type is used to request keys for end-to-end encryption. It is sent as an unencrypted to-device event.
@@ -26,6 +29,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "This event type is used to request keys for end-to-end encryption. It is sent as an unencrypted to-device event."
 )
 public class RoomKeyRequest extends Event<RoomKeyRequestContent> {
+
+    public RoomKeyRequest() {
+    }
+
+    public RoomKeyRequest(Map props) {
+        setContent(DeserializerUtil.toObject(props, "content", RoomKeyRequestContent::new));
+    }
 
     @Override
     public String getType() {

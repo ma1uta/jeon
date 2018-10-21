@@ -19,6 +19,8 @@ package io.github.ma1uta.matrix.event.message;
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
+
 /**
  * The ``m.notice`` type is primarily intended for responses from automated clients. An ``m.notice`` message must be treated
  * the same way as a regular ``m.text`` message with two exceptions. Firstly, clients should present ``m.notice`` messages to
@@ -33,6 +35,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
         + " clients continuously exchange messages."
 )
 public class Notice extends FormattedBody {
+
+    public Notice() {
+    }
+
+    public Notice(Map props) {
+        super(props);
+    }
 
     @Override
     public String getMsgtype() {

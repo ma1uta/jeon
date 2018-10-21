@@ -19,8 +19,10 @@ package io.github.ma1uta.matrix.event.message;
 import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.LocationInfo;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -48,6 +50,15 @@ public class Location extends RoomMessageContent {
     )
     @JsonbProperty("geo_uri")
     private String geoUri;
+
+    public Location() {
+    }
+
+    public Location(Map props) {
+        super(props);
+        this.info = DeserializerUtil.toObject(props, "info", LocationInfo::new);
+        this.geoUri = DeserializerUtil.toString(props, "geo_uri");
+    }
 
     public LocationInfo getInfo() {
         return info;

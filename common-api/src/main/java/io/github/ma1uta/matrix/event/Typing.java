@@ -17,8 +17,10 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.TypingContent;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -40,6 +42,13 @@ public class Typing extends Event<TypingContent> {
     @JsonbProperty("room_id")
     private String roomId;
 
+    public Typing() {
+    }
+
+    public Typing(Map props) {
+        this.roomId = DeserializerUtil.toString(props, "room_id");
+        setContent(DeserializerUtil.toObject(props, "content", TypingContent::new));
+    }
 
     public String getRoomId() {
         return roomId;
