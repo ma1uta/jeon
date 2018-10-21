@@ -17,7 +17,7 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Unsigned;
+import io.github.ma1uta.matrix.event.Unsigned;
 
 import java.util.List;
 import java.util.Map;

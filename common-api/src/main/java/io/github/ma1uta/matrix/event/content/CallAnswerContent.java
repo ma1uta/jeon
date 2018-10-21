@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.Answer;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -79,6 +80,7 @@ public class CallAnswerContent implements EventContent {
         this.answer = answer;
     }
 
+    @JsonProperty("call_id")
     public String getCallId() {
         return callId;
     }

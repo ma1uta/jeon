@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -59,6 +60,7 @@ public class ImageInfo extends FileInfo {
         this.width = DeserializerUtil.toLong(props, "w");
     }
 
+    @JsonProperty("h")
     public Long getHeight() {
         return height;
     }
@@ -67,6 +69,7 @@ public class ImageInfo extends FileInfo {
         this.height = height;
     }
 
+    @JsonProperty("w")
     public Long getWidth() {
         return width;
     }

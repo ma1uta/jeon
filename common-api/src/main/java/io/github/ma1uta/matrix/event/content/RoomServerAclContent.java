@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -97,6 +98,7 @@ public class RoomServerAclContent implements EventContent {
         this.deny = DeserializerUtil.toList(props, "deny", String::valueOf);
     }
 
+    @JsonProperty("allow_ip_literals")
     public Boolean getAllowIpLiterals() {
         return allowIpLiterals;
     }

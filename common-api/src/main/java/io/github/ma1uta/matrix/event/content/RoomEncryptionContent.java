@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -80,6 +81,7 @@ public class RoomEncryptionContent implements EventContent {
         this.algorithm = algorithm;
     }
 
+    @JsonProperty("rotation_period_ms")
     public Long getRotationPeriodMs() {
         return rotationPeriodMs;
     }
@@ -88,6 +90,7 @@ public class RoomEncryptionContent implements EventContent {
         this.rotationPeriodMs = rotationPeriodMs;
     }
 
+    @JsonProperty("rotation_period_msgs")
     public Long getRotationPeriodMsgs() {
         return rotationPeriodMsgs;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.TypingContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,6 +51,7 @@ public class Typing extends Event<TypingContent> {
         setContent(DeserializerUtil.toObject(props, "content", TypingContent::new));
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }

@@ -42,5 +42,5 @@ public interface VersionApi {
      */
     @GET
     @Path("/version")
-    VersionResponse version(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    VersionResponse version(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 }

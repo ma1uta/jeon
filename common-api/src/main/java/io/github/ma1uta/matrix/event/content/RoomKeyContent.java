@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -92,6 +93,7 @@ public class RoomKeyContent implements EventContent {
         this.algorithm = algorithm;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
@@ -100,6 +102,7 @@ public class RoomKeyContent implements EventContent {
         this.roomId = roomId;
     }
 
+    @JsonProperty("session_id")
     public String getSessionId() {
         return sessionId;
     }
@@ -108,6 +111,7 @@ public class RoomKeyContent implements EventContent {
         this.sessionId = sessionId;
     }
 
+    @JsonProperty("session_key")
     public String getSessionKey() {
         return sessionKey;
     }

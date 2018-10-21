@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Event.
@@ -509,5 +512,7 @@ public abstract class Event<C extends EventContent> {
         description = "The type of event. This SHOULD be namespaced similar to Java package naming conventions.",
         required = true
     )
+    @JsonbProperty("type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.READ_ONLY)
     public abstract String getType();
 }

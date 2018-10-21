@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.Invite;
 import io.github.ma1uta.matrix.event.nested.RoomMemberUnsigned;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
@@ -108,6 +109,7 @@ public class RoomMemberContent implements EventContent {
         this.unsigned = DeserializerUtil.toObject(props, "unsigned", RoomMemberUnsigned::new);
     }
 
+    @JsonProperty("avatar_url")
     public String getAvatarUrl() {
         return avatarUrl;
     }
@@ -116,6 +118,7 @@ public class RoomMemberContent implements EventContent {
         this.avatarUrl = avatarUrl;
     }
 
+    @JsonProperty("displayname")
     public String getDisplayName() {
         return displayName;
     }
@@ -132,6 +135,7 @@ public class RoomMemberContent implements EventContent {
         this.membership = membership;
     }
 
+    @JsonProperty("is_direct")
     public Boolean getDirect() {
         return isDirect;
     }
@@ -140,6 +144,7 @@ public class RoomMemberContent implements EventContent {
         isDirect = direct;
     }
 
+    @JsonProperty("third_party_invite")
     public Invite getThirdPartyInvite() {
         return thirdPartyInvite;
     }

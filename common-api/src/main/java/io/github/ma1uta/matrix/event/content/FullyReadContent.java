@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -50,6 +51,7 @@ public class FullyReadContent implements EventContent {
         this.eventId = DeserializerUtil.toString(props, "event_id");
     }
 
+    @JsonProperty("event_id")
     public String getEventId() {
         return eventId;
     }

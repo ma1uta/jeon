@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.github.ma1uta.matrix.support.EventContentDeserializer;
@@ -70,6 +71,7 @@ public abstract class StateEvent<C extends EventContent> extends RoomEvent<C> {
         this.stateKey = DeserializerUtil.toString(props, "state_key");
     }
 
+    @JsonProperty("state_key")
     public String getStateKey() {
         return stateKey;
     }
@@ -78,6 +80,7 @@ public abstract class StateEvent<C extends EventContent> extends RoomEvent<C> {
         this.stateKey = stateKey;
     }
 
+    @JsonProperty("prev_content")
     public C getPrevContent() {
         return prevContent;
     }

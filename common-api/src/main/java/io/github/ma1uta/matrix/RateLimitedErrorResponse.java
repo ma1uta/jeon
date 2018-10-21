@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 
 import java.util.Map;
@@ -49,6 +50,7 @@ public class RateLimitedErrorResponse extends ErrorResponse {
         this.retryAfterMs = retryAfterMs;
     }
 
+    @JsonProperty("retry_after_ms")
     public Long getRetryAfterMs() {
         return retryAfterMs;
     }

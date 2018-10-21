@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.message;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -80,6 +81,7 @@ public abstract class FormattedBody extends RoomMessageContent {
         this.format = format;
     }
 
+    @JsonProperty("formatted_body")
     public String getFormattedBody() {
         return formattedBody;
     }

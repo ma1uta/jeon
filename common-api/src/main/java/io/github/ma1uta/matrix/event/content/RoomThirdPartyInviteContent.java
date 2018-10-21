@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.PublicKeys;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -96,6 +97,7 @@ public class RoomThirdPartyInviteContent implements EventContent {
         this.publicKeys = DeserializerUtil.toList(props, "public_keys", map -> new PublicKeys((Map) map));
     }
 
+    @JsonProperty("display_name")
     public String getDisplayName() {
         return displayName;
     }
@@ -104,6 +106,7 @@ public class RoomThirdPartyInviteContent implements EventContent {
         this.displayName = displayName;
     }
 
+    @JsonProperty("key_validity_url")
     public String getKeyValidityUrl() {
         return keyValidityUrl;
     }
@@ -112,6 +115,7 @@ public class RoomThirdPartyInviteContent implements EventContent {
         this.keyValidityUrl = keyValidityUrl;
     }
 
+    @JsonProperty("public_key")
     public String getPublicKey() {
         return publicKey;
     }
@@ -120,6 +124,7 @@ public class RoomThirdPartyInviteContent implements EventContent {
         this.publicKey = publicKey;
     }
 
+    @JsonProperty("public_keys")
     public List<PublicKeys> getPublicKeys() {
         return publicKeys;
     }

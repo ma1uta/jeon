@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.NotificationPowerLevel;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -212,6 +213,7 @@ public class RoomPowerLevelsContent implements EventContent {
         this.events = events;
     }
 
+    @JsonProperty("events_default")
     public Byte getEventsDefault() {
         return eventsDefault;
     }
@@ -244,6 +246,7 @@ public class RoomPowerLevelsContent implements EventContent {
         this.redact = redact;
     }
 
+    @JsonProperty("state_default")
     public Byte getStateDefault() {
         return stateDefault;
     }
@@ -260,6 +263,7 @@ public class RoomPowerLevelsContent implements EventContent {
         this.users = users;
     }
 
+    @JsonProperty("users_default")
     public Byte getUsersDefault() {
         return usersDefault;
     }

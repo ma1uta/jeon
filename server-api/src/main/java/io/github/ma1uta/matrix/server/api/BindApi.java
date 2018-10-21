@@ -19,13 +19,15 @@ package io.github.ma1uta.matrix.server.api;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.server.model.bind.OnBindRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * 3pid federation api.
@@ -36,15 +38,22 @@ public interface BindApi {
     /**
      * If the owner of that particular 3pid binds it with a Matrix user ID, the identity server will attempt to make an HTTP POST
      * to the Matrix user's homeserver.
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: Success.</p>
      *
-     * @param onBindRequest   request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: success.</p>
+     * @param onBindRequest request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
     @Path("/onbind")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    EmptyResponse onBind(OnBindRequest onBindRequest, @Context HttpServletRequest servletRequest,
-                         @Context HttpServletResponse servletResponse);
+    void onBind(
+        OnBindRequest onBindRequest,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 }

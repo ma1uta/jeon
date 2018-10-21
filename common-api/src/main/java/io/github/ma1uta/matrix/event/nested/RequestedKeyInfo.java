@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -90,6 +91,7 @@ public class RequestedKeyInfo {
         this.algorithm = algorithm;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
@@ -98,6 +100,7 @@ public class RequestedKeyInfo {
         this.roomId = roomId;
     }
 
+    @JsonProperty("session_id")
     public String getSessionId() {
         return sessionId;
     }
@@ -106,6 +109,7 @@ public class RequestedKeyInfo {
         this.sessionId = sessionId;
     }
 
+    @JsonProperty("sender_key")
     public String getSenderKey() {
         return senderKey;
     }

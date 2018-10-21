@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.encrypted.MegolmEncryptedContent;
 import io.github.ma1uta.matrix.event.encrypted.OlmEncryptedContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
@@ -94,6 +95,7 @@ public abstract class RoomEncryptedContent implements EventContent {
         this.sessionId = DeserializerUtil.toString(props, "session_id");
     }
 
+    @JsonProperty("sender_key")
     public String getSenderKey() {
         return senderKey;
     }
@@ -102,6 +104,7 @@ public abstract class RoomEncryptedContent implements EventContent {
         this.senderKey = senderKey;
     }
 
+    @JsonProperty("device_id")
     public String getDeviceId() {
         return deviceId;
     }
@@ -110,6 +113,7 @@ public abstract class RoomEncryptedContent implements EventContent {
         this.deviceId = deviceId;
     }
 
+    @JsonProperty("session_id")
     public String getSessionId() {
         return sessionId;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.RequestedKeyInfo;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -98,6 +99,7 @@ public class RoomKeyRequestContent implements EventContent {
         this.action = action;
     }
 
+    @JsonProperty("requesting_device_id")
     public String getRequestingDeviceId() {
         return requestingDeviceId;
     }
@@ -106,6 +108,7 @@ public class RoomKeyRequestContent implements EventContent {
         this.requestingDeviceId = requestingDeviceId;
     }
 
+    @JsonProperty("request_id")
     public String getRequestId() {
         return requestId;
     }

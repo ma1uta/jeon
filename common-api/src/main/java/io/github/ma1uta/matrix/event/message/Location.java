@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.message;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.LocationInfo;
@@ -68,6 +69,7 @@ public class Location extends RoomMessageContent {
         this.info = info;
     }
 
+    @JsonProperty("geo_uri")
     public String getGeoUri() {
         return geoUri;
     }

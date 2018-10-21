@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -94,6 +95,7 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         this.unsigned = DeserializerUtil.toObject(props, "unsigned", map -> new Unsigned<>(map, getType()));
     }
 
+    @JsonProperty("event_id")
     public String getEventId() {
         return eventId;
     }
@@ -102,6 +104,7 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         this.eventId = eventId;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
@@ -126,6 +129,7 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         this.unsigned = unsigned;
     }
 
+    @JsonProperty("origin_server_ts")
     public Long getOriginServerTs() {
         return originServerTs;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -138,6 +139,7 @@ public class ForwardedRoomKeyContent implements EventContent {
         this.algorithm = algorithm;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
@@ -146,6 +148,7 @@ public class ForwardedRoomKeyContent implements EventContent {
         this.roomId = roomId;
     }
 
+    @JsonProperty("sender_key")
     public String getSenderKey() {
         return senderKey;
     }
@@ -154,6 +157,7 @@ public class ForwardedRoomKeyContent implements EventContent {
         this.senderKey = senderKey;
     }
 
+    @JsonProperty("session_id")
     public String getSessionId() {
         return sessionId;
     }
@@ -162,6 +166,7 @@ public class ForwardedRoomKeyContent implements EventContent {
         this.sessionId = sessionId;
     }
 
+    @JsonProperty("session_key")
     public String getSessionKey() {
         return sessionKey;
     }
@@ -170,6 +175,7 @@ public class ForwardedRoomKeyContent implements EventContent {
         this.sessionKey = sessionKey;
     }
 
+    @JsonProperty("sender_claimed_ed25219_key")
     public String getSenderClaimedEd25519Key() {
         return senderClaimedEd25519Key;
     }
@@ -178,6 +184,7 @@ public class ForwardedRoomKeyContent implements EventContent {
         this.senderClaimedEd25519Key = senderClaimedEd25519Key;
     }
 
+    @JsonProperty("forwarding_curve_25519_key_chain")
     public List<String> getForwardingCurve25519KeyChain() {
         return forwardingCurve25519KeyChain;
     }

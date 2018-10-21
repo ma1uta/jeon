@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -62,6 +63,7 @@ public class PublicKeys {
         this.publicKey = DeserializerUtil.toString(props, "public_key");
     }
 
+    @JsonProperty("key_validity_url")
     public String getKeyValidityUrl() {
         return keyValidityUrl;
     }
@@ -70,6 +72,7 @@ public class PublicKeys {
         this.keyValidityUrl = keyValidityUrl;
     }
 
+    @JsonProperty("public_key")
     public String getPublicKey() {
         return publicKey;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -49,6 +50,7 @@ public class RoomHistoryVisibilityContent implements EventContent {
         this.historyVisibility = DeserializerUtil.toString(props, "history_visibility");
     }
 
+    @JsonProperty("history_visibility")
     public String getHistoryVisibility() {
         return historyVisibility;
     }

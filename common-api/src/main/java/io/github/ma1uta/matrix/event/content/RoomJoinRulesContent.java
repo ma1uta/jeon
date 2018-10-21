@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -53,6 +54,7 @@ public class RoomJoinRulesContent implements EventContent {
         this.joinRule = DeserializerUtil.toString(props, "join_rule");
     }
 
+    @JsonProperty("join_rule")
     public String getJoinRule() {
         return joinRule;
     }

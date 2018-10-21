@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -99,6 +100,7 @@ public class FileInfo {
         this.size = size;
     }
 
+    @JsonProperty("thumbnail_url")
     public String getThumbnailUrl() {
         return thumbnailUrl;
     }
@@ -107,6 +109,7 @@ public class FileInfo {
         this.thumbnailUrl = thumbnailUrl;
     }
 
+    @JsonProperty("thumbnail_file")
     public EncryptedFile getThumbnailFile() {
         return thumbnailFile;
     }
@@ -115,6 +118,7 @@ public class FileInfo {
         this.thumbnailFile = thumbnailFile;
     }
 
+    @JsonProperty("thumbnail_info")
     public ThumbnailInfo getThumbnailInfo() {
         return thumbnailInfo;
     }

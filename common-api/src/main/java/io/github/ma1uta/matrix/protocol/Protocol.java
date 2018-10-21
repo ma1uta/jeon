@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.protocol;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -99,6 +100,7 @@ public class Protocol {
         this.instances = DeserializerUtil.toList(props, "instances", map -> new Instance((Map) map));
     }
 
+    @JsonProperty("user_fields")
     public List<String> getUserFields() {
         return userFields;
     }
@@ -107,6 +109,7 @@ public class Protocol {
         this.userFields = userFields;
     }
 
+    @JsonProperty("location_fields")
     public List<String> getLocationFields() {
         return locationFields;
     }
@@ -123,6 +126,7 @@ public class Protocol {
         this.icon = icon;
     }
 
+    @JsonProperty("field_types")
     public Map<String, FieldMetadata> getFieldTypes() {
         return fieldTypes;
     }

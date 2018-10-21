@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -76,6 +77,7 @@ public class RoomCreateContent implements EventContent {
         this.creator = creator;
     }
 
+    @JsonProperty("m.federate")
     public Boolean getFederate() {
         return federate;
     }
@@ -84,6 +86,7 @@ public class RoomCreateContent implements EventContent {
         this.federate = federate;
     }
 
+    @JsonProperty("room_version")
     public String getRoomVersion() {
         return roomVersion;
     }

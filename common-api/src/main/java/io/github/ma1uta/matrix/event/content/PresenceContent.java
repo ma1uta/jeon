@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -91,6 +92,7 @@ public class PresenceContent implements EventContent {
         this.currentlyActive = DeserializerUtil.toBoolean(props, "currently_active");
     }
 
+    @JsonProperty("avatar_url")
     public String getAvatarUrl() {
         return avatarUrl;
     }
@@ -99,6 +101,7 @@ public class PresenceContent implements EventContent {
         this.avatarUrl = avatarUrl;
     }
 
+    @JsonProperty("displayname")
     public String getDisplayName() {
         return displayName;
     }
@@ -107,6 +110,7 @@ public class PresenceContent implements EventContent {
         this.displayName = displayName;
     }
 
+    @JsonProperty("last_active_ago")
     public Long getLastActiveAgo() {
         return lastActiveAgo;
     }
@@ -123,6 +127,7 @@ public class PresenceContent implements EventContent {
         this.presence = presence;
     }
 
+    @JsonProperty("currently_active")
     public Boolean getCurrentlyActive() {
         return currentlyActive;
     }

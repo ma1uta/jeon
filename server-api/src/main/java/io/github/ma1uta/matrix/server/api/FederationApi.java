@@ -34,9 +34,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Matrix homeservers use the Federation APIs (also known as server-server APIs) to communicate with each other. Homeservers use
@@ -61,12 +65,17 @@ public interface FederationApi {
      * @param transaction     transaction data.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: not described in spec.
      */
     @PUT
     @Path("/send/{transactionId}")
-    Object send(@PathParam("transactionId") String transactionId, Transaction transaction, @Context HttpServletRequest servletRequest,
-                @Context HttpServletResponse servletResponse);
+    void send(
+        @PathParam("transactionId") String transactionId,
+        Transaction transaction,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * To fetch all the state of a given room.
@@ -81,8 +90,13 @@ public interface FederationApi {
      */
     @GET
     @Path("/state/{roomId}")
-    Transaction state(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
-                      @Context HttpServletResponse servletResponse);
+    Transaction state(
+        @PathParam("roomId") String roomId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * !!! Not described in spec.
@@ -94,7 +108,7 @@ public interface FederationApi {
      */
     @GET
     @Path("/state_ids/{roomId}")
-    Transaction stateIds(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+    Transaction stateIds(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                          @Context HttpServletResponse servletResponse);
 
     /**
@@ -110,7 +124,7 @@ public interface FederationApi {
      */
     @GET
     @Path("/event/{eventId}")
-    Transaction event(@PathParam("eventId") String eventId, @Context HttpServletRequest servletRequest,
+    Transaction event(@PathParam("eventId") String eventId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                       @Context HttpServletResponse servletResponse);
 
     /**
@@ -129,7 +143,7 @@ public interface FederationApi {
     @GET
     @Path("/backfill/{roomId}")
     Transaction backfill(@PathParam("roomId") String roomId, @QueryParam("v") String parentId, @QueryParam("limit") Long limit,
-                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+                         @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * To stream events all the events.
@@ -144,7 +158,8 @@ public interface FederationApi {
      */
     @GET
     @Path("/pull")
-    Transaction pull(@QueryParam("v") String parentId, @QueryParam("limit") Long limit, @Context HttpServletRequest servletRequest,
+    Transaction pull(@QueryParam("v") String parentId, @QueryParam("limit") Long limit, @Context UriInfo uriInfo,
+                     @Context HttpHeaders httpHeaders,
                      @Context HttpServletResponse servletResponse);
 
     /**
@@ -162,7 +177,8 @@ public interface FederationApi {
      */
     @GET
     @Path("/query/{queryType}")
-    Response query(@PathParam("queryType") String queryType, Map<String, Object> query, @Context HttpServletRequest servletRequest,
+    Response query(@PathParam("queryType") String queryType, Map<String, Object> query, @Context UriInfo uriInfo,
+                   @Context HttpHeaders httpHeaders,
                    @Context HttpServletResponse servletResponse);
 
     /**
@@ -178,7 +194,8 @@ public interface FederationApi {
      */
     @GET
     @Path("/make_join/{context}/{userId}")
-    Event makeJoin(@PathParam("context") String context, @PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+    Event makeJoin(@PathParam("context") String context, @PathParam("userId") String userId, @Context UriInfo uriInfo,
+                   @Context HttpHeaders httpHeaders,
                    @Context HttpServletResponse servletResponse);
 
     /**
@@ -195,7 +212,7 @@ public interface FederationApi {
     @PUT
     @Path("/send_join/{context}/{eventId}")
     Response sendJoin(@PathParam("context") String context, @PathParam("eventId") String eventId,
-                      @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+                      @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * To make a leave request.
@@ -210,7 +227,8 @@ public interface FederationApi {
      */
     @GET
     @Path("/make_leave/{context}/{userId}")
-    Response makeLeave(@PathParam("context") String context, @PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+    Response makeLeave(@PathParam("context") String context, @PathParam("userId") String userId, @Context UriInfo uriInfo,
+                       @Context HttpHeaders httpHeaders,
                        @Context HttpServletResponse servletResponse);
 
     /**
@@ -226,7 +244,8 @@ public interface FederationApi {
      */
     @PUT
     @Path("/send_leave/{roomId}/{txid}")
-    Response sendLeave(@PathParam("roomId") String roomId, @PathParam("txid") String txid, @Context HttpServletRequest servletRequest,
+    Response sendLeave(@PathParam("roomId") String roomId, @PathParam("txid") String txid, @Context UriInfo uriInfo,
+                       @Context HttpHeaders httpHeaders,
                        @Context HttpServletResponse servletResponse);
 
     /**
@@ -243,7 +262,7 @@ public interface FederationApi {
     @GET
     @Path("/event_auth/{context}/{eventId}")
     Response eventAuth(@PathParam("context") String context, @PathParam("eventId") String eventId,
-                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+                       @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * Send invite.
@@ -258,7 +277,8 @@ public interface FederationApi {
      */
     @PUT
     @Path("/invite/{context}/{eventId}")
-    Response invite(@PathParam("context") String context, @PathParam("eventId") String eventId, @Context HttpServletRequest servletRequest,
+    Response invite(@PathParam("context") String context, @PathParam("eventId") String eventId, @Context UriInfo uriInfo,
+                    @Context HttpHeaders httpHeaders,
                     @Context HttpServletResponse servletResponse);
 
     /**
@@ -273,7 +293,7 @@ public interface FederationApi {
      */
     @PUT
     @Path("/exchange_third_party_invite/{roomId}")
-    Response exchangeThirdPartyInvite(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+    Response exchangeThirdPartyInvite(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                                       @Context HttpServletResponse servletResponse);
 
     /**
@@ -288,7 +308,7 @@ public interface FederationApi {
      */
     @POST
     @Path("/user/keys/query")
-    Response userKeysQuery(Map<String, Map<String, List<String>>> query, @Context HttpServletRequest servletRequest,
+    Response userKeysQuery(Map<String, Map<String, List<String>>> query, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                            @Context HttpServletResponse servletResponse);
 
     /**
@@ -303,7 +323,7 @@ public interface FederationApi {
      */
     @GET
     @Path("/user/devices/{userId}")
-    Response userDevices(@PathParam("userId") String userId, @Context HttpServletRequest servletRequest,
+    Response userDevices(@PathParam("userId") String userId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                          @Context HttpServletResponse servletResponse);
 
     /**
@@ -317,7 +337,7 @@ public interface FederationApi {
      */
     @POST
     @Path("/user/keys/claim")
-    Response userKeysClaim(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    Response userKeysClaim(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * To query auth chains.
@@ -334,7 +354,7 @@ public interface FederationApi {
     @POST
     @Path("/query_auth/{context}/{eventId}")
     Response queryAuth(@PathParam("context") String context, @PathParam("eventId") String eventId, Map<String, Object> request,
-                       @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+                       @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * To get missing events (?).
@@ -348,7 +368,7 @@ public interface FederationApi {
      */
     @POST
     @Path("/get_missing_events/{roomId}")
-    Response getMissingEvents(@PathParam("roomId") String roomId, @Context HttpServletRequest servletRequest,
+    Response getMissingEvents(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                               @Context HttpServletResponse servletResponse);
 
     /**
@@ -362,11 +382,11 @@ public interface FederationApi {
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
      * @return Status code 200: user info.
-     *     Status code 401: missing access_token.
+     * Status code 401: missing access_token.
      */
     @GET
     @Path("/openid/userinfo")
-    OpenIdResponse openId(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    OpenIdResponse openId(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * Fetch the public room list for this server.
@@ -390,5 +410,6 @@ public interface FederationApi {
     Page<PublicRoomResponse> publicRooms(@QueryParam("limit") Integer limit, @QueryParam("since") String since,
                                          @QueryParam("include_all_networks") Boolean includeAllNetworks,
                                          @QueryParam("third_party_instance_id") String thirdPartyInstanceId,
-                                         @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+                                         @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
+                                         @Context HttpServletResponse servletResponse);
 }

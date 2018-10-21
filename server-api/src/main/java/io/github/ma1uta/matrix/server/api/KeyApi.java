@@ -83,7 +83,7 @@ public interface KeyApi {
      */
     @GET
     @Path("/server/{keyId}")
-    KeyResponse key(@PathParam("keyId") String keyId, @Context HttpServletRequest servletRequest,
+    KeyResponse key(@PathParam("keyId") String keyId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                     @Context HttpServletResponse servletResponse);
 
     /**
@@ -107,7 +107,7 @@ public interface KeyApi {
     @GET
     @Path("/query/${serverName}/${keyId}")
     QueryResponse query(@PathParam("serverName") String serverName, @PathParam("keyId") String keyId,
-                        @QueryParam("minimumValidUntilTs") Long minimumValidUntilTs, @Context HttpServletRequest servletRequest,
+                        @QueryParam("minimumValidUntilTs") Long minimumValidUntilTs, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                         @Context HttpServletResponse servletResponse);
 
     /**
@@ -125,5 +125,5 @@ public interface KeyApi {
      */
     @POST
     @Path("/query")
-    QueryResponse bulkQuery(QueryRequest request, @Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse);
+    QueryResponse bulkQuery(QueryRequest request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 }

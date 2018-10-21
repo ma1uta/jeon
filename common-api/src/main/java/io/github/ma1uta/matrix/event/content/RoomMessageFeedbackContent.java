@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -63,6 +64,7 @@ public class RoomMessageFeedbackContent implements EventContent {
         this.type = DeserializerUtil.toString(props, "type");
     }
 
+    @JsonProperty("target_event_id")
     public String getTargetEventId() {
         return targetEventId;
     }

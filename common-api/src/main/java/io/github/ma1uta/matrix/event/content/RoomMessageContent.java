@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.message.Audio;
 import io.github.ma1uta.matrix.event.message.Emote;
 import io.github.ma1uta.matrix.event.message.File;
@@ -66,6 +67,7 @@ public abstract class RoomMessageContent implements EventContent {
         readOnly = true
     )
     @JsonbProperty(value = "msgtype")
+    @JsonProperty(value = "msgtype", access = JsonProperty.Access.READ_ONLY)
     public abstract String getMsgtype();
 
     /**
@@ -102,6 +104,7 @@ public abstract class RoomMessageContent implements EventContent {
         this.body = body;
     }
 
+    @JsonProperty("m.relates_to")
     public Relates getRelatesTo() {
         return relatesTo;
     }

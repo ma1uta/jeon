@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.github.ma1uta.matrix.support.EventContentDeserializer;
@@ -111,6 +112,7 @@ public class Unsigned<C extends EventContent> {
         this.age = age;
     }
 
+    @JsonProperty("redacted_because")
     public Event getRedactedBecause() {
         return redactedBecause;
     }
@@ -119,6 +121,7 @@ public class Unsigned<C extends EventContent> {
         this.redactedBecause = redactedBecause;
     }
 
+    @JsonProperty("transaction_id")
     public String getTransactionId() {
         return transactionId;
     }
@@ -127,6 +130,7 @@ public class Unsigned<C extends EventContent> {
         this.transactionId = transactionId;
     }
 
+    @JsonProperty("prev_content")
     public C getPrevContent() {
         return prevContent;
     }
@@ -135,6 +139,7 @@ public class Unsigned<C extends EventContent> {
         this.prevContent = prevContent;
     }
 
+    @JsonProperty("invite_room_state")
     public List<Event> getInviteRoomState() {
         return inviteRoomState;
     }

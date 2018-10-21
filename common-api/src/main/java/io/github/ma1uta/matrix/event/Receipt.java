@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.ReceiptContent;
 import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -57,6 +58,7 @@ public class Receipt extends Event<ReceiptContent> {
         setContent(DeserializerUtil.toObject(props, "content", ReceiptContent::new));
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
