@@ -36,6 +36,7 @@ import io.github.ma1uta.matrix.event.message.RawMessageContent;
 import io.github.ma1uta.matrix.event.message.Text;
 import io.github.ma1uta.matrix.event.message.Video;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
@@ -61,6 +62,7 @@ public abstract class RoomMessageDeserializer {
                     Iterator<RoomMessageDeserializer> iterator = serviceLoader.iterator();
                     if (iterator.hasNext()) {
                         instance = iterator.next();
+                        instance.init();
                     } else {
                         throw new RuntimeException("Cannot find the room message deserializer. Please put one to the classpath.");
                     }
@@ -68,6 +70,9 @@ public abstract class RoomMessageDeserializer {
             }
         }
         return instance;
+    }
+
+    protected void init() {
     }
 
     /**
@@ -114,8 +119,9 @@ public abstract class RoomMessageDeserializer {
      *
      * @param bytes the room message.
      * @return the room message instance.
+     * @throws IOException when conversion failed.
      */
-    public RoomMessageContent deserialize(byte[] bytes) {
+    public RoomMessageContent deserialize(byte[] bytes) throws IOException {
         return deserialize(bytesToMap(bytes));
     }
 
@@ -124,8 +130,9 @@ public abstract class RoomMessageDeserializer {
      *
      * @param inputStream the room message.
      * @return the room message instance.
+     * @throws IOException when conversion failed.
      */
-    public RoomMessageContent deserialize(InputStream inputStream) {
+    public RoomMessageContent deserialize(InputStream inputStream) throws IOException {
         return deserialize(streamToMap(inputStream));
     }
 
@@ -139,7 +146,7 @@ public abstract class RoomMessageDeserializer {
      * @param bytes byte array.
      * @return the property map.
      */
-    protected abstract Map bytesToMap(byte[] bytes);
+    protected abstract Map bytesToMap(byte[] bytes) throws IOException;
 
     /**
      * Convert a input stream to the property map.
@@ -147,5 +154,5 @@ public abstract class RoomMessageDeserializer {
      * @param inputStream the input stream.
      * @return the property map.
      */
-    protected abstract Map streamToMap(InputStream inputStream);
+    protected abstract Map streamToMap(InputStream inputStream) throws IOException;
 }

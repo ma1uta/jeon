@@ -86,6 +86,7 @@ import io.github.ma1uta.matrix.event.content.StickerContent;
 import io.github.ma1uta.matrix.event.content.TagContent;
 import io.github.ma1uta.matrix.event.content.TypingContent;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
@@ -111,6 +112,7 @@ public abstract class EventContentDeserializer {
                     Iterator<EventContentDeserializer> iterator = serviceLoader.iterator();
                     if (iterator.hasNext()) {
                         instance = iterator.next();
+                        instance.init();
                     } else {
                         throw new RuntimeException("Cannot find the Event content deserializer. Please put one to the classpath.");
                     }
@@ -118,6 +120,9 @@ public abstract class EventContentDeserializer {
             }
         }
         return instance;
+    }
+
+    protected void init() {
     }
 
     /**
@@ -218,8 +223,9 @@ public abstract class EventContentDeserializer {
      * @param bytes the event content.
      * @param type  the event type.
      * @return the event content instance.
+     * @throws IOException when conversion failed.
      */
-    public EventContent deserialize(byte[] bytes, String type) {
+    public EventContent deserialize(byte[] bytes, String type) throws IOException {
         return deserialize(bytesToMap(bytes), type);
     }
 
@@ -229,8 +235,9 @@ public abstract class EventContentDeserializer {
      * @param inputStream the event content.
      * @param type        the event type.
      * @return the event content instance.
+     * @throws IOException when conversion failed.
      */
-    public EventContent deserialize(InputStream inputStream, String type) {
+    public EventContent deserialize(InputStream inputStream, String type) throws IOException {
         return deserialize(streamToMap(inputStream), type);
     }
 
@@ -243,14 +250,16 @@ public abstract class EventContentDeserializer {
      *
      * @param bytes byte array.
      * @return the property map.
+     * @throws IOException when conversion failed.
      */
-    protected abstract Map bytesToMap(byte[] bytes);
+    protected abstract Map bytesToMap(byte[] bytes) throws IOException;
 
     /**
      * Convert a input stream to the property map.
      *
      * @param inputStream the input stream.
      * @return the property map.
+     * @throws IOException when conversion failed.
      */
-    protected abstract Map streamToMap(InputStream inputStream);
+    protected abstract Map streamToMap(InputStream inputStream) throws IOException;
 }

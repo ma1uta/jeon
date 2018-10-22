@@ -24,6 +24,7 @@ import io.github.ma1uta.matrix.event.encrypted.MegolmEncryptedContent;
 import io.github.ma1uta.matrix.event.encrypted.OlmEncryptedContent;
 import io.github.ma1uta.matrix.event.encrypted.RawEncryptedContent;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
@@ -49,6 +50,7 @@ public abstract class RoomEncryptedDeserializer {
                     Iterator<RoomEncryptedDeserializer> iterator = serviceLoader.iterator();
                     if (iterator.hasNext()) {
                         instance = iterator.next();
+                        instance.init();
                     } else {
                         throw new RuntimeException("Cannot find the RoomEncrypted deserializer. Please put one to the classpath.");
                     }
@@ -56,6 +58,9 @@ public abstract class RoomEncryptedDeserializer {
             }
         }
         return instance;
+    }
+
+    protected void init() {
     }
 
     /**
@@ -90,8 +95,9 @@ public abstract class RoomEncryptedDeserializer {
      *
      * @param bytes the room encrypted event.
      * @return the room encrypted event instance.
+     * @throws IOException when conversion failed.
      */
-    public RoomEncryptedContent deserialize(byte[] bytes) {
+    public RoomEncryptedContent deserialize(byte[] bytes) throws IOException {
         return deserialize(bytesToMap(bytes));
     }
 
@@ -100,8 +106,9 @@ public abstract class RoomEncryptedDeserializer {
      *
      * @param inputStream the room encrypted event.
      * @return the room encrypted event instance.
+     * @throws IOException when conversion failed.
      */
-    public RoomEncryptedContent deserialize(InputStream inputStream) {
+    public RoomEncryptedContent deserialize(InputStream inputStream) throws IOException {
         return deserialize(streamToMap(inputStream));
     }
 
@@ -114,14 +121,16 @@ public abstract class RoomEncryptedDeserializer {
      *
      * @param bytes byte array.
      * @return the property map.
+     * @throws IOException when conversion failed.
      */
-    protected abstract Map bytesToMap(byte[] bytes);
+    protected abstract Map bytesToMap(byte[] bytes) throws IOException;
 
     /**
      * Convert a input stream to the property map.
      *
      * @param inputStream the input stream.
      * @return the property map.
+     * @throws IOException when conversion failed.
      */
-    protected abstract Map streamToMap(InputStream inputStream);
+    protected abstract Map streamToMap(InputStream inputStream) throws IOException;
 }
