@@ -66,7 +66,8 @@ public abstract class StateEvent<C extends EventContent> extends RoomEvent<C> {
     public StateEvent(Map props) {
         super(props);
         if (props != null) {
-            this.prevContent = EventContentDeserializer.getInstance().deserialize((Map) props.get("content"), (String) props.get("type"));
+            this.prevContent = EventContentDeserializer.getInstance()
+                .deserialize((Map) props.get("prev_content"), (String) props.get("type"));
         }
         this.stateKey = DeserializerUtil.toString(props, "state_key");
     }
