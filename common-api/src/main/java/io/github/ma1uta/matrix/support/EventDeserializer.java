@@ -126,6 +126,12 @@ public abstract class EventDeserializer {
     }
 
     /**
+     * Initialize the deserializer.
+     */
+    protected void init() {
+    }
+
+    /**
      * Deserialize an event.
      *
      * @param props the event properties.
@@ -214,12 +220,6 @@ public abstract class EventDeserializer {
             default:
                 return parse(props, type);
         }
-    }
-
-    /**
-     * Initialize the deserializer.
-     */
-    protected void init() {
     }
 
     /**
