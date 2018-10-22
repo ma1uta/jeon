@@ -16,9 +16,12 @@
 
 package io.github.ma1uta.matrix.identity.model.lookup;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Request of the lookup Matrix user IDs for a list of 3pids.
@@ -36,6 +39,13 @@ public class BulkLookupRequest {
         required = true
     )
     private List<List<String>> threepids;
+
+    public BulkLookupRequest() {
+    }
+
+    public BulkLookupRequest(Map props) {
+        this.threepids = DeserializerUtil.toList(props, "threepids", Function.identity());
+    }
 
     public List<List<String>> getThreepids() {
         return threepids;

@@ -16,13 +16,18 @@
 
 package io.github.ma1uta.matrix.identity.model.invitation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request of the invitation api.
  */
 @Schema(
-    description = "JSON boy requesst of the invitation api."
+    description = "JSON boy request of the invitation api."
 )
 public class InvitationRequest {
 
@@ -51,6 +56,7 @@ public class InvitationRequest {
         description = "The Matrix room ID to which the user is invited.",
         required = true
     )
+    @JsonbProperty("room_id")
     private String roomId;
 
     /**
@@ -61,6 +67,16 @@ public class InvitationRequest {
         required = true
     )
     private String sender;
+
+    public InvitationRequest() {
+    }
+
+    public InvitationRequest(Map props) {
+        this.medium = DeserializerUtil.toString(props, "medium");
+        this.address = DeserializerUtil.toString(props, "address");
+        this.roomId = DeserializerUtil.toString(props, "room_id");
+        this.sender = DeserializerUtil.toString(props, "sender");
+    }
 
     public String getMedium() {
         return medium;
@@ -78,6 +94,7 @@ public class InvitationRequest {
         this.address = address;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }

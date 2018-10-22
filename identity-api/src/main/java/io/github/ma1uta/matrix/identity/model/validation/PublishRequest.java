@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix.identity.model.validation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -57,6 +60,15 @@ public class PublishRequest {
     )
     private String mxid;
 
+    public PublishRequest() {
+    }
+
+    public PublishRequest(Map props) {
+        this.sid = DeserializerUtil.toString(props, "sid");
+        this.clientSecret = DeserializerUtil.toString(props, "client_secret");
+        this.mxid = DeserializerUtil.toString(props, "mxid");
+    }
+
     public String getSid() {
         return sid;
     }
@@ -65,6 +77,7 @@ public class PublishRequest {
         this.sid = sid;
     }
 
+    @JsonProperty("client_secret")
     public String getClientSecret() {
         return clientSecret;
     }

@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.identity.model.associations;
 
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 /**
  * Result of the 3pid validation.
@@ -34,6 +37,13 @@ public class ValidationResponse {
         required = true
     )
     private Boolean validated;
+
+    public ValidationResponse() {
+    }
+
+    public ValidationResponse(Map props) {
+        this.validated = DeserializerUtil.toBoolean(props, "validated");
+    }
 
     public Boolean getValidated() {
         return validated;

@@ -16,9 +16,13 @@
 
 package io.github.ma1uta.matrix.identity.model.invitation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -62,6 +66,15 @@ public class InvitationResponse {
     @JsonbProperty("display_name")
     private String displayName;
 
+    public InvitationResponse() {
+    }
+
+    public InvitationResponse(Map props) {
+        this.token = DeserializerUtil.toString(props, "token");
+        this.publicKeys = DeserializerUtil.toList(props, "public_keys", Function.identity());
+        this.displayName = DeserializerUtil.toString(props, "display_name");
+    }
+
     public String getToken() {
         return token;
     }
@@ -70,6 +83,7 @@ public class InvitationResponse {
         this.token = token;
     }
 
+    @JsonProperty("public_keys")
     public List<String> getPublicKeys() {
         return publicKeys;
     }
@@ -78,6 +92,7 @@ public class InvitationResponse {
         this.publicKeys = publicKeys;
     }
 
+    @JsonProperty("display_name")
     public String getDisplayName() {
         return displayName;
     }

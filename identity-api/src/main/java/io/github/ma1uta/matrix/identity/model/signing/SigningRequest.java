@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix.identity.model.signing;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -57,6 +60,15 @@ public class SigningRequest {
     @JsonbProperty("private_key")
     private String privateKey;
 
+    public SigningRequest() {
+    }
+
+    public SigningRequest(Map props) {
+        this.mxid = DeserializerUtil.toString(props, "mxid");
+        this.token = DeserializerUtil.toString(props, "token");
+        this.privateKey = DeserializerUtil.toString(props, "private_key");
+    }
+
     public String getMxid() {
         return mxid;
     }
@@ -73,6 +85,7 @@ public class SigningRequest {
         this.token = token;
     }
 
+    @JsonProperty("private_key")
     public String getPrivateKey() {
         return privateKey;
     }
