@@ -28,6 +28,7 @@ import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
@@ -100,6 +101,29 @@ public abstract class Converter {
     }
 
     /**
+     * Deserialize a pbject list.
+     *
+     * @param props  object list.
+     * @param target class of the target object.
+     * @param <T>    class qualifier of the target object.
+     * @return the target object.
+     * @throws IOException when deserialize was failed.
+     */
+    public <T> T deserialize(List props, Class<T> target) throws IOException {
+        Constructor<T> constructor;
+        try {
+            constructor = target.getConstructor(List.class);
+        } catch (NoSuchMethodException e) {
+            throw new IOException("Cannot find the constructor via Map argument", e);
+        }
+        try {
+            return AccessController.doPrivileged((PrivilegedExceptionAction<T>) () -> constructor.newInstance(props));
+        } catch (PrivilegedActionException e) {
+            throw new IOException("Cannot invoke the constructor", e);
+        }
+    }
+
+    /**
      * Deserialize a byte array to the object.
      *
      * @param source the byte array to deserialize.
@@ -109,7 +133,11 @@ public abstract class Converter {
      * @throws IOException when deserialization was failed.
      */
     public <T> T deserialize(byte[] source, Class<T> target) throws IOException {
-        return deserialize(bytesToMap(source), target);
+        if (Iterable.class.isAssignableFrom(target)) {
+            return deserialize(bytesToList(source), target);
+        } else {
+            return deserialize(bytesToMap(source), target);
+        }
     }
 
     /**
@@ -122,7 +150,11 @@ public abstract class Converter {
      * @throws IOException when deserialization was failed.
      */
     public <T> T deserialize(InputStream source, Class<T> target) throws IOException {
-        return deserialize(streamToMap(source), target);
+        if (Iterable.class.isAssignableFrom(target)) {
+            return deserialize(streamToList(source), target);
+        } else {
+            return deserialize(streamToMap(source), target);
+        }
     }
 
     /**
@@ -160,4 +192,22 @@ public abstract class Converter {
      * @throws IOException when converting was failed.
      */
     protected abstract Map streamToMap(InputStream source) throws IOException;
+
+    /**
+     * Convert a byte array to the object list.
+     *
+     * @param source the source byte array.
+     * @return the property map.
+     * @throws IOException when converting was failed.
+     */
+    protected abstract List bytesToList(byte[] source) throws IOException;
+
+    /**
+     * Convert a stream to the object list.
+     *
+     * @param source the source stream.
+     * @return the property map.
+     * @throws IOException when converting was failed.
+     */
+    protected abstract List streamToList(InputStream source) throws IOException;
 }
