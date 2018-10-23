@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -80,6 +83,18 @@ public class EmailRequestToken {
     @JsonbProperty("next_link")
     private String nextLink;
 
+    public EmailRequestToken() {
+    }
+
+    public EmailRequestToken(Map props) {
+        this.idServer = DeserializerUtil.toString(props, "id_server");
+        this.clientSecret = DeserializerUtil.toString(props, "client_secret");
+        this.email = DeserializerUtil.toString(props, "email");
+        this.sendAttempt = DeserializerUtil.toLong(props, "send_attempt");
+        this.nextLink = DeserializerUtil.toString(props, "next_link");
+    }
+
+    @JsonProperty("id_server")
     public String getIdServer() {
         return idServer;
     }
@@ -88,6 +103,7 @@ public class EmailRequestToken {
         this.idServer = idServer;
     }
 
+    @JsonProperty("client_secret")
     public String getClientSecret() {
         return clientSecret;
     }
@@ -104,6 +120,7 @@ public class EmailRequestToken {
         this.email = email;
     }
 
+    @JsonProperty("send_attempt")
     public Long getSendAttempt() {
         return sendAttempt;
     }
@@ -112,6 +129,7 @@ public class EmailRequestToken {
         this.sendAttempt = sendAttempt;
     }
 
+    @JsonProperty("next_link")
     public String getNextLink() {
         return nextLink;
     }

@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -54,6 +57,15 @@ public class ThreePidCred {
     @JsonbProperty("id_server")
     private String idServer;
 
+    public ThreePidCred() {
+    }
+
+    public ThreePidCred(Map props) {
+        this.sid = DeserializerUtil.toString(props, "sid");
+        this.clientSecret = DeserializerUtil.toString(props, "client_secret");
+        this.idServer = DeserializerUtil.toString(props, "id_server");
+    }
+
     public String getSid() {
         return sid;
     }
@@ -62,6 +74,7 @@ public class ThreePidCred {
         this.sid = sid;
     }
 
+    @JsonProperty("client_secret")
     public String getClientSecret() {
         return clientSecret;
     }
@@ -70,6 +83,7 @@ public class ThreePidCred {
         this.clientSecret = clientSecret;
     }
 
+    @JsonProperty("id_server")
     public String getIdServer() {
         return idServer;
     }

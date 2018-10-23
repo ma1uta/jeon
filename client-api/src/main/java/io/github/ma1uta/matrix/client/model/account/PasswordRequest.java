@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -45,6 +48,15 @@ public class PasswordRequest {
     )
     private AuthenticationData auth;
 
+    public PasswordRequest() {
+    }
+
+    public PasswordRequest(Map props) {
+        this.newPassword = DeserializerUtil.toString(props, "new_password");
+        this.auth = DeserializerUtil.toObject(props, "auth", AuthenticationData::new);
+    }
+
+    @JsonProperty("new_password")
     public String getNewPassword() {
         return newPassword;
     }

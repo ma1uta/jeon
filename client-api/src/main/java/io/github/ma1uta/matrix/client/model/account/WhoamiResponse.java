@@ -16,8 +16,11 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -37,6 +40,14 @@ public class WhoamiResponse {
     @JsonbProperty("user_id")
     private String userId;
 
+    public WhoamiResponse() {
+    }
+
+    public WhoamiResponse(Map props) {
+        this.userId = DeserializerUtil.toString(props, "user_id");
+    }
+
+    @JsonProperty("user_id")
     public String getUserId() {
         return userId;
     }

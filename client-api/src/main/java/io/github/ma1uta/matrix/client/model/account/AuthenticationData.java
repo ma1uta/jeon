@@ -16,8 +16,12 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -115,7 +119,24 @@ public class AuthenticationData {
     @Schema(
         description = "3pids credentials."
     )
-    private ThreePidCred[] threepidCreds;
+    private List<ThreePidCred> threepidCreds;
+
+    public AuthenticationData() {
+    }
+
+    public AuthenticationData(Map props) {
+        this.type = DeserializerUtil.toString(props, "type");
+        this.session = DeserializerUtil.toString(props, "session");
+        this.user = DeserializerUtil.toString(props, "user");
+        this.password = DeserializerUtil.toString(props, "password");
+        this.medium = DeserializerUtil.toString(props, "medium");
+        this.address = DeserializerUtil.toString(props, "address");
+        this.response = DeserializerUtil.toString(props, "response");
+        this.token = DeserializerUtil.toString(props, "token");
+        this.txnId = DeserializerUtil.toString(props, "txn_id");
+        this.uri = DeserializerUtil.toString(props, "uri");
+        this.threepidCreds = DeserializerUtil.toList(props, "threepidCreds", map -> new ThreePidCred((Map) map));
+    }
 
     public String getType() {
         return type;
@@ -181,6 +202,7 @@ public class AuthenticationData {
         this.token = token;
     }
 
+    @JsonProperty("txn_id")
     public String getTxnId() {
         return txnId;
     }
@@ -197,11 +219,11 @@ public class AuthenticationData {
         this.uri = uri;
     }
 
-    public ThreePidCred[] getThreepidCreds() {
+    public List<ThreePidCred> getThreepidCreds() {
         return threepidCreds;
     }
 
-    public void setThreepidCreds(ThreePidCred[] threepidCreds) {
+    public void setThreepidCreds(List<ThreePidCred> threepidCreds) {
         this.threepidCreds = threepidCreds;
     }
 }
