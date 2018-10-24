@@ -17,12 +17,9 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -117,19 +114,6 @@ public class ForwardedRoomKeyContent implements EventContent {
     )
     @JsonbProperty("forwarding_curve25519_key_chain")
     private List<String> forwardingCurve25519KeyChain;
-
-    public ForwardedRoomKeyContent() {
-    }
-
-    public ForwardedRoomKeyContent(Map props) {
-        this.algorithm = DeserializerUtil.toString(props, "algorithm");
-        this.roomId = DeserializerUtil.toString(props, "room_id");
-        this.senderKey = DeserializerUtil.toString(props, "sender_key");
-        this.sessionId = DeserializerUtil.toString(props, "session_id");
-        this.sessionKey = DeserializerUtil.toString(props, "session_key");
-        this.senderClaimedEd25519Key = DeserializerUtil.toString(props, "sender_claimed_ed25519_key");
-        this.forwardingCurve25519KeyChain = DeserializerUtil.toList(props, "forwarding_curve25519_key_chain", Function.identity());
-    }
 
     public String getAlgorithm() {
         return algorithm;

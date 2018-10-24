@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -65,16 +63,6 @@ public class ThirdPartyIdentifier {
     )
     @JsonbProperty("added_at")
     private Long addedAt;
-
-    public ThirdPartyIdentifier() {
-    }
-
-    public ThirdPartyIdentifier(Map props) {
-        this.medium = DeserializerUtil.toString(props, "medium");
-        this.address = DeserializerUtil.toString(props, "address");
-        this.validatedAt = DeserializerUtil.toLong(props, "validated_at");
-        this.addedAt = DeserializerUtil.toLong(props, "added_at");
-    }
 
     public String getMedium() {
         return medium;

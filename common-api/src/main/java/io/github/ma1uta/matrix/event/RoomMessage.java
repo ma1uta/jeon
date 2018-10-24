@@ -25,11 +25,7 @@ import io.github.ma1uta.matrix.event.message.Location;
 import io.github.ma1uta.matrix.event.message.Notice;
 import io.github.ma1uta.matrix.event.message.Text;
 import io.github.ma1uta.matrix.event.message.Video;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
-import io.github.ma1uta.matrix.support.RoomMessageDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This event is used when sending messages in a room. Messages are not limited to be text. The ``msgtype`` key outlines the type
@@ -53,14 +49,6 @@ import java.util.Map;
     }
 )
 public class RoomMessage extends RoomEvent<RoomMessageContent> {
-
-    public RoomMessage() {
-    }
-
-    public RoomMessage(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", RoomMessageDeserializer.getInstance()::deserialize));
-    }
 
     @Override
     public String getType() {

@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomAvatarContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * A picture that is associated with the room. This can be displayed alongside the room information.
@@ -29,14 +26,6 @@ import java.util.Map;
     description = "A picture that is associated with the room. This can be displayed alongside the room information."
 )
 public class RoomAvatar extends StateEvent<RoomAvatarContent> {
-
-    public RoomAvatar() {
-    }
-
-    public RoomAvatar(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", RoomAvatarContent::new));
-    }
 
     @Override
     public String getType() {

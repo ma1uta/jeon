@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.CallHangupContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * Message Event.
@@ -34,14 +31,6 @@ import java.util.Map;
         + " established or before to abort the call."
 )
 public class CallHangup extends RoomEvent<CallHangupContent> {
-
-    public CallHangup() {
-    }
-
-    public CallHangup(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", CallHangupContent::new));
-    }
 
     @Override
     public String getType() {

@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -28,19 +27,6 @@ import java.util.Map;
     description = "Signed part of the invitation request."
 )
 public class Signed {
-
-    public Signed() {
-    }
-
-    @SuppressWarnings("unchecked")
-    public Signed(Map props) {
-        this.mxid = DeserializerUtil.toString(props, "mxid");
-        this.token = DeserializerUtil.toString(props, "token");
-        this.signatures = DeserializerUtil.toMap(props, "signatures",
-            entry -> (String) entry.getKey(),
-            entry -> (Map<String, String>) entry.getValue()
-        );
-    }
 
     /**
      * Required. The invited matrix user ID. Must be equal to the user_id property of the event.

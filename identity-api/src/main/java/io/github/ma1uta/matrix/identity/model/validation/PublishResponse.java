@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.identity.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -99,23 +98,6 @@ public class PublishResponse {
         required = true
     )
     private Map<String, Map<String, String>> signatures;
-
-    public PublishResponse() {
-    }
-
-    @SuppressWarnings("unchecked")
-    public PublishResponse(Map props) {
-        this.address = DeserializerUtil.toString(props, "address");
-        this.medium = DeserializerUtil.toString(props, "medium");
-        this.mxid = DeserializerUtil.toString(props, "mxid");
-        this.notBefore = DeserializerUtil.toLong(props, "not_before");
-        this.notAfter = DeserializerUtil.toLong(props, "not_after");
-        this.ts = DeserializerUtil.toLong(props, "ts");
-        this.signatures = DeserializerUtil.toMap(props, "signatures",
-            entry -> (String) entry.getKey(),
-            entry -> (Map<String, String>) entry.getValue()
-        );
-    }
 
     public String getAddress() {
         return address;

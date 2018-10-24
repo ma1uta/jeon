@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -66,16 +64,6 @@ public class ThumbnailInfo {
         description = "Size of the image in bytes."
     )
     private Long size;
-
-    public ThumbnailInfo() {
-    }
-
-    public ThumbnailInfo(Map props) {
-        this.height = DeserializerUtil.toLong(props, "h");
-        this.width = DeserializerUtil.toLong(props, "w");
-        this.mimetype = DeserializerUtil.toString(props, "mimetype");
-        this.size = DeserializerUtil.toLong(props, "size");
-    }
 
     @JsonProperty("h")
     public Long getHeight() {

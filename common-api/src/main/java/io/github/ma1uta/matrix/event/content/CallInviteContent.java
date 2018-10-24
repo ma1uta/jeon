@@ -18,10 +18,8 @@ package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.Offer;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -74,16 +72,6 @@ public class CallInviteContent implements EventContent {
         required = true
     )
     private Long lifetime;
-
-    public CallInviteContent() {
-    }
-
-    public CallInviteContent(Map props) {
-        this.callId = (String) props.get("call_id");
-        this.offer = DeserializerUtil.toObject(props, "offer", Offer::new);
-        this.version = DeserializerUtil.toLong(props, "version");
-        this.lifetime = DeserializerUtil.toLong(props, "lifetime");
-    }
 
     @JsonProperty("call_id")
     public String getCallId() {

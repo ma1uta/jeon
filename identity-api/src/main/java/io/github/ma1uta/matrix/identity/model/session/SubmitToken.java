@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.identity.model.session;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -58,15 +56,6 @@ public class SubmitToken {
         required = true
     )
     private String token;
-
-    public SubmitToken() {
-    }
-
-    public SubmitToken(Map props) {
-        this.sid = DeserializerUtil.toString(props, "sid");
-        this.clientSecret = DeserializerUtil.toString(props, "client_secret");
-        this.token = DeserializerUtil.toString(props, "token");
-    }
 
     public String getSid() {
         return sid;

@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.identity.model.invitation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -67,16 +65,6 @@ public class InvitationRequest {
         required = true
     )
     private String sender;
-
-    public InvitationRequest() {
-    }
-
-    public InvitationRequest(Map props) {
-        this.medium = DeserializerUtil.toString(props, "medium");
-        this.address = DeserializerUtil.toString(props, "address");
-        this.roomId = DeserializerUtil.toString(props, "room_id");
-        this.sender = DeserializerUtil.toString(props, "sender");
-    }
 
     public String getMedium() {
         return medium;

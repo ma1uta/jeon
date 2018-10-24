@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.identity.model.invitation;
 
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * The Matrix error response with the MXID.
@@ -48,11 +45,6 @@ public class MxidErrorResponse extends ErrorResponse {
     public MxidErrorResponse(String errcode, String error, String mxid) {
         super(errcode, error);
         this.mxid = mxid;
-    }
-
-    public MxidErrorResponse(Map props) {
-        super(props);
-        this.mxid = DeserializerUtil.toString(props, "mxid");
     }
 
     public String getMxid() {

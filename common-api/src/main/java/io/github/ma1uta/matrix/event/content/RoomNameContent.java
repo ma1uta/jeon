@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * A room has an opaque room ID which is not human-friendly to read. A room alias is human-friendly, but not all rooms have room aliases.
@@ -50,13 +47,6 @@ public class RoomNameContent implements EventContent {
         required = true
     )
     private String name;
-
-    public RoomNameContent() {
-    }
-
-    public RoomNameContent(Map props) {
-        this.name = DeserializerUtil.toString(props, "name");
-    }
 
     public String getName() {
         return name;

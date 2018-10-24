@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -55,14 +53,6 @@ public class RoomMessageFeedbackContent implements EventContent {
         allowableValues = "delivered, read"
     )
     private String type;
-
-    public RoomMessageFeedbackContent() {
-    }
-
-    public RoomMessageFeedbackContent(Map props) {
-        this.targetEventId = DeserializerUtil.toString(props, "target_event_id");
-        this.type = DeserializerUtil.toString(props, "type");
-    }
 
     @JsonProperty("target_event_id")
     public String getTargetEventId() {

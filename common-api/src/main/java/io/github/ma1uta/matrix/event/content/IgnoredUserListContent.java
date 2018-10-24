@@ -40,14 +40,6 @@ public class IgnoredUserListContent implements EventContent {
     @JsonbProperty("ignored_users")
     private Map<String, Object> ignoredUsers;
 
-    public IgnoredUserListContent() {
-    }
-
-    @SuppressWarnings("unchecked")
-    public IgnoredUserListContent(Map props) {
-        this.ignoredUsers = (Map<String, Object>) props.get("ignored_users");
-    }
-
     @JsonProperty("ignored_users")
     public Map<String, Object> getIgnoredUsers() {
         return ignoredUsers;

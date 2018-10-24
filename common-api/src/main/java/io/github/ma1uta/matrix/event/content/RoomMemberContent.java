@@ -19,10 +19,8 @@ package io.github.ma1uta.matrix.event.content;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.Invite;
 import io.github.ma1uta.matrix.event.nested.RoomMemberUnsigned;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -96,18 +94,6 @@ public class RoomMemberContent implements EventContent {
         description = "Contains optional extra information about the event."
     )
     private RoomMemberUnsigned unsigned;
-
-    public RoomMemberContent() {
-    }
-
-    public RoomMemberContent(Map props) {
-        this.avatarUrl = DeserializerUtil.toString(props, "avatar_url");
-        this.displayName = DeserializerUtil.toString(props, "displayname");
-        this.membership = DeserializerUtil.toString(props, "membership");
-        this.isDirect = DeserializerUtil.toBoolean(props, "is_direct");
-        this.thirdPartyInvite = DeserializerUtil.toObject(props, "third_party_invite", Invite::new);
-        this.unsigned = DeserializerUtil.toObject(props, "unsigned", RoomMemberUnsigned::new);
-    }
 
     @JsonProperty("avatar_url")
     public String getAvatarUrl() {

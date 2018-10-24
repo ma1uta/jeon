@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomPowerLevelsContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This event specifies the minimum level a user must have in order to perform a certain action. It also specifies the levels of
@@ -62,14 +59,6 @@ import java.util.Map;
         + " specified in the m.room.power_levels event, or if the room contains no m.room.power_levels event."
 )
 public class RoomPowerLevels extends StateEvent<RoomPowerLevelsContent> {
-
-    public RoomPowerLevels() {
-    }
-
-    public RoomPowerLevels(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", RoomPowerLevelsContent::new));
-    }
 
     @Override
     public String getType() {

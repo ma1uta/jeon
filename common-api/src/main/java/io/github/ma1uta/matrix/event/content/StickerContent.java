@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import io.github.ma1uta.matrix.event.nested.ImageInfo;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This message represents a single sticker image.
@@ -58,15 +55,6 @@ public class StickerContent implements EventContent {
         required = true
     )
     private String url;
-
-    public StickerContent() {
-    }
-
-    public StickerContent(Map props) {
-        this.body = DeserializerUtil.toString(props, "body");
-        this.info = DeserializerUtil.toObject(props, "info", ImageInfo::new);
-        this.url = DeserializerUtil.toString(props, "url");
-    }
 
     public String getBody() {
         return body;

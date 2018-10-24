@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.identity.model.key;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -41,13 +39,6 @@ public class PublicKeyResponse {
     )
     @JsonbProperty("public_key")
     private String publicKey;
-
-    public PublicKeyResponse() {
-    }
-
-    public PublicKeyResponse(Map props) {
-        this.publicKey = DeserializerUtil.toString(props, "public_key");
-    }
 
     @JsonProperty("public_key")
     public String getPublicKey() {

@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -54,14 +52,6 @@ public class CallHangupContent implements EventContent {
         required = true
     )
     private Long version;
-
-    public CallHangupContent() {
-    }
-
-    public CallHangupContent(Map props) {
-        this.callId = DeserializerUtil.toString(props, "call_id");
-        this.version = DeserializerUtil.toLong(props, "version");
-    }
 
     @JsonProperty("call_id")
     public String getCallId() {

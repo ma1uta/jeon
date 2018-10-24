@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.identity.model.session;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -90,17 +88,6 @@ public class PhoneRequestToken {
     )
     @JsonbProperty("next_link")
     private String nextLink;
-
-    public PhoneRequestToken() {
-    }
-
-    public PhoneRequestToken(Map props) {
-        this.clientSecret = DeserializerUtil.toString(props, "client_secret");
-        this.country = DeserializerUtil.toString(props, "country");
-        this.phoneNumber = DeserializerUtil.toString(props, "phone_number");
-        this.sendAttempt = DeserializerUtil.toLong(props, "send_attempt");
-        this.nextLink = DeserializerUtil.toString(props, "next_link");
-    }
 
     @JsonProperty("client_secret")
     public String getClientSecret() {

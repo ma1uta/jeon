@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -82,17 +80,6 @@ public class EmailRequestToken {
     )
     @JsonbProperty("next_link")
     private String nextLink;
-
-    public EmailRequestToken() {
-    }
-
-    public EmailRequestToken(Map props) {
-        this.idServer = DeserializerUtil.toString(props, "id_server");
-        this.clientSecret = DeserializerUtil.toString(props, "client_secret");
-        this.email = DeserializerUtil.toString(props, "email");
-        this.sendAttempt = DeserializerUtil.toLong(props, "send_attempt");
-        this.nextLink = DeserializerUtil.toString(props, "next_link");
-    }
 
     @JsonProperty("id_server")
     public String getIdServer() {

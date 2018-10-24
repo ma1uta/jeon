@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -100,19 +98,6 @@ public class RegisterRequest {
     )
     @JsonbProperty("inhibit_login")
     private Boolean inhibitLogin;
-
-    public RegisterRequest() {
-    }
-
-    public RegisterRequest(Map props) {
-        this.auth = DeserializerUtil.toObject(props, "auth", AuthenticationData::new);
-        this.bindEmail = DeserializerUtil.toBoolean(props, "bind_email");
-        this.username = DeserializerUtil.toString(props, "username");
-        this.password = DeserializerUtil.toString(props, "password");
-        this.deviceId = DeserializerUtil.toString(props, "device_id");
-        this.initialDeviceDisplayName = DeserializerUtil.toString(props, "initial_device_display_name");
-        this.inhibitLogin = DeserializerUtil.toBoolean(props, "inhibit_login");
-    }
 
     public AuthenticationData getAuth() {
         return auth;

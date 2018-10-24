@@ -20,10 +20,7 @@ import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
 import io.github.ma1uta.matrix.event.nested.VideoInfo;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This message represents a single video clip.
@@ -57,16 +54,6 @@ public class Video extends RoomMessageContent {
         description = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
     )
     private EncryptedFile file;
-
-    public Video() {
-    }
-
-    public Video(Map props) {
-        super(props);
-        this.info = DeserializerUtil.toObject(props, "info", VideoInfo::new);
-        this.url = DeserializerUtil.toString(props, "url");
-        this.file = DeserializerUtil.toObject(props, "file", EncryptedFile::new);
-    }
 
     public VideoInfo getInfo() {
         return info;

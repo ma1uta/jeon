@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -63,15 +61,6 @@ public class RoomEncryptionContent implements EventContent {
     )
     @JsonbProperty("rotation_period_msgs")
     private Long rotationPeriodMsgs;
-
-    public RoomEncryptionContent() {
-    }
-
-    public RoomEncryptionContent(Map props) {
-        this.algorithm = DeserializerUtil.toString(props, "algorithm");
-        this.rotationPeriodMs = DeserializerUtil.toLong(props, "rotation_period_ms");
-        this.rotationPeriodMsgs = DeserializerUtil.toLong(props, "rotation_period_msgs");
-    }
 
     public String getAlgorithm() {
         return algorithm;

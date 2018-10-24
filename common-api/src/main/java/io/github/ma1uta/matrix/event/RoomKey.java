@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomKeyContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This event type is used to exchange keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
@@ -31,13 +28,6 @@ import java.util.Map;
         + " Typically it is encrypted as an m.room.encrypted event, then sent as a to-device event."
 )
 public class RoomKey extends Event<RoomKeyContent> {
-
-    public RoomKey() {
-    }
-
-    public RoomKey(Map props) {
-        setContent(DeserializerUtil.toObject(props, "content", RoomKeyContent::new));
-    }
 
     @Override
     public String getType() {

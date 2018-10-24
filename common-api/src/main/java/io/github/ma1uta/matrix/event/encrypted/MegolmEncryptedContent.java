@@ -21,7 +21,6 @@ import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -40,14 +39,6 @@ public class MegolmEncryptedContent extends RoomEncryptedContent {
         required = true
     )
     private String ciphertext;
-
-    public MegolmEncryptedContent() {
-    }
-
-    public MegolmEncryptedContent(Map props) {
-        super(props);
-        this.ciphertext = (String) props.get("ciphertext");
-    }
 
     public String getCiphertext() {
         return ciphertext;

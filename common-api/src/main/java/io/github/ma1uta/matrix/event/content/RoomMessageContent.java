@@ -26,10 +26,8 @@ import io.github.ma1uta.matrix.event.message.Notice;
 import io.github.ma1uta.matrix.event.message.Text;
 import io.github.ma1uta.matrix.event.message.Video;
 import io.github.ma1uta.matrix.event.nested.Relates;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -87,14 +85,6 @@ public abstract class RoomMessageContent implements EventContent {
     )
     @JsonbProperty("m.relates_to")
     private Relates relatesTo;
-
-    public RoomMessageContent() {
-    }
-
-    public RoomMessageContent(Map props) {
-        this.body = DeserializerUtil.toString(props, "body");
-        this.relatesTo = DeserializerUtil.toObject(props, "m.relates_to", Relates::new);
-    }
 
     public String getBody() {
         return body;

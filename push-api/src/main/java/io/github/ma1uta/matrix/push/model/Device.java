@@ -18,7 +18,6 @@ package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.PusherData;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -81,20 +80,6 @@ public class Device {
         description = "A dictionary of customisations made to the way this notification is to be presented. These are added by push rules."
     )
     private Map<String, String> tweaks;
-
-    public Device() {
-    }
-
-    public Device(Map props) {
-        this.appId = DeserializerUtil.toString(props, "app_id");
-        this.pushKey = DeserializerUtil.toString(props, "pushkey");
-        this.pushKeyTs = DeserializerUtil.toLong(props, "pushkey_ts");
-        this.data = DeserializerUtil.toObject(props, "data", PusherData::new);
-        this.tweaks = DeserializerUtil.toMap(props, "tweaks",
-            entry -> (String) entry.getKey(),
-            entry -> (String) entry.getValue()
-        );
-    }
 
     @JsonProperty("app_id")
     public String getAppId() {

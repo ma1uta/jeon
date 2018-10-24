@@ -19,11 +19,7 @@ package io.github.ma1uta.matrix.event;
 import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
 import io.github.ma1uta.matrix.event.encrypted.MegolmEncryptedContent;
 import io.github.ma1uta.matrix.event.encrypted.OlmEncryptedContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
-import io.github.ma1uta.matrix.support.RoomEncryptedDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This event type is used when sending encrypted events. It can be used either within a room
@@ -38,14 +34,6 @@ import java.util.Map;
     }
 )
 public class RoomEncrypted extends RoomEvent<RoomEncryptedContent> {
-
-    public RoomEncrypted() {
-    }
-
-    public RoomEncrypted(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", RoomEncryptedDeserializer.getInstance()::deserialize));
-    }
 
     @Override
     public String getType() {

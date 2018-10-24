@@ -17,12 +17,9 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -43,13 +40,6 @@ public class TypingContent implements EventContent {
     )
     @JsonbProperty("user_ids")
     private List<String> userIds;
-
-    public TypingContent() {
-    }
-
-    public TypingContent(Map props) {
-        this.userIds = DeserializerUtil.toList(props, "user_ids", Function.identity());
-    }
 
     @JsonProperty("user_ids")
     public List<String> getUserIds() {

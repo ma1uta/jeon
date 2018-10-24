@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.identity.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -59,15 +57,6 @@ public class ValidationResponse {
     )
     @JsonbProperty("validated_at")
     private Long validatedAt;
-
-    public ValidationResponse() {
-    }
-
-    public ValidationResponse(Map props) {
-        this.medium = DeserializerUtil.toString(props, "medium");
-        this.address = DeserializerUtil.toString(props, "address");
-        this.validatedAt = DeserializerUtil.toLong(props, "validated_at");
-    }
 
     public String getMedium() {
         return medium;

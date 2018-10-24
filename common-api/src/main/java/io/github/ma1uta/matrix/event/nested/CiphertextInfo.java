@@ -18,8 +18,6 @@ package io.github.ma1uta.matrix.event.nested;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
-
 /**
  * Cipher text info.
  */
@@ -43,14 +41,6 @@ public class CiphertextInfo {
         description = "The Olm message type."
     )
     private Long type;
-
-    public CiphertextInfo() {
-    }
-
-    public CiphertextInfo(Map props) {
-        this.body = (String) props.get("body");
-        this.type = (Long) props.get("type");
-    }
 
     public String getBody() {
         return body;

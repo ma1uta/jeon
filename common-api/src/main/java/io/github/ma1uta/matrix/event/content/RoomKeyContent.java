@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -74,16 +72,6 @@ public class RoomKeyContent implements EventContent {
     )
     @JsonbProperty("session_key")
     private String sessionKey;
-
-    public RoomKeyContent() {
-    }
-
-    public RoomKeyContent(Map props) {
-        this.algorithm = DeserializerUtil.toString(props, "algorithm");
-        this.roomId = DeserializerUtil.toString(props, "room_id");
-        this.sessionId = DeserializerUtil.toString(props, "session_id");
-        this.sessionKey = DeserializerUtil.toString(props, "session_key");
-    }
 
     public String getAlgorithm() {
         return algorithm;

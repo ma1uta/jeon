@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import io.github.ma1uta.matrix.event.nested.ImageInfo;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * A picture that is associated with the room. This can be displayed alongside the room information.
@@ -46,14 +43,6 @@ public class RoomAvatarContent implements EventContent {
         required = true
     )
     private String url;
-
-    public RoomAvatarContent() {
-    }
-
-    public RoomAvatarContent(Map props) {
-        this.info = DeserializerUtil.toObject(props, "info", ImageInfo::new);
-        this.url = DeserializerUtil.toString(props, "url");
-    }
 
     public ImageInfo getInfo() {
         return info;

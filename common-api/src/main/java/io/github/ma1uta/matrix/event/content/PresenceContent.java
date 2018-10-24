@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -80,17 +78,6 @@ public class PresenceContent implements EventContent {
     )
     @JsonbProperty("currently_active")
     private Boolean currentlyActive;
-
-    public PresenceContent() {
-    }
-
-    public PresenceContent(Map props) {
-        this.avatarUrl = DeserializerUtil.toString(props, "avatar_url");
-        this.displayName = DeserializerUtil.toString(props, "displayname");
-        this.lastActiveAgo = DeserializerUtil.toLong(props, "last_active_ago");
-        this.presence = DeserializerUtil.toString(props, "presence");
-        this.currentlyActive = DeserializerUtil.toBoolean(props, "currently_active");
-    }
 
     @JsonProperty("avatar_url")
     public String getAvatarUrl() {

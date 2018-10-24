@@ -18,10 +18,8 @@ package io.github.ma1uta.matrix.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.FullyReadContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -44,14 +42,6 @@ public class FullyRead extends Event<FullyReadContent> {
     )
     @JsonbProperty("room_id")
     private String roomId;
-
-    public FullyRead() {
-    }
-
-    public FullyRead(Map props) {
-        this.roomId = DeserializerUtil.toString(props, "room_id");
-        setContent(DeserializerUtil.toObject(props, "content", FullyReadContent::new));
-    }
 
     @JsonProperty("room_id")
     public String getRoomId() {

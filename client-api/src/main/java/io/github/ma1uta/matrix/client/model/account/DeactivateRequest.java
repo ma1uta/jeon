@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * Request for deactivate the user's account, removing all ability for the user to login again.
@@ -36,13 +33,6 @@ public class DeactivateRequest {
         description = "Additional authentication information for the user-interactive authentication API."
     )
     private AuthenticationData auth;
-
-    public DeactivateRequest() {
-    }
-
-    public DeactivateRequest(Map props) {
-        this.auth = DeserializerUtil.toObject(props, "auth", AuthenticationData::new);
-    }
 
     public AuthenticationData getAuth() {
         return auth;

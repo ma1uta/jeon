@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomServerAclContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * An event to indicate which servers are permitted to participate in the room. Server ACLs may allow or deny groups of hosts.
@@ -45,14 +42,6 @@ import java.util.Map;
         + " groups of hosts."
 )
 public class RoomServerAcl extends StateEvent<RoomServerAclContent> {
-
-    public RoomServerAcl() {
-    }
-
-    public RoomServerAcl(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", RoomServerAclContent::new));
-    }
 
     @Override
     public String getType() {

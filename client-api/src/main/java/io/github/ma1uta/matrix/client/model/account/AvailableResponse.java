@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * JSON response for available api.
@@ -36,13 +33,6 @@ public class AvailableResponse {
         description = "A flag to indicate that the username is available. This should always be true when the server replies with 200 OK."
     )
     private Boolean available;
-
-    public AvailableResponse() {
-    }
-
-    public AvailableResponse(Map props) {
-        this.available = DeserializerUtil.toBoolean(props, "available");
-    }
 
     public Boolean getAvailable() {
         return available;

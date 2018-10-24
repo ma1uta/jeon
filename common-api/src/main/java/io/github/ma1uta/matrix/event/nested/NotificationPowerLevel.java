@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * Notifications.
@@ -36,13 +33,6 @@ public class NotificationPowerLevel {
         description = "The level required to trigger an @room notification. Defaults to 50 if unspecified."
     )
     private Byte room;
-
-    public NotificationPowerLevel() {
-    }
-
-    public NotificationPowerLevel(Map props) {
-        this.room = DeserializerUtil.toByte(props, "room");
-    }
 
     public Byte getRoom() {
         return room;

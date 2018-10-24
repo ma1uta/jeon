@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * Pusher data.
@@ -44,14 +41,6 @@ public class PusherData {
         description = "The format to use when sending notifications to the Push Gateway."
     )
     private String format;
-
-    public PusherData() {
-    }
-
-    public PusherData(Map props) {
-        this.url = DeserializerUtil.toString(props, "url");
-        this.format = DeserializerUtil.toString(props, "format");
-    }
 
     public String getUrl() {
         return url;

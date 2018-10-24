@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomNameContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * A room has an opaque room ID which is not human-friendly to read. A room alias is human-friendly, but not all rooms have room aliases.
@@ -42,14 +39,6 @@ import java.util.Map;
         + " An event of this type is automatically created when creating a room using /createRoom with the name key."
 )
 public class RoomName extends StateEvent<RoomNameContent> {
-
-    public RoomName() {
-    }
-
-    public RoomName(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", RoomNameContent::new));
-    }
 
     @Override
     public String getType() {

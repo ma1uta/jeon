@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -58,16 +56,6 @@ public class VideoInfo extends FileInfo {
         description = "The duration of the video in milliseconds."
     )
     private Long duration;
-
-    public VideoInfo() {
-    }
-
-    public VideoInfo(Map props) {
-        super(props);
-        this.height = DeserializerUtil.toLong(props, "h");
-        this.width = DeserializerUtil.toLong(props, "w");
-        this.duration = DeserializerUtil.toLong(props, "duration");
-    }
 
     @JsonProperty("h")
     public Long getHeight() {

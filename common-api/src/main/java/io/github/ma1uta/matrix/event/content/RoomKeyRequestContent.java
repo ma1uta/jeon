@@ -18,10 +18,8 @@ package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.RequestedKeyInfo;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -72,16 +70,6 @@ public class RoomKeyRequestContent implements EventContent {
         required = true)
     @JsonbProperty("request_id")
     private String requestId;
-
-    public RoomKeyRequestContent() {
-    }
-
-    public RoomKeyRequestContent(Map props) {
-        this.body = DeserializerUtil.toObject(props, "body", RequestedKeyInfo::new);
-        this.action = DeserializerUtil.toString(props, "action");
-        this.requestingDeviceId = DeserializerUtil.toString(props, "requesting_device_id");
-        this.requestId = DeserializerUtil.toString(props, "request_id");
-    }
 
     public RequestedKeyInfo getBody() {
         return body;

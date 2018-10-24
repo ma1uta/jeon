@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.identity.model.signing;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -64,20 +63,6 @@ public class SigningResponse {
         required = true
     )
     private String token;
-
-    public SigningResponse() {
-    }
-
-    @SuppressWarnings("unchecked")
-    public SigningResponse(Map props) {
-        this.mxid = DeserializerUtil.toString(props, "mxid");
-        this.sender = DeserializerUtil.toString(props, "sender");
-        this.signatures = DeserializerUtil.toMap(props, "signatures",
-            entry -> (String) entry.getKey(),
-            entry -> (Map<String, String>) entry.getValue()
-        );
-        this.token = DeserializerUtil.toString(props, "token");
-    }
 
     public String getMxid() {
         return mxid;

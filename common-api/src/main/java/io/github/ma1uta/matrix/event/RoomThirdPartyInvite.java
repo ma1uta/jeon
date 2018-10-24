@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomThirdPartyInviteContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * Acts as an m.room.member invite event, where there isn't a target user_id to invite. This event contains a token and a
@@ -33,14 +30,6 @@ import java.util.Map;
         + " Any user who can present that signature may use this invitation to join the target room."
 )
 public class RoomThirdPartyInvite extends StateEvent<RoomThirdPartyInviteContent> {
-
-    public RoomThirdPartyInvite() {
-    }
-
-    public RoomThirdPartyInvite(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", RoomThirdPartyInviteContent::new));
-    }
 
     @Override
     public String getType() {

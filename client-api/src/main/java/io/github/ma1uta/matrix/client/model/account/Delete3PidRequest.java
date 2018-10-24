@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.account;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * JSON body request to delete 3pid.
@@ -44,14 +41,6 @@ public class Delete3PidRequest {
         description = "The third party address neing removed."
     )
     private String address;
-
-    public Delete3PidRequest() {
-    }
-
-    public Delete3PidRequest(Map props) {
-        this.medium = DeserializerUtil.toString(props, "medium");
-        this.address = DeserializerUtil.toString(props, "address");
-    }
 
     public String getMedium() {
         return medium;

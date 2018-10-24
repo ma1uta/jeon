@@ -18,12 +18,9 @@ package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.EventContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
-import io.github.ma1uta.matrix.support.EventContentDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -172,27 +169,6 @@ public class Notification {
         required = true
     )
     private List<Device> devices;
-
-    public Notification() {
-    }
-
-    public Notification(Map props) {
-        this.eventId = DeserializerUtil.toString(props, "event_id");
-        this.roomId = DeserializerUtil.toString(props, "room_id");
-        this.type = DeserializerUtil.toString(props, "type");
-        this.sender = DeserializerUtil.toString(props, "sender");
-        this.senderDisplayName = DeserializerUtil.toString(props, "sender_display_name");
-        this.roomName = DeserializerUtil.toString(props, "room_name");
-        this.roomAlias = DeserializerUtil.toString(props, "room_alias");
-        this.userIsTarget = DeserializerUtil.toBoolean(props, "user_is_target");
-        this.prio = DeserializerUtil.toString(props, "prio");
-        if (props.get("content") != null) {
-            this.content = DeserializerUtil
-                .toObject(props, "content", map -> EventContentDeserializer.getInstance().deserialize((Map) props.get("content"), type));
-        }
-        this.counts = DeserializerUtil.toObject(props, "counts", Counts::new);
-        this.devices = DeserializerUtil.toList(props, "devices", map -> new Device((Map) map));
-    }
 
     @JsonProperty("event_id")
     public String getEventId() {

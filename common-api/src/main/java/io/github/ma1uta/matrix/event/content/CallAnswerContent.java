@@ -18,10 +18,8 @@ package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.nested.Answer;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -62,15 +60,6 @@ public class CallAnswerContent implements EventContent {
         required = true
     )
     private Long version;
-
-    public CallAnswerContent() {
-    }
-
-    public CallAnswerContent(Map props) {
-        this.callId = DeserializerUtil.toString(props, "call_id");
-        this.answer = DeserializerUtil.toObject(props, "answer", Answer::new);
-        this.version = DeserializerUtil.toLong(props, "version");
-    }
 
     public Answer getAnswer() {
         return answer;

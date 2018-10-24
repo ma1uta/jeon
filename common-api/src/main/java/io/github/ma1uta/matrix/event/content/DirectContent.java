@@ -16,13 +16,10 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import static java.util.stream.Collectors.toMap;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an event of type m.direct.
@@ -38,15 +35,4 @@ import java.util.Map;
         + " of room ID strings of the 'direct' rooms for that user ID."
 )
 public class DirectContent extends HashMap<String, List<String>> implements EventContent {
-
-    public DirectContent() {
-    }
-
-    @SuppressWarnings("unchecked")
-    public DirectContent(Map props) {
-        super((Map<String, List<String>>) props.entrySet().parallelStream().collect(toMap(
-            entry -> ((Map.Entry) entry).getKey(),
-            entry -> ((Map.Entry) entry).getValue()
-        )));
-    }
 }

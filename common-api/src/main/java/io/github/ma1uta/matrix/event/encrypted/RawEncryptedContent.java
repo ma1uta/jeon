@@ -18,8 +18,6 @@ package io.github.ma1uta.matrix.event.encrypted;
 
 import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
 
-import java.util.Map;
-
 /**
  * Raw message for unknown messages.
  */
@@ -29,9 +27,9 @@ public class RawEncryptedContent extends RoomEncryptedContent {
 
     private String algorithm;
 
-    public RawEncryptedContent(Map props) {
-        this.props = props;
-        this.algorithm = (String) props.get("algorithm");
+    public RawEncryptedContent(Object content, String algorithm) {
+        this.props = content;
+        this.algorithm = algorithm;
     }
 
     public Object getProps() {

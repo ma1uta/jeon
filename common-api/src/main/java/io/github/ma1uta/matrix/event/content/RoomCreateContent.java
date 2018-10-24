@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -59,15 +57,6 @@ public class RoomCreateContent implements EventContent {
     )
     @JsonbProperty("room_version")
     private String roomVersion;
-
-    public RoomCreateContent() {
-    }
-
-    public RoomCreateContent(Map props) {
-        this.creator = DeserializerUtil.toString(props, "creator");
-        this.federate = DeserializerUtil.toBoolean(props, "m.federate");
-        this.roomVersion = DeserializerUtil.toString(props, "room_version");
-    }
 
     public String getCreator() {
         return creator;

@@ -17,11 +17,9 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -50,14 +48,6 @@ public class ThreePidRequest {
             + " identity server"
     )
     private Boolean bind;
-
-    public ThreePidRequest() {
-    }
-
-    public ThreePidRequest(Map props) {
-        this.threePidCreds = DeserializerUtil.toList(props, "three_pid_creds", map -> new ThreePidCred((Map) map));
-        this.bind = DeserializerUtil.toBoolean(props, "bind");
-    }
 
     @JsonProperty("three_pid_creds")
     public List<ThreePidCred> getThreePidCreds() {

@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -40,13 +38,6 @@ public class Relates {
     )
     @JsonbProperty("m.in_reply_to")
     private Reply inReplyTo;
-
-    public Relates() {
-    }
-
-    public Relates(Map props) {
-        this.inReplyTo = DeserializerUtil.toObject(props, "m.in_reply_to", Reply::new);
-    }
 
     @JsonProperty("m.in_reply_to")
     public Reply getInReplyTo() {

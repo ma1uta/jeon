@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.TagContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * Informs the client of tags on a room.
@@ -29,13 +26,6 @@ import java.util.Map;
     description = "Informs the client of tags on a room."
 )
 public class Tag extends Event<TagContent> {
-
-    public Tag() {
-    }
-
-    public Tag(Map props) {
-        setContent(DeserializerUtil.toObject(props, "content", TagContent::new));
-    }
 
     @Override
     public String getType() {

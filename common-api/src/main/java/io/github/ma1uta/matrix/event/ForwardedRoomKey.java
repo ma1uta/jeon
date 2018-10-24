@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.ForwardedRoomKeyContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This event type is used to forward keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
@@ -31,13 +28,6 @@ import java.util.Map;
         + " Typically it is encrypted as an m.room.encrypted event, then sent as a to-device event."
 )
 public class ForwardedRoomKey extends Event<ForwardedRoomKeyContent> {
-
-    public ForwardedRoomKey() {
-    }
-
-    public ForwardedRoomKey(Map props) {
-        setContent(DeserializerUtil.toObject(props, "content", ForwardedRoomKeyContent::new));
-    }
 
     @Override
     public String getType() {

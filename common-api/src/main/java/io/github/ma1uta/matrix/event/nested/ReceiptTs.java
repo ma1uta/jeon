@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.event.nested;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * ReceiptContent timestamps.
@@ -36,13 +33,6 @@ public class ReceiptTs {
         description = "The timestamp the receipt was sent at."
     )
     private Long ts;
-
-    public ReceiptTs() {
-    }
-
-    public ReceiptTs(Map props) {
-        this.ts = DeserializerUtil.toLong(props, "ts");
-    }
 
     public Long getTs() {
         return ts;

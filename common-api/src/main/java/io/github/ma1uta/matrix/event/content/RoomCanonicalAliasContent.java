@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This event is used to inform the room about which alias should be considered the canonical one. This could be for display purposes
@@ -45,13 +42,6 @@ public class RoomCanonicalAliasContent implements EventContent {
         required = true
     )
     private String alias;
-
-    public RoomCanonicalAliasContent() {
-    }
-
-    public RoomCanonicalAliasContent(Map props) {
-        this.alias = DeserializerUtil.toString(props, "alias");
-    }
 
     public String getAlias() {
         return alias;

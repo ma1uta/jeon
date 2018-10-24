@@ -18,10 +18,8 @@ package io.github.ma1uta.matrix.event.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Signed;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -51,14 +49,6 @@ public class Invite {
         required = true
     )
     private Signed signed;
-
-    public Invite() {
-    }
-
-    public Invite(Map props) {
-        this.displayName = (String) props.get("display_name");
-        this.signed = DeserializerUtil.toObject(props, "signed", Signed::new);
-    }
 
     @JsonProperty("display_name")
     public String getDisplayName() {

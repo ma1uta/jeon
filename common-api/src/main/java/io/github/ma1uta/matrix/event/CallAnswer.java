@@ -17,10 +17,7 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.CallAnswerContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * Message Event.
@@ -32,14 +29,6 @@ import java.util.Map;
     description = "This event is sent by the callee when they wish to answer the call."
 )
 public class CallAnswer extends RoomEvent<CallAnswerContent> {
-
-    public CallAnswer() {
-    }
-
-    public CallAnswer(Map props) {
-        super(props);
-        setContent(DeserializerUtil.toObject(props, "content", CallAnswerContent::new));
-    }
 
     @Override
     public String getType() {

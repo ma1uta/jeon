@@ -20,10 +20,7 @@ import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.AudioInfo;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * This message represents a single audio clip.
@@ -57,16 +54,6 @@ public class Audio extends RoomMessageContent {
         description = "Required if the file is encrypted. Information on the encrypted file, as specified in End-to-end encryption."
     )
     private EncryptedFile file;
-
-    public Audio() {
-    }
-
-    public Audio(Map props) {
-        super(props);
-        this.info = DeserializerUtil.toObject(props, "info", AudioInfo::new);
-        this.url = DeserializerUtil.toString(props, "url");
-        this.file = DeserializerUtil.toObject(props, "file", EncryptedFile::new);
-    }
 
     public AudioInfo getInfo() {
         return info;

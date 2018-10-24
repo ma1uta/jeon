@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.protocol;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -67,19 +66,6 @@ public class Instance {
     )
     @JsonbProperty("network_id")
     private String networkId;
-
-    public Instance() {
-    }
-
-    public Instance(Map props) {
-        this.desc = DeserializerUtil.toString(props, "desc");
-        this.icon = DeserializerUtil.toString(props, "icon");
-        this.fields = DeserializerUtil.toMap(props, "fields",
-            entry -> (String) entry.getKey(),
-            entry -> (String) entry.getValue()
-            );
-        this.networkId = DeserializerUtil.toString(props, "network_id");
-    }
 
     public String getDesc() {
         return desc;

@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.thirdpid;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * The sid generated for this session to the caller, in a JSON object containing the sid key.
@@ -39,13 +36,6 @@ public class SessionResponse {
         required = true
     )
     private String sid;
-
-    public SessionResponse() {
-    }
-
-    public SessionResponse(Map props) {
-        this.sid = DeserializerUtil.toString(props, "sid");
-    }
 
     public String getSid() {
         return sid;

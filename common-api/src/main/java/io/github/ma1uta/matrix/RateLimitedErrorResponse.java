@@ -17,9 +17,7 @@
 package io.github.ma1uta.matrix;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -38,11 +36,6 @@ public class RateLimitedErrorResponse extends ErrorResponse {
 
     public RateLimitedErrorResponse(String errcode, String error) {
         super(errcode, error);
-    }
-
-    public RateLimitedErrorResponse(Map props) {
-        super(props);
-        this.retryAfterMs = DeserializerUtil.toLong(props, "retry_after_ms");
     }
 
     public RateLimitedErrorResponse(String errcode, String error, Long retryAfterMs) {

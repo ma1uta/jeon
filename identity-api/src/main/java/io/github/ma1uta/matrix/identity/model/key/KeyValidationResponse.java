@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.identity.model.key;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.Map;
 
 /**
  * The validity of the public key.
@@ -37,13 +34,6 @@ public class KeyValidationResponse {
         required = true
     )
     private Boolean valid;
-
-    public KeyValidationResponse() {
-    }
-
-    public KeyValidationResponse(Map props) {
-        this.valid = DeserializerUtil.toBoolean(props, "valid");
-    }
 
     public Boolean getValid() {
         return valid;

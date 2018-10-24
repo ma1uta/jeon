@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.event.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -54,14 +52,6 @@ public class PublicKeys {
     )
     @JsonbProperty("public_key")
     private String publicKey;
-
-    public PublicKeys() {
-    }
-
-    public PublicKeys(Map props) {
-        this.keyValidityUrl = DeserializerUtil.toString(props, "key_validity_url");
-        this.publicKey = DeserializerUtil.toString(props, "public_key");
-    }
 
     @JsonProperty("key_validity_url")
     public String getKeyValidityUrl() {

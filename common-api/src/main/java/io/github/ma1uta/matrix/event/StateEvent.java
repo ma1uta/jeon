@@ -18,11 +18,8 @@ package io.github.ma1uta.matrix.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.EventContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
-import io.github.ma1uta.matrix.support.EventContentDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -58,19 +55,6 @@ public abstract class StateEvent<C extends EventContent> extends RoomEvent<C> {
     )
     @JsonbProperty("state_key")
     private String stateKey;
-
-    public StateEvent() {
-    }
-
-    @SuppressWarnings("unchecked")
-    public StateEvent(Map props) {
-        super(props);
-        if (props != null) {
-            this.prevContent = EventContentDeserializer.getInstance()
-                .deserialize((Map) props.get("prev_content"), (String) props.get("type"));
-        }
-        this.stateKey = DeserializerUtil.toString(props, "state_key");
-    }
 
     @JsonProperty("state_key")
     public String getStateKey() {

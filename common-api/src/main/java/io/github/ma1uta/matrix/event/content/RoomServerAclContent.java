@@ -17,11 +17,9 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -88,15 +86,6 @@ public class RoomServerAclContent implements EventContent {
             + " This defaults to an empty list when not provided."
     )
     private List<String> deny;
-
-    public RoomServerAclContent() {
-    }
-
-    public RoomServerAclContent(Map props) {
-        this.allowIpLiterals = DeserializerUtil.toBoolean(props, "allow_ip_literals");
-        this.allow = DeserializerUtil.toList(props, "allow", String::valueOf);
-        this.deny = DeserializerUtil.toList(props, "deny", String::valueOf);
-    }
 
     @JsonProperty("allow_ip_literals")
     public Boolean getAllowIpLiterals() {

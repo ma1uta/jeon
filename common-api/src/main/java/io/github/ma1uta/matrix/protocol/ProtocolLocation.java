@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.protocol;
 
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -55,18 +54,6 @@ public class ProtocolLocation {
         required = true
     )
     private Map<String, String> fields;
-
-    public ProtocolLocation() {
-    }
-
-    public ProtocolLocation(Map props) {
-        this.alias = DeserializerUtil.toString(props, "alias");
-        this.protocol = DeserializerUtil.toString(props, "protocol");
-        this.fields = DeserializerUtil.toMap(props, "fields",
-            entry -> (String) entry.getKey(),
-            entry -> (String) entry.getValue()
-        );
-    }
 
     public String getAlias() {
         return alias;

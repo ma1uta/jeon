@@ -18,10 +18,8 @@ package io.github.ma1uta.matrix.event.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -63,15 +61,6 @@ public abstract class FormattedBody extends RoomMessageContent {
         description = "The formatted version of the ``body``. This is required if ``format`` is specified.")
     @JsonbProperty("formatted_body")
     private String formattedBody;
-
-    public FormattedBody() {
-    }
-
-    public FormattedBody(Map props) {
-        super(props);
-        this.format = DeserializerUtil.toString(props, "format");
-        this.formattedBody = DeserializerUtil.toString(props, "formatted_body");
-    }
 
     public String getFormat() {
         return format;

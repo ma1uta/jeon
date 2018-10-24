@@ -17,10 +17,8 @@
 package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.support.DeserializerUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -48,14 +46,6 @@ public class Counts {
     )
     @JsonbProperty("missed_calls")
     private Long missedCalls;
-
-    public Counts() {
-    }
-
-    public Counts(Map props) {
-        this.unread = DeserializerUtil.toLong(props, "unread");
-        this.missedCalls = DeserializerUtil.toLong(props, "missed_calls");
-    }
 
     public Long getUnread() {
         return unread;
