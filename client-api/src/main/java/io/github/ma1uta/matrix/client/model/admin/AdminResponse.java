@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -46,6 +47,7 @@ public class AdminResponse {
     )
     private Map<String, DeviceInfo> devices;
 
+    @JsonProperty("user_id")
     public String getUserId() {
         return userId;
     }

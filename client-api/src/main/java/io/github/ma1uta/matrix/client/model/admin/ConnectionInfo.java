@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.admin;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -62,6 +63,7 @@ public class ConnectionInfo {
         this.ip = ip;
     }
 
+    @JsonProperty("last_seen")
     public Long getLastSeen() {
         return lastSeen;
     }
@@ -70,6 +72,7 @@ public class ConnectionInfo {
         this.lastSeen = lastSeen;
     }
 
+    @JsonProperty("user_agent")
     public String getUserAgent() {
         return userAgent;
     }
