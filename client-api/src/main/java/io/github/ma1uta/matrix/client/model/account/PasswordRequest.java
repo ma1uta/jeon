@@ -36,7 +36,7 @@ public class PasswordRequest {
         description = "The new password for the account."
     )
     @JsonbProperty("new_password")
-    private String newPassword;
+    private char[] newPassword;
 
     /**
      * Additional authentication information for the user-interactive authentication API.
@@ -47,11 +47,11 @@ public class PasswordRequest {
     private AuthenticationData auth;
 
     @JsonProperty("new_password")
-    public String getNewPassword() {
+    public char[] getNewPassword() {
         return newPassword;
     }
 
-    public void setNewPassword(String newPassword) {
+    public void setNewPassword(char[] newPassword) {
         this.newPassword = newPassword;
     }
 

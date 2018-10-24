@@ -42,7 +42,7 @@ public class VoipResponse {
     @Schema(
         description = "The password to use."
     )
-    private String password;
+    private char[] password;
 
     /**
      * Required. A list of TURN URIs.
@@ -68,11 +68,11 @@ public class VoipResponse {
         this.username = username;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 

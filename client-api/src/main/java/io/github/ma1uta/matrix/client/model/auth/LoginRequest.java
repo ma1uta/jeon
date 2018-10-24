@@ -83,7 +83,7 @@ public class LoginRequest {
     @Schema(
         description = "Required when type is m.login.password. The user's password."
     )
-    private CharSequence password;
+    private char[] password;
 
     /**
      * Required when type is m.login.token. The login token.
@@ -153,11 +153,11 @@ public class LoginRequest {
         this.address = address;
     }
 
-    public CharSequence getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(CharSequence password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 

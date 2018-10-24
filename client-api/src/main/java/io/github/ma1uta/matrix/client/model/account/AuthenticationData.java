@@ -60,7 +60,7 @@ public class AuthenticationData {
     @Schema(
         description = "password."
     )
-    private String password;
+    private char[] password;
 
     /**
      * 3Pid address type.
@@ -143,11 +143,11 @@ public class AuthenticationData {
         this.user = user;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 

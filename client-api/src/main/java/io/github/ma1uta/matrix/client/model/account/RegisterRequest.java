@@ -66,7 +66,7 @@ public class RegisterRequest {
     @Schema(
         description = "The desired password for the account."
     )
-    private String password;
+    private char[] password;
 
     /**
      * ID of the client device. If this does not correspond to a known client device, a new device will be created.
@@ -124,11 +124,11 @@ public class RegisterRequest {
         this.username = username;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 
