@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -32,11 +33,13 @@ public class ContentUri {
      * MXC URI.
      */
     @Schema(
+        name = "content_uri",
         description = "MXC URI."
     )
     @JsonbProperty("content_uri")
     private String contentUri;
 
+    @JsonProperty("content_uri")
     public String getContentUri() {
         return contentUri;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.deprecatedsync;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -97,6 +98,7 @@ public class DeprecatedRoomInfo {
     @JsonbProperty("account_data")
     private List<Event> accountData;
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
@@ -145,6 +147,7 @@ public class DeprecatedRoomInfo {
         this.visibility = visibility;
     }
 
+    @JsonProperty("account_data")
     public List<Event> getAccountData() {
         return accountData;
     }

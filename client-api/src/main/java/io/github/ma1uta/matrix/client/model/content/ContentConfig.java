@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -33,12 +34,14 @@ public class ContentConfig {
      * If not listed or null, the size limit should be treated as unknown.
      */
     @Schema(
+        name = "m.upload.size",
         description = "The maximum size an upload can be in bytes. Clients SHOULD use this as a"
             + "guide when uploading content. If not listed or null, the size limit should be treated as unknown."
     )
     @JsonbProperty("m.upload.size")
     private long uploadSize;
 
+    @JsonProperty("m.upload.size")
     public long getUploadSize() {
         return uploadSize;
     }

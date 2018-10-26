@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -39,5 +40,6 @@ public abstract class Identifier {
         description = "Identifier type."
     )
     @JsonbProperty(value = "type")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public abstract String getType();
 }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -68,6 +69,7 @@ public class LoginResponse {
     @JsonbProperty("device_id")
     private String deviceId;
 
+    @JsonProperty("user_id")
     public String getUserId() {
         return userId;
     }
@@ -76,6 +78,7 @@ public class LoginResponse {
         this.userId = userId;
     }
 
+    @JsonProperty("access_token")
     public String getAccessToken() {
         return accessToken;
     }
@@ -84,6 +87,7 @@ public class LoginResponse {
         this.accessToken = accessToken;
     }
 
+    @JsonProperty("home_server")
     public String getHomeServer() {
         return homeServer;
     }
@@ -92,6 +96,7 @@ public class LoginResponse {
         this.homeServer = homeServer;
     }
 
+    @JsonProperty("device_id")
     public String getDeviceId() {
         return deviceId;
     }

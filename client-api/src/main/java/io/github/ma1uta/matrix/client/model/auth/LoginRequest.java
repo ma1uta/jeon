@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -169,6 +170,7 @@ public class LoginRequest {
         this.token = token;
     }
 
+    @JsonProperty("device_id")
     public String getDeviceId() {
         return deviceId;
     }
@@ -177,6 +179,7 @@ public class LoginRequest {
         this.deviceId = deviceId;
     }
 
+    @JsonProperty("initial_device_display_name")
     public String getInitialDeviceDisplayName() {
         return initialDeviceDisplayName;
     }

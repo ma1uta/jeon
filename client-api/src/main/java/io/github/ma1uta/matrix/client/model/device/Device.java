@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.device;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -66,6 +67,7 @@ public class Device {
     @JsonbProperty("last_seen_ts")
     private Long lastSeenTs;
 
+    @JsonProperty("device_id")
     public String getDeviceId() {
         return deviceId;
     }
@@ -74,6 +76,7 @@ public class Device {
         this.deviceId = deviceId;
     }
 
+    @JsonProperty("display_name")
     public String getDisplayName() {
         return displayName;
     }
@@ -82,6 +85,7 @@ public class Device {
         this.displayName = displayName;
     }
 
+    @JsonProperty("last_seen_ip")
     public String getLastSeenIp() {
         return lastSeenIp;
     }
@@ -90,6 +94,7 @@ public class Device {
         this.lastSeenIp = lastSeenIp;
     }
 
+    @JsonProperty("last_seen_ts")
     public Long getLastSeenTs() {
         return lastSeenTs;
     }
