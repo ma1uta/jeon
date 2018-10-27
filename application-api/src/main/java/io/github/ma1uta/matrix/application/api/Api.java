@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.info.License;
 @OpenAPIDefinition(
     info = @Info(
         title = "Application API",
-        version = "r0.1.0-3-SNAPSHOT",
+        version = "r0.1.0-3",
         description = "Application services are passive and can only observe events from homeserver."
             + " They can inject events into rooms they are participating in. They cannot prevent events from being sent, nor can they"
             + " modify the content of the event being sent. In order to observe events from a homeserver, the homeserver needs to be"

@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.info.License;
 @OpenAPIDefinition(
     info = @Info(
         title = "Identity API",
-        version = "r0.1.0-2-SNAPSHOT",
+        version = "r0.1.0-2",
         description = "The purpose of an identity server is to validate, store, and answer questions about the identities of users."
             + " In particular, it stores associations of the form \"identifier X represents the same user as identifier Y\", where"
             + " identities may exist on different systems (such as email addresses, phone numbers, Matrix user IDs, etc)."
