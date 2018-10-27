@@ -16,11 +16,13 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomPowerLevelsContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -118,7 +120,7 @@ public class CreateRoomRequest {
             + "to clobber other keys."
     )
     @JsonbProperty("creation_content")
-    private Object creationContent;
+    private Map<String, Object> creationContent;
 
     /**
      * A list of state events to set in the new room. This allows the user to override the default state events set in the new room.
@@ -151,7 +153,7 @@ public class CreateRoomRequest {
             + "sent to the users in invite and invite_3pid. See DirectContent Messaging for more information."
     )
     @JsonbProperty("is_direct")
-    private Boolean isDirect;
+    private Boolean direct;
 
     /**
      * The power level content to override in the default power level event. This object is applied on top of the generated
@@ -172,6 +174,7 @@ public class CreateRoomRequest {
         this.visibility = visibility;
     }
 
+    @JsonProperty("room_alias_name")
     public String getRoomAliasName() {
         return roomAliasName;
     }
@@ -204,6 +207,7 @@ public class CreateRoomRequest {
         this.invite = invite;
     }
 
+    @JsonProperty("invite_3pid")
     public List<Invite3pid> getInvite3pid() {
         return invite3pid;
     }
@@ -212,6 +216,7 @@ public class CreateRoomRequest {
         this.invite3pid = invite3pid;
     }
 
+    @JsonProperty("room_version")
     public String getRoomVersion() {
         return roomVersion;
     }
@@ -220,14 +225,16 @@ public class CreateRoomRequest {
         this.roomVersion = roomVersion;
     }
 
-    public Object getCreationContent() {
+    @JsonProperty("creation_content")
+    public Map<String, Object> getCreationContent() {
         return creationContent;
     }
 
-    public void setCreationContent(Object creationContent) {
+    public void setCreationContent(Map<String, Object> creationContent) {
         this.creationContent = creationContent;
     }
 
+    @JsonProperty("initial_event")
     public List<Event> getInitialEvent() {
         return initialEvent;
     }
@@ -244,14 +251,16 @@ public class CreateRoomRequest {
         this.preset = preset;
     }
 
+    @JsonProperty("is_direct")
     public Boolean getDirect() {
-        return isDirect;
+        return direct;
     }
 
     public void setDirect(Boolean direct) {
-        isDirect = direct;
+        this.direct = direct;
     }
 
+    @JsonProperty("power_level_content_override")
     public RoomPowerLevelsContent getPowerLevelContentOverride() {
         return powerLevelContentOverride;
     }

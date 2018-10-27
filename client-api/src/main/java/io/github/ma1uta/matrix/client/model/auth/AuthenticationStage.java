@@ -16,6 +16,8 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import java.util.List;
+
 /**
  * Stages.
  */
@@ -24,13 +26,13 @@ public class AuthenticationStage {
     /**
      * AuthType.
      */
-    private String[] stages;
+    private List<String> stages;
 
-    public String[] getStages() {
+    public List<String> getStages() {
         return stages;
     }
 
-    public void setStages(String[] stages) {
+    public void setStages(List<String> stages) {
         this.stages = stages;
     }
 }

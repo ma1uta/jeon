@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -62,6 +63,7 @@ public class QueryResponse {
         this.failures = failures;
     }
 
+    @JsonProperty("device_keys")
     public Map<String, Map<String, DeviceKeys>> getDeviceKeys() {
         return deviceKeys;
     }

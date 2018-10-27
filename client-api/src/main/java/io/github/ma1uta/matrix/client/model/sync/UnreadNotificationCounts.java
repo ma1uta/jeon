@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -46,6 +47,7 @@ public class UnreadNotificationCounts {
     @JsonbProperty("notification_count")
     private Long notificationCount;
 
+    @JsonProperty("highlight_count")
     public Long getHighlightCount() {
         return highlightCount;
     }
@@ -54,6 +56,7 @@ public class UnreadNotificationCounts {
         this.highlightCount = highlightCount;
     }
 
+    @JsonProperty("notification_count")
     public Long getNotificationCount() {
         return notificationCount;
     }

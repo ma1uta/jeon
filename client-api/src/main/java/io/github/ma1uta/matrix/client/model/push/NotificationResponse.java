@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class NotificationResponse {
     )
     private List<Notification> notifications;
 
+    @JsonProperty("next_token")
     public String getNextToken() {
         return nextToken;
     }

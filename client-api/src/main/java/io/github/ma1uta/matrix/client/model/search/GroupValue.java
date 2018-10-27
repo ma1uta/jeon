@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -56,6 +57,7 @@ public class GroupValue {
     )
     private List<String> results;
 
+    @JsonProperty("next_batch")
     public String getNextBatch() {
         return nextBatch;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -97,6 +98,7 @@ public class RoomFilter {
         return notRooms;
     }
 
+    @JsonProperty("not_rooms")
     public void setNotRooms(List<String> notRooms) {
         this.notRooms = notRooms;
     }
@@ -117,6 +119,7 @@ public class RoomFilter {
         this.ephemeral = ephemeral;
     }
 
+    @JsonProperty("include_leave")
     public Boolean getIncludeLeave() {
         return includeLeave;
     }
@@ -141,6 +144,7 @@ public class RoomFilter {
         this.timeline = timeline;
     }
 
+    @JsonProperty("account_data")
     public RoomEventFilter getAccountData() {
         return accountData;
     }

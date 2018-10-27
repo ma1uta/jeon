@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -39,6 +40,7 @@ public class UploadResponse {
     @JsonbProperty("one_time_key_counts")
     private Map<String, Long> oneTimeKeyCounts;
 
+    @JsonProperty("one_time_key_counts")
     public Map<String, Long> getOneTimeKeyCounts() {
         return oneTimeKeyCounts;
     }

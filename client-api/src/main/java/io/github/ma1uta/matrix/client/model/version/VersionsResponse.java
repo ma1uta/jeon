@@ -18,6 +18,8 @@ package io.github.ma1uta.matrix.client.model.version;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+
 /**
  * The versions supported by the server.
  *
@@ -34,13 +36,13 @@ public class VersionsResponse {
     @Schema(
         description = "The supported versions."
     )
-    private String[] versions;
+    private List<String> versions;
 
-    public String[] getVersions() {
+    public List<String> getVersions() {
         return versions;
     }
 
-    public void setVersions(String[] versions) {
+    public void setVersions(List<String> versions) {
         this.versions = versions;
     }
 }

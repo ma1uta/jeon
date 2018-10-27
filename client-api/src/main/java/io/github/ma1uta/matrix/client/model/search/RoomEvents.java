@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -132,6 +133,7 @@ public class RoomEvents {
     )
     private Groupings groupings;
 
+    @JsonProperty("search_term")
     public String getSearchTerm() {
         return searchTerm;
     }
@@ -156,6 +158,7 @@ public class RoomEvents {
         this.filter = filter;
     }
 
+    @JsonProperty("order_by")
     public String getOrderBy() {
         return orderBy;
     }
@@ -164,6 +167,7 @@ public class RoomEvents {
         this.orderBy = orderBy;
     }
 
+    @JsonProperty("event_context")
     public EventContext getEventContext() {
         return eventContext;
     }
@@ -172,6 +176,7 @@ public class RoomEvents {
         this.eventContext = eventContext;
     }
 
+    @JsonProperty("include_state")
     public Boolean getIncludeState() {
         return includeState;
     }

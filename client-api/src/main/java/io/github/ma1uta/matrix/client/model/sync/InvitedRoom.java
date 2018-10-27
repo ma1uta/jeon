@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -46,6 +47,7 @@ public class InvitedRoom {
     @JsonbProperty("invite_state")
     private InviteState inviteState;
 
+    @JsonProperty("invite_state")
     public InviteState getInviteState() {
         return inviteState;
     }

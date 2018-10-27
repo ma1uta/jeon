@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -39,6 +40,7 @@ public class FilterResponse {
     @JsonbProperty("filter_id")
     private String filterId;
 
+    @JsonProperty("filter_id")
     public String getFilterId() {
         return filterId;
     }

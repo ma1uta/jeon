@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.serverdiscovery;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,6 +38,7 @@ public class HomeserverInfo {
     @JsonbProperty("base_url")
     private String baseUrl;
 
+    @JsonProperty("base_url")
     public String getBaseUrl() {
         return baseUrl;
     }

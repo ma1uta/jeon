@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -46,6 +47,7 @@ public class RoomMember {
     @JsonbProperty("avatar_url")
     private String avatarUrl;
 
+    @JsonProperty("display_name")
     public String getDisplayName() {
         return displayName;
     }
@@ -54,6 +56,7 @@ public class RoomMember {
         this.displayName = displayName;
     }
 
+    @JsonProperty("avatar_url")
     public String getAvatarUrl() {
         return avatarUrl;
     }

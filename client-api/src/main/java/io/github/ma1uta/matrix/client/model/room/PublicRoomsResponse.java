@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -76,6 +77,7 @@ public class PublicRoomsResponse {
         this.chunk = chunk;
     }
 
+    @JsonProperty("next_batch")
     public String getNextBatch() {
         return nextBatch;
     }
@@ -84,6 +86,7 @@ public class PublicRoomsResponse {
         this.nextBatch = nextBatch;
     }
 
+    @JsonProperty("prev_batch")
     public String getPrevBatch() {
         return prevBatch;
     }
@@ -92,6 +95,7 @@ public class PublicRoomsResponse {
         this.prevBatch = prevBatch;
     }
 
+    @JsonProperty("total_room_count_estimate")
     public Long getTotalRoomCountEstimate() {
         return totalRoomCountEstimate;
     }

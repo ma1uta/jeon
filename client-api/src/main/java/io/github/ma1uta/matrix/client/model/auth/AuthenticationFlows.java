@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.auth;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,12 +27,12 @@ public class AuthenticationFlows {
     /**
      * Completed stages.
      */
-    private String[] completed;
+    private List<String> completed;
 
     /**
      * Stages.
      */
-    private AuthenticationStage[] flows;
+    private List<AuthenticationStage> flows;
 
     /**
      * AuthType.
@@ -43,19 +44,19 @@ public class AuthenticationFlows {
      */
     private String session;
 
-    public String[] getCompleted() {
+    public List<String> getCompleted() {
         return completed;
     }
 
-    public void setCompleted(String[] completed) {
+    public void setCompleted(List<String> completed) {
         this.completed = completed;
     }
 
-    public AuthenticationStage[] getFlows() {
+    public List<AuthenticationStage> getFlows() {
         return flows;
     }
 
-    public void setFlows(AuthenticationStage[] flows) {
+    public void setFlows(List<AuthenticationStage> flows) {
         this.flows = flows;
     }
 

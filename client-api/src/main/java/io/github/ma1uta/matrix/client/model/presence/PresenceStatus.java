@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.presence;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -95,6 +96,7 @@ public class PresenceStatus {
         this.presence = presence;
     }
 
+    @JsonProperty("status_msg")
     public String getStatusMsg() {
         return statusMsg;
     }
@@ -103,6 +105,7 @@ public class PresenceStatus {
         this.statusMsg = statusMsg;
     }
 
+    @JsonProperty("last_active_ago")
     public Long getLastActiveAgo() {
         return lastActiveAgo;
     }
@@ -111,6 +114,7 @@ public class PresenceStatus {
         this.lastActiveAgo = lastActiveAgo;
     }
 
+    @JsonProperty("currently_active")
     public Boolean getCurrentlyActive() {
         return currentlyActive;
     }

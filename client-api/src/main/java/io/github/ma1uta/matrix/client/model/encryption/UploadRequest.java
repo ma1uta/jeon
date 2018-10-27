@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -51,6 +52,7 @@ public class UploadRequest {
     @JsonbProperty("one_time_keys")
     private Map<String, Object> oneTimeKeys;
 
+    @JsonProperty("device_keys")
     public DeviceKeys getDeviceKeys() {
         return deviceKeys;
     }
@@ -59,6 +61,7 @@ public class UploadRequest {
         this.deviceKeys = deviceKeys;
     }
 
+    @JsonProperty("one_time_keys")
     public Map<String, Object> getOneTimeKeys() {
         return oneTimeKeys;
     }

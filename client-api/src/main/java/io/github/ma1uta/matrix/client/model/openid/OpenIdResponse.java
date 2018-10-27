@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.openid;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -66,6 +67,7 @@ public class OpenIdResponse {
     @JsonbProperty("expires_in")
     private Long expiresIn;
 
+    @JsonProperty("access_token")
     public String getAccessToken() {
         return accessToken;
     }
@@ -74,6 +76,7 @@ public class OpenIdResponse {
         this.accessToken = accessToken;
     }
 
+    @JsonProperty("token_type")
     public String getTokenType() {
         return tokenType;
     }
@@ -82,6 +85,7 @@ public class OpenIdResponse {
         this.tokenType = tokenType;
     }
 
+    @JsonProperty("matrix_server_name")
     public String getMatrixServerName() {
         return matrixServerName;
     }
@@ -90,6 +94,7 @@ public class OpenIdResponse {
         this.matrixServerName = matrixServerName;
     }
 
+    @JsonProperty("expires_in")
     public Long getExpiresIn() {
         return expiresIn;
     }

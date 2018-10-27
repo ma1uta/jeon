@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.eventcontext;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -96,6 +97,7 @@ public class EventContextResponse {
         this.end = end;
     }
 
+    @JsonProperty("events_before")
     public List<Event> getEventsBefore() {
         return eventsBefore;
     }
@@ -112,6 +114,7 @@ public class EventContextResponse {
         this.event = event;
     }
 
+    @JsonProperty("events_after")
     public List<Event> getEventsAfter() {
         return eventsAfter;
     }

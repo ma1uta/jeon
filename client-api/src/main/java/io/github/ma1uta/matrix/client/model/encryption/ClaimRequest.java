@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -54,6 +55,7 @@ public class ClaimRequest {
         this.timeout = timeout;
     }
 
+    @JsonProperty("one_time_keys")
     public Map<String, Map<String, String>> getOneTimeKeys() {
         return oneTimeKeys;
     }

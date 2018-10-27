@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.receipt;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -48,6 +49,7 @@ public class ReadMarkersRequest {
     @JsonbProperty("m.read")
     private String read;
 
+    @JsonProperty("m.fully_read")
     public String getFullyRead() {
         return fullyRead;
     }
@@ -56,6 +58,7 @@ public class ReadMarkersRequest {
         this.fullyRead = fullyRead;
     }
 
+    @JsonProperty("m.read")
     public String getRead() {
         return read;
     }

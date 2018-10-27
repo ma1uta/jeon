@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -69,6 +70,7 @@ public class LeftRoom {
         this.timeline = timeline;
     }
 
+    @JsonProperty("account_data")
     public AccountData getAccountData() {
         return accountData;
     }

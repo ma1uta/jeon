@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -117,6 +118,7 @@ public class PublicRoomsChunk {
         this.aliases = aliases;
     }
 
+    @JsonProperty("canonical_alias")
     public String getCanonicalAlias() {
         return canonicalAlias;
     }
@@ -133,6 +135,7 @@ public class PublicRoomsChunk {
         this.name = name;
     }
 
+    @JsonProperty("num_joined_members")
     public Long getNumJoinedMembers() {
         return numJoinedMembers;
     }
@@ -141,6 +144,7 @@ public class PublicRoomsChunk {
         this.numJoinedMembers = numJoinedMembers;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }
@@ -157,6 +161,7 @@ public class PublicRoomsChunk {
         this.topic = topic;
     }
 
+    @JsonProperty("world_readable")
     public Boolean getWorldReadable() {
         return worldReadable;
     }
@@ -165,6 +170,7 @@ public class PublicRoomsChunk {
         this.worldReadable = worldReadable;
     }
 
+    @JsonProperty("guest_can_join")
     public Boolean getGuestCanJoin() {
         return guestCanJoin;
     }
@@ -173,6 +179,7 @@ public class PublicRoomsChunk {
         this.guestCanJoin = guestCanJoin;
     }
 
+    @JsonProperty("avatar_url")
     public String getAvatarUrl() {
         return avatarUrl;
     }

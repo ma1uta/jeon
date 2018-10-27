@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,6 +38,7 @@ public class DisplayName {
     @JsonbProperty("displayname")
     private String displayName;
 
+    @JsonProperty("displayname")
     public String getDisplayName() {
         return displayName;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.PusherData;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -117,6 +118,7 @@ public class Pusher {
         this.kind = kind;
     }
 
+    @JsonProperty("app_id")
     public String getAppId() {
         return appId;
     }
@@ -125,6 +127,7 @@ public class Pusher {
         this.appId = appId;
     }
 
+    @JsonProperty("app_display_name")
     public String getAppDisplayName() {
         return appDisplayName;
     }
@@ -133,6 +136,7 @@ public class Pusher {
         this.appDisplayName = appDisplayName;
     }
 
+    @JsonProperty("device_display_name")
     public String getDeviceDisplayName() {
         return deviceDisplayName;
     }
@@ -141,6 +145,7 @@ public class Pusher {
         this.deviceDisplayName = deviceDisplayName;
     }
 
+    @JsonProperty("profile_tag")
     public String getProfileTag() {
         return profileTag;
     }

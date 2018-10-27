@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -96,6 +97,7 @@ public class Notification {
         this.event = event;
     }
 
+    @JsonProperty("profile_tag")
     public String getProfileTag() {
         return profileTag;
     }
@@ -112,6 +114,7 @@ public class Notification {
         this.read = read;
     }
 
+    @JsonProperty("room_id")
     public String getRoomId() {
         return roomId;
     }

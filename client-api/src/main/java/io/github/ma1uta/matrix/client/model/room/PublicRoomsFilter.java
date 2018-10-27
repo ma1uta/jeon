@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,6 +38,7 @@ public class PublicRoomsFilter {
     @JsonbProperty("generic_search_term")
     private String genericSearchTerm;
 
+    @JsonProperty("generic_search_term")
     public String getGenericSearchTerm() {
         return genericSearchTerm;
     }

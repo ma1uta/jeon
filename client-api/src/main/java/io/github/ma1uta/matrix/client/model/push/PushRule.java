@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.push;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -89,6 +90,7 @@ public class PushRule {
         this.actions = actions;
     }
 
+    @JsonProperty("default")
     public Boolean getDefaultRule() {
         return defaultRule;
     }
@@ -105,6 +107,7 @@ public class PushRule {
         this.enabled = enabled;
     }
 
+    @JsonProperty("rule_id")
     public String getRuleId() {
         return ruleId;
     }

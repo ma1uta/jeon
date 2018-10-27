@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,6 +38,7 @@ public class SendEventResponse {
     @JsonbProperty("event_id")
     private String eventId;
 
+    @JsonProperty("event_id")
     public String getEventId() {
         return eventId;
     }

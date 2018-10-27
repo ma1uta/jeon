@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -98,6 +99,7 @@ public class FilterData {
     )
     private RoomFilter room;
 
+    @JsonProperty("event_fields")
     public List<String> getEventFields() {
         return eventFields;
     }
@@ -106,6 +108,7 @@ public class FilterData {
         this.eventFields = eventFields;
     }
 
+    @JsonProperty("event_format")
     public String getEventFormat() {
         return eventFormat;
     }
@@ -122,6 +125,7 @@ public class FilterData {
         this.presence = presence;
     }
 
+    @JsonProperty("account_data")
     public EventFilter getAccountData() {
         return accountData;
     }

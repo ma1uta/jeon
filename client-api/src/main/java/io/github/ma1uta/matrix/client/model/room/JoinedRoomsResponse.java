@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class JoinedRoomsResponse {
     @JsonbProperty("joined_rooms")
     private List<String> joinedRooms;
 
+    @JsonProperty("joined_rooms")
     public List<String> getJoinedRooms() {
         return joinedRooms;
     }

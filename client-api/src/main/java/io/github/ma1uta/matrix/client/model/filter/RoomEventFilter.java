@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -114,6 +115,7 @@ public class RoomEventFilter {
         this.limit = limit;
     }
 
+    @JsonProperty("not_senders")
     public List<String> getNotSenders() {
         return notSenders;
     }
@@ -122,6 +124,7 @@ public class RoomEventFilter {
         this.notSenders = notSenders;
     }
 
+    @JsonProperty("not_types")
     public List<String> getNotTypes() {
         return notTypes;
     }
@@ -146,6 +149,7 @@ public class RoomEventFilter {
         this.types = types;
     }
 
+    @JsonProperty("not_rooms")
     public List<String> getNotRooms() {
         return notRooms;
     }
@@ -162,6 +166,7 @@ public class RoomEventFilter {
         this.rooms = rooms;
     }
 
+    @JsonProperty("contains_url")
     public Boolean getContainsUrl() {
         return containsUrl;
     }

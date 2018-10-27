@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.userdirectory;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -55,6 +56,7 @@ public class User {
     @JsonbProperty("avatar_url")
     private String avatarUrl;
 
+    @JsonProperty("user_id")
     public String getUserId() {
         return userId;
     }
@@ -63,6 +65,7 @@ public class User {
         this.userId = userId;
     }
 
+    @JsonProperty("display_name")
     public String getDisplayName() {
         return displayName;
     }
@@ -71,6 +74,7 @@ public class User {
         this.displayName = displayName;
     }
 
+    @JsonProperty("avatar_url")
     public String getAvatarUrl() {
         return avatarUrl;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -54,6 +55,7 @@ public class Invite3pid {
     )
     private String address;
 
+    @JsonProperty("id_server")
     public String getIdServer() {
         return idServer;
     }

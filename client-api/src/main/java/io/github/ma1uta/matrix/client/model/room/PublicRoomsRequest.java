@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -98,6 +99,7 @@ public class PublicRoomsRequest {
         this.filter = filter;
     }
 
+    @JsonProperty("include_all_networkd")
     public Boolean getIncludeAllNetworks() {
         return includeAllNetworks;
     }
@@ -106,6 +108,7 @@ public class PublicRoomsRequest {
         this.includeAllNetworks = includeAllNetworks;
     }
 
+    @JsonProperty("third_party_instance_id")
     public String getThirdPartyInstanceId() {
         return thirdPartyInstanceId;
     }

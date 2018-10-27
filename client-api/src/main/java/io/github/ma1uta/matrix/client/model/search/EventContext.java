@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -56,6 +57,7 @@ public class EventContext {
     @JsonbProperty("include_profile")
     private Boolean includeProfile;
 
+    @JsonProperty("before_limit")
     public Long getBeforeLimit() {
         return beforeLimit;
     }
@@ -64,6 +66,7 @@ public class EventContext {
         this.beforeLimit = beforeLimit;
     }
 
+    @JsonProperty("after_limit")
     public Long getAfterLimit() {
         return afterLimit;
     }
@@ -72,6 +75,7 @@ public class EventContext {
         this.afterLimit = afterLimit;
     }
 
+    @JsonProperty("include_profile")
     public Boolean getIncludeProfile() {
         return includeProfile;
     }

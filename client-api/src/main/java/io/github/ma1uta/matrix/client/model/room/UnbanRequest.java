@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,6 +38,7 @@ public class UnbanRequest {
     @JsonbProperty("user_id")
     private String userId;
 
+    @JsonProperty("user_id")
     public String getUserId() {
         return userId;
     }

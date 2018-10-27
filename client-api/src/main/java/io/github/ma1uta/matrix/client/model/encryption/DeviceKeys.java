@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -85,6 +86,7 @@ public class DeviceKeys {
     )
     private UnsignedDeviceInfo unsignedDeviceInfo;
 
+    @JsonProperty("user_id")
     public String getUserId() {
         return userId;
     }
@@ -93,6 +95,7 @@ public class DeviceKeys {
         this.userId = userId;
     }
 
+    @JsonProperty("device_id")
     public String getDeviceId() {
         return deviceId;
     }

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -90,6 +91,7 @@ public class SyncResponse {
     @JsonbProperty("device_one_time_keys_count")
     private Map<String, Long> deviceOneTimeKeysCount;
 
+    @JsonProperty("next_batch")
     public String getNextBatch() {
         return nextBatch;
     }
@@ -114,6 +116,7 @@ public class SyncResponse {
         this.presence = presence;
     }
 
+    @JsonProperty("account_data")
     public AccountData getAccountData() {
         return accountData;
     }
@@ -122,6 +125,7 @@ public class SyncResponse {
         this.accountData = accountData;
     }
 
+    @JsonProperty("to_device")
     public ToDevice getToDevice() {
         return toDevice;
     }
@@ -130,6 +134,7 @@ public class SyncResponse {
         this.toDevice = toDevice;
     }
 
+    @JsonProperty("device_lists")
     public DeviceLists getDeviceLists() {
         return deviceLists;
     }
@@ -138,6 +143,7 @@ public class SyncResponse {
         this.deviceLists = deviceLists;
     }
 
+    @JsonProperty("device_one_time_keys_count")
     public Map<String, Long> getDeviceOneTimeKeysCount() {
         return deviceOneTimeKeysCount;
     }

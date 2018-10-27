@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.userdirectory;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -45,6 +46,7 @@ public class SearchRequest {
     )
     private Long limit;
 
+    @JsonProperty("search_term")
     public String getSearchTerm() {
         return searchTerm;
     }

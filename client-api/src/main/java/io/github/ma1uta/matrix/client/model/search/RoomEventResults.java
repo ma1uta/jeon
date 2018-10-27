@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.search;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -129,6 +130,7 @@ public class RoomEventResults {
         this.groups = groups;
     }
 
+    @JsonProperty("next_batch")
     public String getNextBatch() {
         return nextBatch;
     }

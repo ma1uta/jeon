@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.filter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -86,6 +87,7 @@ public class EventFilter {
         this.limit = limit;
     }
 
+    @JsonProperty("not_senders")
     public List<String> getNotSenders() {
         return notSenders;
     }
@@ -94,6 +96,7 @@ public class EventFilter {
         this.notSenders = notSenders;
     }
 
+    @JsonProperty("not_types")
     public List<String> getNotTypes() {
         return notTypes;
     }

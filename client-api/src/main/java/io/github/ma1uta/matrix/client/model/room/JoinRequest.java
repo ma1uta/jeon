@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -38,6 +39,7 @@ public class JoinRequest {
     @JsonbProperty("third_party_signed")
     private ThirdPartySigned thirdPartySigned;
 
+    @JsonProperty("third_party_signed")
     public ThirdPartySigned getThirdPartySigned() {
         return thirdPartySigned;
     }
