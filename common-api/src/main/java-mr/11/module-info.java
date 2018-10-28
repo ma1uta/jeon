@@ -11,4 +11,6 @@ module matrix.common.api {
     requires transitive swagger.annotations;
     requires transitive com.fasterxml.jackson.annotation;
     requires transitive java.json.bind;
+
+    uses io.github.ma1uta.matrix.Id;
 }

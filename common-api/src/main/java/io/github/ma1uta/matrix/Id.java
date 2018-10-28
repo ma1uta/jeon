@@ -61,7 +61,7 @@ public abstract class Id {
 
     private static Id instance;
 
-    private static final String DEFAULT_PROVIDER = "io.github.ma1uta.matrix.MatrixId";
+    private static final String DEFAULT_PROVIDER = "io.github.ma1uta.matrix.impl.MatrixId";
 
     /**
      * Provides the ID implementation.
