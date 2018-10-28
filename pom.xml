@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta.matrix</groupId>
     <artifactId>jeon</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -64,6 +64,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <base.java.version>1.8</base.java.version>
+        <arguments>-Dmulti_release=true</arguments>
 
         <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
         <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
@@ -80,6 +81,7 @@
         <swagger.maven.plugin.version>2.0.5</swagger.maven.plugin.version>
         <versions.maven.plugin>2.5</versions.maven.plugin>
         <maven.toolchain.plugin>1.1</maven.toolchain.plugin>
+        <maven.jar.plugin>3.1.0</maven.jar.plugin>
 
         <javax.ws.rs.api.version>2.1.1</javax.ws.rs.api.version>
         <javax.json.bind.api.version>1.0</javax.json.bind.api.version>
@@ -87,12 +89,13 @@
         <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
         <asm.version>7.0-beta</asm.version>
         <jackson.annotations.version>2.9.7</jackson.annotations.version>
+        <javax.activation.version>1.2.0</javax.activation.version>
     </properties>
 
     <build>
         <pluginManagement>
             <plugins>
-                <!--plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-toolchains-plugin</artifactId>
                     <version>${maven.toolchain.plugin}</version>
@@ -110,7 +113,7 @@
                             </jdk>
                         </toolchains>
                     </configuration>
-                </plugin-->
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
@@ -129,9 +132,8 @@
                     </configuration>
                     <executions>
                         <!-- for Java 11 -->
-                        <!--execution>
+                        <execution>
                             <id>java11</id>
-                            <phase/>
                             <goals>
                                 <goal>compile</goal>
                             </goals>
@@ -145,7 +147,7 @@
                                 </compileSourceRoots>
                                 <multiReleaseOutput>true</multiReleaseOutput>
                             </configuration>
-                        </execution-->
+                        </execution>
                     </executions>
                     <dependencies>
                         <dependency>
@@ -201,6 +203,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar.plugin}</version>
                     <configuration>
                         <archive>
                             <manifest>
@@ -254,11 +257,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.plugin.version}</version>
-                    <!--configuration>
-                        <argLine-->
-                            <!--illegal-access=permit
+                    <configuration>
+                        <argLine>
+                            --illegal-access=permit
                         </argLine>
-                    </configuration-->
+                    </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.ow2.asm</groupId>
@@ -346,10 +349,10 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <!--plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-toolchains-plugin</artifactId>
-            </plugin-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -414,76 +417,9 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>all</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>common-api</module>
-                <module>client-api</module>
-                <module>identity-api</module>
-                <module>application-api</module>
-                <module>push-api</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>common</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>common-api</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>c2s</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>client-api</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>s2s</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>server-api</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>id</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>identity-api</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>app</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>application-api</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>push</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>push-api</module>
-            </modules>
-        </profile>
 
         <!-- enable java11 compilation -->
-        <!--profile>
+        <profile>
             <id>compile-java11</id>
             <activation>
                 <jdk>[11,)</jdk>
@@ -513,14 +449,14 @@
             </activation>
 
             <build>
-                <plugins-->
+                <plugins>
                     <!-- Run the unit tests with the JVM used to run maven -->
-                    <!--plugin>
+                    <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <jvm>${env.JAVA_HOME}/bin/java</jvm-->
+                            <jvm>${env.JAVA_HOME}/bin/java</jvm>
                             <!-- this shows that the Java 11 code isn't tested -->
-                            <!--testFailureIgnore>true</testFailureIgnore>
+                            <testFailureIgnore>true</testFailureIgnore>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -536,9 +472,9 @@
             </activation>
 
             <build>
-                <plugins-->
+                <plugins>
                     <!-- enable java11 compilations -->
-                    <!--plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <executions>
@@ -547,12 +483,13 @@
                                 <phase>compile</phase>
                             </execution>
                         </executions>
-                    </plugin-->
+                    </plugin>
 
                     <!-- add the multi-release:true manifest entry -->
-                    <!--plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
+                        <version>${maven.jar.plugin}</version>
                         <configuration>
                             <archive>
                                 <manifestEntries>
@@ -567,7 +504,7 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile-->
+        </profile>
     </profiles>
 
     <dependencyManagement>
@@ -597,6 +534,19 @@
                 <artifactId>swagger-jaxrs2</artifactId>
                 <version>${swagger.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.sun.activation</groupId>
+                <artifactId>javax.activation</artifactId>
+                <version>${javax.activation.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <modules>
+        <module>common-api</module>
+        <module>push-api</module>
+        <module>identity-api</module>
+        <module>application-api</module>
+        <module>client-api</module>
+    </modules>
 </project>

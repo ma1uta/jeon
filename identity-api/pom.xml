@@ -22,16 +22,16 @@
     <parent>
         <groupId>io.github.ma1uta.matrix</groupId>
         <artifactId>jeon</artifactId>
-        <version>0.6.0</version>
+        <version>0.7.0</version>
     </parent>
     <artifactId>identity-api</artifactId>
-    <version>r0.1.0-2</version>
+    <version>r0.1.0-3</version>
 
     <name>identity-api</name>
     <description>Identity API</description>
 
     <properties>
-        <common.api.version>0.6.0</common.api.version>
+        <common.api.version>0.7.0</common.api.version>
     </properties>
 
     <dependencies>
@@ -40,7 +40,11 @@
             <artifactId>common-api</artifactId>
             <version>${common.api.version}</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>javax.activation</artifactId>
+        </dependency>
+     </dependencies>
 
     <build>
         <plugins>
