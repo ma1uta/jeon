@@ -84,6 +84,9 @@ public interface CasApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Session management"
         }
     )
     @GET
@@ -148,6 +151,9 @@ public interface CasApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Session management"
         }
     )
     @GET

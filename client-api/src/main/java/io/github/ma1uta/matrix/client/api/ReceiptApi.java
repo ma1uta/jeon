@@ -113,6 +113,9 @@ public interface ReceiptApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room participation"
         }
     )
     @POST
@@ -188,6 +191,9 @@ public interface ReceiptApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Read Markers"
         }
     )
     @POST

@@ -123,6 +123,9 @@ public interface SyncApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room participation"
         }
     )
     @GET
@@ -213,6 +216,9 @@ public interface SyncApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room participation"
         }
     )
     @GET

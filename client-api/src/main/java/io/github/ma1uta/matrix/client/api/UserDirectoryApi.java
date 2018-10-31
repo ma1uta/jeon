@@ -104,6 +104,9 @@ public interface UserDirectoryApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST

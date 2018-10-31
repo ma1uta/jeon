@@ -86,6 +86,9 @@ public interface EncryptionApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "End-to-end encryption"
         }
     )
     @POST
@@ -133,6 +136,9 @@ public interface EncryptionApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "End-to-end encryption"
         }
     )
     @POST
@@ -180,6 +186,9 @@ public interface EncryptionApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "End-to-end encryption"
         }
     )
     @POST
@@ -240,6 +249,9 @@ public interface EncryptionApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "End-to-end encryption"
         }
     )
     @GET

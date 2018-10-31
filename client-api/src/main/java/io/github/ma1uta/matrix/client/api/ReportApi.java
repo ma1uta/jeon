@@ -84,6 +84,9 @@ public interface ReportApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Reporting content"
         }
     )
     @POST

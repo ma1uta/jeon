@@ -86,6 +86,9 @@ public interface FilterApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room participation"
         }
     )
     @POST
@@ -150,6 +153,9 @@ public interface FilterApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room participation"
         }
     )
     @GET

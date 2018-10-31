@@ -87,6 +87,9 @@ public interface SendToDeviceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Send-to Device messaging"
         }
     )
     @PUT

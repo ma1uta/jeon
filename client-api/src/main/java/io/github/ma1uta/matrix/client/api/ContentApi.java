@@ -132,6 +132,9 @@ public interface ContentApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Media"
         }
     )
     @POST
@@ -208,6 +211,9 @@ public interface ContentApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Media"
         }
     )
     @GET
@@ -285,6 +291,9 @@ public interface ContentApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Media"
         }
     )
     @GET
@@ -363,6 +372,9 @@ public interface ContentApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Media"
         }
     )
     @GET
@@ -466,6 +478,9 @@ public interface ContentApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Media"
         }
     )
     @GET
@@ -542,6 +557,9 @@ public interface ContentApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Media"
         }
     )
     @GET

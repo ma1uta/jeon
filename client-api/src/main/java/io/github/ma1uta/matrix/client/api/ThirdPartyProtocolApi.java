@@ -86,6 +86,9 @@ public interface ThirdPartyProtocolApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Third party protocols"
         }
     )
     @GET
@@ -137,6 +140,9 @@ public interface ThirdPartyProtocolApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Third party protocols"
         }
     )
     @GET
@@ -204,6 +210,9 @@ public interface ThirdPartyProtocolApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Third party protocol"
         }
     )
     @GET
@@ -262,6 +271,9 @@ public interface ThirdPartyProtocolApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Third party protocol"
         }
     )
     @GET
@@ -320,6 +332,9 @@ public interface ThirdPartyProtocolApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Third party protocol"
         }
     )
     @GET
@@ -378,6 +393,9 @@ public interface ThirdPartyProtocolApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Third party protocol"
         }
     )
     @GET

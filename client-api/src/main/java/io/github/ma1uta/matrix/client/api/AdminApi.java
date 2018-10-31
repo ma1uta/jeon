@@ -77,6 +77,9 @@ public interface AdminApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Server administration"
         }
     )
     @GET

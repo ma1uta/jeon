@@ -106,6 +106,9 @@ public interface TypingApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room participation"
         }
     )
     @PUT

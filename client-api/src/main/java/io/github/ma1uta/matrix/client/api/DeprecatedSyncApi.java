@@ -102,7 +102,11 @@ public interface DeprecatedSyncApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
-        }
+        },
+        tags = {
+            "Room participation"
+        },
+        deprecated = true
     )
     @Deprecated
     @GET
@@ -168,7 +172,11 @@ public interface DeprecatedSyncApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
-        }
+        },
+        tags = {
+            "Room participation"
+        },
+        deprecated = true
     )
     @Deprecated
     @GET
@@ -234,7 +242,11 @@ public interface DeprecatedSyncApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
-        }
+        },
+        tags = {
+            "Room participation"
+        },
+        deprecated = true
     )
     @Deprecated
     @GET

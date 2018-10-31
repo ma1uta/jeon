@@ -109,6 +109,9 @@ public interface SearchApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Search"
         }
     )
     @POST

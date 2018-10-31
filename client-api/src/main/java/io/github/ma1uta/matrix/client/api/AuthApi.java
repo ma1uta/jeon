@@ -160,6 +160,9 @@ public interface AuthApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Session management"
         }
     )
     @GET
@@ -234,6 +237,9 @@ public interface AuthApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Session management"
         }
     )
     @POST
@@ -281,6 +287,9 @@ public interface AuthApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Session management"
         }
     )
     @POST
@@ -333,6 +342,9 @@ public interface AuthApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Session management"
         }
     )
     @POST

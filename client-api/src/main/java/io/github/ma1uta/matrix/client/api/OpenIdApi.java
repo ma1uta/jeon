@@ -102,6 +102,9 @@ public interface OpenIdApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "OpenID"
         }
     )
     @POST

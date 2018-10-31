@@ -85,6 +85,9 @@ public interface ClientConfigApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @PUT
@@ -148,6 +151,9 @@ public interface ClientConfigApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @PUT

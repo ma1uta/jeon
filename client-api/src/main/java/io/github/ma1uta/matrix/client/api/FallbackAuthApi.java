@@ -56,6 +56,9 @@ public interface FallbackAuthApi {
                 responseCode = "200",
                 description = "Login page for the fallback login."
             )
+        },
+        tags = {
+            "Session management"
         }
     )
     @GET
@@ -91,6 +94,9 @@ public interface FallbackAuthApi {
                     + "following JavaScript when the authentication has been completed."
             )
 
+        },
+        tags = {
+            "Session management"
         }
     )
     @GET

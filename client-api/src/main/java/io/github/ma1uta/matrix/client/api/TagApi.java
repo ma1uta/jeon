@@ -104,6 +104,9 @@ public interface TagApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @GET
@@ -160,6 +163,9 @@ public interface TagApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @PUT
@@ -222,6 +228,9 @@ public interface TagApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @DELETE

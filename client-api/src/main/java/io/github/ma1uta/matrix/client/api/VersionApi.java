@@ -66,6 +66,9 @@ public interface VersionApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Server administration"
         }
     )
     @GET

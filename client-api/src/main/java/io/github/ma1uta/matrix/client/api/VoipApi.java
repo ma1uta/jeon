@@ -87,6 +87,9 @@ public interface VoipApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "VOIP"
         }
     )
     @GET

@@ -200,6 +200,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room creation"
         }
     )
     @POST
@@ -258,6 +261,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room directory"
         }
     )
     @PUT
@@ -315,6 +321,9 @@ public interface RoomApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Room directory"
         }
     )
     @GET
@@ -364,6 +373,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room directory"
         }
     )
     @DELETE
@@ -411,6 +423,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @GET
@@ -494,6 +509,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -587,6 +605,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -681,6 +702,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -761,6 +785,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -840,6 +867,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -913,6 +943,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -985,6 +1018,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -1056,6 +1092,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room membership"
         }
     )
     @POST
@@ -1109,6 +1148,9 @@ public interface RoomApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Room discovery"
         }
     )
     @GET
@@ -1169,6 +1211,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room discovery"
         }
     )
     @PUT
@@ -1218,6 +1263,9 @@ public interface RoomApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Room discovery"
         }
     )
     @GET
@@ -1274,6 +1322,9 @@ public interface RoomApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room discovery"
         }
     )
     @POST

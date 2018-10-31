@@ -127,6 +127,9 @@ public interface PresenceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Presence"
         }
     )
     @PUT
@@ -199,6 +202,9 @@ public interface PresenceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Presence"
         }
     )
     @GET
@@ -259,6 +265,9 @@ public interface PresenceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Presence"
         }
     )
     @POST
@@ -305,6 +314,9 @@ public interface PresenceApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Presence"
         }
     )
     @GET

@@ -81,6 +81,9 @@ public interface EventContextApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Room participation"
         }
     )
     @GET

@@ -100,6 +100,9 @@ public interface ProfileApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @PUT
@@ -156,6 +159,9 @@ public interface ProfileApi {
                     )
                 )
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @GET
@@ -217,6 +223,9 @@ public interface ProfileApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @PUT
@@ -273,6 +282,9 @@ public interface ProfileApi {
                     )
                 )
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @GET
@@ -324,6 +336,9 @@ public interface ProfileApi {
                     )
                 )
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @GET

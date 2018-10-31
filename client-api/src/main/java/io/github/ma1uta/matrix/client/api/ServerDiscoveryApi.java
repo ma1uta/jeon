@@ -79,6 +79,9 @@ public interface ServerDiscoveryApi {
                     )
                 )
             )
+        },
+        tags = {
+            "Server administration"
         }
     )
     @GET

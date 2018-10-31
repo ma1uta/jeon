@@ -158,6 +158,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -241,6 +244,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -313,6 +319,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -392,6 +401,9 @@ public interface AccountApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @SecurityRequirement(name = "Authorization")
@@ -467,6 +479,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -538,6 +553,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -618,6 +636,9 @@ public interface AccountApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -704,6 +725,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @GET
@@ -758,6 +782,9 @@ public interface AccountApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @GET
@@ -813,6 +840,9 @@ public interface AccountApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -861,6 +891,9 @@ public interface AccountApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -930,6 +963,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -997,6 +1033,9 @@ public interface AccountApi {
                     )
                 }
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @POST
@@ -1086,6 +1125,9 @@ public interface AccountApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "User data"
         }
     )
     @GET

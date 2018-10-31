@@ -87,6 +87,9 @@ public interface DeviceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Device management"
         }
     )
     @GET
@@ -140,6 +143,9 @@ public interface DeviceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Device management"
         }
     )
     @GET
@@ -199,6 +205,9 @@ public interface DeviceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Device management"
         }
     )
     @PUT
@@ -264,6 +273,9 @@ public interface DeviceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Device management"
         }
     )
     @DELETE
@@ -328,6 +340,9 @@ public interface DeviceApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Device management"
         }
     )
     @POST

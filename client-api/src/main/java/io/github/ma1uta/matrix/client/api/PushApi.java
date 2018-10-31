@@ -317,6 +317,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @GET
@@ -384,6 +387,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @POST
@@ -435,6 +441,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @GET
@@ -490,6 +499,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @GET
@@ -537,6 +549,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @GET
@@ -604,6 +619,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @DELETE
@@ -700,6 +718,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @PUT
@@ -779,6 +800,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @GET
@@ -847,6 +871,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @PUT
@@ -918,6 +945,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @GET
@@ -987,6 +1017,9 @@ public interface PushApi {
             @SecurityRequirement(
                 name = "accessToken"
             )
+        },
+        tags = {
+            "Push notifications"
         }
     )
     @PUT
