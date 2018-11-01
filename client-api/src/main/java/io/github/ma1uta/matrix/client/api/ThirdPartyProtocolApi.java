@@ -212,7 +212,7 @@ public interface ThirdPartyProtocolApi {
             )
         },
         tags = {
-            "Third party protocol"
+            "Third party protocols"
         }
     )
     @GET
@@ -273,7 +273,7 @@ public interface ThirdPartyProtocolApi {
             )
         },
         tags = {
-            "Third party protocol"
+            "Third party protocols"
         }
     )
     @GET
@@ -334,7 +334,7 @@ public interface ThirdPartyProtocolApi {
             )
         },
         tags = {
-            "Third party protocol"
+            "Third party protocols"
         }
     )
     @GET
@@ -395,7 +395,7 @@ public interface ThirdPartyProtocolApi {
             )
         },
         tags = {
-            "Third party protocol"
+            "Third party protocols"
         }
     )
     @GET
