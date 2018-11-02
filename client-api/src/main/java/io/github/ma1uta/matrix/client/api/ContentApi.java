@@ -142,7 +142,6 @@ public interface ContentApi {
     @Secured
     @Path("/upload")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     void upload(
         @RequestBody(
             description = "The file content"
