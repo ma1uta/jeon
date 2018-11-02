@@ -27,7 +27,5 @@ module matrix.client.api {
     exports io.github.ma1uta.matrix.client.model.version;
     exports io.github.ma1uta.matrix.client.model.voip;
 
-    requires matrix.common.api;
-
-    requires java.ws.rs;
+    requires transitive matrix.common.api;
 }

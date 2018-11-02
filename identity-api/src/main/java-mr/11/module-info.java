@@ -8,7 +8,5 @@ module matrix.identity.api {
     exports io.github.ma1uta.matrix.identity.model.signing;
     exports io.github.ma1uta.matrix.identity.model.validation;
 
-    requires matrix.common.api;
-
-    requires java.ws.rs;
+    requires transitive matrix.common.api;
 }
