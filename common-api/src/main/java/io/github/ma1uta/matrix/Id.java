@@ -81,7 +81,9 @@ public abstract class Id {
                     } else {
                         try {
                             instance = AccessController
-                                .doPrivileged((PrivilegedExceptionAction<Id>) () -> (Id) Class.forName(DEFAULT_PROVIDER).newInstance());
+                                .doPrivileged(
+                                    (PrivilegedExceptionAction<Id>) () -> (Id) Class.forName(DEFAULT_PROVIDER).getDeclaredConstructor()
+                                        .newInstance());
                         } catch (PrivilegedActionException e) {
                             throw new RuntimeException(
                                 "Failed load the default implementation. Please check that the common-sdk jar available", e);
