@@ -19,7 +19,6 @@ package io.github.ma1uta.matrix.client.model.account;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -37,7 +36,7 @@ public class ThreePidRequest {
         description = "The third party credentials to associate with the account"
     )
     @JsonbProperty("three_pid_creds")
-    private List<ThreePidCred> threePidCreds;
+    private ThreePidCred threePidCreds;
 
     /**
      * Whether the homeserver should also bind this third party identifier to the account's Matrix ID with the passed identity server.
@@ -50,11 +49,11 @@ public class ThreePidRequest {
     private Boolean bind;
 
     @JsonProperty("three_pid_creds")
-    public List<ThreePidCred> getThreePidCreds() {
+    public ThreePidCred getThreePidCreds() {
         return threePidCreds;
     }
 
-    public void setThreePidCreds(List<ThreePidCred> threePidCreds) {
+    public void setThreePidCreds(ThreePidCred threePidCreds) {
         this.threePidCreds = threePidCreds;
     }
 

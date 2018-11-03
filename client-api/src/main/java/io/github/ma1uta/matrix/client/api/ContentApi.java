@@ -34,7 +34,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
