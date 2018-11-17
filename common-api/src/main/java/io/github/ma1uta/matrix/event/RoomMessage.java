@@ -17,38 +17,22 @@
 package io.github.ma1uta.matrix.event;
 
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
-import io.github.ma1uta.matrix.event.message.Audio;
-import io.github.ma1uta.matrix.event.message.Emote;
-import io.github.ma1uta.matrix.event.message.File;
-import io.github.ma1uta.matrix.event.message.Image;
-import io.github.ma1uta.matrix.event.message.Location;
-import io.github.ma1uta.matrix.event.message.Notice;
-import io.github.ma1uta.matrix.event.message.Text;
-import io.github.ma1uta.matrix.event.message.Video;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This event is used when sending messages in a room. Messages are not limited to be text. The ``msgtype`` key outlines the type
  * of message, e.g. text, audio, image, video, etc. The ``body`` key is text and MUST be used with every kind of ``msgtype`` as a
  * fallback mechanism for when a client cannot render a message. This allows clients to display *something* even if it is just plain text.
+ *
+ * @param <E> The message content type.
  */
 @Schema(
     description = "This event is used when sending messages in a room. Messages are not limited to be text."
         + " The ``msgtype`` key outlines the type of message, e.g. text, audio, image, video, etc. The ``body`` key is text and MUST"
         + " be used with every kind of ``msgtype`` as a fallback mechanism for when a client cannot render a message."
-        + " This allows clients to display *something* even if it is just plain text.",
-    subTypes = {
-        Audio.class,
-        Emote.class,
-        File.class,
-        Image.class,
-        Location.class,
-        Notice.class,
-        Text.class,
-        Video.class
-    }
+        + " This allows clients to display *something* even if it is just plain text."
 )
-public class RoomMessage extends RoomEvent<RoomMessageContent> {
+public class RoomMessage<E extends RoomMessageContent> extends RoomEvent<E> {
 
     @Override
     public String getType() {
