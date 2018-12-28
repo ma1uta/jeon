@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.event.message;
 
-import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -27,8 +26,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class Text extends FormattedBody {
 
+    /**
+     * This message is the most basic message and is used to represent text.
+     */
+    public static final String MSGTYPE = "m.text";
+
     @Override
     public String getMsgtype() {
-        return Event.MessageType.TEXT;
+        return MSGTYPE;
     }
 }

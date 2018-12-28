@@ -33,6 +33,12 @@ import javax.json.bind.annotation.JsonbProperty;
 public class FullyRead extends Event<FullyReadContent> {
 
     /**
+     * The current location of the user's read marker in a room. This event appears in the user's room account data for
+     * the room the marker is applicable for.
+     */
+    public static final String TYPE = "m.fully_read";
+
+    /**
      * Required. The ID of the room associated with this event.
      */
     @Schema(
@@ -54,6 +60,6 @@ public class FullyRead extends Event<FullyReadContent> {
 
     @Override
     public String getType() {
-        return EventType.FULLY_READ;
+        return TYPE;
     }
 }

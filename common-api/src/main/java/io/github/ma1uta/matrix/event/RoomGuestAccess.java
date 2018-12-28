@@ -29,8 +29,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomGuestAccess extends StateEvent<RoomGuestAccessContent> {
 
+    /**
+     * This event controls whether guest users are allowed to join rooms. If this event is absent, servers should act as if
+     * it is present and has the guest_access value "forbidden".
+     */
+    public static final String TYPE = "m.room.guest_access";
+
     @Override
     public String getType() {
-        return EventType.ROOM_GUEST_ACCESS;
+        return TYPE;
     }
 }

@@ -30,8 +30,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class CallAnswer extends RoomEvent<CallAnswerContent> {
 
+    /**
+     * This event is sent by the callee when they wish to answer the call.
+     */
+    public static final String TYPE = "m.call.answer";
+
     @Override
     public String getType() {
-        return EventType.CALL_ANSWER;
+        return TYPE;
     }
 }

@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.LocationInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,6 +30,11 @@ import javax.json.bind.annotation.JsonbProperty;
     description = "This message represents a real-world location."
 )
 public class Location extends RoomMessageContent {
+
+    /**
+     * This message represents a real-world location.
+     */
+    public static final String MSGTYPE = "m.location";
 
     /**
      * Information about the file referred to in url.
@@ -69,6 +73,6 @@ public class Location extends RoomMessageContent {
 
     @Override
     public String getMsgtype() {
-        return Event.MessageType.LOCATION;
+        return MSGTYPE;
     }
 }

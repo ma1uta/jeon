@@ -27,8 +27,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class Sticker extends RoomEvent<StickerContent> {
 
+    /**
+     * This message represents a single sticker image.
+     */
+    public static final String TYPE = "m.sticker";
+
     @Override
     public String getType() {
-        return EventType.STICKER;
+        return TYPE;
     }
 }

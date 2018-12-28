@@ -40,8 +40,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomName extends StateEvent<RoomNameContent> {
 
+    /**
+     * A room has an opaque room ID which is not human-friendly to read. A room alias is human-friendly, but not all
+     * rooms have room aliases. The room name is a human-friendly string designed to be displayed to the end-user.
+     * The room name is not unique, as multiple rooms can have the same room name set.
+     * <br>
+     * A room with an m.room.name event with an absent, null, or empty name field should be treated the same as a room
+     * with no m.room.name event.
+     * <br>
+     * An event of this type is automatically created when creating a room using /createRoom with the name key.
+     */
+    public static final String TYPE = "m.room.name";
+
     @Override
     public String getType() {
-        return EventType.ROOM_NAME;
+        return TYPE;
     }
 }

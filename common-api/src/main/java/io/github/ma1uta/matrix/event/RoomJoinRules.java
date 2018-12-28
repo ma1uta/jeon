@@ -32,8 +32,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomJoinRules extends StateEvent<RoomJoinRulesContent> {
 
+    /**
+     * A room may be public meaning anyone can join the room without any prior action. Alternatively, it can be invite
+     * meaning that a user who wishes to join the room must first receive an invite to the room from someone already inside
+     * of the room. Currently, knock and private are reserved keywords which are not implemented.
+     */
+    public static final String TYPE = "m.room.join_rules";
+
     @Override
     public String getType() {
-        return EventType.ROOM_JOIN_RULES;
+        return TYPE;
     }
 }

@@ -32,8 +32,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class CallHangup extends RoomEvent<CallHangupContent> {
 
+    /**
+     * Sent by either party to signal their termination of the call. This can be sent either once the call has has been
+     * established or before to abort the call.
+     */
+    public static final String TYPE = "m.call.hangup";
+
     @Override
     public String getType() {
-        return EventType.CALL_HANGUP;
+        return TYPE;
     }
 }

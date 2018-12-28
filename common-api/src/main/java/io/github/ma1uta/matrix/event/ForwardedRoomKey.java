@@ -29,8 +29,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class ForwardedRoomKey extends Event<ForwardedRoomKeyContent> {
 
+    /**
+     * This event type is used to forward keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
+     * then sent as a to-device event.
+     */
+    public static final String TYPE = "m.forwarded_room_key";
+
     @Override
     public String getType() {
-        return EventType.FORWARDED_ROOM_KEY;
+        return TYPE;
     }
 }

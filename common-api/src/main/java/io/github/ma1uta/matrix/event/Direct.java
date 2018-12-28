@@ -34,8 +34,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class Direct extends Event<DirectContent> {
 
+    /**
+     * A map of which rooms are considered 'direct' rooms for specific users is kept in account_data in an event of type m.direct.
+     * The content of this event is an object where the keys are the user IDs and values are lists of room ID strings of the
+     * 'direct' rooms for that user ID.
+     */
+    public static final String TYPE = "m.direct";
+
     @Override
     public String getType() {
-        return EventType.DIRECT;
+        return TYPE;
     }
 }

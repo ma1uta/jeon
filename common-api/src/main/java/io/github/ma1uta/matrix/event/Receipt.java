@@ -38,6 +38,11 @@ import javax.json.bind.annotation.JsonbProperty;
 public class Receipt extends Event<ReceiptContent> {
 
     /**
+     * Informs the client of new receipts.
+     */
+    public static final String TYPE = "m.receipt";
+
+    /**
      * Required. The ID of the room associated with this event.
      */
     @Schema(
@@ -59,6 +64,6 @@ public class Receipt extends Event<ReceiptContent> {
 
     @Override
     public String getType() {
-        return EventType.RECEIPT;
+        return TYPE;
     }
 }

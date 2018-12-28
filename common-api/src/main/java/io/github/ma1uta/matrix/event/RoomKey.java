@@ -29,8 +29,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomKey extends Event<RoomKeyContent> {
 
+    /**
+     * This event type is used to exchange keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
+     * then sent as a to-device event.
+     */
+    public static final String TYPE = "m.room_key";
+
     @Override
     public String getType() {
-        return EventType.ROOM_KEY;
+        return TYPE;
     }
 }

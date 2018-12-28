@@ -30,6 +30,26 @@ import javax.json.bind.annotation.JsonbProperty;
 public class RoomHistoryVisibilityContent implements EventContent {
 
     /**
+     * World readable.
+     */
+    public static final String WORLD_READABLE = "world_readable";
+
+    /**
+     * Shared.
+     */
+    public static final String SHARED = "shared";
+
+    /**
+     * Invited.
+     */
+    public static final String INVITED = "invited";
+
+    /**
+     * Joined.
+     */
+    public static final String JOINED = "joined";
+
+    /**
      * Required. Who can see the room history. One of: ["invited", "joined", "shared", "world_readable"].
      */
     @Schema(

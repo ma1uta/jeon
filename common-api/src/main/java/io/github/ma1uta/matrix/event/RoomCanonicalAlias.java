@@ -35,8 +35,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomCanonicalAlias extends StateEvent<RoomCanonicalAliasContent> {
 
+    /**
+     * This event is used to inform the room about which alias should be considered the canonical one. This could be for
+     * display purposes or as suggestion to users which alias to use to advertise the room.
+     */
+    public static final String TYPE = "m.room.canonical_alias";
+
     @Override
     public String getType() {
-        return EventType.ROOM_CANONICAL_ALIAS;
+        return TYPE;
     }
 }

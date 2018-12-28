@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.event.message;
 
-import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
 import io.github.ma1uta.matrix.event.nested.FileInfo;
@@ -29,6 +28,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "This message represents a generic file."
 )
 public class File extends RoomMessageContent {
+
+    /**
+     * This message represents a generic file.
+     */
+    public static final String MSGTYPE = "m.file";
 
     /**
      * Required. The original filename of the uploaded file.
@@ -98,6 +102,6 @@ public class File extends RoomMessageContent {
 
     @Override
     public String getMsgtype() {
-        return Event.MessageType.FILE;
+        return MSGTYPE;
     }
 }

@@ -31,8 +31,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomTopic extends StateEvent<RoomTopicContent> {
 
+    /**
+     * A topic is a short message detailing what is currently being discussed in the room. It can also be used as a way to
+     * display extra information about the room, which may not be suitable for the room name. The room topic can also be set
+     * when creating a room using /createRoom with the topic key.
+     */
+    public static final String TYPE = "m.room.topic";
+
     @Override
     public String getType() {
-        return EventType.ROOM_TOPIC;
+        return TYPE;
     }
 }

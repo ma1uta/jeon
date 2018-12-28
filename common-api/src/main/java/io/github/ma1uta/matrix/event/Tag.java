@@ -27,8 +27,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class Tag extends Event<TagContent> {
 
+    /**
+     * Informs the client of tags on a room.
+     */
+    public static final String TYPE = "m.tag";
+
     @Override
     public String getType() {
-        return EventType.TAG;
+        return TYPE;
     }
 }

@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.event.message;
 
-import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
 import io.github.ma1uta.matrix.event.nested.VideoInfo;
@@ -29,6 +28,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "This message represents a single video clip."
 )
 public class Video extends RoomMessageContent {
+
+    /**
+     * This message represents a single video clip.
+     */
+    public static final String MSGTYPE = "m.video";
 
     /**
      * Metadata about the video clip referred to in url.
@@ -81,6 +85,6 @@ public class Video extends RoomMessageContent {
 
     @Override
     public String getMsgtype() {
-        return Event.MessageType.VIDEO;
+        return MSGTYPE;
     }
 }

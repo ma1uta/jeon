@@ -32,8 +32,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class CallCandidates extends RoomEvent<CallCandidatesContent> {
 
+    /**
+     * This event is sent by callers after sending an invite and by the callee after answering. Its purpose is to give the other
+     * party additional ICE candidates to try using to communicate.
+     */
+    public static final String TYPE = "m.call.candidates";
+
     @Override
     public String getType() {
-        return EventType.CALL_CANDIDATES;
+        return TYPE;
     }
 }

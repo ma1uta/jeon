@@ -32,6 +32,16 @@ import javax.json.bind.annotation.JsonbProperty;
 public class RoomGuestAccessContent implements EventContent {
 
     /**
+     * Can join.
+     */
+    public static final String CAN_JOIN = "can_join";
+
+    /**
+     * Forbidden.
+     */
+    public static final String FORBIDDEN = "forbidden";
+
+    /**
      * Whether guests can join the room. One of: ["can_join", "forbidden"].
      */
     @Schema(

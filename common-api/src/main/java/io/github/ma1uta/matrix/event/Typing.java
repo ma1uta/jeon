@@ -31,6 +31,11 @@ import javax.json.bind.annotation.JsonbProperty;
 public class Typing extends Event<TypingContent> {
 
     /**
+     * Informs the client of the list of users currently typing.
+     */
+    public static final String TYPE = "m.typing";
+
+    /**
      * Required. The ID of the room associated with this event.
      */
     @Schema(
@@ -52,6 +57,6 @@ public class Typing extends Event<TypingContent> {
 
     @Override
     public String getType() {
-        return EventType.TYPING;
+        return TYPE;
     }
 }

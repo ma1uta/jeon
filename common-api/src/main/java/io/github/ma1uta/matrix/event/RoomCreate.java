@@ -27,8 +27,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomCreate extends StateEvent<RoomCreateContent> {
 
+    /**
+     * This is the first event in a room and cannot be changed. It acts as the root of all other events.
+     */
+    public static final String TYPE = "m.room.create";
+
     @Override
     public String getType() {
-        return EventType.ROOM_CREATE;
+        return TYPE;
     }
 }

@@ -31,8 +31,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomThirdPartyInvite extends StateEvent<RoomThirdPartyInviteContent> {
 
+    /**
+     * Acts as an m.room.member invite event, where there isn't a target user_id to invite. This event contains a token and
+     * a public key whose private key must be used to sign the token. Any user who can present that signature may use this
+     * invitation to join the target room.
+     */
+    public static final String TYPE = "m.room.third_party_invite";
+
     @Override
     public String getType() {
-        return EventType.ROOM_THIRD_PARTY_INVITE;
+        return TYPE;
     }
 }

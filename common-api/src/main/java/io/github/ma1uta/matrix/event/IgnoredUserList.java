@@ -27,8 +27,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class IgnoredUserList extends Event<IgnoredUserListContent> {
 
+    /**
+     * A map of users which are considered ignored is kept in account_data in an event type of m.ignored_user_list.
+     */
+    public static final String TYPE = "m.ignored_user_list";
+
     @Override
     public String getType() {
-        return EventType.IGNORED_USER_LIST;
+        return TYPE;
     }
 }

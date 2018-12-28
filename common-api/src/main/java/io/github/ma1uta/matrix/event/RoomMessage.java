@@ -34,8 +34,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomMessage<E extends RoomMessageContent> extends RoomEvent<E> {
 
+    /**
+     * This event is used when sending messages in a room. Messages are not limited to be text. The msgtype key outlines
+     * the type of message, e.g. text, audio, image, video, etc. The body key is text and MUST be used with every kind of
+     * msgtype as a fallback mechanism for when a client cannot render a message. This allows clients to display something
+     * even if it is just plain text. For more information on msgtypes, see m.room.message msgtypes.
+     */
+    public static final String TYPE = "m.room.message";
+
     @Override
     public String getType() {
-        return EventType.ROOM_MESSAGE;
+        return TYPE;
     }
 }

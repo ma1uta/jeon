@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.event.encrypted;
 
-import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
 import io.github.ma1uta.matrix.event.nested.CiphertextInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,6 +29,11 @@ import java.util.Map;
     description = "Olm encrypted message."
 )
 public class OlmEncryptedContent extends RoomEncryptedContent {
+
+    /**
+     * Olm algorithm version.
+     */
+    public static final String ALGORITHM = "m.olm.v1.curve25519-aes-sha2";
 
     /**
      * Required. The encrypted content of the event. A map from the recipient Curve25519 identity key to ciphertext information.
@@ -51,6 +55,6 @@ public class OlmEncryptedContent extends RoomEncryptedContent {
     }
 
     public String getAlgorithm() {
-        return Event.Encryption.OLM;
+        return ALGORITHM;
     }
 }

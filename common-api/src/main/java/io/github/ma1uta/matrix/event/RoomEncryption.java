@@ -31,8 +31,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomEncryption extends StateEvent<RoomEncryptionContent> {
 
+    /**
+     * Defines how messages sent in this room should be encrypted.
+     */
+    public static final String TYPE = "m.room.encryption";
+
     @Override
     public String getType() {
-        return EventType.ROOM_ENCRIPTION;
+        return TYPE;
     }
 }

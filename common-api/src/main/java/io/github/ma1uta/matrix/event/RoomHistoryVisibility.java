@@ -27,8 +27,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomHistoryVisibility extends StateEvent<RoomHistoryVisibilityContent> {
 
+    /**
+     * This event controls whether a user can see the events that happened in a room from before they joined.
+     */
+    public static final String TYPE = "m.room.history_visibility";
+
     @Override
     public String getType() {
-        return EventType.ROOM_HISTORY_VISIBILITY;
+        return TYPE;
     }
 }

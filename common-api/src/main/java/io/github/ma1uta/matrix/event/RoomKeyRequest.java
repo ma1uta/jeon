@@ -27,8 +27,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomKeyRequest extends Event<RoomKeyRequestContent> {
 
+    /**
+     * This event type is used to request keys for end-to-end encryption. It is sent as an unencrypted to-device event.
+     */
+    public static final String TYPE = "m.room_key_request";
+
     @Override
     public String getType() {
-        return EventType.ROOM_KEY_REQUEST;
+        return TYPE;
     }
 }

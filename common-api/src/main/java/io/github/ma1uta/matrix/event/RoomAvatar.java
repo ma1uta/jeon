@@ -27,8 +27,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomAvatar extends StateEvent<RoomAvatarContent> {
 
+    /**
+     * A picture that is associated with the room. This can be displayed alongside the room information.
+     */
+    public static final String TYPE = "m.room.avatar";
+
     @Override
     public String getType() {
-        return EventType.ROOM_AVATAR;
+        return TYPE;
     }
 }

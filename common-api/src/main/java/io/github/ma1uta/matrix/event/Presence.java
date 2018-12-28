@@ -28,6 +28,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class Presence extends Event<PresenceContent> {
 
     /**
+     * Informs the client of a user's presence state change.
+     */
+    public static final String TYPE = "m.presence";
+
+    /**
      * Required. Contains the fully-qualified ID of the user who sent this event.
      */
     @Schema(
@@ -46,6 +51,6 @@ public class Presence extends Event<PresenceContent> {
 
     @Override
     public String getType() {
-        return EventType.PRESENCE;
+        return TYPE;
     }
 }

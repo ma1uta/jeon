@@ -30,8 +30,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class CallInvite extends RoomEvent<CallInviteContent> {
 
+    /**
+     * This event is sent by the caller when they wish to establish a call.
+     */
+    public static final String TYPE = "m.call.invite";
+
     @Override
     public String getType() {
-        return EventType.CALL_INVITE;
+        return TYPE;
     }
 }

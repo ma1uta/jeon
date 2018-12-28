@@ -35,8 +35,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomMessageFeedback extends RoomEvent<RoomMessageFeedbackContent> {
 
+    /**
+     * NB: Usage of this event is discouraged in favour of the receipts module. Most clients will not recognise this event.
+     * Feedback events are events sent to acknowledge a message in some way. There are two supported acknowledgements: delivered
+     * (sent when the event has been received) and read (sent when the event has been observed by the end-user).
+     * The target_event_id should reference the m.room.message event being acknowledged.
+     *
+     * @deprecated in favor of {@link Event.EventType#RECEIPT}.
+     */
+    @Deprecated
+    public static final String TYPE = "m.room.message.feedback";
+
     @Override
     public String getType() {
-        return EventType.ROOM_MESSAGE_FEEDBACK;
+        return TYPE;
     }
 }

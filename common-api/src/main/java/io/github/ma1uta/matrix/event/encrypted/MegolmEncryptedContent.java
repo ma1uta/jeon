@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.encrypted;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomEncryptedContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -30,6 +29,11 @@ import javax.json.bind.annotation.JsonbProperty;
     description = "Megolm encrypted message."
 )
 public class MegolmEncryptedContent extends RoomEncryptedContent {
+
+    /**
+     * Megolm algorithm version.
+     */
+    public static final String ALGORITHM = "m.megolm.v1.aes-sha2";
 
     /**
      * Required. The encrypted content of the event. The encrypted payload itself.
@@ -52,6 +56,6 @@ public class MegolmEncryptedContent extends RoomEncryptedContent {
     @JsonProperty(value = "algorithm", access = JsonProperty.Access.READ_ONLY)
     @Override
     public String getAlgorithm() {
-        return Event.Encryption.MEGOLM;
+        return ALGORITHM;
     }
 }

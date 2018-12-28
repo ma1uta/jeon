@@ -35,8 +35,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class RoomEncrypted extends RoomEvent<RoomEncryptedContent> {
 
+    /**
+     * This event type is used when sending encrypted events. It can be used either within a room
+     * (in which case it will have all of the Room Event fields), or as a to-device event.
+     */
+    public static final String TYPE = "m.room.encrypted";
+
     @Override
     public String getType() {
-        return EventType.ROOM_ENCRYPTED;
+        return TYPE;
     }
 }

@@ -31,6 +31,16 @@ import javax.json.bind.annotation.JsonbProperty;
 public class RoomKeyRequestContent implements EventContent {
 
     /**
+     * Request.
+     */
+    public static final String REQUEST = "request";
+
+    /**
+     * Cancel Request.
+     */
+    public static final String CANCEL_REQUEST = "cancel_request";
+
+    /**
      * Information about the requested key. Required when action is request.
      */
     @Schema(

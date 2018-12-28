@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.event.message;
 
-import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.github.ma1uta.matrix.event.nested.AudioInfo;
 import io.github.ma1uta.matrix.event.nested.EncryptedFile;
@@ -29,6 +28,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
     description = "This message represents a single audio clip."
 )
 public class Audio extends RoomMessageContent {
+
+    /**
+     * This message represents a single audio clip.
+     */
+    public static final String MSGTYPE = "m.audio";
 
     /**
      * Metadata for the audio clip referred to in url.
@@ -81,6 +85,6 @@ public class Audio extends RoomMessageContent {
 
     @Override
     public String getMsgtype() {
-        return Event.MessageType.AUDIO;
+        return MSGTYPE;
     }
 }

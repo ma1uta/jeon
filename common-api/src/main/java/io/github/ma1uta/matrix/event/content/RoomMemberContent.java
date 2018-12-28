@@ -37,6 +37,33 @@ import javax.json.bind.annotation.JsonbProperty;
 public class RoomMemberContent implements EventContent {
 
     /**
+     * The user has been invited to join a room, but has not yet joined it. They may not participate in the room
+     * until they join.
+     */
+    public static final String INVITE = "invite";
+
+    /**
+     * The user has joined the room (possibly after accepting an invite), and may participate in it.
+     */
+    public static final String JOIN = "join";
+
+    /**
+     * The user was once joined to the room, but has since left (possibly by choice, or possibly by being kicked).
+     */
+    public static final String LEAVE = "leave";
+
+    /**
+     * The user has been banned from the room, and is no longer allowed to join it until they are un-banned from
+     * the room (by having their membership state set to a value other than ban).
+     */
+    public static final String BAN = "ban";
+
+    /**
+     * This is a reserved word, which currently has no meaning.
+     */
+    public static final String KNOCK = "knock";
+
+    /**
      * The avatar URL for this user, if any. This is added by the homeserver.
      */
     @Schema(
