@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.nested.NotificationPowerLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -152,7 +153,7 @@ public class RoomPowerLevelsContent implements EventContent {
     @Schema(
         description = "The power levels for specific users. This is a mapping from user_id to power level for that user."
     )
-    private Map<String, Byte> users;
+    private Map<Id, Byte> users;
 
     /**
      * The default power level for every user in the room, unless their user_id is mentioned in the users key. Defaults to 0 if unspecified.
@@ -232,11 +233,11 @@ public class RoomPowerLevelsContent implements EventContent {
         this.stateDefault = stateDefault;
     }
 
-    public Map<String, Byte> getUsers() {
+    public Map<Id, Byte> getUsers() {
         return users;
     }
 
-    public void setUsers(Map<String, Byte> users) {
+    public void setUsers(Map<Id, Byte> users) {
         this.users = users;
     }
 

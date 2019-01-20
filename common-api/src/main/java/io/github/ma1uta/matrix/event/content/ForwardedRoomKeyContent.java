@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class ForwardedRoomKeyContent implements EventContent {
         required = true
     )
     @JsonbProperty("room_id")
-    private String roomId;
+    private Id roomId;
 
     /**
      * Required. The Curve25519 key of the device which initiated the session originally.
@@ -124,11 +125,11 @@ public class ForwardedRoomKeyContent implements EventContent {
     }
 
     @JsonProperty("room_id")
-    public String getRoomId() {
+    public Id getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
+    public void setRoomId(Id roomId) {
         this.roomId = roomId;
     }
 

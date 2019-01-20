@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.HashMap;
@@ -34,5 +35,5 @@ import java.util.List;
         + " an event of type m.direct. The content of this event is an object where the keys are the user IDs and values are lists"
         + " of room ID strings of the 'direct' rooms for that user ID."
 )
-public class DirectContent extends HashMap<String, List<String>> implements EventContent {
+public class DirectContent extends HashMap<Id, List<Id>> implements EventContent {
 }

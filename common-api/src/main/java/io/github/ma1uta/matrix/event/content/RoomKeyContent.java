@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -49,7 +50,7 @@ public class RoomKeyContent implements EventContent {
         required = true
     )
     @JsonbProperty("room_id")
-    private String roomId;
+    private Id roomId;
 
     /**
      * Required. The ID of the session that the key is for.
@@ -82,11 +83,11 @@ public class RoomKeyContent implements EventContent {
     }
 
     @JsonProperty("room_id")
-    public String getRoomId() {
+    public Id getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
+    public void setRoomId(Id roomId) {
         this.roomId = roomId;
     }
 

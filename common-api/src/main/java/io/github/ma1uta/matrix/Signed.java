@@ -35,7 +35,7 @@ public class Signed {
         description = "The invited matrix user ID. Must be equal to the user_id property of the event.",
         required = true
     )
-    private String mxid;
+    private Id mxid;
 
     /**
      * Required. The token property of the containing third_party_invite object.
@@ -56,11 +56,11 @@ public class Signed {
     )
     private Map<String, Map<String, String>> signatures;
 
-    public String getMxid() {
+    public Id getMxid() {
         return mxid;
     }
 
-    public void setMxid(String mxid) {
+    public void setMxid(Id mxid) {
         this.mxid = mxid;
     }
 

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.protocol;
 
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -35,7 +36,7 @@ public class ProtocolUser {
         description = "A Matrix User ID represting a third party user.",
         required = true
     )
-    private String userid;
+    private Id userid;
 
     /**
      * Required. The protocol ID that the third party location is a part of.
@@ -55,11 +56,11 @@ public class ProtocolUser {
     )
     private Map<String, String> fields;
 
-    public String getUserid() {
+    public Id getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(Id userid) {
         this.userid = userid;
     }
 

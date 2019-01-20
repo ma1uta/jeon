@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -42,13 +43,13 @@ public class RoomPinnedContent implements EventContent {
         description = "An ordered list of event IDs to pin.",
         required = true
     )
-    private List<String> pinned;
+    private List<Id> pinned;
 
-    public List<String> getPinned() {
+    public List<Id> getPinned() {
         return pinned;
     }
 
-    public void setPinned(List<String> pinned) {
+    public void setPinned(List<Id> pinned) {
         this.pinned = pinned;
     }
 }

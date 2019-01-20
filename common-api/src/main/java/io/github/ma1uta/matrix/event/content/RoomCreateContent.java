@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -36,7 +37,7 @@ public class RoomCreateContent implements EventContent {
         description = "The user_id of the room creator. This is set by the homeserver.",
         required = true
     )
-    private String creator;
+    private Id creator;
 
     /**
      * Whether users on other servers can join this room. Defaults to ``true`` if key does not exist.
@@ -58,11 +59,11 @@ public class RoomCreateContent implements EventContent {
     @JsonbProperty("room_version")
     private String roomVersion;
 
-    public String getCreator() {
+    public Id getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(Id creator) {
         this.creator = creator;
     }
 

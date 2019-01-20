@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -41,13 +42,13 @@ public class RoomCanonicalAliasContent implements EventContent {
         description = "The canonical alias",
         required = true
     )
-    private String alias;
+    private Id alias;
 
-    public String getAlias() {
+    public Id getAlias() {
         return alias;
     }
 
-    public void setAlias(String alias) {
+    public void setAlias(Id alias) {
         this.alias = alias;
     }
 }

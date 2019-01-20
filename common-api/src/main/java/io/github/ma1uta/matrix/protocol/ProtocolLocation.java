@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.protocol;
 
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -35,7 +36,7 @@ public class ProtocolLocation {
         description = "An alias for a matrix room.",
         required = true
     )
-    private String alias;
+    private Id alias;
 
     /**
      * Required. The protocol ID that the third party location is a part of.
@@ -55,11 +56,11 @@ public class ProtocolLocation {
     )
     private Map<String, String> fields;
 
-    public String getAlias() {
+    public Id getAlias() {
         return alias;
     }
 
-    public void setAlias(String alias) {
+    public void setAlias(Id alias) {
         this.alias = alias;
     }
 

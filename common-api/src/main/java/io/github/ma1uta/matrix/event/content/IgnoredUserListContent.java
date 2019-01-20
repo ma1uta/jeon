@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -38,14 +39,14 @@ public class IgnoredUserListContent implements EventContent {
         required = true
     )
     @JsonbProperty("ignored_users")
-    private Map<String, Object> ignoredUsers;
+    private Map<Id, Object> ignoredUsers;
 
     @JsonProperty("ignored_users")
-    public Map<String, Object> getIgnoredUsers() {
+    public Map<Id, Object> getIgnoredUsers() {
         return ignoredUsers;
     }
 
-    public void setIgnoredUsers(Map<String, Object> ignoredUsers) {
+    public void setIgnoredUsers(Map<Id, Object> ignoredUsers) {
         this.ignoredUsers = ignoredUsers;
     }
 }

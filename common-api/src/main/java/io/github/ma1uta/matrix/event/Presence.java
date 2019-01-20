@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.event;
 
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.PresenceContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -39,13 +40,13 @@ public class Presence extends Event<PresenceContent> {
         description = "Contains the fully-qualified ID of the user who sent this event.",
         required = true
     )
-    private String sender;
+    private Id sender;
 
-    public String getSender() {
+    public Id getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(Id sender) {
         this.sender = sender;
     }
 

@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.event.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -38,14 +39,14 @@ public class ReceiptInfo {
         description = "A collection of users who have sent m.read receipts for this event."
     )
     @JsonbProperty("m.read")
-    private Map<String, ReceiptTs> read;
+    private Map<Id, ReceiptTs> read;
 
     @JsonProperty("m.read")
-    public Map<String, ReceiptTs> getRead() {
+    public Map<Id, ReceiptTs> getRead() {
         return read;
     }
 
-    public void setRead(Map<String, ReceiptTs> read) {
+    public void setRead(Map<Id, ReceiptTs> read) {
         this.read = read;
     }
 }
