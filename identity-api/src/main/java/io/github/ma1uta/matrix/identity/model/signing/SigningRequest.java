@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.identity.model.signing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -36,7 +37,7 @@ public class SigningRequest {
         description = "The Matrix user ID of the user accepting the invitation.",
         required = true
     )
-    private String mxid;
+    private Id mxid;
 
     /**
      * Required. The token from the call to store-invite.
@@ -58,11 +59,11 @@ public class SigningRequest {
     @JsonbProperty("private_key")
     private String privateKey;
 
-    public String getMxid() {
+    public Id getMxid() {
         return mxid;
     }
 
-    public void setMxid(String mxid) {
+    public void setMxid(Id mxid) {
         this.mxid = mxid;
     }
 

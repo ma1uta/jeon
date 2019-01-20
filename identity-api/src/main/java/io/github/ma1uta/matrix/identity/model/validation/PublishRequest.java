@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.identity.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -56,7 +57,7 @@ public class PublishRequest {
         description = "The Matrix user ID to associate with the 3pids.",
         required = true
     )
-    private String mxid;
+    private Id mxid;
 
     public String getSid() {
         return sid;
@@ -75,11 +76,11 @@ public class PublishRequest {
         this.clientSecret = clientSecret;
     }
 
-    public String getMxid() {
+    public Id getMxid() {
         return mxid;
     }
 
-    public void setMxid(String mxid) {
+    public void setMxid(Id mxid) {
         this.mxid = mxid;
     }
 }

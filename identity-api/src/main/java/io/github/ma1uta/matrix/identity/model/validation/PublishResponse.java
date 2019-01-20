@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.identity.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -55,7 +56,7 @@ public class PublishResponse {
         description = "The Matrix user ID associated with the 3pid.",
         required = true
     )
-    private String mxid;
+    private Id mxid;
 
     /**
      * Required. A unix timestamp before which the association is not known to be valid.
@@ -115,11 +116,11 @@ public class PublishResponse {
         this.medium = medium;
     }
 
-    public String getMxid() {
+    public Id getMxid() {
         return mxid;
     }
 
-    public void setMxid(String mxid) {
+    public void setMxid(Id mxid) {
         this.mxid = mxid;
     }
 

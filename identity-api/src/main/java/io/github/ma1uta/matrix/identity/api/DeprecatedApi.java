@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.identity.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.identity.model.associations.ValidationResponse;
 import io.github.ma1uta.matrix.identity.model.session.EmailRequestToken;
 import io.github.ma1uta.matrix.identity.model.session.SubmitToken;
@@ -441,7 +442,7 @@ public interface DeprecatedApi {
         @Parameter(
             description = "The Matrix user ID to associate with the 3pids.",
             required = true
-        ) @FormParam("mxid") String mxid,
+        ) @FormParam("mxid") Id mxid,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
