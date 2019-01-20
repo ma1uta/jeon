@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.application.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.application.model.TransactionRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -170,7 +171,7 @@ public interface ApplicationApi {
             name = "roomAlias",
             description = "The room alias being queried.",
             required = true
-        ) @PathParam("roomAlias") String roomAlias,
+        ) @PathParam("roomAlias") Id roomAlias,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -249,7 +250,7 @@ public interface ApplicationApi {
             name = "userId",
             description = "The user ID being queried.",
             required = true
-        ) @PathParam("userId") String userId,
+        ) @PathParam("userId") Id userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
