@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.event;
 
-import io.github.ma1uta.matrix.event.content.ReceiptContent;
 import io.github.ma1uta.matrix.event.content.RoomMessageFeedbackContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -27,7 +26,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * (sent when the event has been observed by the end-user).
  * The ``target_event_id`` should reference the ``m.room.message`` event being acknowledged.
  *
- * @deprecated in favor of {@link ReceiptContent}.
+ * @deprecated in favor of {@link Receipt}.
  */
 @Deprecated
 @Schema(
@@ -41,7 +40,7 @@ public class RoomMessageFeedback extends RoomEvent<RoomMessageFeedbackContent> {
      * (sent when the event has been received) and read (sent when the event has been observed by the end-user).
      * The target_event_id should reference the m.room.message event being acknowledged.
      *
-     * @deprecated in favor of {@link Event.EventType#RECEIPT}.
+     * @deprecated in favor of {@link Receipt#TYPE}.
      */
     @Deprecated
     public static final String TYPE = "m.room.message.feedback";

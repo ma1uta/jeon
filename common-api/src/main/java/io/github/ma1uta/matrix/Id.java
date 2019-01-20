@@ -16,12 +16,9 @@
 
 package io.github.ma1uta.matrix;
 
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import java.util.Iterator;
-import java.util.ServiceLoader;
-import java.util.regex.Matcher;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Matrix id (MXID) util class.
@@ -29,208 +26,241 @@ import java.util.regex.Matcher;
 public abstract class Id {
 
     /**
-     * Sigil chars.
+     * Max length of the dns name.
      */
-    public static class Sigil {
-
-        protected Sigil() {
-            //singleton
-        }
-
-        /**
-         * Event.
-         */
-        public static final char EVENT = '$';
-        /**
-         * User.
-         */
-        public static final char USER = '@';
-        /**
-         * Room.
-         */
-        public static final char ROOM = '!';
-        /**
-         * Room alias.
-         */
-        public static final char ALIAS = '#';
-        /**
-         * Group (community).
-         */
-        public static final char GROUP = '+';
-    }
-
-    private static Id instance;
-
-    private static final String DEFAULT_PROVIDER = "io.github.ma1uta.matrix.impl.MatrixId";
+    public static final int DNS_NAME_LENGTH = 255;
 
     /**
-     * Provides the ID implementation.
-     *
-     * @return The ID implementation.
+     * Max length of the ipv6 address.
      */
-    public static Id getInstance() {
-        if (instance == null) {
-            synchronized (DEFAULT_PROVIDER) {
-                if (instance == null) {
-                    ServiceLoader<Id> serviceLoader = ServiceLoader.load(Id.class);
+    public static final int IPV6_LENGTH = 45;
 
-                    Iterator<Id> iterator = serviceLoader.iterator();
+    /**
+     * Count of the ipv4 parts.
+     */
+    public static final int IPV4_PART_COUNT = 4;
 
-                    if (iterator.hasNext()) {
-                        instance = iterator.next();
-                    } else {
-                        try {
-                            instance = AccessController
-                                .doPrivileged(
-                                    (PrivilegedExceptionAction<Id>) () -> (Id) Class.forName(DEFAULT_PROVIDER).getDeclaredConstructor()
-                                        .newInstance());
-                        } catch (PrivilegedActionException e) {
-                            throw new RuntimeException(
-                                "Failed load the default implementation. Please check that the common-sdk jar available", e);
-                        }
-                    }
+    /**
+     * Max length of the ipv4 parts.
+     */
+    public static final int IPV4_LENGTH = 3;
+
+    /**
+     * Default port.
+     */
+    public static final int DEFAULT_PORT = 80;
+
+    private String localpart;
+
+    private String hostname;
+
+    private int port = DEFAULT_PORT;
+
+    private Collection<IdParseException> errors;
+
+    protected Id(String localpart, String serverName) {
+        this.localpart = localpart(localpart);
+        serverName(serverName);
+    }
+
+    public String getLocalpart() {
+        return localpart;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    /**
+     * Provides a sigil symbol.
+     *
+     * @return sigil.
+     */
+    public abstract char getSigil();
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getSigil()).append(getLocalpart()).append(":").append(getHostname());
+        if (getPort() != DEFAULT_PORT) {
+            builder.append(":").append(getPort());
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Parse the input string and return a mxid instance.
+     *
+     * @param mxid mxid in string format.
+     * @return mxid instance.
+     */
+    public static Id of(String mxid) {
+        return IdParser.getInstance().parse(mxid);
+    }
+
+    /**
+     * Is valid mxid or not.
+     *
+     * @return {@code true} if mxid valid else {@code false}.
+     */
+    public boolean isValid() {
+        return errors == null || errors.isEmpty();
+    }
+
+    /**
+     * Return all mxid violations.
+     *
+     * @return mxid spec violations.
+     */
+    public Collection<IdParseException> errors() {
+        return errors == null ? Collections.emptyList() : errors;
+    }
+
+    /**
+     * Add a new mxid mistake.
+     *
+     * @param error spec violation.
+     */
+    protected void addError(IdParseException error) {
+        if (this.errors == null) {
+            this.errors = new ArrayList<>();
+        }
+        this.errors.add(error);
+    }
+
+    /**
+     * Prepare localpart.
+     */
+    protected abstract String localpart(String localpart);
+
+    /**
+     * Prepare hostname (server name without port).
+     *
+     * @param hostname hotname.
+     * @return hostname.
+     */
+    protected String hostname(String hostname) {
+        validateHostname();
+        return hostname;
+    }
+
+    /**
+     * Prepare server name and set server name and port.
+     *
+     * @param serverName servername.
+     */
+    private void serverName(String serverName) {
+        String hostname = serverName;
+        if (serverName.charAt(serverName.length() - 1) != ']') {
+            int portIndex = serverName.lastIndexOf(":");
+            if (portIndex != -1) {
+                try {
+                    this.port = Integer.parseInt(serverName.substring(portIndex));
+                    hostname = serverName.substring(0, portIndex);
+                } catch (NumberFormatException e) {
+                    addError(new IdParseException("Port must contains only digits."));
                 }
             }
         }
 
-        return instance;
+        this.hostname = hostname(hostname);
     }
 
-    protected Id() {
-        // singleton.
+    protected void validateHostname() {
+        validateIpv4Address(hostname);
+        if (isValid()) {
+            return;
+        }
+        errors = null;
+
+        validateIpv6Address(hostname);
+        if (isValid()) {
+            return;
+        }
+        errors = null;
+
+        validateDnsName(hostname);
     }
 
-    /**
-     * Check the given string is MXID.
-     *
-     * @param id identifier.
-     * @return {@code true} if is MXID, else {@code false}.
-     */
-    public boolean isId(String id) {
-        try {
-            validate(id);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
+    protected void validateIpv4Address(String ipv4Address) {
+        String[] ipv4parts = ipv4Address.split("\\.");
+
+        if (ipv4parts.length != IPV4_PART_COUNT) {
+            addError(new Id.IdParseException("IPv4 address should contains 4 parts delimited by the '.' symbol."));
+        }
+
+        for (int i = 0; i < IPV4_PART_COUNT; i++) {
+            validateIpv4Part(ipv4parts[i].toCharArray());
         }
     }
 
-    protected abstract Matcher validate(String id);
-
-    /**
-     * Return sigil character of the MXID.
-     *
-     * @param id MXID.
-     * @return sigil character.
-     */
-    public char sigil(String id) {
-        validate(id);
-        return id.charAt(0);
-    }
-
-    /**
-     * Return localpart of the MXID.
-     *
-     * @param id MXID.
-     * @return localpart.
-     */
-    public String localpart(String id) {
-        return validate(id).group(1);
-    }
-
-    /**
-     * Return domain part of the MXID.
-     *
-     * @param id MXID.
-     * @return domain.
-     */
-    public String domain(String id) {
-        return validate(id).group(2);
-    }
-
-    /**
-     * Check is this MXID is a user id.
-     *
-     * @param id MXID.
-     * @return {@code true} if user id, else {@code false}.
-     */
-    public boolean isUserId(String id) {
-        try {
-            Matcher matcher = validate(id);
-            return id.charAt(0) == Sigil.USER && userMatchers(matcher);
-        } catch (IllegalArgumentException e) {
-            return false;
+    protected void validateIpv4Part(char[] ipv4part) {
+        if (ipv4part.length > IPV4_LENGTH) {
+            addError(new Id.IdParseException("Length of the ipv4 part is longer than " + IPV4_LENGTH + " symbols."));
+        }
+        for (char ipv4char : ipv4part) {
+            if (!Character.isDigit(ipv4char)) {
+                addError(new Id.IdParseException("The symbol " + ipv4char + " is not a digit."));
+            }
         }
     }
 
-    protected abstract boolean userMatchers(Matcher matcher);
+    protected void validateIpv6Address(String ipv6Address) {
+        if (ipv6Address.charAt(0) != '[' || ipv6Address.charAt(ipv6Address.length() - 1) != ']') {
+            addError(new Id.IdParseException("IPv6 address should starts with the '[' symbol and ends with the ']' symbol."));
+            return;
+        }
 
-    /**
-     * Check is this MXID is a event id.
-     *
-     * @param id MXID.
-     * @return {@code true} if event id, else {@code false}.
-     */
-    public boolean isEventId(String id) {
-        try {
-            Matcher matcher = validate(id);
-            return id.charAt(0) == Sigil.EVENT && eventMatchers(matcher);
-        } catch (IllegalArgumentException e) {
-            return false;
+        if (ipv6Address.length() < 2) {
+            addError(new Id.IdParseException("IPv6 address must be longer than 2 symbols."));
+            return;
+        }
+
+        if (ipv6Address.length() > IPV6_LENGTH) {
+            addError(new Id.IdParseException("IPv6 address must be shorter than " + IPV6_LENGTH + " symbols."));
+        }
+
+        for (int i = 0; i < ipv6Address.length(); i++) {
+            validateIpv6Char(ipv6Address.charAt(i));
         }
     }
 
-    protected abstract boolean eventMatchers(Matcher matcher);
-
-    /**
-     * Check is this MXID is a room id.
-     *
-     * @param id MXID.
-     * @return {@code true} if room id, else {@code false}.
-     */
-    public boolean isRoomId(String id) {
-        try {
-            Matcher matcher = validate(id);
-            return id.charAt(0) == Sigil.ROOM && roomMatchers(matcher);
-        } catch (IllegalArgumentException e) {
-            return false;
+    protected void validateIpv6Char(char ipv6char) {
+        if (!(Character.isDigit(ipv6char)
+            || (ipv6char >= 'a' && ipv6char <= 'f')
+            || (ipv6char >= 'A' && ipv6char <= 'F')
+            || ipv6char == ':' || ipv6char == '.')) {
+            addError(new Id.IdParseException("Char " + ipv6char + " must be a digit or one of this chars: 'a'-'f', 'A'-'F', ':', '''"));
         }
     }
 
-    protected abstract boolean roomMatchers(Matcher matcher);
+    protected void validateDnsName(String dnsName) {
+        if (dnsName.length() > DNS_NAME_LENGTH) {
+            addError(new Id.IdParseException("Dns name must be shorter than " + DNS_NAME_LENGTH + " symbols"));
+        }
 
-    /**
-     * Check is this MXID is a room alias id.
-     *
-     * @param id MXID.
-     * @return {@code true} if room alias id, else {@code false}.
-     */
-    public boolean isAliasId(String id) {
-        try {
-            Matcher matcher = validate(id);
-            return id.charAt(0) == Sigil.ALIAS && aliasMatchers(matcher);
-        } catch (IllegalArgumentException e) {
-            return false;
+        for (int i = 0; i < dnsName.length(); i++) {
+            validateDnsChar(dnsName.charAt(i));
         }
     }
 
-    protected abstract boolean aliasMatchers(Matcher matcher);
-
-
-    /**
-     * Check is this MXID is a group (community) id.
-     *
-     * @param id MXID.
-     * @return {@code true} if group id, else {@code false}.
-     */
-    public boolean isGroupId(String id) {
-        try {
-            Matcher matcher = validate(id);
-            return id.charAt(0) == Sigil.GROUP && groupMatchers(matcher);
-        } catch (IllegalArgumentException e) {
-            return false;
+    protected void validateDnsChar(char dnsChar) {
+        if (!(Character.isDigit(dnsChar) || Character.isAlphabetic(dnsChar) || dnsChar == '-' || dnsChar == '.')) {
+            addError(new Id.IdParseException("Char '" + dnsChar + "' must be a digit, alphabetic, '-' or '.'"));
         }
     }
 
-    protected abstract boolean groupMatchers(Matcher matcher);
+    /**
+     * Mismatches with the specification.
+     */
+    public static class IdParseException extends RuntimeException {
+
+        public IdParseException(String message) {
+            super(message);
+        }
+    }
 }
