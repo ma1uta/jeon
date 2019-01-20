@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.encryption;
 
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ChangesResponse {
     @Schema(
         description = "The Matrix User IDs of all users who updated their device identity keys."
     )
-    private List<String> changed;
+    private List<Id> changed;
 
     /**
      * The Matrix User IDs of all users who may have left all the end-to-end encrypted rooms they previously shared with the user.
@@ -43,21 +44,21 @@ public class ChangesResponse {
         description = "The Matrix User IDs of all users who may have left all the end-to-end encrypted rooms they previously"
             + " shared with the user."
     )
-    private List<String> left;
+    private List<Id> left;
 
-    public List<String> getChanged() {
+    public List<Id> getChanged() {
         return changed;
     }
 
-    public void setChanged(List<String> changed) {
+    public void setChanged(List<Id> changed) {
         this.changed = changed;
     }
 
-    public List<String> getLeft() {
+    public List<Id> getLeft() {
         return left;
     }
 
-    public void setLeft(List<String> left) {
+    public void setLeft(List<Id> left) {
         this.left = left;
     }
 }

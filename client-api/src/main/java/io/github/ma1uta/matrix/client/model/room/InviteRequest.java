@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -36,7 +37,7 @@ public class InviteRequest {
         description = "The fully qualified user ID of the invitee."
     )
     @JsonbProperty("user_id")
-    private String userId;
+    private Id userId;
 
     /**
      * Required. The hostname+port of the identity server which should be used for third party identifier lookups.
@@ -65,11 +66,11 @@ public class InviteRequest {
     private String address;
 
     @JsonProperty("user_id")
-    public String getUserId() {
+    public Id getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Id userId) {
         this.userId = userId;
     }
 

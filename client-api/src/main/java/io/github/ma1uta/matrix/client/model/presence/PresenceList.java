@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.presence;
 
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class PresenceList {
     @Schema(
         description = "A list of user IDs to add to the list."
     )
-    private List<String> invite;
+    private List<Id> invite;
 
     /**
      * A list of user IDs to remove from the list.
@@ -42,21 +43,21 @@ public class PresenceList {
     @Schema(
         description = "A list of user IDs to remove from the list."
     )
-    private List<String> drop;
+    private List<Id> drop;
 
-    public List<String> getInvite() {
+    public List<Id> getInvite() {
         return invite;
     }
 
-    public void setInvite(List<String> invite) {
+    public void setInvite(List<Id> invite) {
         this.invite = invite;
     }
 
-    public List<String> getDrop() {
+    public List<Id> getDrop() {
         return drop;
     }
 
-    public void setDrop(List<String> drop) {
+    public void setDrop(List<Id> drop) {
         this.drop = drop;
     }
 }

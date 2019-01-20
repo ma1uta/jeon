@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -36,14 +37,14 @@ public class WhoamiResponse {
         description = "The user id that owns the access token."
     )
     @JsonbProperty("user_id")
-    private String userId;
+    private Id userId;
 
     @JsonProperty("user_id")
-    public String getUserId() {
+    public Id getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Id userId) {
         this.userId = userId;
     }
 }

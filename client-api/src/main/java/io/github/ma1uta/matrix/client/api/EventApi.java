@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.event.JoinedMembersResponse;
@@ -114,11 +115,11 @@ public interface EventApi {
         @Parameter(
             description = "The ID of the room the event is in.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The event ID to get.",
             required = true
-        ) @PathParam("eventId") String eventId,
+        ) @PathParam("eventId") Id eventId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -194,7 +195,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to look up the state in.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The type of state to look up.",
             required = true
@@ -280,7 +281,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to look up the state in.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The type of state to look up.",
             required = true
@@ -347,7 +348,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to look up the state for.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -410,7 +411,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to get the member events for.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -477,7 +478,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to get the members of.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -547,7 +548,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to get events from.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The token to start returning events from. This token can be obtained from a prev_batch token "
                 + "returned for each room by the sync API, or from a start or end token returned by a previous request to "
@@ -651,7 +652,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to set the state in.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The type of event to send.",
             required = true
@@ -738,7 +739,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to set the state in.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The type of event to send.",
             required = true
@@ -807,7 +808,7 @@ public interface EventApi {
         @Parameter(
             description = "The room to send the event to.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The type of event to send.",
             required = true
@@ -882,11 +883,11 @@ public interface EventApi {
         @Parameter(
             description = "The room from which to redact the event.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The ID of the event to redact.",
             required = true
-        ) @PathParam("eventId") String eventId,
+        ) @PathParam("eventId") Id eventId,
         @Parameter(
             description = "The transaction ID for this event. Clients should generate a unique ID; it will be used by the server "
                 + "to ensure idempotency of requests.",

@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.eventcontext.EventContextResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -93,11 +94,11 @@ public interface EventContextApi {
         @Parameter(
             description = "The room to get events from.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The event to get context around.",
             required = true
-        ) @PathParam("eventId") String eventId,
+        ) @PathParam("eventId") Id eventId,
         @Parameter(
             description = "The maximum number of events to return. Default: 10."
         ) @QueryParam("limit") Integer limit,

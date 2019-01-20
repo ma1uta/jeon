@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.sync.SyncResponse;
@@ -233,7 +234,7 @@ public interface SyncApi {
         ) @QueryParam("timeout") Long timeout,
         @Parameter(
             description = "The room ID for which events should be returned."
-        ) @QueryParam("room_id") String roomId,
+        ) @QueryParam("room_id") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

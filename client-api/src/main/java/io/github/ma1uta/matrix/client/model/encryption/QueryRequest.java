@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class QueryRequest {
             + "or to an empty list to indicate all devices for the corresponding user."
     )
     @JsonbProperty("device_keys")
-    private Map<String, List<String>> deviceKeys;
+    private Map<Id, List<String>> deviceKeys;
 
     /**
      * If the client is fetching keys as a result of a device update received in a sync request, this should be the 'since' token
@@ -71,11 +72,11 @@ public class QueryRequest {
     }
 
     @JsonProperty("device_keys")
-    public Map<String, List<String>> getDeviceKeys() {
+    public Map<Id, List<String>> getDeviceKeys() {
         return deviceKeys;
     }
 
-    public void setDeviceKeys(Map<String, List<String>> deviceKeys) {
+    public void setDeviceKeys(Map<Id, List<String>> deviceKeys) {
         this.deviceKeys = deviceKeys;
     }
 

@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.filter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public class RoomEventFilter {
     @Schema(
         description = "A list of senders IDs to include. If this list is absent then all senders are included."
     )
-    private List<String> senders;
+    private List<Id> senders;
 
     /**
      * A list of event types to include. If this list is absent then all event types are included. A '*' can be used as a wildcard to
@@ -88,7 +89,7 @@ public class RoomEventFilter {
             + "A matching room will be excluded even if it is listed in the 'rooms' filter."
     )
     @JsonbProperty("not_rooms")
-    private List<String> notRooms;
+    private List<Id> notRooms;
 
     /**
      * A list of room IDs to include. If this list is absent then all rooms are included.
@@ -96,7 +97,7 @@ public class RoomEventFilter {
     @Schema(
         description = "A list of room IDs to include. If this list is absent then all rooms are included."
     )
-    private List<String> rooms;
+    private List<Id> rooms;
 
     /**
      * If true, includes only events with a url key in their content. If false, excludes those events.
@@ -133,11 +134,11 @@ public class RoomEventFilter {
         this.notTypes = notTypes;
     }
 
-    public List<String> getSenders() {
+    public List<Id> getSenders() {
         return senders;
     }
 
-    public void setSenders(List<String> senders) {
+    public void setSenders(List<Id> senders) {
         this.senders = senders;
     }
 
@@ -150,19 +151,19 @@ public class RoomEventFilter {
     }
 
     @JsonProperty("not_rooms")
-    public List<String> getNotRooms() {
+    public List<Id> getNotRooms() {
         return notRooms;
     }
 
-    public void setNotRooms(List<String> notRooms) {
+    public void setNotRooms(List<Id> notRooms) {
         this.notRooms = notRooms;
     }
 
-    public List<String> getRooms() {
+    public List<Id> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<String> rooms) {
+    public void setRooms(List<Id> rooms) {
         this.rooms = rooms;
     }
 

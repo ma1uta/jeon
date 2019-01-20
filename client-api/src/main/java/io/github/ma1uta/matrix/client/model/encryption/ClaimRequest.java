@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -45,7 +46,7 @@ public class ClaimRequest {
         description = "The keys to be claimed. A map from user ID, to a map from device ID to algorithm name."
     )
     @JsonbProperty("one_time_keys")
-    private Map<String, Map<String, String>> oneTimeKeys;
+    private Map<Id, Map<String, String>> oneTimeKeys;
 
     public Long getTimeout() {
         return timeout;
@@ -56,11 +57,11 @@ public class ClaimRequest {
     }
 
     @JsonProperty("one_time_keys")
-    public Map<String, Map<String, String>> getOneTimeKeys() {
+    public Map<Id, Map<String, String>> getOneTimeKeys() {
         return oneTimeKeys;
     }
 
-    public void setOneTimeKeys(Map<String, Map<String, String>> oneTimeKeys) {
+    public void setOneTimeKeys(Map<Id, Map<String, String>> oneTimeKeys) {
         this.oneTimeKeys = oneTimeKeys;
     }
 }

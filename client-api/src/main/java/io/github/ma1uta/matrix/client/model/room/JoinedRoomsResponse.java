@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -37,14 +38,14 @@ public class JoinedRoomsResponse {
         description = "The ID of each room in which the user has joined membership."
     )
     @JsonbProperty("joined_rooms")
-    private List<String> joinedRooms;
+    private List<Id> joinedRooms;
 
     @JsonProperty("joined_rooms")
-    public List<String> getJoinedRooms() {
+    public List<Id> getJoinedRooms() {
         return joinedRooms;
     }
 
-    public void setJoinedRooms(List<String> joinedRooms) {
+    public void setJoinedRooms(List<Id> joinedRooms) {
         this.joinedRooms = joinedRooms;
     }
 }

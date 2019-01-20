@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
@@ -115,7 +116,7 @@ public interface OpenIdApi {
         @Parameter(
             description = "The user to request and OpenID token for. Should be the user who is authenticated for the request.",
             required = true
-        ) @PathParam("userId") String userId,
+        ) @PathParam("userId") Id userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

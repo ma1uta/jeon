@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -36,7 +37,7 @@ public class KickRequest {
         description = "The fully qualified user ID of the user being kicked."
     )
     @JsonbProperty("user_id")
-    private String userId;
+    private Id userId;
 
     /**
      * The reason the user has been kicked. This will be supplied as the ``reason`` on the target's updated `m.room.member`_ event.
@@ -47,11 +48,11 @@ public class KickRequest {
     private String reason;
 
     @JsonProperty("user_id")
-    public String getUserId() {
+    public Id getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Id userId) {
         this.userId = userId;
     }
 

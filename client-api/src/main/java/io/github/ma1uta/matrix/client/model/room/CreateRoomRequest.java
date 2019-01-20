@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.Event;
 import io.github.ma1uta.matrix.event.content.RoomPowerLevelsContent;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -57,7 +58,7 @@ public class CreateRoomRequest {
             + "be #foo:example.com."
     )
     @JsonbProperty("room_alias_name")
-    private String roomAliasName;
+    private Id roomAliasName;
 
     /**
      * If this is included, an m.room.name event will be sent into the room to indicate the name of the room. See Room Events for
@@ -86,7 +87,7 @@ public class CreateRoomRequest {
         description = "A list of user IDs to invite to the room. This will tell the server to invite everyone in the list "
             + "to the newly created room."
     )
-    private List<String> invite;
+    private List<Id> invite;
 
     /**
      * A list of objects representing third party IDs to invite into the room.
@@ -175,11 +176,11 @@ public class CreateRoomRequest {
     }
 
     @JsonProperty("room_alias_name")
-    public String getRoomAliasName() {
+    public Id getRoomAliasName() {
         return roomAliasName;
     }
 
-    public void setRoomAliasName(String roomAliasName) {
+    public void setRoomAliasName(Id roomAliasName) {
         this.roomAliasName = roomAliasName;
     }
 
@@ -199,11 +200,11 @@ public class CreateRoomRequest {
         this.topic = topic;
     }
 
-    public List<String> getInvite() {
+    public List<Id> getInvite() {
         return invite;
     }
 
-    public void setInvite(List<String> invite) {
+    public void setInvite(List<Id> invite) {
         this.invite = invite;
     }
 

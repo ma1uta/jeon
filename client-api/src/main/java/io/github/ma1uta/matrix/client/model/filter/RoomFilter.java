@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.filter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class RoomFilter {
             + "ephemeral, state, timeline or account_data."
     )
     @JsonbProperty("not_rooms")
-    private List<String> notRooms;
+    private List<Id> notRooms;
 
     /**
      * A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied before the filters
@@ -50,7 +51,7 @@ public class RoomFilter {
         description = "A list of room IDs to include. If this list is absent then all rooms are included. This filter is applied "
             + "before the filters in ephemeral, state, timeline or account_data."
     )
-    private List<String> rooms;
+    private List<Id> rooms;
 
     /**
      * The events that aren't recorded in the room history, e.g. typing and receipts, to include for rooms.
@@ -94,20 +95,20 @@ public class RoomFilter {
     @JsonbProperty("account_data")
     private RoomEventFilter accountData;
 
-    public List<String> getNotRooms() {
+    public List<Id> getNotRooms() {
         return notRooms;
     }
 
     @JsonProperty("not_rooms")
-    public void setNotRooms(List<String> notRooms) {
+    public void setNotRooms(List<Id> notRooms) {
         this.notRooms = notRooms;
     }
 
-    public List<String> getRooms() {
+    public List<Id> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<String> rooms) {
+    public void setRooms(List<Id> rooms) {
         this.rooms = rooms;
     }
 

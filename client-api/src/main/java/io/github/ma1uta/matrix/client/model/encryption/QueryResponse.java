@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -53,7 +54,7 @@ public class QueryResponse {
             + "/keys/upload, with the addition of an unsigned property."
     )
     @JsonbProperty("device_keys")
-    private Map<String, Map<String, DeviceKeys>> deviceKeys;
+    private Map<Id, Map<String, DeviceKeys>> deviceKeys;
 
     public Map<String, Object> getFailures() {
         return failures;
@@ -64,12 +65,11 @@ public class QueryResponse {
     }
 
     @JsonProperty("device_keys")
-    public Map<String, Map<String, DeviceKeys>> getDeviceKeys() {
+    public Map<Id, Map<String, DeviceKeys>> getDeviceKeys() {
         return deviceKeys;
     }
 
-    public void setDeviceKeys(
-        Map<String, Map<String, DeviceKeys>> deviceKeys) {
+    public void setDeviceKeys(Map<Id, Map<String, DeviceKeys>> deviceKeys) {
         this.deviceKeys = deviceKeys;
     }
 }

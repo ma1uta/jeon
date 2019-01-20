@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedInitialSyncResponse;
 import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedRoomInfo;
@@ -186,7 +187,7 @@ public interface DeprecatedSyncApi {
         @Parameter(
             description = "The event ID to get.",
             required = true
-        ) @PathParam("eventId") String eventId,
+        ) @PathParam("eventId") Id eventId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -256,7 +257,7 @@ public interface DeprecatedSyncApi {
         @Parameter(
             description = "The room to get the data.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

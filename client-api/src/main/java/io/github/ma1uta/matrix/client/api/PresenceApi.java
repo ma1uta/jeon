@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
@@ -140,7 +141,7 @@ public interface PresenceApi {
         @Parameter(
             description = "The user whose presence state to update.",
             required = true
-        ) @PathParam("userId") String userId,
+        ) @PathParam("userId") Id userId,
         @RequestBody(
             description = "JSON body request."
         ) PresenceRequest request,
@@ -214,7 +215,7 @@ public interface PresenceApi {
         @Parameter(
             description = "The user whose presence state to get.",
             required = true
-        ) @PathParam("userId") String userId,
+        ) @PathParam("userId") Id userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -278,7 +279,7 @@ public interface PresenceApi {
         @Parameter(
             description = "The user whose presence list is being modified.",
             required = true
-        ) @PathParam("userId") String userId,
+        ) @PathParam("userId") Id userId,
         @RequestBody(
             description = "JSON body request"
         ) PresenceList presenceList,
@@ -325,7 +326,7 @@ public interface PresenceApi {
         @Parameter(
             description = "The user whose presence list should be retrieved.",
             required = true
-        ) @PathParam("userId") String userId,
+        ) @PathParam("userId") Id userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

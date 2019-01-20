@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.report.ReportRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -96,11 +97,11 @@ public interface ReportApi {
         @Parameter(
             description = "The room in which the event being reported is located.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @Parameter(
             description = "The event to report.",
             required = true
-        ) @PathParam("eventId") String eventId,
+        ) @PathParam("eventId") Id eventId,
         @RequestBody(
             description = "JSON body request."
         ) ReportRequest reportRequest,

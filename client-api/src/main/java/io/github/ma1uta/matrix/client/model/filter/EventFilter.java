@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.client.model.filter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class EventFilter {
             + "excluded. A matching sender will be excluded even if it is listed in the 'senders' filter."
     )
     @JsonbProperty("not_senders")
-    private List<String> notSenders;
+    private List<Id> notSenders;
 
     /**
      * A list of event types to exclude. If this list is absent then no event types are excluded. A matching type will be excluded
@@ -67,7 +68,7 @@ public class EventFilter {
     @Schema(
         description = "A list of senders IDs to include. If this list is absent then all senders are included."
     )
-    private List<String> senders;
+    private List<Id> senders;
 
     /**
      * A list of event types to include. If this list is absent then all event types are included. A '*' can be used as a wildcard to
@@ -88,11 +89,11 @@ public class EventFilter {
     }
 
     @JsonProperty("not_senders")
-    public List<String> getNotSenders() {
+    public List<Id> getNotSenders() {
         return notSenders;
     }
 
-    public void setNotSenders(List<String> notSenders) {
+    public void setNotSenders(List<Id> notSenders) {
         this.notSenders = notSenders;
     }
 
@@ -105,11 +106,11 @@ public class EventFilter {
         this.notTypes = notTypes;
     }
 
-    public List<String> getSenders() {
+    public List<Id> getSenders() {
         return senders;
     }
 
-    public void setSenders(List<String> senders) {
+    public void setSenders(List<Id> senders) {
         this.senders = senders;
     }
 

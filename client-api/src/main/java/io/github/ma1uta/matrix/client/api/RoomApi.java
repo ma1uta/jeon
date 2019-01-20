@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
@@ -273,7 +274,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room alias to set",
             required = true
-        ) @PathParam("roomAlias") String roomAlias,
+        ) @PathParam("roomAlias") Id roomAlias,
         @RequestBody(
             description = "JSON body request"
         ) RoomId roomId,
@@ -332,7 +333,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room alias",
             required = true
-        ) @PathParam("roomAlias") String roomAlias,
+        ) @PathParam("roomAlias") Id roomAlias,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -385,7 +386,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room alias to remove.",
             required = true
-        ) @PathParam("roomAlias") String roomAlias,
+        ) @PathParam("roomAlias") Id roomAlias,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -522,7 +523,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier (not alias) to which to invite the user.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @RequestBody(
             description = "JSON body request"
         ) InviteRequest inviteRequest,
@@ -618,7 +619,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier (not alias) to join.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @RequestBody(
             description = "JSON body request"
         ) JoinRequest joinRequest,
@@ -715,7 +716,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier or alias to join.",
             required = true
-        ) @PathParam("roomIdOrAlias") String roomIdOrAlias,
+        ) @PathParam("roomIdOrAlias") Id roomIdOrAlias,
         @Parameter(
             name = "server_name",
             description = "The servers to attempt to join the room through. One of the servers must be participating in the room."
@@ -798,7 +799,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier to leave.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -880,7 +881,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier to forget.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -955,7 +956,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier (not alias) from which the user should be kicked.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @RequestBody(
             description = "JSON body request"
         ) KickRequest kickRequest,
@@ -1030,7 +1031,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier (not alias) from which the user should be banned.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @RequestBody(
             description = "JSON body request."
         ) KickRequest banRequest,
@@ -1104,7 +1105,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room identifier (not alias) from which the user should be unbanned.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @RequestBody(
             description = "JSON body request."
         ) UnbanRequest unbanRequest,
@@ -1159,7 +1160,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room ID.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -1223,7 +1224,7 @@ public interface RoomApi {
         @Parameter(
             description = "The room ID.",
             required = true
-        ) @PathParam("roomId") String roomId,
+        ) @PathParam("roomId") Id roomId,
         @RequestBody(
             description = "JSON body request."
         ) RoomVisibility visibility,

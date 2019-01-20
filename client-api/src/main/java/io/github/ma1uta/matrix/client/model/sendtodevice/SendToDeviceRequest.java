@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix.client.model.sendtodevice;
 
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -37,13 +38,13 @@ public class SendToDeviceRequest {
         description = "The messages to send. A map from user ID, to a map from device ID to message body. The device ID may also "
             + "be *, meaning all known devices for the user."
     )
-    private Map<String, Map<String, EventContent>> messages;
+    private Map<Id, Map<String, EventContent>> messages;
 
-    public Map<String, Map<String, EventContent>> getMessages() {
+    public Map<Id, Map<String, EventContent>> getMessages() {
         return messages;
     }
 
-    public void setMessages(Map<String, Map<String, EventContent>> messages) {
+    public void setMessages(Map<Id, Map<String, EventContent>> messages) {
         this.messages = messages;
     }
 }
