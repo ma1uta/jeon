@@ -19,6 +19,7 @@ package io.github.ma1uta.matrix;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Matrix id (MXID) util class.
@@ -98,7 +99,7 @@ public abstract class Id {
      * @param mxid mxid in string format.
      * @return mxid instance.
      */
-    public static Id of(String mxid) {
+    public static Id valueOf(String mxid) {
         return IdParser.getInstance().parse(mxid);
     }
 
@@ -252,6 +253,26 @@ public abstract class Id {
         if (!(Character.isDigit(dnsChar) || Character.isAlphabetic(dnsChar) || dnsChar == '-' || dnsChar == '.')) {
             addError(new Id.IdParseException("Char '" + dnsChar + "' must be a digit, alphabetic, '-' or '.'"));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Id)) {
+            return false;
+        }
+        Id id = (Id) o;
+        return getSigil() == id.getSigil()
+            && port == id.port
+            && localpart.equals(id.localpart)
+            && hostname.equals(id.hostname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSigil(), localpart, hostname, port);
     }
 
     /**
