@@ -145,8 +145,7 @@ public abstract class Id {
      * @return hostname.
      */
     protected String hostname(String hostname) {
-        validateHostname();
-        return hostname;
+        return validateHostname(hostname);
     }
 
     /**
@@ -171,20 +170,21 @@ public abstract class Id {
         this.hostname = hostname(hostname);
     }
 
-    protected void validateHostname() {
+    protected String validateHostname(String hostname) {
         validateIpv4Address(hostname);
         if (isValid()) {
-            return;
+            return hostname;
         }
         errors = null;
 
         validateIpv6Address(hostname);
         if (isValid()) {
-            return;
+            return hostname;
         }
         errors = null;
 
         validateDnsName(hostname);
+        return hostname;
     }
 
     protected void validateIpv4Address(String ipv4Address) {
