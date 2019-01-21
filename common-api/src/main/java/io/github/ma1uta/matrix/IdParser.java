@@ -29,7 +29,7 @@ public abstract class IdParser {
 
     private static IdParser instance;
 
-    private static final String DEFAULT_PROVIDER = "io.github.ma1uta.matrix.impl.MatrixId";
+    private static final String DEFAULT_PROVIDER = "io.github.ma1uta.matrix.impl.MatrixIdParser";
 
     /**
      * Provides the parser implementation.
