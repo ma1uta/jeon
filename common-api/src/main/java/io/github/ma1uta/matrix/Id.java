@@ -171,72 +171,67 @@ public abstract class Id {
     }
 
     protected String validateHostname(String hostname) {
-        validateIpv4Address(hostname);
-        if (isValid()) {
+        if (validateIpv4Address(hostname) || validateIpv6Address(hostname)) {
             return hostname;
         }
-        errors = null;
-
-        validateIpv6Address(hostname);
-        if (isValid()) {
-            return hostname;
-        }
-        errors = null;
 
         validateDnsName(hostname);
         return hostname;
     }
 
-    protected void validateIpv4Address(String ipv4Address) {
+    protected boolean validateIpv4Address(String ipv4Address) {
         String[] ipv4parts = ipv4Address.split("\\.");
 
         if (ipv4parts.length != IPV4_PART_COUNT) {
-            addError(new Id.IdParseException("IPv4 address should contains 4 parts delimited by the '.' symbol."));
+            return false;
         }
 
         for (int i = 0; i < IPV4_PART_COUNT; i++) {
-            validateIpv4Part(ipv4parts[i].toCharArray());
+            if (!validateIpv4Part(ipv4parts[i].toCharArray())) {
+                return false;
+            }
         }
+        return true;
     }
 
-    protected void validateIpv4Part(char[] ipv4part) {
+    protected boolean validateIpv4Part(char[] ipv4part) {
         if (ipv4part.length > IPV4_LENGTH) {
             addError(new Id.IdParseException("Length of the ipv4 part is longer than " + IPV4_LENGTH + " symbols."));
         }
         for (char ipv4char : ipv4part) {
             if (!Character.isDigit(ipv4char)) {
-                addError(new Id.IdParseException("The symbol " + ipv4char + " is not a digit."));
+                return false;
             }
         }
+        return true;
     }
 
-    protected void validateIpv6Address(String ipv6Address) {
+    protected boolean validateIpv6Address(String ipv6Address) {
         if (ipv6Address.charAt(0) != '[' || ipv6Address.charAt(ipv6Address.length() - 1) != ']') {
-            addError(new Id.IdParseException("IPv6 address should starts with the '[' symbol and ends with the ']' symbol."));
-            return;
+            return false;
         }
 
         if (ipv6Address.length() < 2) {
-            addError(new Id.IdParseException("IPv6 address must be longer than 2 symbols."));
-            return;
+            return false;
         }
 
         if (ipv6Address.length() > IPV6_LENGTH) {
-            addError(new Id.IdParseException("IPv6 address must be shorter than " + IPV6_LENGTH + " symbols."));
+            return false;
         }
 
         for (int i = 0; i < ipv6Address.length(); i++) {
-            validateIpv6Char(ipv6Address.charAt(i));
+            if (!validateIpv6Char(ipv6Address.charAt(i))) {
+                return false;
+            }
         }
+        return true;
     }
 
-    protected void validateIpv6Char(char ipv6char) {
-        if (!(Character.isDigit(ipv6char)
+    protected boolean validateIpv6Char(char ipv6char) {
+        return Character.isDigit(ipv6char)
             || (ipv6char >= 'a' && ipv6char <= 'f')
             || (ipv6char >= 'A' && ipv6char <= 'F')
-            || ipv6char == ':' || ipv6char == '.')) {
-            addError(new Id.IdParseException("Char " + ipv6char + " must be a digit or one of this chars: 'a'-'f', 'A'-'F', ':', '''"));
-        }
+            || ipv6char == ':' || ipv6char == '.';
     }
 
     protected void validateDnsName(String dnsName) {
