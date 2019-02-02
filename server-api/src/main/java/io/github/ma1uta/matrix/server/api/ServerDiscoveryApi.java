@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.server.api;
 
-import io.github.ma1uta.matrix.server.model.version.VersionResponse;
+import io.github.ma1uta.matrix.server.model.serverdiscovery.ServerDiscoveryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,39 +33,43 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * Version of the server federation endpoints.
+ * Server discovery.
  */
-@Path("/_matrix/federaion/v1")
+@Path("/.well-known/matrix/server")
 @Produces(MediaType.APPLICATION_JSON)
-public interface VersionApi {
+public interface ServerDiscoveryApi {
 
     /**
-     * Get the implementation name and version of this homeserver.
+     * Gets information about the delegated server for server-server communication between Matrix homeservers.
+     * Servers should follow 30x redirects, carefully avoiding redirect loops, and use normal X.509 certificate validation.
      * <br>
-     * Return: {@link VersionResponse}
-     * <p>Status code 200: The implementation name and version of this homeserver.</p>
+     * Return: {@link ServerDiscoveryResponse}
+     * <p>Status code 200: The delegated server information. The Content-Type for this response SHOULD be application/json,
+     * however servers parsing the response should assume that the body is JSON regardless of type. Failures parsing the JSON or invalid
+     * data provided in the resulting parsed JSON must result in server discovery failure (no attempts should be made to continue finding
+     * an IP address/port number to connect to).</p>
      *
      * @param uriInfo       Request Information.
      * @param httpHeaders   Http headers.
      * @param asyncResponse Asynchronous response.
      */
     @Operation(
-        summary = "Get the implementation name and version of this homeserver.",
+        summary = "Gets discovery information about the domain.",
         responses = {
             @ApiResponse(
                 responseCode = "200",
-                description = "The implementation name and version of this homeserver.",
+                description = "Server discovery information.",
                 content = @Content(
                     schema = @Schema(
-                        implementation = VersionResponse.class
+                        implementation = ServerDiscoveryResponse.class
                     )
                 )
             )
         }
     )
     @GET
-    @Path("/version")
-    void version(
+    @Path("")
+    void serverDiscovery(
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse

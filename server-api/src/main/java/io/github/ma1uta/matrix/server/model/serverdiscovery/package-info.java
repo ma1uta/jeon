@@ -14,31 +14,8 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.server.model.version;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-
 /**
- * JSON body response for the version api.
+ * Server discovery models.
  */
-@Schema(
-    description = "JSON body response for the version api."
-)
-public class VersionResponse {
 
-    /**
-     * Server information.
-     */
-    @Schema(
-        description = "Server information."
-    )
-    private Server server;
-
-    public Server getServer() {
-        return server;
-    }
-
-    public void setServer(Server server) {
-        this.server = server;
-    }
-}
+package io.github.ma1uta.matrix.server.model.serverdiscovery;

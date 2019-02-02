@@ -14,31 +14,37 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.server.model.version;
+package io.github.ma1uta.matrix.server.model.serverdiscovery;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 /**
- * JSON body response for the version api.
+ * Server discovery response.
  */
 @Schema(
-    description = "JSON body response for the version api."
+    description = "Server discovery response."
 )
-public class VersionResponse {
+public class ServerDiscoveryResponse {
 
     /**
-     * Server information.
+     * The server name to delegate server-server communciations to, with optional port.
      */
     @Schema(
-        description = "Server information."
+        name = "m.server",
+        description = "The server name to delegate server-server communciations to, with optional port."
     )
-    private Server server;
+    @JsonbProperty("m.server")
+    private String server;
 
-    public Server getServer() {
+    @JsonProperty("m.server")
+    public String getServer() {
         return server;
     }
 
-    public void setServer(Server server) {
+    public void setServer(String server) {
         this.server = server;
     }
 }

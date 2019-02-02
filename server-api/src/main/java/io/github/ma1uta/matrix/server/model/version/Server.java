@@ -16,19 +16,30 @@
 
 package io.github.ma1uta.matrix.server.model.version;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * Server information.
  */
+@Schema(
+    description = "Server information."
+)
 public class Server {
 
     /**
      * Arbitrary name that identify this implementation.
      */
+    @Schema(
+        description = "Arbitrary name that identify this implementation."
+    )
     private String name;
 
     /**
      * Version of this implementation. The version format depends on the implementation.
      */
+    @Schema(
+        description = "Version of this implementation. The version format depends on the implementation."
+    )
     private String version;
 
     public String getName() {
