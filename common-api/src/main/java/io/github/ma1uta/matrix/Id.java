@@ -24,7 +24,7 @@ import java.util.Objects;
 /**
  * Matrix id (MXID) util class.
  */
-public abstract class Id {
+public abstract class Id implements CharSequence {
 
     /**
      * Max length of the dns name.
@@ -57,6 +57,8 @@ public abstract class Id {
 
     private int port = DEFAULT_PORT;
 
+    private String fullId;
+
     private Collection<IdParseException> errors;
 
     protected Id(String localpart, String serverName) {
@@ -85,12 +87,15 @@ public abstract class Id {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(getSigil()).append(getLocalpart()).append(":").append(getHostname());
-        if (getPort() != DEFAULT_PORT) {
-            builder.append(":").append(getPort());
+        if (fullId == null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(getSigil()).append(getLocalpart()).append(":").append(getHostname());
+            if (getPort() != DEFAULT_PORT) {
+                builder.append(":").append(getPort());
+            }
+            this.fullId = builder.toString();
         }
-        return builder.toString();
+        return fullId;
     }
 
     /**
@@ -268,6 +273,21 @@ public abstract class Id {
     @Override
     public int hashCode() {
         return Objects.hash(getSigil(), localpart, hostname, port);
+    }
+
+    @Override
+    public int length() {
+        return toString().length();
+    }
+
+    @Override
+    public char charAt(int index) {
+        return toString().charAt(index);
+    }
+
+    @Override
+    public CharSequence subSequence(int start, int end) {
+        return toString().subSequence(start, end);
     }
 
     /**
