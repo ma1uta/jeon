@@ -27,8 +27,10 @@ import io.github.ma1uta.matrix.client.model.room.InviteRequest;
 import io.github.ma1uta.matrix.client.model.room.JoinRequest;
 import io.github.ma1uta.matrix.client.model.room.JoinedRoomsResponse;
 import io.github.ma1uta.matrix.client.model.room.KickRequest;
+import io.github.ma1uta.matrix.client.model.room.NewVersion;
 import io.github.ma1uta.matrix.client.model.room.PublicRoomsRequest;
 import io.github.ma1uta.matrix.client.model.room.PublicRoomsResponse;
+import io.github.ma1uta.matrix.client.model.room.ReplacementRoom;
 import io.github.ma1uta.matrix.client.model.room.RoomId;
 import io.github.ma1uta.matrix.client.model.room.RoomResolveResponse;
 import io.github.ma1uta.matrix.client.model.room.RoomVisibility;
@@ -1343,6 +1345,80 @@ public interface RoomApi {
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse,
+        @Context SecurityContext securityContext
+    );
+
+    /**
+     * Upgrades the given room to a particular room version, migrating as much data as possible over to the new room.
+     * See the room_upgrades module for more information on what this entails.
+     * <br>
+     * <b>Required Auth</b>: Yes.
+     * <br>
+     * Return: {@link ReplacementRoom}
+     * <p>Status code 200: The room was successfully upgraded.</p>
+     * <p>Status code 400: The request was invalid. One way this can happen is if the room version requested is not supported by
+     * the homeserver.</p>
+     * <p>Status code 403: The user is not permitted to upgrade the room.</p>
+     *
+     * @param roomId          Required. The ID of the room to upgrade.
+     * @param newVersion      Required. The new version for the room.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
+     */
+    @Operation(
+        summary = "Upgrades the given room to a particular room version, migrating as much data as possible over to the new room."
+            + " See the room_upgrades module for more information on what this entails.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The room was successfully upgraded.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ReplacementRoom.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The request was invalid. One way this can happen is if the room version requested is not supported by"
+                    + " the homeserver.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The user is not permitted to upgrade the room.\n",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        },
+        tags = {
+            "Room directory"
+        }
+    )
+    @POST
+    @Secured
+    @Path("/rooms/{roomId}/upgrade")
+    void upgrade(
+        @PathParam("roomId") Id roomId,
+        NewVersion newVersion,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Context AsyncResponse asyncResponse,
         @Context SecurityContext securityContext
     );
 }

@@ -22,23 +22,18 @@ import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
-import io.github.ma1uta.matrix.client.model.presence.PresenceList;
 import io.github.ma1uta.matrix.client.model.presence.PresenceRequest;
 import io.github.ma1uta.matrix.client.model.presence.PresenceStatus;
-import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -214,117 +209,6 @@ public interface PresenceApi {
     void getPresenceStatus(
         @Parameter(
             description = "The user whose presence state to get.",
-            required = true
-        ) @PathParam("userId") Id userId,
-
-        @Context UriInfo uriInfo,
-        @Context HttpHeaders httpHeaders,
-        @Suspended AsyncResponse asyncResponse
-    );
-
-    /**
-     * Adds or removes users from this presence list.
-     * <br>
-     * <b>Rate-limited</b>: Yes.
-     * <br>
-     * <b>Requires auth</b>: Yes.
-     * <br>
-     * Return: {@link EmptyResponse}.
-     * <p>Status code 200: The list was updated.</p>
-     * <p>Status code 429: This request was rate-limited.</p>
-     *
-     * @param userId          Required. The user whose presence list is being modified.
-     * @param presenceList    JSON body request.
-     * @param uriInfo         Request Information.
-     * @param httpHeaders     Http headers.
-     * @param asyncResponse   Asynchronous response.
-     * @param securityContext Security context.
-     */
-    @Operation(
-        summary = "Adds or removes users from this presence list.",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "The list was updated.",
-                content = @Content(
-                    schema = @Schema(
-                        implementation = EmptyResponse.class
-                    )
-                )
-            ),
-            @ApiResponse(
-                responseCode = "429",
-                description = "This request was rate-limited.",
-                content = @Content(
-                    schema = @Schema(
-                        implementation = RateLimitedErrorResponse.class
-                    )
-                )
-            )
-        },
-        security = {
-            @SecurityRequirement(
-                name = "accessToken"
-            )
-        },
-        tags = {
-            "Presence"
-        }
-    )
-    @POST
-    @RateLimit
-    @Secured
-    @Path("/list/{userId}")
-    void setPresenceList(
-        @Parameter(
-            description = "The user whose presence list is being modified.",
-            required = true
-        ) @PathParam("userId") Id userId,
-        @RequestBody(
-            description = "JSON body request"
-        ) PresenceList presenceList,
-
-        @Context UriInfo uriInfo,
-        @Context HttpHeaders httpHeaders,
-        @Suspended AsyncResponse asyncResponse,
-        @Context SecurityContext securityContext
-    );
-
-    /**
-     * Retrieve a list of presence events for every user on this list.
-     * <br>
-     * Return: {@link List} of the {@link Event}s.
-     * <p>Status code 200: A list of presence events for this list.</p>
-     *
-     * @param userId        Required. The user whose presence list should be retrieved.
-     * @param uriInfo       Request Information.
-     * @param httpHeaders   Http headers.
-     * @param asyncResponse Asynchronous response.
-     */
-    @Operation(
-        summary = "Retrieve a list of presence events for every user on this list.",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "A list of presence events for this list.",
-                content = @Content(
-                    array = @ArraySchema(
-                        schema = @Schema(
-                            implementation = Event.class
-                        )
-                    )
-                )
-            )
-        },
-        tags = {
-            "Presence"
-        }
-    )
-    @GET
-    @Path("/list/{userId}")
-    void getPresenceList(
-        @Parameter(
-            description = "The user whose presence list should be retrieved.",
             required = true
         ) @PathParam("userId") Id userId,
 

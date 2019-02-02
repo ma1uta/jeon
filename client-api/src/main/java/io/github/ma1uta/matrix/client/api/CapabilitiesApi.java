@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -60,7 +61,7 @@ public interface CapabilitiesApi {
      * @param asyncResponse Asynchronous response.
      */
     @Operation(
-        summary = "Gets the versions of the specification supported by the server.",
+        summary = "Gets information about the server's supported feature set and other relevant capabilities.",
         responses = {
             @ApiResponse(
                 responseCode = "200",
@@ -79,6 +80,11 @@ public interface CapabilitiesApi {
                         implementation = RateLimitedErrorResponse.class
                     )
                 )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
             )
         },
         tags = {

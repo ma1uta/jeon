@@ -42,19 +42,20 @@ public class CreateRoomRequest {
     @Schema(
         description = "A public visibility indicates that the room will be shown in the published room list. A private visibility "
             + "will hide the room from the published room list. Rooms default to private visibility if this key is not included. "
-            + "NB: This should not be confused with join_rules which also uses the word public."
+            + "NB: This should not be confused with join_rules which also uses the word public.",
+        allowableValues = {"public", "private"}
     )
     private String visibility;
 
     /**
      * The desired room alias local part. If this is included, a room alias will be created and mapped to the newly created room.
      * The alias will belong on the same homeserver which created the room. For example, if this was set to "foo" and sent to the
-     * homeserver "example.com" the complete room alias would be #foo:example.com.
+     * homeserver "example.com". The complete room alias would be #foo:example.com.
      */
     @Schema(
         description = "The desired room alias local part. If this is included, a room alias "
             + "will be created and mapped to the newly created room. The alias will belong on the same homeserver which created the "
-            + "room. For example, if this was set to \"foo\" and sent to the homeserver \"example.com\" the complete room alias would "
+            + "room. For example, if this was set to \"foo\" and sent to the homeserver \"example.com\". The complete room alias would "
             + "be #foo:example.com."
     )
     @JsonbProperty("room_alias_name")

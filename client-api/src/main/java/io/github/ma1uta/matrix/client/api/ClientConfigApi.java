@@ -106,7 +106,7 @@ public interface ClientConfigApi {
         ) @PathParam("type") String type,
         @RequestBody(
             description = "Account data"
-        ) Map<String, String> accountData,
+        ) Map<String, Object> accountData,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -176,7 +176,7 @@ public interface ClientConfigApi {
         ) @PathParam("type") String type,
         @RequestBody(
             description = "Account data"
-        ) Map<String, String> accountData,
+        ) Map<String, Object> accountData,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

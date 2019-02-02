@@ -79,6 +79,16 @@ public class PresenceContent implements EventContent {
     @JsonbProperty("currently_active")
     private Boolean currentlyActive;
 
+    /**
+     * An optional description to accompany the presence.
+     */
+    @Schema(
+        name = "status_msg",
+        description = "An optional description to accompany the presence."
+    )
+    @JsonbProperty("status_msg")
+    private String statusMsg;
+
     @JsonProperty("avatar_url")
     public String getAvatarUrl() {
         return avatarUrl;
@@ -121,5 +131,14 @@ public class PresenceContent implements EventContent {
 
     public void setCurrentlyActive(Boolean currentlyActive) {
         this.currentlyActive = currentlyActive;
+    }
+
+    @JsonProperty("status_msg")
+    public String getStatusMsg() {
+        return statusMsg;
+    }
+
+    public void setStatusMsg(String statusMsg) {
+        this.statusMsg = statusMsg;
     }
 }

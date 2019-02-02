@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Id;
+import io.github.ma1uta.matrix.event.nested.PreviousRoom;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -59,6 +60,14 @@ public class RoomCreateContent implements EventContent {
     @JsonbProperty("room_version")
     private String roomVersion;
 
+    /**
+     * A reference to the room this room replaces, if the previous room was upgraded.
+     */
+    @Schema(
+        description = "A reference to the room this room replaces, if the previous room was upgraded."
+    )
+    private PreviousRoom predecessor;
+
     public Id getCreator() {
         return creator;
     }
@@ -83,5 +92,13 @@ public class RoomCreateContent implements EventContent {
 
     public void setRoomVersion(String roomVersion) {
         this.roomVersion = roomVersion;
+    }
+
+    public PreviousRoom getPredecessor() {
+        return predecessor;
+    }
+
+    public void setPredecessor(PreviousRoom predecessor) {
+        this.predecessor = predecessor;
     }
 }
