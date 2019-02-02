@@ -1413,8 +1413,14 @@ public interface RoomApi {
     @Secured
     @Path("/rooms/{roomId}/upgrade")
     void upgrade(
-        @PathParam("roomId") Id roomId,
-        NewVersion newVersion,
+        @Parameter(
+            description = "The ID of the room to upgrade.",
+            required = true
+        ) @PathParam("roomId") Id roomId,
+        @RequestBody(
+            description = "The new version for the room.",
+            required = true
+        ) NewVersion newVersion,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

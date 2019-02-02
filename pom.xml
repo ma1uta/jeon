@@ -537,5 +537,6 @@
         <module>identity-api</module>
         <module>application-api</module>
         <module>client-api</module>
+        <module>server-api</module>
     </modules>
 </project>
