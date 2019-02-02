@@ -18,6 +18,7 @@ package io.github.ma1uta.matrix.client.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Id;
+import io.github.ma1uta.matrix.client.model.serverdiscovery.ServerDiscoveryResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -52,7 +53,7 @@ public class LoginResponse {
      * The hostname of the homeserver on which the account has been registered.
      *
      * @deprecated clients should extract the server_name from user_id (by splitting at the first colon) if they require it.
-     *     Note also that homeserver is not spelt this way.
+     * Note also that homeserver is not spelt this way.
      */
     @Schema(
         description = "The hostname of the homeserver on which the account has been registered."
@@ -60,6 +61,19 @@ public class LoginResponse {
     @Deprecated
     @JsonbProperty("home_server")
     private String homeServer;
+
+    /**
+     * Optional client configuration provided by the server. If present, clients SHOULD use the provided object to reconfigure themselves,
+     * optionally validating the URLs within. This object takes the same form as the one returned from .well-known autodiscovery.
+     */
+    @Schema(
+        name = "well_known",
+        description = "Optional client configuration provided by the server. If present, clients SHOULD use the provided object"
+            + " to reconfigure themselves, optionally validating the URLs within. This object takes the same form as the one returned"
+            + " from .well-known autodiscovery."
+    )
+    @JsonbProperty("well_know")
+    private ServerDiscoveryResponse wellKnown;
 
     /**
      * ID of the logged-in device. Will be the same as the corresponding parameter in the request, if one was specified.
@@ -104,5 +118,14 @@ public class LoginResponse {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    @JsonProperty("well_known")
+    public ServerDiscoveryResponse getWellKnown() {
+        return wellKnown;
+    }
+
+    public void setWellKnown(ServerDiscoveryResponse wellKnown) {
+        this.wellKnown = wellKnown;
     }
 }

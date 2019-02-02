@@ -33,7 +33,8 @@ public class PasswordRequest {
      * Required. The new password for the account.
      */
     @Schema(
-        description = "The new password for the account."
+        description = "The new password for the account.",
+        required = true
     )
     @JsonbProperty("new_password")
     private char[] newPassword;

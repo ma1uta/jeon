@@ -16,9 +16,12 @@
 
 package io.github.ma1uta.matrix.client.model.version;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * The versions supported by the server.
@@ -34,9 +37,18 @@ public class VersionsResponse {
      * The supported versions.
      */
     @Schema(
-        description = "The supported versions."
+        description = "The supported versions.",
+        required = true
     )
     private List<String> versions;
+
+    @Schema(
+        name = "unstable_features",
+        description = "Experimental features the server supports. Features not listed here, or the lack of this property all together,"
+            + " indicate that a feature is not supported."
+    )
+    @JsonbProperty("unstable_features")
+    private Map<String, Boolean> unstableFeatures;
 
     public List<String> getVersions() {
         return versions;
@@ -44,5 +56,14 @@ public class VersionsResponse {
 
     public void setVersions(List<String> versions) {
         this.versions = versions;
+    }
+
+    @JsonProperty("unstable_features")
+    public Map<String, Boolean> getUnstableFeatures() {
+        return unstableFeatures;
+    }
+
+    public void setUnstableFeatures(Map<String, Boolean> unstableFeatures) {
+        this.unstableFeatures = unstableFeatures;
     }
 }

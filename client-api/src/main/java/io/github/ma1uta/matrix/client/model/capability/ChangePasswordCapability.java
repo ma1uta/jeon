@@ -14,38 +14,32 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.account;
+package io.github.ma1uta.matrix.client.model.capability;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.json.bind.annotation.JsonbProperty;
-
 /**
- * Response for gets information about the owner of a given access token.
+ * Capability to indicate if the user can change their password.
  */
 @Schema(
-    description = "Response for gets information about the owner of a given access token"
+    description = "Capability to indicate if the user can change their password."
 )
-public class WhoamiResponse {
+public class ChangePasswordCapability {
 
     /**
-     * Required. The user id that owns the access token.
+     * Required. True if the user can change their password, false otherwise.
      */
     @Schema(
-        description = "The user id that owns the access token.",
+        description = "True if the user can change their password, false otherwise.",
         required = true
     )
-    @JsonbProperty("user_id")
-    private Id userId;
+    private Boolean enabled;
 
-    @JsonProperty("user_id")
-    public Id getUserId() {
-        return userId;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setUserId(Id userId) {
-        this.userId = userId;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

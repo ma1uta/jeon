@@ -33,7 +33,8 @@ public class ThreePidCred {
      * Required. The session identifier given by the identity server.
      */
     @Schema(
-        description = "The session identifier given by the identity server."
+        description = "The session identifier given by the identity server.",
+        required = true
     )
     private String sid;
 
@@ -41,7 +42,8 @@ public class ThreePidCred {
      * Required. The client secret used in the session with the identity server.
      */
     @Schema(
-        description = "The client secret used in the session with the identity server."
+        description = "The client secret used in the session with the identity server.",
+        required = true
     )
     @JsonbProperty("client_secret")
     private String clientSecret;
@@ -50,7 +52,8 @@ public class ThreePidCred {
      * The identity server to use.
      */
     @Schema(
-        description = "The identity server to use."
+        description = "The identity server to use.",
+        required = true
     )
     @JsonbProperty("id_server")
     private String idServer;

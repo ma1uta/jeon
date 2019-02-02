@@ -927,7 +927,7 @@ public interface AccountApi {
      */
     @Operation(
         summary = "Proxies the identity server API validate/email/requestToken",
-        description = "roxies the identity server API validate/email/requestToken, but first checks that the given email address is not"
+        description = "Proxies the identity server API validate/email/requestToken, but first checks that the given email address is not"
             + " already associated with an account on this Home Server. This API should be used to request validation tokens when adding"
             + " an email address to an account. This API's parameters and response is identical to that of the HS API "
             + " /register/email/requestToken endpoint.",

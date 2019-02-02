@@ -30,7 +30,8 @@ public class Delete3PidRequest {
      * Required. The medium of the third party identifier being removed. One of: ["email", "msisdn"].
      */
     @Schema(
-        description = "The medium of the third party identifier being removed"
+        description = "The medium of the third party identifier being removed",
+        required = true
     )
     private String medium;
 
@@ -38,7 +39,8 @@ public class Delete3PidRequest {
      * Required. The third party address being removed.
      */
     @Schema(
-        description = "The third party address neing removed."
+        description = "The third party address neing removed.",
+        required = true
     )
     private String address;
 
