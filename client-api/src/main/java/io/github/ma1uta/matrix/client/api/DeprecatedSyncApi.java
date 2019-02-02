@@ -141,8 +141,8 @@ public interface DeprecatedSyncApi {
      * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @deprecated in favor of {@link EventApi#roomEvent(String, String, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)} or
-     * {@link EventContextApi#context(String, String, Integer, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
+     * @deprecated in favor of {@link EventApi#roomEvent(Id, Id, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)} or
+     * {@link EventContextApi#context(Id, Id, Integer, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
      */
     @Operation(
         summary = "Get a single event based on event_id.",
