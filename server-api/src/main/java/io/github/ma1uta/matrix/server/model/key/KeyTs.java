@@ -17,18 +17,29 @@
 package io.github.ma1uta.matrix.server.model.key;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Server key and its valid timestamp.
  */
+@Schema(
+    description = "Server key and its valid timestamp."
+)
 public class KeyTs {
 
     /**
      * Key valid untils this timestamp.
      */
-    @JsonProperty("minimum_valid_until_ts")
+    @Schema(
+        name = "minimum_valid_until_ts",
+        description = "Server key and its valid timestamp."
+    )
+    @JsonbProperty("minimum_valid_until_ts")
     private Long minimumValidUntilTs;
 
+    @JsonProperty("minimum_valid_until_ts")
     public Long getMinimumValidUntilTs() {
         return minimumValidUntilTs;
     }

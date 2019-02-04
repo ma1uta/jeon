@@ -17,58 +17,76 @@
 package io.github.ma1uta.matrix.server.model.key;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body response for key api.
  */
+@Schema(
+    description = "JSON body response for key api."
+)
 public class KeyResponse {
 
     /**
-     * the public keys that the server used to use and when it stopped using them.
+     * The public keys that the server used to use and when it stopped using them.
      */
-    @JsonProperty("old_verify_keys")
-    private Map<String, Map<String, String>> oldVerifyKeys;
+    @Schema(
+        name = "old_verify_keys",
+        description = "The public keys that the server used to use and when it stopped using them."
+    )
+    @JsonbProperty("old_verify_keys")
+    private Map<String, OldVerifyKey> oldVerifyKeys;
 
     /**
      * DNS name of the homeserver.
      */
-    @JsonProperty("server_name")
+    @Schema(
+        name = "server_name",
+        description = "DNS name of the homeserver."
+    )
+    @JsonbProperty("server_name")
     private String serverName;
 
     /**
      * Digital signatures for this object signed using the verify_keys.
      */
+    @Schema(
+        description = "Digital signatures for this object signed using the verify_keys."
+    )
     private Map<String, Map<String, String>> signatures;
-
-    /**
-     * Hashes of X.509 TLS certificates used by this this server encoded as Unpadded Base64.
-     */
-    @JsonProperty("tls_fingerprints")
-    private List<Map<String, String>> tlsFingerprints;
 
     /**
      * POSIX timestamp when the list of valid keys should be refreshed.
      */
-    @JsonProperty("valid_until_ts")
+    @Schema(
+        description = "POSIX timestamp when the list of valid keys should be refreshed. Keys used beyond this timestamp"
+            + " are no longer valid."
+    )
+    @JsonbProperty("valid_until_ts")
     private Long validUntilTs;
 
     /**
      * Public keys of the homeserver for verifying digital signatures.
      */
-    @JsonProperty("verify_keys")
-    private Map<String, Map<String, String>> verifyKeys;
+    @Schema(
+        description = "Public keys of the homeserver for verifying digital signatures."
+    )
+    @JsonbProperty("verify_keys")
+    private Map<String, VerifyKey> verifyKeys;
 
-    public Map<String, Map<String, String>> getOldVerifyKeys() {
+    @JsonProperty("old_verify_keys")
+    public Map<String, OldVerifyKey> getOldVerifyKeys() {
         return oldVerifyKeys;
     }
 
-    public void setOldVerifyKeys(Map<String, Map<String, String>> oldVerifyKeys) {
+    public void setOldVerifyKeys(Map<String, OldVerifyKey> oldVerifyKeys) {
         this.oldVerifyKeys = oldVerifyKeys;
     }
 
+    @JsonProperty("server_name")
     public String getServerName() {
         return serverName;
     }
@@ -85,14 +103,7 @@ public class KeyResponse {
         this.signatures = signatures;
     }
 
-    public List<Map<String, String>> getTlsFingerprints() {
-        return tlsFingerprints;
-    }
-
-    public void setTlsFingerprints(List<Map<String, String>> tlsFingerprints) {
-        this.tlsFingerprints = tlsFingerprints;
-    }
-
+    @JsonbProperty("valid_until_ts")
     public Long getValidUntilTs() {
         return validUntilTs;
     }
@@ -101,11 +112,12 @@ public class KeyResponse {
         this.validUntilTs = validUntilTs;
     }
 
-    public Map<String, Map<String, String>> getVerifyKeys() {
+    @JsonProperty("verify_keys")
+    public Map<String, VerifyKey> getVerifyKeys() {
         return verifyKeys;
     }
 
-    public void setVerifyKeys(Map<String, Map<String, String>> verifyKeys) {
+    public void setVerifyKeys(Map<String, VerifyKey> verifyKeys) {
         this.verifyKeys = verifyKeys;
     }
 }

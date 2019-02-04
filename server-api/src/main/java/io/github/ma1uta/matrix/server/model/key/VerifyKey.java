@@ -16,36 +16,29 @@
 
 package io.github.ma1uta.matrix.server.model.key;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
-import javax.json.bind.annotation.JsonbProperty;
-
 /**
- * JSON body response for query api.
+ * Verify key.
  */
 @Schema(
-    description = "JSON body response for query api."
+    description = "Verify key."
 )
-public class QueryResponse {
+public class VerifyKey {
 
     /**
-     * Server keys.
+     * The Unpadded Base64 encoded key.
      */
     @Schema(
-        name = "server_keys",
-        description = "Server keys."
+        description = "The Unpadded Base64 encoded key."
     )
-    @JsonbProperty("server_keys")
-    private List<KeyResponse> serverKeys;
+    private String key;
 
-    @JsonProperty("server_keys")
-    public List<KeyResponse> getServerKeys() {
-        return serverKeys;
+    public String getKey() {
+        return key;
     }
 
-    public void setServerKeys(List<KeyResponse> serverKeys) {
-        this.serverKeys = serverKeys;
+    public void setKey(String key) {
+        this.key = key;
     }
 }

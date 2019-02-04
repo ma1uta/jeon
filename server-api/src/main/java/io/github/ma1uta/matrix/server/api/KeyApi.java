@@ -19,9 +19,13 @@ package io.github.ma1uta.matrix.server.api;
 import io.github.ma1uta.matrix.server.model.key.KeyResponse;
 import io.github.ma1uta.matrix.server.model.key.QueryRequest;
 import io.github.ma1uta.matrix.server.model.key.QueryResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,8 +33,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Each homeserver publishes its public keys under /_matrix/key/v2/server/. Homeservers query for keys by either
@@ -48,82 +56,149 @@ import javax.ws.rs.core.MediaType;
 public interface KeyApi {
 
     /**
-     * Homeservers publish the allowed TLS fingerprints and signing keys in a JSON object at /_matrix/key/v2/server/{key_id}.
-     * The response contains a list of verify_keys that are valid for signing federation requests made by the server and for signing events.
-     * It contains a list of old_verify_keys which are only valid for signing events. Finally the response contains a list of TLS
-     * certificate fingerprints to validate any connection made to the server.
+     * Gets the homeserver's published TLS fingerprints and signing keys.
+     * The homeserver may have any number of active keys and may have a number of old keys.
+     * <p/>
+     * Intermediate notary servers should cache a response for half of its lifetime to avoid serving a stale response.
+     * Originating servers should avoid returning responses that expire in less than an hour to avoid repeated requests
+     * for a certificate that is about to expire. Requesting servers should limit how frequently they query for certificates
+     * to avoid flooding a server with requests.
+     * <p/>
+     * If the server fails to respond to this request, intermediate notary servers should continue to return the last response
+     * they received from the server so that the signatures of old events can still be checked.
      * <br>
-     * A server may have multiple keys active at a given time. A server may have any number of old keys. It is recommended that servers
-     * return a single JSON response listing all of its keys whenever any key_id is requested to reduce the number of round trips needed
-     * to discover the relevant keys for a server. However a server may return a different responses for a different key_id.
-     * <br>
-     * The tls_certificates contain a list of hashes of the X.509 TLS certificates currently used by the server. The list must
-     * include SHA-256 hashes for every certificate currently in use by the server. These fingerprints are valid until the millisecond
-     * POSIX timestamp in valid_until_ts.
-     * <br>
-     * The verify_keys can be used to sign requests and events made by the server until the millisecond POSIX timestamp in
-     * valid_until_ts. If a homeserver receives an event with a origin_server_ts after the valid_until_ts then it should request
-     * that key_id for the originating server to check whether the key has expired.
-     * <br>
-     * The old_verify_keys can be used to sign events with an origin_server_ts before the expired_ts. The expired_ts is a millisecond
-     * POSIX timestamp of when the originating server stopped using that key.
-     * <br>
-     * Intermediate notary servers should cache a response for half of its remaining life time to avoid serving a stale response.
-     * Originating servers should avoid returning responses that expire in less than an hour to avoid repeated requests for an about
-     * to expire certificate. Requesting servers should limit how frequently they query for certificates to avoid flooding
-     * a server with requests.
-     * <br>
-     * If a server goes offline intermediate notary servers should continue to return the last response they received from that
-     * server so that the signatures of old events sent by that server can still be checked.
+     * Return: {@link KeyResponse}
+     * <p>Status code 200: The homeserver's keys</p>
      *
-     * @param keyId           key id.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: server key.</p>
+     * @param keyId         Deprecated. Servers should not use this parameter and instead opt to return all keys,
+     *                      not just the requested one. The key ID to look up.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Gets the homeserver's published TLS fingerprints and signing keys.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The homeservers's keys.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = KeyResponse.class
+                    )
+                )
+            )
+        }
+    )
     @GET
     @Path("/server/{keyId}")
-    KeyResponse key(@PathParam("keyId") String keyId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                    @Context HttpServletResponse servletResponse);
+    void key(
+        @Parameter(
+            name = "keyId",
+            description = "Servers should not use this parameter and instead opt to return all keys, not just the requested one."
+                + " The key ID to look up.",
+            deprecated = true
+        ) @PathParam("keyId") String keyId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
-     * Servers may offer a query API _matrix/key/v2/query/ for getting the keys for another server. This API used to GET at
-     * list of JSON objects for a given server. Either way the response is a list of JSON objects containing the JSON published
-     * by the server under _matrix/key/v2/server/ signed by both the originating server and by this server.
+     * Query for another server's keys. The receiving (notary) server must sign the keys returned by the queried server.
      * <br>
-     * This API can return keys for servers that are offline be using cached responses taken from when the server was online.
-     * Keys can be queried from multiple servers to mitigate against DNS spoofing.
+     * Return: {@link QueryResponse}.
+     * <p>Status code 200: The keys for the server, or an empty array if the server could not be reached and no cached keys
+     * were available.</p>
      *
-     * @param serverName          server name.
-     * @param keyId               key identifier
-     * @param minimumValidUntilTs is a millisecond POSIX timestamp indicating when the returned certificate will need to be valid
-     *                            until to be useful to the requesting server. This can be set using the maximum origin_server_ts of an
-     *                            batch of events that a requesting server is trying to validate. This allows an intermediate notary
-     *                            server to give a prompt cached response even if the originating server is offline.
-     * @param servletRequest      servlet request.
-     * @param servletResponse     servlet response.
-     * @return <p>Status code 200: queried key.</p>
+     * @param serverName          Required. The server's DNS name to query.
+     * @param keyId               Deprecated. Servers should not use this parameter and instead opt to return all keys, not just
+     *                            the requested one. The key ID to look up.
+     * @param minimumValidUntilTs A millisecond POSIX timestamp in milliseconds indicating when the returned certificates will need to be
+     *                            valid until to be useful to the requesting server.
+     *                            If not supplied, the current time as determined by the notary server is used.
+     * @param uriInfo             Request Information.
+     * @param httpHeaders         Http headers.
+     * @param asyncResponse       Asynchronous response.
      */
+    @Operation(
+        summary = "Query for another server's keys. The receiving (notary) server must sign the keys returned by the queried server.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The keys for the server, or an empty array if the server could not be reached and no cached keys"
+                    + " were available.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = KeyResponse.class
+                    )
+                )
+            )
+        }
+    )
     @GET
     @Path("/query/${serverName}/${keyId}")
-    QueryResponse query(@PathParam("serverName") String serverName, @PathParam("keyId") String keyId,
-                        @QueryParam("minimumValidUntilTs") Long minimumValidUntilTs, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                        @Context HttpServletResponse servletResponse);
+    void query(
+        @Parameter(
+            name = "serverName",
+            description = "The server's DNS name to query",
+            required = true
+        ) @PathParam("serverName") String serverName,
+        @Parameter(
+            name = "keyId",
+            description = "Servers should not use this parameter and instead opt to return all keys, not just the requested one."
+                + "The key ID to look up.",
+            deprecated = true
+        ) @PathParam("keyId") String keyId,
+        @Parameter(
+            name = "minimumValidUntilTs",
+            description = "A millisecond POSIX timestamp in milliseconds indicating when the returned certificates will need to be"
+                + " valid until to be useful to the requesting server."
+        ) @QueryParam("minimumValidUntilTs") Long minimumValidUntilTs,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
-     * Servers may offer a query API _matrix/key/v2/query/ for getting the keys for another server. This API used to POST a bulk query
-     * for a number of keys from a number of servers. Either way the response is a list of JSON objects containing the JSON published
-     * by the server under _matrix/key/v2/server/ signed by both the originating server and by this server.
-     * <br>*
-     * This API can return keys for servers that are offline be using cached responses taken from when the server was online.
-     * Keys can be queried from multiple servers to mitigate against DNS spoofing.
+     * Query for keys from multiple servers in a batch format. The receiving (notary) server must sign the keys returned by
+     * the queried servers.
+     * <br>
+     * Return: {@link QueryResponse}.
+     * <p>Status code 200: The keys for the queried servers, signed by the notary server. Servers which are offline and have no cached keys
+     * will not be included in the result. This may result in an empty array.</p>
      *
-     * @param request         bulk query request.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return <p>Status code 200: queried keys.</p>
+     * @param request       Bulk query request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Query for another server's keys. The receiving (notary) server must sign the keys returned by the queried server.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The keys for the server, or an empty array if the server could not be reached and no cached keys"
+                    + " were available.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = KeyResponse.class
+                    )
+                )
+            )
+        }
+    )
     @POST
     @Path("/query")
-    QueryResponse bulkQuery(QueryRequest request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
+    void bulkQuery(
+        @RequestBody(
+            description = "Bulk query request."
+        ) QueryRequest request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 }

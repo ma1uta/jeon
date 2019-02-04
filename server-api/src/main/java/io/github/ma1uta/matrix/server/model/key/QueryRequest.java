@@ -17,12 +17,17 @@
 package io.github.ma1uta.matrix.server.model.key;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * JSON body request for bulk query api.
  */
+@Schema(
+    description = "JSON body request for bulk query api."
+)
 public class QueryRequest {
 
     /**
@@ -30,9 +35,14 @@ public class QueryRequest {
      * <p/>
      * Maps: server_name -> key_id -> {@link KeyTs}.
      */
-    @JsonProperty("server_keys")
+    @Schema(
+        name = "server_keys",
+        description = "Server keys."
+    )
+    @JsonbProperty("server_keys")
     private Map<String, Map<String, KeyTs>> serverKeys;
 
+    @JsonProperty("server_keys")
     public Map<String, Map<String, KeyTs>> getServerKeys() {
         return serverKeys;
     }

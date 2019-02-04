@@ -19,33 +19,32 @@ package io.github.ma1uta.matrix.server.model.key;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
- * JSON body response for query api.
+ * Old verify key.
  */
 @Schema(
-    description = "JSON body response for query api."
+    description = "Old verify key."
 )
-public class QueryResponse {
+public class OldVerifyKey extends VerifyKey {
 
     /**
-     * Server keys.
+     * POSIX timestamp in milliseconds for when this key expired.
      */
     @Schema(
-        name = "server_keys",
-        description = "Server keys."
+        name = "expired_ts",
+        description = " POSIX timestamp in milliseconds for when this key expired."
     )
-    @JsonbProperty("server_keys")
-    private List<KeyResponse> serverKeys;
+    @JsonbProperty("expired_ts")
+    private Long expiredTs;
 
-    @JsonProperty("server_keys")
-    public List<KeyResponse> getServerKeys() {
-        return serverKeys;
+    @JsonProperty("expired_ts")
+    public Long getExpiredTs() {
+        return expiredTs;
     }
 
-    public void setServerKeys(List<KeyResponse> serverKeys) {
-        this.serverKeys = serverKeys;
+    public void setExpiredTs(Long expiredTs) {
+        this.expiredTs = expiredTs;
     }
 }
