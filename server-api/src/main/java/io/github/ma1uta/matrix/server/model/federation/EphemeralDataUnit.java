@@ -17,36 +17,37 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.event.content.EventContent;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * These events are pushed between pairs of homeservers. They are not persisted and are not part of the history of a room, nor does the
  * receiving homeserver have to reply to them.
  */
+@Schema(
+    description = "Ephemeral data unit."
+)
 public class EphemeralDataUnit {
 
     /**
-     * The type of the ephemeral message.
+     * Required. The type of the ephemeral message.
      */
-    @JsonProperty("edu_type")
+    @Schema(
+        name = "edu_type",
+        description = "The type of ephemeral message.",
+        required = true
+    )
+    @JsonbProperty("edu_type")
     private String eduType;
-
-    /**
-     * Origin homeserver.
-     */
-    private String origin;
-
-    /**
-     * Destination homeserver.
-     */
-    private String destination;
 
     /**
      * Actual nested content.
      */
-    private Map<String, Object> content;
+    private EventContent content;
 
+    @JsonProperty("edu_type")
     public String getEduType() {
         return eduType;
     }
@@ -55,27 +56,11 @@ public class EphemeralDataUnit {
         this.eduType = eduType;
     }
 
-    public String getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public Map<String, Object> getContent() {
+    public EventContent getContent() {
         return content;
     }
 
-    public void setContent(Map<String, Object> content) {
+    public void setContent(EventContent content) {
         this.content = content;
     }
 }

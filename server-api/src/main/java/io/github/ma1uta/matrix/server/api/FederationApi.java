@@ -20,11 +20,17 @@ import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
+import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
 import io.github.ma1uta.matrix.server.model.federation.Transaction;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -56,26 +62,220 @@ import javax.ws.rs.core.UriInfo;
 public interface FederationApi {
 
     /**
-     * For active pushing of messages representing live activity "as it happens".
+     * Push messages representing live activity to another server. The destination name will be set to that of the receiving server itself.
+     * Each embedded PDU in the transaction body will be processed.
      * <br>
-     * The transaction_id path argument will override any ID given in the JSON body. The destination name will be set to that of the
-     * receiving server itself. Each embedded PDU in the transaction body will be processed.
+     * Return: {@link List} of {@link int} and {@link io.github.ma1uta.matrix.server.model.federation.PduProcessingResults}.
+     * <p>Status code 200: The result of processing the transaction. The server is to use this response even in the event of one or more
+     * PDUs failing to be processed.</p>
      *
-     * @param transactionId   unique transaction identifier.
-     * @param transaction     transaction data.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
+     * @param txnId         Required. The transaction ID.
+     * @param transaction   transaction data.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Push messages representing live activity to another server.",
+        description = "The destination name will be set to that of the receiving server itself. Each embedded PDU in the transaction"
+            + " body will be processed.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The result of processing the transaction. The server is to use this response even in the event of one"
+                    + " or more PDUs failing to be processed.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = List.class
+                    )
+                )
+            )
+        }
+    )
     @PUT
-    @Path("/send/{transactionId}")
+    @Path("/send/{txnId}")
     void send(
-        @PathParam("transactionId") String transactionId,
-        Transaction transaction,
+        @Parameter(
+            name = "transactionId",
+            description = "The transaction ID."
+        ) @PathParam("txnId") String txnId,
+        @RequestBody Transaction transaction,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
+
+    /**
+     * Retrieves the complete auth chain for a given event.
+     * <br>
+     * Return: List of the {@link io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit}.
+     * <p>Status code 200: The auth chain for the event.</p>
+     *
+     * @param roomId        Required. The room ID to get the auth chain for.
+     * @param eventId       Required. The event ID to get the auth chain of.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Retrieves the complete auth chain for a given event.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The auth chain for the event.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = List.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/event_auth/{roomId}/{eventId}")
+    void eventAuth(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID to get the auth chain for.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "eventId",
+            description = "The event ID to get the auth chain of.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Compares the auth chain provided with what the receiving server has for the room ID and event ID combination.
+     * <br>
+     * The auth difference can be calculated in two parts, where the "remote auth" is the auth chain provided by the sending server
+     * and the "local auth" is the auth chain the receiving server has. With those lists, the algorithm works bottom-up after sorting
+     * each chain by depth then by event ID. The differences are then discovered and returned as the response to this API call.
+     * <br>
+     * Return: {@link QueryAuth}.
+     * <b>Requires auth</b>: Yes.
+     * <p>Status code 200: The auth chain differences, as determined by the receiver.</p>
+     *
+     * @param roomId        Required. The room ID to compare the auth chain in.
+     * @param eventId       Required. The event ID to compare the auth chain of.
+     * @param request       Request JSON body.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Compares the auth chain provided with what the receiving server has for the room ID and event ID combination.",
+        description = "The auth difference can be calculated in two parts, where the \"remote auth\" is the auth chain provided by"
+            + " the sending server and the \"local auth\" is the auth chain the receiving server has. With those lists, the algorithm works"
+            + " bottom-up after sorting each chain by depth then by event ID.The differences are then discovered and returned as"
+            + " the response to this API call.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The auth chain differences, as determined by the receiver.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = QueryAuth.class
+                    )
+                )
+            )
+        }
+    )
+    @POST
+    @Path("/query_auth/{roomId}/{eventId}")
+    void queryAuth(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID to compare the auth chain in.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "eventId",
+            description = "The event ID to compare the auth chain of.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+        @RequestBody QueryAuth request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Retrieves a sliding-window history of previous PDUs that occurred on the given room. Starting from the PDU ID(s) given in the
+     * "v" argument, the PDUs that preceded it are retrieved, up to a total number given by the "limit".
+     * <br>
+     * Return: {@link Transaction}.
+     * <p>Status code 200: A transaction containing the PDUs that preceded the given event(s), including the given event(s),
+     * up to the given limit.</p>
+     *
+     * @param roomId        Required. The room ID to backfill.
+     * @param parentId      Required. The event IDs to backfill from.
+     * @param limit         Required. The maximum number of PDUs to retrieve, including the given events.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Retrieves a sliding-window history of previous PDUs that occurred on the given room.",
+        description = "Starting from the PDU ID(s) given in the \"v\" argument, the PDUs that preceded it are retrieved, up to"
+            + " a total number given by the \"limit\".",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A transaction containing the PDUs that preceded the given event(s), including the given event(s),"
+                    + " up to the given limit.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = Transaction.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/backfill/{roomId}")
+    void backfill(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID to backfill.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "v",
+            description = "The event IDs to backfill from.",
+            required = true
+        ) @QueryParam("v") String parentId,
+        @Parameter(
+            name = "limit",
+            description = "The maximum number of PDUs to retrieve, including the given events.",
+            required = true
+        ) @QueryParam("limit") Long limit,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse);
+
+    /**
+     * To get missing events (?).
+     * <br>
+     * !!! Not described in spec.
+     *
+     * @param roomId          room identifier.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: missing events.
+     */
+    @POST
+    @Path("/get_missing_events/{roomId}")
+    Response getMissingEvents(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
+                              @Context HttpServletResponse servletResponse);
 
     /**
      * To fetch all the state of a given room.
@@ -126,24 +326,6 @@ public interface FederationApi {
     @Path("/event/{eventId}")
     Transaction event(@PathParam("eventId") String eventId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
                       @Context HttpServletResponse servletResponse);
-
-    /**
-     * To backfill events on a given room.
-     * <br>
-     * Retrieves a sliding-window history of previous PDUs that occurred on the given room. Starting from the PDU ID(s) given in the
-     * "v" argument, the PDUs that preceded it are retrieved, up to a total number given by the "limit" argument.
-     *
-     * @param roomId          room identifier.
-     * @param parentId        parent PDU ID.
-     * @param limit           total number of the PDUs.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: backfill history.
-     */
-    @GET
-    @Path("/backfill/{roomId}")
-    Transaction backfill(@PathParam("roomId") String roomId, @QueryParam("v") String parentId, @QueryParam("limit") Long limit,
-                         @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * To stream events all the events.
@@ -249,22 +431,6 @@ public interface FederationApi {
                        @Context HttpServletResponse servletResponse);
 
     /**
-     * (?).
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param context         context (?).
-     * @param eventId         event id.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: (?).
-     */
-    @GET
-    @Path("/event_auth/{context}/{eventId}")
-    Response eventAuth(@PathParam("context") String context, @PathParam("eventId") String eventId,
-                       @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
-
-    /**
      * Send invite.
      * <br>
      * !!! Not described in spec.
@@ -338,38 +504,6 @@ public interface FederationApi {
     @POST
     @Path("/user/keys/claim")
     Response userKeysClaim(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
-
-    /**
-     * To query auth chains.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param context         context (?).
-     * @param eventId         event identifier.
-     * @param request         request data (?).
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: processed auth chains (?).
-     */
-    @POST
-    @Path("/query_auth/{context}/{eventId}")
-    Response queryAuth(@PathParam("context") String context, @PathParam("eventId") String eventId, Map<String, Object> request,
-                       @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
-
-    /**
-     * To get missing events (?).
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param roomId          room identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: missing events.
-     */
-    @POST
-    @Path("/get_missing_events/{roomId}")
-    Response getMissingEvents(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                              @Context HttpServletResponse servletResponse);
 
     /**
      * Exchange a bearer token for information about a user.

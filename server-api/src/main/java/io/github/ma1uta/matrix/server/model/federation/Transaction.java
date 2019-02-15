@@ -17,8 +17,10 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * The transfer of EDUs and PDUs between homeservers is performed by an exchange of Transaction messages, which are encoded as
@@ -33,27 +35,46 @@ import java.util.List;
  * <li>A list of PDUs and EDUs - the actual message payload that the Transaction carries.</li>
  * </ul>
  */
+@Schema(
+    description = "Transaction for Federation API."
+)
 public class Transaction {
 
     /**
      * Required. server_name of homeserver sending this transaction.
      */
+    @Schema(
+        description = "server_name of homeserver sending this transaction.",
+        required = true
+    )
     private String origin;
 
     /**
      * Required. Timestamp in milliseconds on originating homeserver when this transaction started.
      */
-    @JsonProperty("origin_server_ts")
+    @Schema(
+        name = "origin_server_ts",
+        description = "Timestamp in milliseconds on originating homeserver when this transaction started.",
+        required = true
+    )
+    @JsonbProperty("origin_server_ts")
     private Long originServerTs;
 
     /**
      * Required. List of persistent updates to rooms.
      */
+    @Schema(
+        description = "List of persistent updates to rooms.",
+        required = true
+    )
     private List<PersistedDataUnit> pdus;
 
     /**
      * List of ephemeral messages. May be omitted if there are no ephemeral messages to be sent.
      */
+    @Schema(
+        description = "List of ephemeral messages. May be omitted if there are no ephemeral messages to be sent."
+    )
     private List<EphemeralDataUnit> edus;
 
     public String getOrigin() {
@@ -64,6 +85,7 @@ public class Transaction {
         this.origin = origin;
     }
 
+    @JsonProperty("origin_server_ts")
     public Long getOriginServerTs() {
         return originServerTs;
     }
