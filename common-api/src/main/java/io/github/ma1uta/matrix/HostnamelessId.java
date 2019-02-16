@@ -16,22 +16,43 @@
 
 package io.github.ma1uta.matrix;
 
+import java.util.Objects;
+
 /**
- * Event MXID.
+ * MXID with the one part.
  */
-public class EventId extends HostnamelessId {
+public class HostnamelessId extends Id {
 
-    /**
-     * Event sigil.
-     */
-    public static final char SIGIL = '$';
+    private String id;
 
-    public EventId(String id) {
-        super(id);
+    protected HostnamelessId(String id) {
+        this.id = id;
     }
 
     @Override
     public char getSigil() {
-        return SIGIL;
+        return id.charAt(0);
+    }
+
+    @Override
+    public String toString() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof HostnamelessId)) {
+            return false;
+        }
+        HostnamelessId hostnamelessId = (HostnamelessId) o;
+        return Objects.equals(id, hostnamelessId.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

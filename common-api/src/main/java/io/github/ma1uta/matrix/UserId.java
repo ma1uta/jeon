@@ -19,15 +19,15 @@ package io.github.ma1uta.matrix;
 /**
  * User MXID.
  */
-public class UserId extends LowerCaseOpaqueId {
+public class UserId extends HostnamefullId {
 
     /**
      * User sigil.
      */
     public static final char SIGIL = '@';
 
-    public UserId(String localpart, String serverName) {
-        super(localpart, serverName);
+    public UserId(String localpart, String serverName, int port) {
+        super(localpart, serverName, port);
     }
 
     @Override

@@ -16,28 +16,15 @@
 
 package io.github.ma1uta.matrix;
 
+import java.util.Collections;
+
 /**
  * Id which cannot be parsed.
  */
-public class IllegalId extends Id {
+public class IllegalId extends HostnamelessId {
 
-    public IllegalId(String raw, String exception) {
-        super(raw, raw);
-        addError(new IdParseException(exception));
-    }
-
-    @Override
-    public char getSigil() {
-        return getLocalpart() != null && getLocalpart().length() > 0 ? getLocalpart().charAt(0) : '\0';
-    }
-
-    @Override
-    protected String localpart(String localpart) {
-        return localpart;
-    }
-
-    @Override
-    protected String hostname(String hostname) {
-        return hostname;
+    public IllegalId(String id, String exception) {
+        super(id);
+        errors(Collections.singletonList(new IdParseException(exception)));
     }
 }

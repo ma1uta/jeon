@@ -19,24 +19,19 @@ package io.github.ma1uta.matrix;
 /**
  * Alias MXID.
  */
-public class AliasId extends Id {
+public class AliasId extends HostnamefullId {
 
     /**
      * Alias sigil.
      */
     public static final char SIGIL = '#';
 
-    public AliasId(String localpart, String serverName) {
-        super(localpart, serverName);
+    public AliasId(String localpart, String serverName, int port) {
+        super(localpart, serverName, port);
     }
 
     @Override
     public char getSigil() {
         return SIGIL;
-    }
-
-    @Override
-    protected String localpart(String localpart) {
-        return localpart;
     }
 }

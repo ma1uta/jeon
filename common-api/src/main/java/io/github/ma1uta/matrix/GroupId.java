@@ -19,15 +19,15 @@ package io.github.ma1uta.matrix;
 /**
  * Group MXID.
  */
-public class GroupId extends LowerCaseOpaqueId {
+public class GroupId extends HostnamefullId {
 
     /**
      * Group sigil.
      */
     public static final char SIGIL = '+';
 
-    public GroupId(String localpart, String serverName) {
-        super(localpart, serverName);
+    public GroupId(String localpart, String serverName, int port) {
+        super(localpart, serverName, port);
     }
 
     @Override

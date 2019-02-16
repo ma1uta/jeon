@@ -19,24 +19,19 @@ package io.github.ma1uta.matrix;
 /**
  * Room MXID.
  */
-public class RoomId extends Id {
+public class RoomId extends HostnamefullId {
 
     /**
      * Room sigil.
      */
     public static final char SIGIL = '!';
 
-    public RoomId(String localpart, String serverName) {
-        super(localpart, serverName);
+    public RoomId(String localpart, String hostname, int port) {
+        super(localpart, hostname, port);
     }
 
     @Override
     public char getSigil() {
         return SIGIL;
-    }
-
-    @Override
-    protected String localpart(String localpart) {
-        return localpart;
     }
 }

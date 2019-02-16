@@ -19,26 +19,9 @@ package io.github.ma1uta.matrix;
 /**
  * Unknown MXID.
  */
-public class UnknownId extends Id {
+public class UnknownId extends HostnamelessId {
 
-    private char sigil;
-
-    public UnknownId(char sigil, String localpart, String serverName) {
-        super(localpart, serverName);
-    }
-
-    @Override
-    public char getSigil() {
-        return sigil;
-    }
-
-    @Override
-    protected String localpart(String localpart) {
-        return localpart;
-    }
-
-    @Override
-    protected String hostname(String hostname) {
-        return hostname;
+    public UnknownId(String id) {
+        super(id);
     }
 }
