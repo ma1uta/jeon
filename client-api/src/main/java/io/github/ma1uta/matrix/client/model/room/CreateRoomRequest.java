@@ -19,11 +19,11 @@ package io.github.ma1uta.matrix.client.model.room;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.Event;
+import io.github.ma1uta.matrix.event.content.RoomCreateContent;
 import io.github.ma1uta.matrix.event.content.RoomPowerLevelsContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -122,7 +122,7 @@ public class CreateRoomRequest {
             + "to clobber other keys."
     )
     @JsonbProperty("creation_content")
-    private Map<String, Object> creationContent;
+    private RoomCreateContent creationContent;
 
     /**
      * A list of state events to set in the new room. This allows the user to override the default state events set in the new room.
@@ -228,11 +228,11 @@ public class CreateRoomRequest {
     }
 
     @JsonProperty("creation_content")
-    public Map<String, Object> getCreationContent() {
+    public RoomCreateContent getCreationContent() {
         return creationContent;
     }
 
-    public void setCreationContent(Map<String, Object> creationContent) {
+    public void setCreationContent(RoomCreateContent creationContent) {
         this.creationContent = creationContent;
     }
 
