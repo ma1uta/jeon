@@ -21,6 +21,8 @@ import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
 import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
+import io.github.ma1uta.matrix.server.model.federation.StateIdResponse;
+import io.github.ma1uta.matrix.server.model.federation.StateResponse;
 import io.github.ma1uta.matrix.server.model.federation.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -263,35 +265,72 @@ public interface FederationApi {
         @Suspended AsyncResponse asyncResponse);
 
     /**
-     * To get missing events (?).
+     * Retrieves previous events that the sender is missing. This is done by doing a breadth-first walk of the prev_events for
+     * the latest_events, ignoring any events in earliest_events and stopping at the limit.
      * <br>
-     * !!! Not described in spec.
+     * <b>Requires auth</b>: Yes.
+     * Return: List of the {@link List} of the {@link io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit}.
+     * <p>Status code 200: The previous events for latest_events, excluding any earliest_events, up to the provided limit.</p>
      *
-     * @param roomId          room identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: missing events.
+     * @param roomId         Required. The room ID to search in.
+     * @param limit          The maximum number of events to retrieve. Defaults to 10.
+     * @param minDepth       The minimum depth of events to retrieve. Defaults to 0.
+     * @param earliestEvents Required. The latest event IDs that the sender already has. These are skipped when retrieving
+     *                       the previous events of latest_events.
+     * @param latestEvents   Required. The event IDs to retrieve the previous events for.
+     * @param uriInfo        Request Information.
+     * @param httpHeaders    Http headers.
+     * @param asyncResponse  Asynchronous response.
      */
+    @Operation(
+        summary = "Retrieves previous events that the sender is missing.",
+        description = "This is done by doing a breadth-first walk of the prev_events for the latest_events,"
+            + " ignoring any events in earliest_events and stopping at the limit.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The previous events for latest_events, excluding any earliest_events, up to the provided limit.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = List.class
+                    )
+                )
+            )
+        }
+    )
     @POST
     @Path("/get_missing_events/{roomId}")
-    Response getMissingEvents(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                              @Context HttpServletResponse servletResponse);
-
-    /**
-     * To fetch all the state of a given room.
-     * <br>
-     * Retrieves a snapshot of the entire current state of the given room. The response will contain a single Transaction, inside
-     * which will be a list of PDUs that encode the state.
-     *
-     * @param roomId          room identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: current state of the specified room.
-     */
-    @GET
-    @Path("/state/{roomId}")
-    Transaction state(
-        @PathParam("roomId") String roomId,
+    void getMissingEvents(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID to search in.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "limit",
+            description = "The maximum number of events to retrieve.",
+            schema = @Schema(
+                defaultValue = "10"
+            )
+        ) @QueryParam("limit") Integer limit,
+        @Parameter(
+            name = "min_depth",
+            description = "The minimum depth of events to retrieve.",
+            schema = @Schema(
+                defaultValue = "0"
+            )
+        ) @QueryParam("min_depth") Integer minDepth,
+        @Parameter(
+            name = "earliest_events",
+            description = "The latest event IDs that the sender already has. These are skipped when retrieving"
+                + " the previous events of latest_events.",
+            required = true
+        ) @QueryParam("earliest_events") List<String> earliestEvents,
+        @Parameter(
+            name = "latest_events",
+            description = "The event IDs to retrieve the previous events for.",
+            required = true
+        ) @QueryParam("latest_events") List<String> latestEvents,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -299,17 +338,102 @@ public interface FederationApi {
     );
 
     /**
-     * !!! Not described in spec.
+     * Retrieves a snapshot of a room's state at a given event.
+     * <br>
+     * Return: {@link StateResponse}.
+     * <b>Requires auth</b>: Yes.
+     * <p>Status code 200: The fully resolved state for the room, prior to considering any state changes induced by the requested event.
+     * Includes the authorization chain for the events.</p>
      *
-     * @param roomId          room identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200:
+     * @param roomId        Required. The room ID to get state for.
+     * @param eventId       Required. An event ID in the room to retrieve the state at.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Retrieves a snapshot of a room's state at a given event.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The fully resolved state for the room, prior to considering any state changes induced by"
+                    + " the requested event. Includes the authorization chain for the events.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = StateResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/state/{roomId}")
+    void state(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID to get state for.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "event_id",
+            description = "An event ID in the room to retrieve the state at.",
+            required = true
+        ) @QueryParam("event_id") String eventId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Retrieves a snapshot of a room's state at a given event, in the form of event IDs.
+     * This performs the same function as calling /state/{roomId}, however this returns just the event IDs rather than the full events.
+     * <br>
+     * Return: {@link StateIdResponse}.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <p>Status code 200: The fully resolved state for the room, prior to considering any state changes induced by the requested event.
+     * Includes the authorization chain for the events.</p>
+     *
+     * @param roomId        Required. The room ID to get state for.
+     * @param eventId       Required. An event ID in the room to retrieve the state at.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Retrieves a snapshot of a room's state at a given event, in the form of event IDs.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The fully resolved state for the room, prior to considering any state changes induced by"
+                    + " the requested event. Includes the authorization chain for the events.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = StateIdResponse.class
+                    )
+                )
+            )
+        }
+    )
     @GET
     @Path("/state_ids/{roomId}")
-    Transaction stateIds(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                         @Context HttpServletResponse servletResponse);
+    void stateIds(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID to get state for.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "event_id",
+            description = "An event ID in the room to retrieve the state at.",
+            required = true
+        ) @QueryParam("event_id") String eventId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * To fetch a particular event.
