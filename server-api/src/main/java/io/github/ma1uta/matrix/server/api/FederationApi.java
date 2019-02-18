@@ -16,9 +16,9 @@
 
 package io.github.ma1uta.matrix.server.api;
 
-import io.github.ma1uta.matrix.Event;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
+import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
 import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
 import io.github.ma1uta.matrix.server.model.federation.StateIdResponse;
@@ -33,7 +33,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -436,20 +435,78 @@ public interface FederationApi {
     );
 
     /**
-     * To fetch a particular event.
+     * Retrieves a single event.
      * <br>
-     * Retrieves a single event. The response will contain a partial Transaction, having just the origin, origin_server_ts and pdus fields;
-     * the event will be encoded as the only PDU in the pdus list.
+     * Return: {@link PersistedDataUnit}.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <p>Status code 200: A transaction containing a single PDU which is the event requested.</p>
      *
+     * @param eventId       Required. The event ID to get.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Retrieves a single event.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A transaction containing a single PDU which is the event requested.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = PersistedDataUnit.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/event/{eventId}")
+    void event(
+        @Parameter(
+            name = "eventId",
+            description = "The event ID to get.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * To make a join request.
+     * <br>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
+     * @param userId          user mxid.
+     * @param servletRequest  servlet request.
+     * @param servletResponse servlet response.
+     * @return Status code 200: Partial Event.
+     */
+    @GET
+    @Path("/make_join/{context}/{userId}")
+    Event makeJoin(@PathParam("context") String context, @PathParam("userId") String userId, @Context UriInfo uriInfo,
+                   @Context HttpHeaders httpHeaders,
+                   @Context HttpServletResponse servletResponse);
+
+    /**
+     * To send a join request.
+     * <br>
+     * !!! Not described in spec.
+     *
+     * @param context         context (?).
      * @param eventId         event identifier.
      * @param servletRequest  servlet request.
      * @param servletResponse servlet response.
-     * @return Status code 200: single event.
+     * @return Status code 200: (?).
      */
-    @GET
-    @Path("/event/{eventId}")
-    Transaction event(@PathParam("eventId") String eventId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                      @Context HttpServletResponse servletResponse);
+    @PUT
+    @Path("/send_join/{context}/{eventId}")
+    Response sendJoin(@PathParam("context") String context, @PathParam("eventId") String eventId,
+                      @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * To stream events all the events.
@@ -486,39 +543,6 @@ public interface FederationApi {
     Response query(@PathParam("queryType") String queryType, Map<String, Object> query, @Context UriInfo uriInfo,
                    @Context HttpHeaders httpHeaders,
                    @Context HttpServletResponse servletResponse);
-
-    /**
-     * To make a join request.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param context         context (?).
-     * @param userId          user mxid.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: Partial Event.
-     */
-    @GET
-    @Path("/make_join/{context}/{userId}")
-    Event makeJoin(@PathParam("context") String context, @PathParam("userId") String userId, @Context UriInfo uriInfo,
-                   @Context HttpHeaders httpHeaders,
-                   @Context HttpServletResponse servletResponse);
-
-    /**
-     * To send a join request.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param context         context (?).
-     * @param eventId         event identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: (?).
-     */
-    @PUT
-    @Path("/send_join/{context}/{eventId}")
-    Response sendJoin(@PathParam("context") String context, @PathParam("eventId") String eventId,
-                      @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
     /**
      * To make a leave request.
