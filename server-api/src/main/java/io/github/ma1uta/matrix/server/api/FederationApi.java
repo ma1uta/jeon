@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.server.api;
 
+import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Page;
+import io.github.ma1uta.matrix.server.model.federation.MakeJoinResponse;
 import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
@@ -476,21 +479,75 @@ public interface FederationApi {
     );
 
     /**
-     * To make a join request.
+     * Asks the receiving server to return information that the sending server will need to prepare a join event to get into the room.
      * <br>
-     * !!! Not described in spec.
+     * <b>Requires auth</b>: Yes.
+     * Return: {@link MakeJoinResponse}.
+     * <p>Status code 200: A template to be used for the rest of the Joining Rooms handshake. Note that events have a different format
+     * depending on the room version - check the room version specification for precise event formats. The response body here describes
+     * the common event fields in more detail and may be missing other required fields for a PDU.</p>
+     * <p>Status code 400: The request is invalid or the room the server is attempting to join has a version that is not listed
+     * in the ver parameters. The error should be passed through to clients so that they may give better feedback to users.</p>
      *
-     * @param context         context (?).
-     * @param userId          user mxid.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: Partial Event.
+     * @param roomId        Required. The room ID that is about to be joined.
+     * @param userId        Required. The user ID the join event will be for.
+     * @param ver           The room versions the sending server has support for. Defaults to [1].
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "sks the receiving server to return information that the sending server will need to prepare a join event to"
+            + " get into the room.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A template to be used for the rest of the Joining Rooms handshake. Note that events have a different format"
+                    + " depending on the room version - check the room version specification for precise event formats. The response body"
+                    + " here describes the common event fields in more detail and may be missing other required fields for a PDU.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = MakeJoinResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The request is invalid or the room the server is attempting to join has a version that is not listed in"
+                    + " the ver parameters. The error should be passed through to clients so that they may give better feedback to users.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
+    )
     @GET
-    @Path("/make_join/{context}/{userId}")
-    Event makeJoin(@PathParam("context") String context, @PathParam("userId") String userId, @Context UriInfo uriInfo,
-                   @Context HttpHeaders httpHeaders,
-                   @Context HttpServletResponse servletResponse);
+    @Path("/make_join/{roomId}/{userId}")
+    void makeJoin(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID that is about to be joined.",
+            required = true
+        ) @PathParam("roomId") Id roomId,
+        @Parameter(
+            name = "userId",
+            description = "The user ID the join event will be for.",
+            required = true
+        ) @PathParam("userId") Id userId,
+        @Parameter(
+            name = "ver",
+            description = "The room versions the sending server has support for.",
+            schema = @Schema(
+                defaultValue = "1"
+            )
+        ) @QueryParam("ver") List<String> ver,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * To send a join request.
