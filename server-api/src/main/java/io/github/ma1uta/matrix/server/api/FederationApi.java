@@ -24,11 +24,13 @@ import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
 import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
+import io.github.ma1uta.matrix.server.model.federation.RoomStateResponse;
 import io.github.ma1uta.matrix.server.model.federation.StateIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.StateResponse;
 import io.github.ma1uta.matrix.server.model.federation.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -497,7 +499,7 @@ public interface FederationApi {
      * @param asyncResponse Asynchronous response.
      */
     @Operation(
-        summary = "sks the receiving server to return information that the sending server will need to prepare a join event to"
+        summary = "Asks the receiving server to return information that the sending server will need to prepare a join event to"
             + " get into the room.",
         responses = {
             @ApiResponse(
@@ -550,20 +552,71 @@ public interface FederationApi {
     );
 
     /**
-     * To send a join request.
+     * Submits a signed join event to the resident server for it to accept it into the room's graph. Note that events have a different
+     * format depending on the room version - check the room version specification for precise event formats. The request and response
+     * body here describes the common event fields in more detail and may be missing other required fields for a PDU.
      * <br>
-     * !!! Not described in spec.
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: list with status and {@link io.github.ma1uta.matrix.server.model.federation.RoomStateResponse}.
+     * <p>Status code 200: The full state for the room, having accepted the join event.</p>
      *
-     * @param context         context (?).
-     * @param eventId         event identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: (?).
+     * @param roomId        Required. The room ID that is about to be joined.
+     * @param eventId       Required. The event ID for the join event.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Submits a signed join event to the resident server for it to accept it into the room's graph.",
+        description = "ote that events have a different format depending on the room version - check the room version specification"
+            + " for precise event formats. The request and response body here describes the common event fields in more detail and"
+            + " may be missing other required fields for a PDU.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The full state for the room, having accepted the join event.",
+                content = @Content(
+                    array = @ArraySchema(
+                        schema = @Schema(
+                            anyOf = {
+                                Integer.class,
+                                RoomStateResponse.class
+                            }
+                        )
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "The request is invalid or the room the server is attempting to join has a version that is not listed in"
+                    + " the ver parameters. The error should be passed through to clients so that they may give better feedback to users.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
+    )
     @PUT
-    @Path("/send_join/{context}/{eventId}")
-    Response sendJoin(@PathParam("context") String context, @PathParam("eventId") String eventId,
-                      @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
+    @Path("/send_join/{roomId}/{eventId}")
+    void sendJoin(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID that is about to be joined.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "eventId",
+            description = "The event ID for the join event.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * To stream events all the events.
