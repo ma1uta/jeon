@@ -16,15 +16,19 @@
 
 package io.github.ma1uta.matrix.server.api;
 
+import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Page;
-import io.github.ma1uta.matrix.server.model.federation.MakeJoinResponse;
+import io.github.ma1uta.matrix.server.model.federation.EventContainer;
+import io.github.ma1uta.matrix.server.model.federation.InviteV1Request;
+import io.github.ma1uta.matrix.server.model.federation.MakeResponse;
 import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
 import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
 import io.github.ma1uta.matrix.server.model.federation.RoomStateResponse;
+import io.github.ma1uta.matrix.server.model.federation.SendRequest;
 import io.github.ma1uta.matrix.server.model.federation.StateIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.StateResponse;
 import io.github.ma1uta.matrix.server.model.federation.Transaction;
@@ -65,7 +69,7 @@ import javax.ws.rs.core.UriInfo;
 @Path("/_matrix/federation/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface FederationApi {
+public interface FederationV1Api {
 
     /**
      * Push messages representing live activity to another server. The destination name will be set to that of the receiving server itself.
@@ -484,7 +488,7 @@ public interface FederationApi {
      * Asks the receiving server to return information that the sending server will need to prepare a join event to get into the room.
      * <br>
      * <b>Requires auth</b>: Yes.
-     * Return: {@link MakeJoinResponse}.
+     * Return: {@link MakeResponse}.
      * <p>Status code 200: A template to be used for the rest of the Joining Rooms handshake. Note that events have a different format
      * depending on the room version - check the room version specification for precise event formats. The response body here describes
      * the common event fields in more detail and may be missing other required fields for a PDU.</p>
@@ -509,7 +513,7 @@ public interface FederationApi {
                     + " here describes the common event fields in more detail and may be missing other required fields for a PDU.",
                 content = @Content(
                     schema = @Schema(
-                        implementation = MakeJoinResponse.class
+                        implementation = MakeResponse.class
                     )
                 )
             ),
@@ -563,13 +567,14 @@ public interface FederationApi {
      *
      * @param roomId        Required. The room ID that is about to be joined.
      * @param eventId       Required. The event ID for the join event.
+     * @param request       Requires. JSON body request.
      * @param uriInfo       Request Information.
      * @param httpHeaders   Http headers.
      * @param asyncResponse Asynchronous response.
      */
     @Operation(
         summary = "Submits a signed join event to the resident server for it to accept it into the room's graph.",
-        description = "ote that events have a different format depending on the room version - check the room version specification"
+        description = "Note that events have a different format depending on the room version - check the room version specification"
             + " for precise event formats. The request and response body here describes the common event fields in more detail and"
             + " may be missing other required fields for a PDU.",
         responses = {
@@ -612,6 +617,7 @@ public interface FederationApi {
             description = "The event ID for the join event.",
             required = true
         ) @PathParam("eventId") String eventId,
+        @RequestBody SendRequest request,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -619,21 +625,217 @@ public interface FederationApi {
     );
 
     /**
-     * To stream events all the events.
+     * Invites a remote user to a room. Once the event has been signed by both the inviting homeserver and the invited homeserver,
+     * it can be sent to all of the servers in the room by the inviting homeserver.
      * <br>
-     * Retrieves all of the transactions later than any version given by the "v" arguments.
+     * Servers should prefer to use the v2 API for invites instead of the v1 API. Servers which receive a v1 invite request must assume
+     * that the room version is either "1" or "2".
+     * <br>
+     * Note that events have a different format depending on the room version - check the room version specification for precise
+     * event formats. The request and response bodies here describe the common event fields in more detail and may be missing other
+     * required fields for a PDU.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: List of the {@link Integer} and {@link EventContainer}.
+     * <p>Status code 200: The event with the invited server's signature added. All other fields of the events should remain untouched.
+     * Note that events have a different format depending on the room version - check the room version specification for precise event
+     * formats.</p>
+     * <p>Status code 403: The invite is not allowed. This could be for a number of reasons, including:</p>
+     * <ul>
+     * <li>The sender is not allowed to send invites to the target user/homeserver.</li>
+     * <li>The homeserver does not permit anyone to invite its users.</li>
+     * <li>The homeserver refuses to participate in the room.</li>
+     * </ul>
      *
-     * @param parentId        parent PDU ID.
-     * @param limit           total number of the PDU ID.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: stream events.
+     * @param roomId        Required. The room ID that the user is being invited to.
+     * @param eventId       Required. The event ID for the invite event, generated by the inviting server.
+     * @param request       Invite JSON request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Invites a remote user to a room.",
+        description = "Once the event has been signed by both the inviting homeserver and the invited homeserver, it can be sent to all"
+            + " of the servers in the room by the inviting homeserver. Servers should prefer to use the v2 API for invites instead"
+            + " of the v1 API. Servers which receive a v1 invite request must assume that the room version is either \"1\" or \"2\"."
+            + " Note that events have a different format depending on the room version-check the room version specification for precise"
+            + " event formats.The request and response bodies here describe the common event fields in more detail and may be missing other"
+            + " required fields for a PDU.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The event with the invited server's signature added. All other fields of the events should remain untouched."
+                    + " Note that events have a different format depending on the room version - check the room version specification"
+                    + " for precise event formats.",
+                content = @Content(
+                    array = @ArraySchema(
+                        schema = @Schema(
+                            anyOf = {
+                                Integer.class,
+                                EventContainer.class
+                            }
+                        )
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The invite is not allowed.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @PUT
+    @Path("/invite/{roomId}/{eventId}")
+    void invite(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID that the user is being invited to.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "eventId",
+            description = "The event ID for the invite event, generated by the inviting server.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+        @RequestBody InviteV1Request request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Asks the receiving server to return information that the sending server will need to prepare a leave event to get out of the room.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: List of the {@link Integer} and {@link MakeResponse}.
+     * <p>Status code 200: A template to be used to call /send_leave. Note that events have a different format depending on
+     * the room version - check the room version specification for precise event formats. The response body here describes the common event
+     * fields in more detail and may be missing other required fields for a PDU.</p>
+     * <p>Status code 403: The request is not authorized. This could mean that the user is not in the room.</p>
+     *
+     * @param roomId        Required. The room ID that is about to be left.
+     * @param userId        Required. The user ID the leave event will be for.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Asks the receiving server to return information that the sending server will need to prepare a leave event"
+            + " to get out of the room.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "A template to be used to call /send_leave. Note that events have a different format depending on"
+                    + " the room version - check the room version specification for precise event formats. The response body here describes"
+                    + " the common event fields in more detail and may be missing other required fields for a PDU.",
+                content = @Content(
+                    array = @ArraySchema(
+                        schema = @Schema(
+                            anyOf = {
+                                Integer.class,
+                                MakeResponse.class
+                            }
+                        )
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The request is not authorized. This could mean that the user is not in the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
+    )
     @GET
-    @Path("/pull")
-    Transaction pull(@QueryParam("v") String parentId, @QueryParam("limit") Long limit, @Context UriInfo uriInfo,
-                     @Context HttpHeaders httpHeaders,
-                     @Context HttpServletResponse servletResponse);
+    @Path("/make_leave/{roomId}/{userId}")
+    void makeLeave(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID that is about to be left.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "userId",
+            description = "The user ID the leave event will be for.",
+            required = true
+        ) @PathParam("userId") String userId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Submits a signed leave event to the resident server for it to accept it into the room's graph. Note that events have a different
+     * format depending on the room version - check the room version specification for precise event formats. The request and response
+     * body here describes the common event fields in more detail and may be missing other required fields for a PDU.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: List of {@link Integer} and {@link EmptyResponse}.
+     * <p>Status code 200: An empty response to indicate the event was accepted into the graph by the receiving homeserver.</p>
+     *
+     * @param roomId        Required. The room ID that is about to be left.
+     * @param eventId       Required. The event ID for the leave event.
+     * @param request       JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Submits a signed leave event to the resident server for it to accept it into the room's graph.",
+        description = "Note that events have a different format depending on the room version - check the room version specification"
+            + " for precise event formats. The request and response body here describes the common event fields in more detail and may be"
+            + " missing other required fields for a PDU.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "An empty response to indicate the event was accepted into the graph by the receiving homeserver.",
+                content = @Content(
+                    array = @ArraySchema(
+                        schema = @Schema(
+                            anyOf = {
+                                Integer.class,
+                                EmptyResponse.class
+                            }
+                        )
+                    )
+                )
+            )
+        }
+    )
+    @PUT
+    @Path("/send_leave/{roomId}/{eventId}")
+    void sendLeave(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID that is about to be left.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @Parameter(
+            name = "eventId",
+            description = "The event ID for the leave event.",
+            required = true
+        ) @PathParam("eventId") String eventId,
+        @RequestBody SendRequest request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * To make a query.
@@ -653,57 +855,6 @@ public interface FederationApi {
     Response query(@PathParam("queryType") String queryType, Map<String, Object> query, @Context UriInfo uriInfo,
                    @Context HttpHeaders httpHeaders,
                    @Context HttpServletResponse servletResponse);
-
-    /**
-     * To make a leave request.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param context         context (?).
-     * @param userId          user mxid.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: (?).
-     */
-    @GET
-    @Path("/make_leave/{context}/{userId}")
-    Response makeLeave(@PathParam("context") String context, @PathParam("userId") String userId, @Context UriInfo uriInfo,
-                       @Context HttpHeaders httpHeaders,
-                       @Context HttpServletResponse servletResponse);
-
-    /**
-     * To send a leave request.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param roomId          room id.
-     * @param txid            transaction id (?).
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: (?).
-     */
-    @PUT
-    @Path("/send_leave/{roomId}/{txid}")
-    Response sendLeave(@PathParam("roomId") String roomId, @PathParam("txid") String txid, @Context UriInfo uriInfo,
-                       @Context HttpHeaders httpHeaders,
-                       @Context HttpServletResponse servletResponse);
-
-    /**
-     * Send invite.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param context         context (?).
-     * @param eventId         event id.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: pdu of the invite event.
-     */
-    @PUT
-    @Path("/invite/{context}/{eventId}")
-    Response invite(@PathParam("context") String context, @PathParam("eventId") String eventId, @Context UriInfo uriInfo,
-                    @Context HttpHeaders httpHeaders,
-                    @Context HttpServletResponse servletResponse);
 
     /**
      * To get 3pid invites of the specified room.

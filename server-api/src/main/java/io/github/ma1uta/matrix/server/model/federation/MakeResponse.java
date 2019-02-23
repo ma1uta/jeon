@@ -22,12 +22,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
- * Make join response.
+ * Response of the make_join/make_leave requests.
  */
 @Schema(
-    description = "Make join response."
+    description = "Response of the make_join/make_leave requests."
 )
-public class MakeJoinResponse {
+public class MakeResponse {
 
     /**
      * The version of the room where the server is trying to join. If not provided, the room version is assumed to be either "1" or "2".
