@@ -14,41 +14,73 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.server.model.bind;
+package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Signed;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Invitation.
  * <br>
  * Sends when the association between mxid and pair medium-address is validated.
  */
+@Schema(
+    description = "Invitation."
+)
 public class Invite {
 
     /**
-     * 'email' or 'msisdn'.
+     * Required. The type of third party invite issues. Currently only "email" is used.
      */
+    @Schema(
+        description = "The type of third party invite issues. Currently only \"email\" is used.",
+        required = true
+    )
     private String medium;
+
     /**
-     * email or phone number.
+     * Required. The third party identifier that received the invite.
      */
+    @Schema(
+        description = "The third party identifier that received the invite.",
+        required = true
+    )
     private String address;
+
     /**
-     * Owner of the 3pid.
+     * Required. The now-bound user ID that received the invite.
      */
-    private String mxid;
+    @Schema(
+        description = "The now-bound user ID that received the invite."
+    )
+    private Id mxid;
+
     /**
-     * The room which receive this invite.
+     * Required. The room ID the invite is valid for.
      */
-    @JsonProperty("room_id")
-    private String roomId;
+    @Schema(
+        name = "room_id",
+        description = "The room ID the invite is valid for.",
+        required = true
+    )
+    @JsonbProperty("room_id")
+    private Id roomId;
+
     /**
-     * Who sends this invite.
+     * Required. The user ID that sent the invite.
      */
-    private String sender;
+    @Schema(
+        description = "The user ID that sent the invite.",
+        required = true
+    )
+    private Id sender;
+
     /**
-     * Signed part.
+     * Required. Signature from the identity server using a long-term private key.
      */
     private Signed signed;
 
@@ -68,27 +100,28 @@ public class Invite {
         this.address = address;
     }
 
-    public String getMxid() {
+    public Id getMxid() {
         return mxid;
     }
 
-    public void setMxid(String mxid) {
+    public void setMxid(Id mxid) {
         this.mxid = mxid;
     }
 
-    public String getRoomId() {
+    @JsonProperty("room_id")
+    public Id getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
+    public void setRoomId(Id roomId) {
         this.roomId = roomId;
     }
 
-    public String getSender() {
+    public Id getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(Id sender) {
         this.sender = sender;
     }
 

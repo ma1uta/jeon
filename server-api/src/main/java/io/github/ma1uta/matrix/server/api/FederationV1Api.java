@@ -20,6 +20,7 @@ import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Page;
+import io.github.ma1uta.matrix.server.model.federation.OnBindRequest;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
 import io.github.ma1uta.matrix.server.model.federation.InviteV1Request;
 import io.github.ma1uta.matrix.server.model.federation.MakeResponse;
@@ -31,6 +32,7 @@ import io.github.ma1uta.matrix.server.model.federation.RoomStateResponse;
 import io.github.ma1uta.matrix.server.model.federation.SendRequest;
 import io.github.ma1uta.matrix.server.model.federation.StateIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.StateResponse;
+import io.github.ma1uta.matrix.server.model.federation.ThirdPartyInvite;
 import io.github.ma1uta.matrix.server.model.federation.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -838,6 +840,89 @@ public interface FederationV1Api {
     );
 
     /**
+     * The receiving server will verify the partial m.room.member event given in the request body. If valid, the receiving server will
+     * issue an invite as per the Inviting to a room section before returning a response to this request.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The invite has been issued successfully.</p>
+     *
+     * @param roomId        Required. The room ID to exchange a third party invite in.
+     * @param request       JSON body request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "The receiving server will verify the partial m.room.member event given in the request body.",
+        description = "If valid, the receiving server will issue an invite as per the Inviting to a room section before returning"
+            + " a response to this request.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The invite has been issued successfully.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @PUT
+    @Path("/exchange_third_party_invite/{roomId}")
+    void exchangeThirdPartyInvite(
+        @Parameter(
+            name = "roomId",
+            description = "The room ID to exchange a third party invite in.",
+            required = true
+        ) @PathParam("roomId") String roomId,
+        @RequestBody ThirdPartyInvite request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Used by identity servers to notify the homeserver that one of its users has bound a third party identifier successfully,
+     * including any pending room invites the identity server has been made aware of.
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The homeserver has processed the notification.</p>
+     *
+     * @param onBindRequest Request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Used by identity servers to notify the homeserver that one of its users has bound a third party identifier successfully,"
+            + " including any pending room invites the identity server has been made aware of.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The homeserver has processed the notification.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @Path("/3pid/onbind")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    void onBind(
+        @RequestBody OnBindRequest onBindRequest,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
      * To make a query.
      * <br>
      * Performs a single query request on the receiving homeserver. The Query Type part of the path specifies the kind of query being
@@ -855,21 +940,6 @@ public interface FederationV1Api {
     Response query(@PathParam("queryType") String queryType, Map<String, Object> query, @Context UriInfo uriInfo,
                    @Context HttpHeaders httpHeaders,
                    @Context HttpServletResponse servletResponse);
-
-    /**
-     * To get 3pid invites of the specified room.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param roomId          room identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: membership event.
-     */
-    @PUT
-    @Path("/exchange_third_party_invite/{roomId}")
-    Response exchangeThirdPartyInvite(@PathParam("roomId") String roomId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                                      @Context HttpServletResponse servletResponse);
 
     /**
      * Query a user keys (?).
