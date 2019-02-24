@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.server.model.federation;
+package io.github.ma1uta.matrix.server.model.federation.edu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.event.content.EventContent;
+import io.github.ma1uta.matrix.server.model.federation.edu.content.EphemeralDataUnitContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -25,11 +25,26 @@ import javax.json.bind.annotation.JsonbProperty;
 /**
  * These events are pushed between pairs of homeservers. They are not persisted and are not part of the history of a room, nor does the
  * receiving homeserver have to reply to them.
+ *
+ * @param <C> class of the EDU content.
  */
 @Schema(
     description = "Ephemeral data unit."
 )
-public class EphemeralDataUnit {
+public abstract class EphemeralDataUnit<C extends EphemeralDataUnitContent> {
+
+    /**
+     * Actual nested content.
+     */
+    private C content;
+
+    public C getContent() {
+        return content;
+    }
+
+    public void setContent(C content) {
+        this.content = content;
+    }
 
     /**
      * Required. The type of the ephemeral message.
@@ -40,27 +55,6 @@ public class EphemeralDataUnit {
         required = true
     )
     @JsonbProperty("edu_type")
-    private String eduType;
-
-    /**
-     * Actual nested content.
-     */
-    private EventContent content;
-
-    @JsonProperty("edu_type")
-    public String getEduType() {
-        return eduType;
-    }
-
-    public void setEduType(String eduType) {
-        this.eduType = eduType;
-    }
-
-    public EventContent getContent() {
-        return content;
-    }
-
-    public void setContent(EventContent content) {
-        this.content = content;
-    }
+    @JsonProperty(value = "edu_type", access = JsonProperty.Access.READ_ONLY)
+    public abstract String getEduType();
 }

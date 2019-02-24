@@ -19,14 +19,13 @@ package io.github.ma1uta.matrix.server.api;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Id;
-import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.server.model.federation.OnBindRequest;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
 import io.github.ma1uta.matrix.server.model.federation.InviteV1Request;
 import io.github.ma1uta.matrix.server.model.federation.MakeResponse;
 import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
-import io.github.ma1uta.matrix.server.model.federation.PublicRoomResponse;
+import io.github.ma1uta.matrix.server.model.federation.PublicRoomsResponse;
 import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
 import io.github.ma1uta.matrix.server.model.federation.RoomStateResponse;
 import io.github.ma1uta.matrix.server.model.federation.SendRequest;
@@ -923,6 +922,73 @@ public interface FederationV1Api {
     );
 
     /**
+     * Gets all the public rooms for the homeserver. This should not return rooms that are listed on another homeserver's directory,
+     * just those listed on the receiving homeserver's directory.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link PublicRoomsResponse}.
+     * <p>Status code 200: The public room list for the homeserver.</p>
+     *
+     * @param limit                The maximum number of rooms to return. Defaults to 0 (no limit).
+     * @param since                A pagination token from a previous call to this endpoint to fetch more rooms.
+     * @param includeAllNetworks   Whether or not to include all networks/protocols defined by application services on the homeserver.
+     *                             Defaults to false.
+     * @param thirdPartyInstanceId The specific third party network/protocol to request from the homeserver.
+     *                             Can only be used if include_all_networks is false.
+     * @param uriInfo              Request Information.
+     * @param httpHeaders          Http headers.
+     * @param asyncResponse        Asynchronous response.
+     */
+    @Operation(
+        summary = "Gets all the public rooms for the homeserver.",
+        description = "This should not return rooms that are listed on another homeserver's directory, just those listed on"
+            + " the receiving homeserver's directory.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The public room list for the homeserver.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = PublicRoomsResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/publicRooms")
+    void publicRooms(
+        @Parameter(
+            name = "limit",
+            description = "The maximum number of rooms to return.",
+            schema = @Schema(
+                defaultValue = "0"
+            )
+        ) @QueryParam("limit") Integer limit,
+        @Parameter(
+            name = "since",
+            description = "A pagination token from a previous call to this endpoint to fetch more rooms."
+        ) @QueryParam("since") String since,
+        @Parameter(
+            name = "include_all_networks",
+            description = "Whether or not to include all networks/protocols defined by application services on the homeserver",
+            schema = @Schema(
+                defaultValue = "false"
+            )
+        ) @QueryParam("include_all_networks") Boolean includeAllNetworks,
+        @Parameter(
+            name = "third_party_instance_id",
+            description = "The specific third party network/protocol to request from the homeserver. Can only be used if"
+                + " include_all_networks is false."
+        ) @QueryParam("third_party_instance_id") String thirdPartyInstanceId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
      * To make a query.
      * <br>
      * Performs a single query request on the receiving homeserver. The Query Type part of the path specifies the kind of query being
@@ -1001,28 +1067,4 @@ public interface FederationV1Api {
     @Path("/openid/userinfo")
     OpenIdResponse openId(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
-    /**
-     * Fetch the public room list for this server.
-     * <br>
-     * This API returns information in the same format as /publicRooms on the
-     * client API, but will only ever include local public rooms and hence is
-     * intended for consumption by other home servers.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param limit                limit retrieved rooms.
-     * @param since                since token.
-     * @param includeAllNetworks   include or not rooms from other servers.
-     * @param thirdPartyInstanceId 3pid server id.
-     * @param servletRequest       servlet request.
-     * @param servletResponse      servlet response.
-     * @return Status code 200: public rooms.
-     */
-    @GET
-    @Path("/publicRooms")
-    Page<PublicRoomResponse> publicRooms(@QueryParam("limit") Integer limit, @QueryParam("since") String since,
-                                         @QueryParam("include_all_networks") Boolean includeAllNetworks,
-                                         @QueryParam("third_party_instance_id") String thirdPartyInstanceId,
-                                         @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                                         @Context HttpServletResponse servletResponse);
 }

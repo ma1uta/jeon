@@ -17,6 +17,7 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.server.model.federation.edu.EphemeralDataUnit;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
