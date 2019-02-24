@@ -19,12 +19,14 @@ package io.github.ma1uta.matrix.server.api;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Id;
-import io.github.ma1uta.matrix.server.model.federation.OnBindRequest;
+import io.github.ma1uta.matrix.server.model.federation.DirectoryResponse;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
 import io.github.ma1uta.matrix.server.model.federation.InviteV1Request;
 import io.github.ma1uta.matrix.server.model.federation.MakeResponse;
+import io.github.ma1uta.matrix.server.model.federation.OnBindRequest;
 import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
+import io.github.ma1uta.matrix.server.model.federation.ProfileResponse;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomsResponse;
 import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
 import io.github.ma1uta.matrix.server.model.federation.RoomStateResponse;
@@ -989,23 +991,144 @@ public interface FederationV1Api {
     );
 
     /**
-     * To make a query.
+     * Performs a query to get the mapped room ID and list of resident homeservers in the room for a given room alias.
+     * Homeservers should only query room aliases that belong to the target server (identified by the DNS Name in the alias).
      * <br>
-     * Performs a single query request on the receiving homeserver. The Query Type part of the path specifies the kind of query being
-     * made, and its query arguments have a meaning specific to that kind of query. The response is a JSON-encoded object whose meaning
-     * also depends on the kind of query.
+     * Servers may wish to cache the response to this query to avoid requesting the information too often.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link DirectoryResponse}.
+     * <p>Status code 200: The corresponding room ID and list of known resident homeservers for the room.</p>
+     * <p>Status code 404: The room alias was not found.</p>
      *
-     * @param queryType       query type.
-     * @param query           query data.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: Query result.
+     * @param roomAlias     Required. The room alias to query.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Performs a query to get the mapped room ID and list of resident homeservers in the room for a given room alias.",
+        description = "Servers may wish to cache the response to this query to avoid requesting the information too often.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The corresponding room ID and list of known resident homeservers for the room.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = DirectoryResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The room alias was not found.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
+    )
     @GET
-    @Path("/query/{queryType}")
-    Response query(@PathParam("queryType") String queryType, Map<String, Object> query, @Context UriInfo uriInfo,
-                   @Context HttpHeaders httpHeaders,
-                   @Context HttpServletResponse servletResponse);
+    @Path("/query/directory")
+    void queryDirectory(
+        @Parameter(
+            name = "room_alias",
+            description = "The room alias to query.",
+            required = true
+        ) @QueryParam("room_alias") String roomAlias,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * The field to query.
+     */
+    class QueryProfileField {
+
+        protected QueryProfileField() {
+            //singleton
+        }
+
+        /**
+         * Display name.
+         */
+        public static final String DISPLAYNAME = "displayname";
+
+        /**
+         * Avatar url.
+         */
+        public static final String AVATAR_URL = "avatar_url";
+    }
+
+    /**
+     * Performs a query to get profile information, such as a display name or avatar, for a given user. Homeservers should only query
+     * profiles for users that belong to the target server (identified by the DNS Name in the user ID).
+     * <br>
+     * Servers may wish to cache the response to this query to avoid requesting the information too often.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link ProfileResponse}.
+     * <p>Status code 200: The profile for the user. If a field is specified in the request, only the matching field should be included
+     * in the response. If no field was specified, the response should include the fields of the user's profile that can be made public,
+     * such as the display name and avatar. If the user does not have a particular field set on their profile, the server should exclude
+     * it from the response body or give it the value null.</p>
+     * <p>Status code 404: The user does not exist or does not have a profile.</p>
+     *
+     * @param userId        Required. The user ID to query.
+     * @param field         The field to query. If specified, the server will only return the given field in the response.
+     *                      If not specified, the server will return the full profile for the user. One of: ["displayname", "avatar_url"]
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Performs a query to get profile information, such as a display name or avatar, for a given user.",
+        description = " Homeservers should only query profiles for users that belong to the target server (identified by the DNS Name"
+            + " in the user ID). Servers may wish to cache the response to this query to avoid requesting the information too often.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The profile for the user. If a field is specified in the request, only the matching field should be included"
+                    + " in the response. If no field was specified, the response should include the fields of the user's profile that"
+                    + " can be made public, such as the display name and avatar.If the user does not have a particular field set"
+                    + " on their profile, the server should exclude it from the response body or give it the value null.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ProfileResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The room alias was not found.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/query/profile")
+    void queryProfile(
+        @Parameter(
+            name = "user_id",
+            description = "The user ID to query.",
+            required = true
+        ) @QueryParam("user_id") String userId,
+        @QueryParam("field") String field,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * Query a user keys (?).
