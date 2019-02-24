@@ -16,14 +16,23 @@
 
 package io.github.ma1uta.matrix.server.model.federation;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
- * JSON body response for federation api.
+ * User info of the OpenID request.
  */
-public class OpenIdResponse {
+@Schema(
+    description = "User info of the OpenID request."
+)
+public class UserInfoResponse {
 
     /**
-     * User info.
+     * Required. The Matrix User ID who generated the token.
      */
+    @Schema(
+        description = "The Matrix User ID who generated the token.",
+        required = true
+    )
     private String sub;
 
     public String getSub() {

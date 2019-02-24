@@ -19,12 +19,12 @@ package io.github.ma1uta.matrix.server.api;
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.Id;
+import io.github.ma1uta.matrix.server.model.federation.DeviceResponse;
 import io.github.ma1uta.matrix.server.model.federation.DirectoryResponse;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
 import io.github.ma1uta.matrix.server.model.federation.InviteV1Request;
 import io.github.ma1uta.matrix.server.model.federation.MakeResponse;
 import io.github.ma1uta.matrix.server.model.federation.OnBindRequest;
-import io.github.ma1uta.matrix.server.model.federation.OpenIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
 import io.github.ma1uta.matrix.server.model.federation.ProfileResponse;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomsResponse;
@@ -35,6 +35,7 @@ import io.github.ma1uta.matrix.server.model.federation.StateIdResponse;
 import io.github.ma1uta.matrix.server.model.federation.StateResponse;
 import io.github.ma1uta.matrix.server.model.federation.ThirdPartyInvite;
 import io.github.ma1uta.matrix.server.model.federation.Transaction;
+import io.github.ma1uta.matrix.server.model.federation.UserInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -1131,6 +1132,94 @@ public interface FederationV1Api {
     );
 
     /**
+     * Exchanges an OpenID access token for information about the user who generated the token. Currently this only exposes
+     * the Matrix User ID of the owner.
+     * <br>
+     * Return: {@link UserInfoResponse}.
+     * <p>Status code 200: Information about the user who generated the OpenID access token.</p>
+     * <p>Status code 401: The token was not recognized or has expired.</p>
+     *
+     * @param accessToken   Required. The OpenID access token to get information about the owner for.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Exchanges an OpenID access token for information about the user who generated the token.",
+        description = "Currently this only exposes the Matrix User ID of the owner.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Information about the user who generated the OpenID access token.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = UserInfoResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The token was not recognized or has expired.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/openid/userinfo")
+    void userInfo(
+        @QueryParam("access_token") String accessToken,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Gets information on all of the user's devices.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link DeviceResponse}.
+     * <p>Status code 200: The user's devices.</p>
+     *
+     * @param userId        Required. The user ID to retrieve devices for. Must be a user local to the receiving homeserver.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Gets information on all of the user's devices.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The user's devices",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = DeviceResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @GET
+    @Path("/user/devices/{userId}")
+    void userDevices(
+        @Parameter(
+            name = "userId",
+            description = "The user ID to retrieve devices for. Must be a user local to the receiving homeserver.",
+            required = true
+        ) @PathParam("userId") String userId,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
      * Query a user keys (?).
      * <br>
      * !!! Not described in spec.
@@ -1146,21 +1235,6 @@ public interface FederationV1Api {
                            @Context HttpServletResponse servletResponse);
 
     /**
-     * To get user's devices.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param userId          user identifier.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: user devices.
-     */
-    @GET
-    @Path("/user/devices/{userId}")
-    Response userDevices(@PathParam("userId") String userId, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                         @Context HttpServletResponse servletResponse);
-
-    /**
      * To claim user ont-time-key.
      * <br>
      * !!! Not described in spec.
@@ -1172,22 +1246,5 @@ public interface FederationV1Api {
     @POST
     @Path("/user/keys/claim")
     Response userKeysClaim(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
-
-    /**
-     * Exchange a bearer token for information about a user.
-     * <br>
-     * The response format should be compatible with:
-     * <a href="http://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse">UserInfoResponse</a>
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: user info.
-     * Status code 401: missing access_token.
-     */
-    @GET
-    @Path("/openid/userinfo")
-    OpenIdResponse openId(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
 
 }
