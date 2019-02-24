@@ -23,6 +23,8 @@ import io.github.ma1uta.matrix.server.model.federation.DeviceResponse;
 import io.github.ma1uta.matrix.server.model.federation.DirectoryResponse;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
 import io.github.ma1uta.matrix.server.model.federation.InviteV1Request;
+import io.github.ma1uta.matrix.server.model.federation.KeyQueryRequest;
+import io.github.ma1uta.matrix.server.model.federation.KeyQueryResponse;
 import io.github.ma1uta.matrix.server.model.federation.MakeResponse;
 import io.github.ma1uta.matrix.server.model.federation.OnBindRequest;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
@@ -45,7 +47,6 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import java.util.List;
-import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -1220,19 +1221,41 @@ public interface FederationV1Api {
     );
 
     /**
-     * Query a user keys (?).
+     * Returns the current devices and identity keys for the given users.
      * <br>
-     * !!! Not described in spec.
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link KeyQueryResponse}.
+     * <p>Status code 200: The device information.</p>
      *
-     * @param query           query.
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: user keys (?).
+     * @param request       JSON request.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
+    @Operation(
+        summary = "Returns the current devices and identity keys for the given users.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The device information",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = KeyQueryResponse.class
+                    )
+                )
+            )
+        }
+    )
     @POST
     @Path("/user/keys/query")
-    Response userKeysQuery(Map<String, Map<String, List<String>>> query, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders,
-                           @Context HttpServletResponse servletResponse);
+    void userKeysQuery(
+        @RequestBody KeyQueryRequest request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
 
     /**
      * To claim user ont-time-key.
