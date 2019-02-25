@@ -27,7 +27,10 @@ public class ErrorResponse {
     public static class Code {
 
         protected Code() {
+            //singleton
         }
+
+        // Client - Server API
 
         /**
          * Forbidden access, e.g. joining a room without permission, failed login.
@@ -35,14 +38,14 @@ public class ErrorResponse {
         public static final String M_FORBIDDEN = "M_FORBIDDEN";
 
         /**
-         * The access token specified was missing.
-         */
-        public static final String M_MISSING_TOKEN = "M_MISSING_TOKEN";
-
-        /**
          * The access token specified was not recognised.
          */
         public static final String M_UNKNOWN_TOKEN = "M_UNKNOWN_TOKEN";
+
+        /**
+         * The access token specified was missing.
+         */
+        public static final String M_MISSING_TOKEN = "M_MISSING_TOKEN";
 
         /**
          * Request contained valid JSON, but it was malformed in some way, e.g. missing required keys, invalid values for keys.
@@ -65,6 +68,21 @@ public class ErrorResponse {
         public static final String M_LIMIT_EXCEEDED = "M_LIMIT_EXCEEDED";
 
         /**
+         * An unknown error has occurred.
+         */
+        public static final String M_UNKNOWN = "M_UNKNOWN";
+
+        /**
+         * The request contained an unrecognised value, such as an unknown token or medium.
+         */
+        public static final String M_UNRECOGNIZED = "M_UNRECOGNIZED";
+
+        /**
+         * The request was not correctly authorized. Usually due to login failures.
+         */
+        public static final String M_UNAUTHORIZED = "M_UNAUTHORIZED";
+
+        /**
          * Encountered when trying to register a user ID which has been taken.
          */
         public static final String M_USER_IN_USE = "M_USER_IN_USE";
@@ -75,11 +93,6 @@ public class ErrorResponse {
         public static final String M_INVALID_USERNAME = "M_INVALID_USERNAME";
 
         /**
-         * Encountered when trying to register a user ID which is not valid.
-         */
-        public static final String M_INVALID_PASSWORD = "M_INVALID_PASSWORD";
-
-        /**
          * Sent when the room alias given to the createRoom API is already in use.
          */
         public static final String M_ROOM_IN_USE = "M_ROOM_IN_USE";
@@ -88,11 +101,6 @@ public class ErrorResponse {
          * Sent when the initial state given to the createRoom API is invalid.
          */
         public static final String M_INVALID_ROOM_STATE = "M_INVALID_ROOM_STATE";
-
-        /**
-         * Encountered when specifying bad pagination query parameters.
-         */
-        public static final String M_BAD_PAGINATION = "M_BAD_PAGINATION";
 
         /**
          * Sent when a threepid given to an API cannot be used because the same threepid is already in use.
@@ -114,6 +122,11 @@ public class ErrorResponse {
          * addresses from a particular domain.
          */
         public static final String M_THREEPID_DENIED = "M_THREEPID_DENIED";
+
+        /**
+         * The client's request used a third party server, eg. ID server, that this server does not trust.
+         */
+        public static final String M_SERVER_NOT_TRUSTED = "M_SERVER_NOT_TRUSTED";
 
         /**
          * The client's request to create a room used a room version that the server does not support.
@@ -147,19 +160,14 @@ public class ErrorResponse {
         public static final String M_CAPTCHA_INVALID = "M_CAPTCHA_INVALID";
 
         /**
-         * The client's request used a third party server, eg. ID server, that this server does not trust.
-         */
-        public static final String M_SERVER_NOT_TRUSTED = "M_SERVER_NOT_TRUSTED";
-
-        /**
-         * The session of the identity server not found or not validated.
-         */
-        public static final String M_SESSION_NOT_VALIDATED = "M_SESSION_NOT_VALIDATED";
-
-        /**
          * A required parameter was missing from the request.
          */
         public static final String M_MISSING_PARAM = "M_MISSING_PARAM";
+
+        /**
+         * The request contained one or more invalid parameters.
+         */
+        public static final String M_INVALID_PARAM = "M_INVALID_PARAM";
 
         /**
          * The request or entity was too large.
@@ -173,9 +181,25 @@ public class ErrorResponse {
         public static final String M_EXCLUSIVE = "M_EXCLUSIVE";
 
         /**
-         * The request contained one or more invalid parameters.
+         * The request cannot be completed because the homeserver has reached a resource limit imposed on it. For example,
+         * a homeserver held in a shared hosting environment may reach a resource limit if it starts using too much memory or disk space.
+         * The error MUST have an admin_contact field to provide the user receiving the error a place to reach out to.
+         * Typically, this error will appear on routes which attempt to modify state (eg: sending messages, account data, etc) and
+         * not routes which only read state (eg: /sync, get account data, etc).
          */
-        public static final String M_INVALID_PARAM = "M_INVALID_PARAM";
+        public static final String M_RESOURCE_LIMIT_EXCEEDED = "M_RESOURCE_LIMIT_EXCEEDED";
+
+        // Identity Service API
+
+        /**
+         * The request was missing one or more parameters.
+         */
+        public static final String M_MISSING_PARAMS = "M_MISSING_PARAMS";
+
+        /**
+         * The session of the identity server not found or not validated.
+         */
+        public static final String M_SESSION_NOT_VALIDATED = "M_SESSION_NOT_VALIDATED";
 
         /**
          * A session could not be located for the given parameters.
@@ -207,15 +231,17 @@ public class ErrorResponse {
          */
         public static final String M_SEND_ERROR = "M_SEND_ERROR";
 
-        /**
-         * The request contained an unrecognised value, such as an unknown token or medium.
-         */
-        public static final String M_UNRECOGNIZED = "M_UNRECOGNIZED";
+        // Other
 
         /**
-         * An unknown error has occurred.
+         * Encountered when trying to register a user ID which is not valid.
          */
-        public static final String M_UNKNOWN = "M_UNKNOWN";
+        public static final String M_INVALID_PASSWORD = "M_INVALID_PASSWORD";
+
+        /**
+         * Encountered when specifying bad pagination query parameters.
+         */
+        public static final String M_BAD_PAGINATION = "M_BAD_PAGINATION";
     }
 
     /**
