@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @OpenAPIDefinition(
     info = @Info(
         title = "Client API",
-        version = "r0.4.0-4",
+        version = "r0.5.0-1",
         description = "The client-server API provides a simple lightweight API to let clients send messages, control rooms"
             + " and synchronise conversation history. It is designed to support both lightweight clients which store no state"
             + " and lazy-load data from the server as required - as well as heavyweight clients which maintain a full local"

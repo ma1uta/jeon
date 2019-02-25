@@ -48,6 +48,8 @@ public abstract class EphemeralDataUnit<C extends EphemeralDataUnitContent> {
 
     /**
      * Required. The type of the ephemeral message.
+     *
+     * @return EDU type.
      */
     @Schema(
         name = "edu_type",

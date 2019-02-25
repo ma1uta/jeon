@@ -27,7 +27,7 @@
     <artifactId>server-api</artifactId>
     <version>r0.1.1-1-SNAPSHOT</version>
 
-    <name>Server-Server API</name>
+    <name>server-server-api</name>
     <description>Server-Server API</description>
 
     <properties>
@@ -40,10 +40,28 @@
             <artifactId>common-api</artifactId>
             <version>${common.api.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <configuration>
+                    <resourcePackages>
+                        <package>io.github.ma1uta.matrix.server.api</package>
+                    </resourcePackages>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Automatic-Module-Name>matrix.server.api</Automatic-Module-Name>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

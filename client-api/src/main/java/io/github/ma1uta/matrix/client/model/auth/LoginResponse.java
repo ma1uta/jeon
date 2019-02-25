@@ -53,7 +53,7 @@ public class LoginResponse {
      * The hostname of the homeserver on which the account has been registered.
      *
      * @deprecated clients should extract the server_name from user_id (by splitting at the first colon) if they require it.
-     * Note also that homeserver is not spelt this way.
+     *      Note also that homeserver is not spelt this way.
      */
     @Schema(
         description = "The hostname of the homeserver on which the account has been registered."

@@ -60,8 +60,7 @@ public class StateIdResponse {
         this.authChain = authChain;
     }
 
-    public List<String>
-    getPdus() {
+    public List<String> getPdus() {
         return pdus;
     }
 

@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.info.License;
 @OpenAPIDefinition(
     info = @Info(
         title = "Server API",
-        version = "r0.1.0-1",
+        version = "r0.1.1-1",
         description = "Matrix homeservers use the Federation APIs (also known as server-server APIs) to communicate with each other."
             + " Homeservers use these APIs to push messages to each other in real-time, to retrieve historic messages from each other,"
             + " and to query profile and presence information about users on each other's servers.",
