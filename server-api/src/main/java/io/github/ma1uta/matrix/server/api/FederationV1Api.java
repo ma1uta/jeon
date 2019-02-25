@@ -23,6 +23,8 @@ import io.github.ma1uta.matrix.server.model.federation.DeviceResponse;
 import io.github.ma1uta.matrix.server.model.federation.DirectoryResponse;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
 import io.github.ma1uta.matrix.server.model.federation.InviteV1Request;
+import io.github.ma1uta.matrix.server.model.federation.KeyClaimRequest;
+import io.github.ma1uta.matrix.server.model.federation.KeyClaimResponse;
 import io.github.ma1uta.matrix.server.model.federation.KeyQueryRequest;
 import io.github.ma1uta.matrix.server.model.federation.KeyQueryResponse;
 import io.github.ma1uta.matrix.server.model.federation.MakeResponse;
@@ -47,6 +49,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -60,7 +63,6 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -1221,6 +1223,43 @@ public interface FederationV1Api {
     );
 
     /**
+     * Claims one-time keys for use in pre-key messages.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link Map} of user ID to {@link Map} from devices to a {@link Map} from &lt;algorithm&gt;:&lt;key_id&gt to key object.
+     * <p>Status code 200: The claimed keys.</p>
+     *
+     * @param request       Required. The keys to be claimed. A map from user ID, to a map from device ID to algorithm name.
+     * @param uriInfo       Request Information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Claims one-time keys for use in pre-key messages.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The claimed keys",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = KeyClaimResponse.class
+                    )
+                )
+            )
+        }
+    )
+    @POST
+    @Path("/user/keys/claim")
+    void userKeysClaim(
+        @RequestBody KeyClaimRequest request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
      * Returns the current devices and identity keys for the given users.
      * <br>
      * <b>Requires auth</b>: Yes.
@@ -1256,18 +1295,4 @@ public interface FederationV1Api {
         @Context HttpHeaders httpHeaders,
         @Suspended AsyncResponse asyncResponse
     );
-
-    /**
-     * To claim user ont-time-key.
-     * <br>
-     * !!! Not described in spec.
-     *
-     * @param servletRequest  servlet request.
-     * @param servletResponse servlet response.
-     * @return Status code 200: user's one-time key.
-     */
-    @POST
-    @Path("/user/keys/claim")
-    Response userKeysClaim(@Context UriInfo uriInfo, @Context HttpHeaders httpHeaders, @Context HttpServletResponse servletResponse);
-
 }
