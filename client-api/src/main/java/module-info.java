@@ -3,6 +3,7 @@ module matrix.client.api {
     exports io.github.ma1uta.matrix.client.model.account;
     exports io.github.ma1uta.matrix.client.model.admin;
     exports io.github.ma1uta.matrix.client.model.auth;
+    exports io.github.ma1uta.matrix.client.model.capability;
     exports io.github.ma1uta.matrix.client.model.content;
     exports io.github.ma1uta.matrix.client.model.deprecatedsync;
     exports io.github.ma1uta.matrix.client.model.device;

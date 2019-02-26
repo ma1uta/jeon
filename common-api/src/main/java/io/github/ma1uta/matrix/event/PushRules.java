@@ -14,32 +14,26 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.push;
+package io.github.ma1uta.matrix.event;
 
-import io.github.ma1uta.matrix.event.nested.Ruleset;
+import io.github.ma1uta.matrix.event.content.PushRulesContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * JSON body response for push api.
+ * All user push rules.
  */
 @Schema(
-    description = "JSON body response for push api."
+    description = "All user push rules."
 )
-public class PushRulesResponse {
+public class PushRules extends Event<PushRulesContent> {
 
     /**
-     * Required. The global ruleset.
+     * All user push rules.
      */
-    @Schema(
-        description = "The global ruleset."
-    )
-    private Ruleset global;
+    public static final String TYPE = "m.push_rules";
 
-    public Ruleset getGlobal() {
-        return global;
-    }
-
-    public void setGlobal(Ruleset global) {
-        this.global = global;
+    @Override
+    public String getType() {
+        return TYPE;
     }
 }
