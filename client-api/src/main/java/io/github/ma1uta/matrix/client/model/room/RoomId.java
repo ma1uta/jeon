@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,14 +36,14 @@ public class RoomId {
         description = "The created room's ID."
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 }

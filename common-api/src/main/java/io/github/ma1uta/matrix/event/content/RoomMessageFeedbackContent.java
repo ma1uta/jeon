@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -44,7 +43,7 @@ public class RoomMessageFeedbackContent implements EventContent {
         description = "The event that this feedback is related to."
     )
     @JsonbProperty("target_event_id")
-    private Id targetEventId;
+    private String targetEventId;
 
     /**
      * The type of feedback.
@@ -56,11 +55,11 @@ public class RoomMessageFeedbackContent implements EventContent {
     private String type;
 
     @JsonProperty("target_event_id")
-    public Id getTargetEventId() {
+    public String getTargetEventId() {
         return targetEventId;
     }
 
-    public void setTargetEventId(Id targetEventId) {
+    public void setTargetEventId(String targetEventId) {
         this.targetEventId = targetEventId;
     }
 

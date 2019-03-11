@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.identity.model.invitation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -56,7 +55,7 @@ public class InvitationRequest {
         required = true
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * Required. The Matrix user ID of the inviting user.
@@ -65,7 +64,7 @@ public class InvitationRequest {
         description = "The Matrix user ID of the inviting user.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     public String getMedium() {
         return medium;
@@ -84,19 +83,19 @@ public class InvitationRequest {
     }
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 }

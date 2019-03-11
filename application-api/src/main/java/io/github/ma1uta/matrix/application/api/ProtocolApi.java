@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.application.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.protocol.Protocol;
 import io.github.ma1uta.matrix.protocol.ProtocolLocation;
@@ -334,7 +333,7 @@ public interface ProtocolApi {
         @Parameter(
             description = "The Matrix room alias to look up.",
             required = true
-        ) @QueryParam("alias") Id alias,
+        ) @QueryParam("alias") String alias,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -409,7 +408,7 @@ public interface ProtocolApi {
         @Parameter(
             description = "The Matrix User Id to look up",
             required = true
-        ) @QueryParam("userid") Id userId,
+        ) @QueryParam("userid") String userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

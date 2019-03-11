@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.encryption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class DeviceKeys {
         description = "The ID of the user the device belongs to. Must match the user ID used when logging in."
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * Required. The ID of the device these keys belong to. Must match the device ID used when logging in.
@@ -77,7 +76,7 @@ public class DeviceKeys {
         description = "Signatures for the device key object. A map from user ID, to a map from (algorithm):(device_id) to "
             + "the signature."
     )
-    private Map<Id, Map<String, String>> signatures;
+    private Map<String, Map<String, String>> signatures;
 
     /**
      * Additional data added to the device key information by intermediate servers, and not covered by the signatures.
@@ -88,11 +87,11 @@ public class DeviceKeys {
     private UnsignedDeviceInfo unsignedDeviceInfo;
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -121,11 +120,11 @@ public class DeviceKeys {
         this.keys = keys;
     }
 
-    public Map<Id, Map<String, String>> getSignatures() {
+    public Map<String, Map<String, String>> getSignatures() {
         return signatures;
     }
 
-    public void setSignatures(Map<Id, Map<String, String>> signatures) {
+    public void setSignatures(Map<String, Map<String, String>> signatures) {
         this.signatures = signatures;
     }
 

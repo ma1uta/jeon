@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -48,7 +47,7 @@ public class TombstoneContent implements EventContent {
         required = true
     )
     @JsonbProperty("replacement_room")
-    private Id replacementRoom;
+    private String replacementRoom;
 
     public String getBody() {
         return body;
@@ -59,11 +58,11 @@ public class TombstoneContent implements EventContent {
     }
 
     @JsonProperty("replacement_room")
-    public Id getReplacementRoom() {
+    public String getReplacementRoom() {
         return replacementRoom;
     }
 
-    public void setReplacementRoom(Id replacementRoom) {
+    public void setReplacementRoom(String replacementRoom) {
         this.replacementRoom = replacementRoom;
     }
 }

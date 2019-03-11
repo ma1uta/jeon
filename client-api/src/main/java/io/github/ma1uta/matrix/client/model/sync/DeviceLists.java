@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class DeviceLists {
     @Schema(
         description = "List of users who have updated their device identity keys since the previous sync response."
     )
-    private List<Id> changed;
+    private List<String> changed;
 
     /**
      * List of users with whom we do not share any encrypted rooms anymore since the previous sync response.
@@ -43,21 +42,21 @@ public class DeviceLists {
     @Schema(
         description = "List of users with whom we do not share any encrypted rooms anymore since the previous sync response."
     )
-    private List<Id> left;
+    private List<String> left;
 
-    public List<Id> getChanged() {
+    public List<String> getChanged() {
         return changed;
     }
 
-    public void setChanged(List<Id> changed) {
+    public void setChanged(List<String> changed) {
         this.changed = changed;
     }
 
-    public List<Id> getLeft() {
+    public List<String> getLeft() {
         return left;
     }
 
-    public void setLeft(List<Id> left) {
+    public void setLeft(List<String> left) {
         this.left = left;
     }
 }

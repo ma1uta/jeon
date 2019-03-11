@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.server.model.federation.edu.content;
 
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.server.model.federation.edu.content.nested.RoomReceipts;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -28,5 +27,5 @@ import java.util.HashMap;
 @Schema(
     description = "Receipt content."
 )
-public class ReceiptContent extends HashMap<Id, RoomReceipts> implements EphemeralDataUnitContent {
+public class ReceiptContent extends HashMap<String, RoomReceipts> implements EphemeralDataUnitContent {
 }

@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Signed;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -57,7 +56,7 @@ public class Invite {
     @Schema(
         description = "The now-bound user ID that received the invite."
     )
-    private Id mxid;
+    private String mxid;
 
     /**
      * Required. The room ID the invite is valid for.
@@ -68,7 +67,7 @@ public class Invite {
         required = true
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * Required. The user ID that sent the invite.
@@ -77,7 +76,7 @@ public class Invite {
         description = "The user ID that sent the invite.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. Signature from the identity server using a long-term private key.
@@ -100,28 +99,28 @@ public class Invite {
         this.address = address;
     }
 
-    public Id getMxid() {
+    public String getMxid() {
         return mxid;
     }
 
-    public void setMxid(Id mxid) {
+    public void setMxid(String mxid) {
         this.mxid = mxid;
     }
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 

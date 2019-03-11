@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.admin.AdminResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -90,7 +89,7 @@ public interface AdminApi {
         @Parameter(
             description = "The use to look up",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

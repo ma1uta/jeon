@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.identity.model.signing;
 
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -36,7 +35,7 @@ public class SigningResponse {
         description = "The Matrix user ID of the user accepting the invitation.",
         required = true
     )
-    private Id mxid;
+    private String mxid;
 
     /**
      * Required. The Matrix user ID of the user who sent the invitation.
@@ -45,7 +44,7 @@ public class SigningResponse {
         description = "The Matrix user ID of the user who sent the invitation.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. The signature of the mxid, sender, and token.
@@ -54,7 +53,7 @@ public class SigningResponse {
         description = "The signature of the mxid, sender, and token.",
         required = true
     )
-    private Map<Id, Map<Id, String>> signatures;
+    private Map<String, Map<String, String>> signatures;
 
     /**
      * Required. The token for the invitation.
@@ -65,27 +64,27 @@ public class SigningResponse {
     )
     private String token;
 
-    public Id getMxid() {
+    public String getMxid() {
         return mxid;
     }
 
-    public void setMxid(Id mxid) {
+    public void setMxid(String mxid) {
         this.mxid = mxid;
     }
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public Map<Id, Map<Id, String>> getSignatures() {
+    public Map<String, Map<String, String>> getSignatures() {
         return signatures;
     }
 
-    public void setSignatures(Map<Id, Map<Id, String>> signatures) {
+    public void setSignatures(Map<String, Map<String, String>> signatures) {
         this.signatures = signatures;
     }
 

@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.push.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -63,7 +62,7 @@ public class Notification {
             + " to detect duplicate notification requests."
     )
     @JsonbProperty("event_id")
-    private Id eventId;
+    private String eventId;
 
     /**
      * The ID of the room in which this event occurred. Required if the notification relates to a specific Matrix event.
@@ -73,7 +72,7 @@ public class Notification {
         description = "The ID of the room in which this event occurred. Required if the notification relates to a specific Matrix event."
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * The type of the event as in the event's type field.
@@ -89,7 +88,7 @@ public class Notification {
     @Schema(
         description = "The sender of the event as in the corresponding event field."
     )
-    private Id sender;
+    private String sender;
 
     /**
      * The current display name of the sender in the room in which the event occurred.
@@ -119,7 +118,7 @@ public class Notification {
         description = "An alias to display for the room in which the event occurred."
     )
     @JsonbProperty("room_alias")
-    private Id roomAlias;
+    private String roomAlias;
 
     /**
      * This is true if the user receiving the notification is the subject of a member event (i.e. the state_key of the member event
@@ -172,20 +171,20 @@ public class Notification {
     private List<Device> devices;
 
     @JsonProperty("event_id")
-    public Id getEventId() {
+    public String getEventId() {
         return eventId;
     }
 
-    public void setEventId(Id eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
@@ -197,11 +196,11 @@ public class Notification {
         this.type = type;
     }
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -224,11 +223,11 @@ public class Notification {
     }
 
     @JsonProperty("room_alias")
-    public Id getRoomAlias() {
+    public String getRoomAlias() {
         return roomAlias;
     }
 
-    public void setRoomAlias(Id roomAlias) {
+    public void setRoomAlias(String roomAlias) {
         this.roomAlias = roomAlias;
     }
 

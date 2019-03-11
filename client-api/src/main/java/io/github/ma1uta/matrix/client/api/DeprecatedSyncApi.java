@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedInitialSyncResponse;
 import io.github.ma1uta.matrix.client.model.deprecatedsync.DeprecatedRoomInfo;
@@ -141,8 +140,8 @@ public interface DeprecatedSyncApi {
      * @param httpHeaders     Http headers.
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
-     * @deprecated in favor of {@link EventApi#roomEvent(Id, Id, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)} or
-     * {@link EventContextApi#context(Id, Id, Integer, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
+     * @deprecated in favor of {@link EventApi#roomEvent(String, String, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)} or
+     * {@link EventContextApi#context(String, String, Integer, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
      */
     @Operation(
         summary = "Get a single event based on event_id.",
@@ -187,7 +186,7 @@ public interface DeprecatedSyncApi {
         @Parameter(
             description = "The event ID to get.",
             required = true
-        ) @PathParam("eventId") Id eventId,
+        ) @PathParam("eventId") String eventId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -257,7 +256,7 @@ public interface DeprecatedSyncApi {
         @Parameter(
             description = "The room to get the data.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

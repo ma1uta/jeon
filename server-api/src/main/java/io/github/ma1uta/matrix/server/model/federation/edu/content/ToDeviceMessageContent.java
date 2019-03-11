@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation.edu.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.RoomMessageContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -39,7 +38,7 @@ public class ToDeviceMessageContent implements EphemeralDataUnitContent {
         description = "User ID of the sender.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. Event type for the message.
@@ -70,13 +69,13 @@ public class ToDeviceMessageContent implements EphemeralDataUnitContent {
             + " to message bodies. The device ID may also be *, meaning all known devices for the user.",
         required = true
     )
-    private Map<Id, Map<String, RoomMessageContent>> messages;
+    private Map<String, Map<String, RoomMessageContent>> messages;
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -97,12 +96,12 @@ public class ToDeviceMessageContent implements EphemeralDataUnitContent {
         this.messageId = messageId;
     }
 
-    public Map<Id, Map<String, RoomMessageContent>> getMessages() {
+    public Map<String, Map<String, RoomMessageContent>> getMessages() {
         return messages;
     }
 
     public void setMessages(
-        Map<Id, Map<String, RoomMessageContent>> messages) {
+        Map<String, Map<String, RoomMessageContent>> messages) {
         this.messages = messages;
     }
 }

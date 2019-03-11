@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation.edu.content.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class UserReadReceipt {
         required = true
     )
     @JsonbProperty("event_ids")
-    private List<Id> eventIds;
+    private List<String> eventIds;
 
     /**
      * Required. Metadata for the read receipt.
@@ -52,11 +51,11 @@ public class UserReadReceipt {
     private ReadReceiptMetadata data;
 
     @JsonProperty("event_ids")
-    public List<Id> getEventIds() {
+    public List<String> getEventIds() {
         return eventIds;
     }
 
-    public void setEventIds(List<Id> eventIds) {
+    public void setEventIds(List<String> eventIds) {
         this.eventIds = eventIds;
     }
 

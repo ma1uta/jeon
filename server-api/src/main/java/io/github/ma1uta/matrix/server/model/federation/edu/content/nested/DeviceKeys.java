@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation.edu.content.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public class DeviceKeys {
         required = true
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * Required. The ID of the device these keys belong to. Must match the device ID used when logging in.
@@ -88,11 +87,11 @@ public class DeviceKeys {
     private Map<String, Map<String, String>> signatures;
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

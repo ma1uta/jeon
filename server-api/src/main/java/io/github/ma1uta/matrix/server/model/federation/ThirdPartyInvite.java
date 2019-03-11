@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.RoomMemberContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -50,7 +49,7 @@ public class ThirdPartyInvite {
         required = true
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * Required. The user ID of the user who sent the original m.room.third_party_invite event.
@@ -59,7 +58,7 @@ public class ThirdPartyInvite {
         description = "The user ID of the user who sent the original m.room.third_party_invite event.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. The user ID of the invited user.
@@ -70,7 +69,7 @@ public class ThirdPartyInvite {
         required = true
     )
     @JsonbProperty("state_key")
-    private Id stateKey;
+    private String stateKey;
 
     /**
      * Required. The event content
@@ -90,28 +89,28 @@ public class ThirdPartyInvite {
     }
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
     @JsonProperty("state_key")
-    public Id getStateKey() {
+    public String getStateKey() {
         return stateKey;
     }
 
-    public void setStateKey(Id stateKey) {
+    public void setStateKey(String stateKey) {
         this.stateKey = stateKey;
     }
 

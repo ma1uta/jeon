@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.Unsigned;
 import io.github.ma1uta.matrix.event.content.RoomMemberContent;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,7 +38,7 @@ public class InviteV1Request {
         description = "The matrix ID of the user who sent the original m.room.third_party_invite.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. The name of the inviting homeserver.
@@ -99,11 +98,11 @@ public class InviteV1Request {
     )
     private Unsigned unsigned;
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 

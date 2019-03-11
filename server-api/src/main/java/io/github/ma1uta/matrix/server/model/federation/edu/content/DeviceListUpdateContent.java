@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation.edu.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.server.model.federation.edu.content.nested.DeviceKeys;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -40,7 +39,7 @@ public class DeviceListUpdateContent implements EphemeralDataUnitContent {
         required = true
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * Required. The ID of the device whose details are changing.
@@ -109,11 +108,11 @@ public class DeviceListUpdateContent implements EphemeralDataUnitContent {
     private DeviceKeys keys;
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

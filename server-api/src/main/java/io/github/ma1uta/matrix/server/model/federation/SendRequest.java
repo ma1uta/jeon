@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.RoomMemberContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -38,7 +37,7 @@ public class SendRequest {
         description = "The user ID of the joining member.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. The name of the joining homeserver.
@@ -90,11 +89,11 @@ public class SendRequest {
     )
     private RoomMemberContent content;
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 

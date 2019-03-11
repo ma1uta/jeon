@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.push;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -72,7 +71,7 @@ public class Notification {
         description = "The ID of the room in which the event was posted."
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * Required. The unix timestamp at which the event notification was sent, in milliseconds.
@@ -116,11 +115,11 @@ public class Notification {
     }
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 

@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.userdirectory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,7 +36,7 @@ public class User {
         description = "The user's matrix user ID."
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * The display name of the user, if one exists.
@@ -58,11 +57,11 @@ public class User {
     private String avatarUrl;
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

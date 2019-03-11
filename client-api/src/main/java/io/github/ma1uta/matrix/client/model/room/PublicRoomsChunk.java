@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.room;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class PublicRoomsChunk {
     @Schema(
         description = "Aliases of the room. May be empty."
     )
-    private List<Id> aliases;
+    private List<String> aliases;
 
     /**
      * The canonical alias of the room, if any.
@@ -46,7 +45,7 @@ public class PublicRoomsChunk {
         description = "The canonical alias of the room, if any."
     )
     @JsonbProperty("canonical_alias")
-    private Id canonicalAlias;
+    private String canonicalAlias;
 
     /**
      * The name of the room, if any.
@@ -72,7 +71,7 @@ public class PublicRoomsChunk {
         description = "The ID of the room."
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * The topic of the room, if any.
@@ -111,20 +110,20 @@ public class PublicRoomsChunk {
     @JsonbProperty("avatar_url")
     private String avatarUrl;
 
-    public List<Id> getAliases() {
+    public List<String> getAliases() {
         return aliases;
     }
 
-    public void setAliases(List<Id> aliases) {
+    public void setAliases(List<String> aliases) {
         this.aliases = aliases;
     }
 
     @JsonProperty("canonical_alias")
-    public Id getCanonicalAlias() {
+    public String getCanonicalAlias() {
         return canonicalAlias;
     }
 
-    public void setCanonicalAlias(Id canonicalAlias) {
+    public void setCanonicalAlias(String canonicalAlias) {
         this.canonicalAlias = canonicalAlias;
     }
 
@@ -146,11 +145,11 @@ public class PublicRoomsChunk {
     }
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 

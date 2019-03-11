@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class DeviceResponse {
         required = true
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * Required. A unique ID for a given user_id which describes the version of the returned device list.
@@ -65,11 +64,11 @@ public class DeviceResponse {
     private List<UserDevice> devices;
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

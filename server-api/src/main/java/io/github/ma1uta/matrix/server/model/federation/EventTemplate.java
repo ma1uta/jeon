@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.RoomMemberContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -38,7 +37,7 @@ public class EventTemplate {
         description = "The user ID of the joining member.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. The name of the resident homeserver.
@@ -79,7 +78,7 @@ public class EventTemplate {
         required = true
     )
     @JsonbProperty("state_key")
-    private Id stateKey;
+    private String stateKey;
 
     /**
      * Required. The content of the event.
@@ -89,11 +88,11 @@ public class EventTemplate {
     )
     private RoomMemberContent content;
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -123,11 +122,11 @@ public class EventTemplate {
     }
 
     @JsonProperty("state_key")
-    public Id getStateKey() {
+    public String getStateKey() {
         return stateKey;
     }
 
-    public void setStateKey(Id stateKey) {
+    public void setStateKey(String stateKey) {
         this.stateKey = stateKey;
     }
 

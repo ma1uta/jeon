@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.tag.Tags;
 import io.github.ma1uta.matrix.event.nested.TagInfo;
@@ -117,11 +116,11 @@ public interface TagApi {
         @Parameter(
             description = "The id of the user to get tags for. The access token must be authorized to make requests for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The id of the room to get tags for.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -176,11 +175,11 @@ public interface TagApi {
         @Parameter(
             description = "The id of the user to add a tag for. The access token must be authorized to make requests for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The id of the room to add a tag to.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @Parameter(
             description = "The tag to add.",
             required = true
@@ -241,11 +240,11 @@ public interface TagApi {
         @Parameter(
             description = "The id of the user to remove a tag for. The access token must be authorized to make requests for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The id of the room to remove a tag from.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @Parameter(
             description = "The tag to remove.",
             required = true

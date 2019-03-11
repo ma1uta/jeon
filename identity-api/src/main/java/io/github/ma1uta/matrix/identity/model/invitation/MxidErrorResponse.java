@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.identity.model.invitation;
 
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -34,7 +33,7 @@ public class MxidErrorResponse extends ErrorResponse {
     @Schema(
         description = "The MXID."
     )
-    private Id mxid;
+    private String mxid;
 
     public MxidErrorResponse() {
     }
@@ -43,16 +42,16 @@ public class MxidErrorResponse extends ErrorResponse {
         super(errcode, error);
     }
 
-    public MxidErrorResponse(String errcode, String error, Id mxid) {
+    public MxidErrorResponse(String errcode, String error, String mxid) {
         super(errcode, error);
         this.mxid = mxid;
     }
 
-    public Id getMxid() {
+    public String getMxid() {
         return mxid;
     }
 
-    public void setMxid(Id mxid) {
+    public void setMxid(String mxid) {
         this.mxid = mxid;
     }
 }

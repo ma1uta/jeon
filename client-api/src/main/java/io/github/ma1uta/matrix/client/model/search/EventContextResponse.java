@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.client.model.profile.Profile;
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -59,7 +58,7 @@ public class EventContextResponse {
         description = "The historic profile information of the users that sent the events returned."
     )
     @JsonbProperty("profile_info")
-    private Map<Id, Profile> profileInfo;
+    private Map<String, Profile> profileInfo;
 
     /**
      * Events just before the result.
@@ -96,11 +95,11 @@ public class EventContextResponse {
     }
 
     @JsonProperty("profile_info")
-    public Map<Id, Profile> getProfileInfo() {
+    public Map<String, Profile> getProfileInfo() {
         return profileInfo;
     }
 
-    public void setProfileInfo(Map<Id, Profile> profileInfo) {
+    public void setProfileInfo(Map<String, Profile> profileInfo) {
         this.profileInfo = profileInfo;
     }
 

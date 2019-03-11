@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.filter.FilterData;
 import io.github.ma1uta.matrix.client.model.filter.FilterResponse;
@@ -99,7 +98,7 @@ public interface FilterApi {
         @Parameter(
             description = "The id of the user uploading the filter. The access token must be authorized to make requests for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @RequestBody(
             description = "JSON body parameters"
         ) FilterData filterData,
@@ -166,7 +165,7 @@ public interface FilterApi {
         @Parameter(
             description = "The user ID to download a filter for.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The filter ID to download.",
             required = true

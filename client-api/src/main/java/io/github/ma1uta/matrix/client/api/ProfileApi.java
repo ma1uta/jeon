@@ -18,7 +18,6 @@ package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
@@ -114,7 +113,7 @@ public interface ProfileApi {
         @Parameter(
             description = "The user whose display name to set.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @RequestBody(
             description = "JSON body request."
         ) DisplayName displayName,
@@ -171,7 +170,7 @@ public interface ProfileApi {
         @Parameter(
             description = "The user whose display name to get.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -237,7 +236,7 @@ public interface ProfileApi {
         @Parameter(
             description = "The user whose avatar URL to set.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @RequestBody(
             description = "JSON body request"
         ) AvatarUrl avatarUrl,
@@ -294,7 +293,7 @@ public interface ProfileApi {
         @Parameter(
             description = "The user whose avatar URL to get.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -348,7 +347,7 @@ public interface ProfileApi {
         @Parameter(
             description = "The user whose profile information to get.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

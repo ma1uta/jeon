@@ -16,84 +16,71 @@
 
 package io.github.ma1uta.matrix;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Matrix id (MXID) util class.
  */
-public abstract class Id implements CharSequence {
+public class Id {
 
-    private Collection<IdParseException> errors;
-
-    /**
-     * Provides a sigil symbol.
-     *
-     * @return sigil.
-     */
-    public abstract char getSigil();
-
-    /**
-     * Parse the input string and return a mxid instance.
-     *
-     * @param mxid mxid in string format.
-     * @return mxid instance.
-     */
-    public static Id valueOf(String mxid) {
-        return IdParser.getInstance().parse(mxid);
+    protected Id() {
+        //singleton
     }
 
     /**
-     * Is valid mxid or not.
-     *
-     * @return {@code true} if mxid valid else {@code false}.
+     * Sigils.
      */
-    public boolean isValid() {
-        return errors() == null || errors().isEmpty();
-    }
+    public static class Sigil {
 
-    /**
-     * Return all mxid violations.
-     *
-     * @return mxid spec violations.
-     */
-    public Collection<IdParseException> errors() {
-        return errors == null ? Collections.emptyList() : errors;
-    }
-
-    /**
-     * Add a new mxid mistake.
-     *
-     * @param errors spec violation.
-     */
-    public void errors(List<IdParseException> errors) {
-        this.errors = new ArrayList<>(errors);
-    }
-
-    @Override
-    public int length() {
-        return toString().length();
-    }
-
-    @Override
-    public char charAt(int index) {
-        return toString().charAt(index);
-    }
-
-    @Override
-    public CharSequence subSequence(int start, int end) {
-        return toString().subSequence(start, end);
-    }
-
-    /**
-     * Mismatches with the specification.
-     */
-    public static class IdParseException extends RuntimeException {
-
-        public IdParseException(String message) {
-            super(message);
+        protected Sigil() {
+            //singleton
         }
+
+        /**
+         * User sigil.
+         */
+        public static final char USER = '@';
+
+        /**
+         * Event sigil.
+         */
+        public static final char EVENT = '$';
+
+        /**
+         * Room sigil.
+         */
+        public static final char ROOM = '!';
+
+        /**
+         * Alias sigil.
+         */
+        public static final char ALIAS = '#';
+
+        /**
+         * Group sigil.
+         */
+        public static final char GROUP = '+';
+    }
+
+    /**
+     * Get localpart of the specified MXID if exists.
+     *
+     * @param id MXID.
+     * @return localpart.
+     */
+    public static Optional<String> localPart(String id) {
+        int colon = id.indexOf(':');
+        return colon == -1 ? Optional.empty() : Optional.of(id.substring(0, colon));
+    }
+
+    /**
+     * Get server name of the specified MXID if exists.
+     *
+     * @param id MXID.
+     * @return server name.
+     */
+    public static Optional<String> serverName(String id) {
+        int colon = id.indexOf(':');
+        return colon == -1 ? Optional.empty() : Optional.of(id.substring(colon + 1));
     }
 }

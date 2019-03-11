@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.client.model.sync;
 
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -35,7 +34,7 @@ public class Rooms {
     @Schema(
         description = "The rooms that the user has joined."
     )
-    private Map<Id, JoinedRoom> join;
+    private Map<String, JoinedRoom> join;
 
     /**
      * The rooms that the user has been invited to.
@@ -43,7 +42,7 @@ public class Rooms {
     @Schema(
         description = "The rooms that the user has been invited to."
     )
-    private Map<Id, InvitedRoom> invite;
+    private Map<String, InvitedRoom> invite;
 
     /**
      * The rooms that the user has left or been banned from.
@@ -51,29 +50,29 @@ public class Rooms {
     @Schema(
         description = "The rooms that the user has left or been banned from."
     )
-    private Map<Id, LeftRoom> leave;
+    private Map<String, LeftRoom> leave;
 
-    public Map<Id, JoinedRoom> getJoin() {
+    public Map<String, JoinedRoom> getJoin() {
         return join;
     }
 
-    public void setJoin(Map<Id, JoinedRoom> join) {
+    public void setJoin(Map<String, JoinedRoom> join) {
         this.join = join;
     }
 
-    public Map<Id, InvitedRoom> getInvite() {
+    public Map<String, InvitedRoom> getInvite() {
         return invite;
     }
 
-    public void setInvite(Map<Id, InvitedRoom> invite) {
+    public void setInvite(Map<String, InvitedRoom> invite) {
         this.invite = invite;
     }
 
-    public Map<Id, LeftRoom> getLeave() {
+    public Map<String, LeftRoom> getLeave() {
         return leave;
     }
 
-    public void setLeave(Map<Id, LeftRoom> leave) {
+    public void setLeave(Map<String, LeftRoom> leave) {
         this.leave = leave;
     }
 }

@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
@@ -127,7 +126,7 @@ public interface ReceiptApi {
         @Parameter(
             description = "The room in which to send the event.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @Parameter(
             description = "The type of receipt to send.",
             required = true,
@@ -140,7 +139,7 @@ public interface ReceiptApi {
         @Parameter(
             description = "The event ID to acknowledge up to.",
             required = true
-        ) @PathParam("eventId") Id eventId,
+        ) @PathParam("eventId") String eventId,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
@@ -205,7 +204,7 @@ public interface ReceiptApi {
         @Parameter(
             description = "The room ID to set the read marker in for the user.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @RequestBody(
             description = "JSON body request."
         ) ReadMarkersRequest request,

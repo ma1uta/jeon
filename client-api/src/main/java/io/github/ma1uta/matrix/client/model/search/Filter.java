@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -48,7 +47,7 @@ public class Filter {
             + "excluded. A matching sender will be excluded even if it is listed in the 'senders' filter."
     )
     @JsonbProperty("not_senders")
-    private List<Id> notSenders;
+    private List<String> notSenders;
 
     /**
      * A list of event types to exclude. If this list is absent then no event types are excluded. A matching type will be excluded
@@ -68,7 +67,7 @@ public class Filter {
     @Schema(
         description = "A list of senders IDs to include. If this list is absent then all senders are included."
     )
-    private List<Id> senders;
+    private List<String> senders;
 
     /**
      * A list of event types to include. If this list is absent then all event types are included. A '*' can be used as a wildcard to
@@ -89,7 +88,7 @@ public class Filter {
         + " even if it is listed in the 'rooms' filter."
     )
     @JsonbProperty("not_rooms")
-    private List<Id> notRooms;
+    private List<String> notRooms;
 
     /**
      * A list of room IDs to include. If this list is absent then all rooms are included.
@@ -97,7 +96,7 @@ public class Filter {
     @Schema(
         description = "A list of room IDs to include. If this list is absent then all rooms are included."
     )
-    private List<Id> rooms;
+    private List<String> rooms;
 
     /**
      * If true, includes only events with a url key in their content. If false, excludes those events. Defaults to false.
@@ -117,11 +116,11 @@ public class Filter {
     }
 
     @JsonProperty("not_senders")
-    public List<Id> getNotSenders() {
+    public List<String> getNotSenders() {
         return notSenders;
     }
 
-    public void setNotSenders(List<Id> notSenders) {
+    public void setNotSenders(List<String> notSenders) {
         this.notSenders = notSenders;
     }
 
@@ -134,11 +133,11 @@ public class Filter {
         this.notTypes = notTypes;
     }
 
-    public List<Id> getSenders() {
+    public List<String> getSenders() {
         return senders;
     }
 
-    public void setSenders(List<Id> senders) {
+    public void setSenders(List<String> senders) {
         this.senders = senders;
     }
 
@@ -151,19 +150,19 @@ public class Filter {
     }
 
     @JsonProperty("not_rooms")
-    public List<Id> getNotRooms() {
+    public List<String> getNotRooms() {
         return notRooms;
     }
 
-    public void setNotRooms(List<Id> notRooms) {
+    public void setNotRooms(List<String> notRooms) {
         this.notRooms = notRooms;
     }
 
-    public List<Id> getRooms() {
+    public List<String> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<Id> rooms) {
+    public void setRooms(List<String> rooms) {
         this.rooms = rooms;
     }
 

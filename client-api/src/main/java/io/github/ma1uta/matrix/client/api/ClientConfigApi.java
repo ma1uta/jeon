@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -98,7 +97,7 @@ public interface ClientConfigApi {
             description = "The id of the user to get account_data for. The access token must be authorized to make requests"
                 + " for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The event type of the account_data to get. Custom types should be namespaced to avoid clashes.",
             required = true
@@ -160,7 +159,7 @@ public interface ClientConfigApi {
             description = "The id of the user to set account_data for. The access token must be authorized to make requests"
                 + " for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
             required = true
@@ -224,11 +223,11 @@ public interface ClientConfigApi {
             description = "The id of the user to get account_data for. The access token must be authorized to make requests"
                 + " for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The id of the room to get account_data on.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @Parameter(
             description = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
             required = true
@@ -291,11 +290,11 @@ public interface ClientConfigApi {
             description = "The id of the user to set account_data for. The access token must be authorized to make requests"
                 + " for this user id.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             description = "The id of the room to set account_data on.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @Parameter(
             description = "The event type of the account_data to set. Custom types should be namespaced to avoid clashes.",
             required = true

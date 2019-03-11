@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.nested.PreviousRoom;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -38,7 +37,7 @@ public class RoomCreateContent implements EventContent {
         description = "The user_id of the room creator. This is set by the homeserver.",
         required = true
     )
-    private Id creator;
+    private String creator;
 
     /**
      * Whether users on other servers can join this room. Defaults to ``true`` if key does not exist.
@@ -68,11 +67,11 @@ public class RoomCreateContent implements EventContent {
     )
     private PreviousRoom predecessor;
 
-    public Id getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Id creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 

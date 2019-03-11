@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -46,13 +45,13 @@ public class RoomAliasesContent implements EventContent {
         description = "A list of room aliases.",
         required = true
     )
-    private List<Id> aliases;
+    private List<String> aliases;
 
-    public List<Id> getAliases() {
+    public List<String> getAliases() {
         return aliases;
     }
 
-    public void setAliases(List<Id> aliases) {
+    public void setAliases(List<String> aliases) {
         this.aliases = aliases;
     }
 }

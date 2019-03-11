@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.application.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.application.model.RoomVisibility;
 import io.swagger.v3.oas.annotations.Operation;
@@ -109,7 +108,7 @@ public interface RoomServiceApi {
         @Parameter(
             description = "The room ID to add to the directory.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @RequestBody(
             description = "JSON body request.",
             required = true

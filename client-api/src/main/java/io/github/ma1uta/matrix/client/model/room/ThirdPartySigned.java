@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.client.model.room;
 
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -35,7 +34,7 @@ public class ThirdPartySigned {
     @Schema(
         description = "The Matrix ID of the user who issued the invite."
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. The Matrix ID of the invitee.
@@ -43,7 +42,7 @@ public class ThirdPartySigned {
     @Schema(
         description = "The Matrix ID of the invitee."
     )
-    private Id mxid;
+    private String mxid;
 
     /**
      * Required. The state key of the m.third_party_invite event.
@@ -61,19 +60,19 @@ public class ThirdPartySigned {
     )
     private Map<String, Map<String, String>> signatures;
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public Id getMxid() {
+    public String getMxid() {
         return mxid;
     }
 
-    public void setMxid(Id mxid) {
+    public void setMxid(String mxid) {
         this.mxid = mxid;
     }
 

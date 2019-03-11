@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.RateLimit;
 import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
@@ -120,11 +119,11 @@ public interface TypingApi {
         @Parameter(
             description = "The user who has started to type.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @Parameter(
             description = "The room in which the user is typing.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @RequestBody(
             description = "JSON body request."
         ) TypingRequest request,

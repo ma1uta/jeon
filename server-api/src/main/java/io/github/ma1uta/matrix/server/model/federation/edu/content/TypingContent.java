@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation.edu.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -39,7 +38,7 @@ public class TypingContent implements EphemeralDataUnitContent {
         required = true
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * Required. The user ID that has had their typing status changed.
@@ -50,7 +49,7 @@ public class TypingContent implements EphemeralDataUnitContent {
         required = true
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * Required. Whether the user is typing in the room or not.
@@ -62,20 +61,20 @@ public class TypingContent implements EphemeralDataUnitContent {
     private Boolean typing;
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

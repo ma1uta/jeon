@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -40,14 +39,14 @@ public class TypingContent implements EventContent {
         required = true
     )
     @JsonbProperty("user_ids")
-    private List<Id> userIds;
+    private List<String> userIds;
 
     @JsonProperty("user_ids")
-    public List<Id> getUserIds() {
+    public List<String> getUserIds() {
         return userIds;
     }
 
-    public void setUserIds(List<Id> userIds) {
+    public void setUserIds(List<String> userIds) {
         this.userIds = userIds;
     }
 }

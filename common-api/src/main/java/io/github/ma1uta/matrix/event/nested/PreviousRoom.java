@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -39,7 +38,7 @@ public class PreviousRoom {
         required = true
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * Required. The event ID of the last known event in the old room.
@@ -50,23 +49,23 @@ public class PreviousRoom {
         required = true
     )
     @JsonbProperty("event_id")
-    private Id eventId;
+    private String eventId;
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
     @JsonProperty("event_id")
-    public Id getEventId() {
+    public String getEventId() {
         return eventId;
     }
 
-    public void setEventId(Id eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 }

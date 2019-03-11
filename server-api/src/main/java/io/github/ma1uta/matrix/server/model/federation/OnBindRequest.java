@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.server.model.federation;
 
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -54,7 +53,7 @@ public class OnBindRequest {
         description = "The user that is now bound to the third party identifier.",
         required = true
     )
-    private Id mxid;
+    private String mxid;
 
     /**
      * Required. A list of pending invites that the third party identifier has received.
@@ -81,11 +80,11 @@ public class OnBindRequest {
         this.address = address;
     }
 
-    public Id getMxid() {
+    public String getMxid() {
         return mxid;
     }
 
-    public void setMxid(Id mxid) {
+    public void setMxid(String mxid) {
         this.mxid = mxid;
     }
 

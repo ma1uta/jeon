@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.server.model.federation.edu.content.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -63,7 +62,7 @@ public class UserPresenceUpdate {
         required = true
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * Required. The presence of the user. One of: ["offline", "unavailable", "online"]
@@ -110,11 +109,11 @@ public class UserPresenceUpdate {
     private Boolean currentlyActive;
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

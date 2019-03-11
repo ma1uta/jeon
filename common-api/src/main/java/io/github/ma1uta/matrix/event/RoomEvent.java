@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.event.content.EventContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -42,7 +41,7 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         required = true
     )
     @JsonbProperty("event_id")
-    private Id eventId;
+    private String eventId;
 
     /**
      * Required. The ID of the room associated with this event.
@@ -53,7 +52,7 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         required = true
     )
     @JsonbProperty("room_id")
-    private Id roomId;
+    private String roomId;
 
     /**
      * Required. Contains the fully-qualified ID of the user who sent this event.
@@ -62,7 +61,7 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
         description = "Contains the fully-qualified ID of the user who sent this event.",
         required = true
     )
-    private Id sender;
+    private String sender;
 
     /**
      * Required. Timestamp in milliseconds on originating homeserver when this event was sent.
@@ -84,28 +83,28 @@ public abstract class RoomEvent<C extends EventContent> extends Event<C> {
     private Unsigned<C> unsigned;
 
     @JsonProperty("event_id")
-    public Id getEventId() {
+    public String getEventId() {
         return eventId;
     }
 
-    public void setEventId(Id eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
     @JsonProperty("room_id")
-    public Id getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Id roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
-    public Id getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Id sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 

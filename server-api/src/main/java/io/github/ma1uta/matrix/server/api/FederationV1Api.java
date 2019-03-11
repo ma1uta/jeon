@@ -18,7 +18,6 @@ package io.github.ma1uta.matrix.server.api;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Id;
 import io.github.ma1uta.matrix.server.model.federation.DeviceResponse;
 import io.github.ma1uta.matrix.server.model.federation.DirectoryResponse;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
@@ -543,12 +542,12 @@ public interface FederationV1Api {
             name = "roomId",
             description = "The room ID that is about to be joined.",
             required = true
-        ) @PathParam("roomId") Id roomId,
+        ) @PathParam("roomId") String roomId,
         @Parameter(
             name = "userId",
             description = "The user ID the join event will be for.",
             required = true
-        ) @PathParam("userId") Id userId,
+        ) @PathParam("userId") String userId,
         @Parameter(
             name = "ver",
             description = "The room versions the sending server has support for.",

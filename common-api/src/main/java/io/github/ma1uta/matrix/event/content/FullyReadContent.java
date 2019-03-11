@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -41,14 +40,14 @@ public class FullyReadContent implements EventContent {
         required = true
     )
     @JsonbProperty("event_id")
-    private Id eventId;
+    private String eventId;
 
     @JsonProperty("event_id")
-    public Id getEventId() {
+    public String getEventId() {
         return eventId;
     }
 
-    public void setEventId(Id eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 }

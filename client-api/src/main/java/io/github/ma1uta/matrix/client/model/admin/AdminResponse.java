@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
@@ -38,7 +37,7 @@ public class AdminResponse {
         description = "he Matrix user ID of the user."
     )
     @JsonbProperty("user_id")
-    private Id userId;
+    private String userId;
 
     /**
      * Each key is an identitfier for one of the user's devices.
@@ -49,11 +48,11 @@ public class AdminResponse {
     private Map<String, DeviceInfo> devices;
 
     @JsonProperty("user_id")
-    public Id getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Id userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

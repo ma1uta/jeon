@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.client.model.receipt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.Id;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -37,7 +36,7 @@ public class ReadMarkersRequest {
         description = "The event ID the read marker should be located at. The event MUST belong to the room."
     )
     @JsonbProperty("m.fully_read")
-    private Id fullyRead;
+    private String fullyRead;
 
     /**
      * The event ID to set the read receipt location at. This is equivalent to calling /receipt/m.read/$elsewhere:domain.com
@@ -48,23 +47,23 @@ public class ReadMarkersRequest {
             + " /receipt/m.read/$elsewhere:domain.com and is provided here to save that extra call."
     )
     @JsonbProperty("m.read")
-    private Id read;
+    private String read;
 
     @JsonProperty("m.fully_read")
-    public Id getFullyRead() {
+    public String getFullyRead() {
         return fullyRead;
     }
 
-    public void setFullyRead(Id fullyRead) {
+    public void setFullyRead(String fullyRead) {
         this.fullyRead = fullyRead;
     }
 
     @JsonProperty("m.read")
-    public Id getRead() {
+    public String getRead() {
         return read;
     }
 
-    public void setRead(Id read) {
+    public void setRead(String read) {
         this.read = read;
     }
 }
