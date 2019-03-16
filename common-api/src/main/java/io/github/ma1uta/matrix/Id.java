@@ -70,7 +70,7 @@ public class Id {
      */
     public static Optional<String> localPart(String id) {
         int colon = id.indexOf(':');
-        return colon == -1 ? Optional.empty() : Optional.of(id.substring(0, colon));
+        return colon == -1 ? Optional.empty() : Optional.of(id.substring(1, colon));
     }
 
     /**
