@@ -69,17 +69,6 @@ public class PDUv3 implements PersistedDataUnit {
     private String origin;
 
     /**
-     * Required. Unique identifier for the event being sent.
-     */
-    @Schema(
-        name = "event_id",
-        description = "Unique identifier for the event being sent.",
-        required = true
-    )
-    @JsonbProperty("event_id")
-    private String eventId;
-
-    /**
      * Required. Timestamp in milliseconds on origin homeserver when this event was created.
      */
     @Schema(
@@ -202,15 +191,6 @@ public class PDUv3 implements PersistedDataUnit {
 
     public void setOrigin(String origin) {
         this.origin = origin;
-    }
-
-    @JsonProperty("event_id")
-    public String getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
     }
 
     @JsonProperty("origin_server_ts")
