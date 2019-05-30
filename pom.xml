@@ -86,13 +86,13 @@
 
         <!-- plugins dependencies -->
         <asm.version>7.1</asm.version>
-        <checkstyle.version>8.18</checkstyle.version>
+        <checkstyle.version>8.21</checkstyle.version>
 
         <!-- dependency version -->
         <javax.ws.rs.api.version>2.1.1</javax.ws.rs.api.version>
         <javax.json.bind.api.version>1.0</javax.json.bind.api.version>
-        <swagger.version>2.0.7</swagger.version>
-        <jackson.annotations.version>2.9.8</jackson.annotations.version>
+        <swagger.version>2.0.8</swagger.version>
+        <jackson.annotations.version>2.9.9</jackson.annotations.version>
 
         <!-- compatibility -->
         <javax.activation.version>1.2.0</javax.activation.version>

@@ -12,5 +12,5 @@ module matrix.common.api {
     requires transitive java.json.bind;
     requires transitive java.activation;
     requires transitive com.fasterxml.jackson.annotation;
-    requires transitive swagger.annotations;
+    requires transitive io.swagger.v3.oas.annotations;
 }
