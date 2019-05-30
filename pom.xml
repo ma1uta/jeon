@@ -89,14 +89,13 @@
         <version.lib.checkstyle>8.21</version.lib.checkstyle>
 
         <!-- dependency version -->
-        <version.lib.javax.ws.rs-api>2.1.1</version.lib.javax.ws.rs-api>
-        <version.lib.javax.json.bind-api>1.0</version.lib.javax.json.bind-api>
+        <version.lib.jakarta.ws.rs-api>2.1.5</version.lib.jakarta.ws.rs-api>
+        <version.lib.jakarta.json.bind-api>1.0.1</version.lib.jakarta.json.bind-api>
         <version.lib.swagger-annotations>2.0.8</version.lib.swagger-annotations>
         <version.lib.jackson-annotations>2.9.9</version.lib.jackson-annotations>
 
         <!-- compatibility -->
-        <version.lib.javax.activation-api>1.2.0</version.lib.javax.activation-api>
-        <version.lib.jaxb-api>2.4.0-b180830.0359</version.lib.jaxb-api>
+        <version.lib.jakarta.activation-api>1.2.1</version.lib.jakarta.activation-api>
     </properties>
 
     <build>
@@ -499,14 +498,14 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>${version.lib.javax.ws.rs-api}</version>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>${version.lib.jakarta.ws.rs-api}</version>
             </dependency>
             <dependency>
-                <groupId>javax.json.bind</groupId>
-                <artifactId>javax.json.bind-api</artifactId>
-                <version>${version.lib.javax.json.bind-api}</version>
+                <groupId>jakarta.json.bind</groupId>
+                <artifactId>jakarta.json.bind-api</artifactId>
+                <version>${version.lib.jakarta.json.bind-api}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -519,14 +518,9 @@
                 <version>${version.lib.swagger-annotations}</version>
             </dependency>
             <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${version.lib.jaxb-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>javax.activation-api</artifactId>
-                <version>${version.lib.javax.activation-api}</version>
+                <groupId>jakarta.activation</groupId>
+                <artifactId>jakarta.activation-api</artifactId>
+                <version>${version.lib.jakarta.activation-api}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
