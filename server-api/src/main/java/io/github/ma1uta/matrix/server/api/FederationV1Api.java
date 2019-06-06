@@ -1226,7 +1226,7 @@ public interface FederationV1Api {
      * <br>
      * <b>Requires auth</b>: Yes.
      * <br>
-     * Return: {@link Map} of user ID to {@link Map} from devices to a {@link Map} from &lt;algorithm&gt;:&lt;key_id&gt to key object.
+     * Return: {@link Map} of user ID to {@link Map} from devices to a {@link Map} from &lt;algorithm&gt;:&lt;key_id&gt; to key object.
      * <p>Status code 200: The claimed keys.</p>
      *
      * @param request       Required. The keys to be claimed. A map from user ID, to a map from device ID to algorithm name.

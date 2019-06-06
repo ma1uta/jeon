@@ -22,16 +22,16 @@
     <parent>
         <groupId>io.github.ma1uta.matrix</groupId>
         <artifactId>jeon</artifactId>
-        <version>0.8.0-SNAPSHOT</version>
+        <version>0.9.0-SNAPSHOT</version>
     </parent>
     <artifactId>server-api</artifactId>
-    <version>r0.1.1-1-SNAPSHOT</version>
+    <version>0.9.0-SNAPSHOT</version>
 
     <name>server-server-api</name>
     <description>Server-Server API</description>
 
     <properties>
-        <version.lib.common-api>0.8.0-SNAPSHOT</version.lib.common-api>
+        <version.lib.common-api>0.9.0-SNAPSHOT</version.lib.common-api>
     </properties>
 
     <dependencies>
