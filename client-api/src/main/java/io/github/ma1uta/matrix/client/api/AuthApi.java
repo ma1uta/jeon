@@ -84,6 +84,11 @@ public interface AuthApi {
         public static final String EMAIL_IDENTITY = "m.login.email.identity";
 
         /**
+         * Authentication is supported by authorising a msisdn with an identity server.
+         */
+        public static final String MSISDN_IDENTITY = "m.login.msisdn";
+
+        /**
          * The client submits a login token.
          */
         public static final String TOKEN = "m.login.token";

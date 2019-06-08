@@ -52,6 +52,15 @@ public class RegisterRequest {
     private Boolean bindEmail;
 
     /**
+     * If true, the server binds the phone number used for authentication to the Matrix ID with the identity server.
+     */
+    @Schema(
+        description = "If true, the server binds the phone number used for authentication to the Matrix ID with the identity server."
+    )
+    @JsonbProperty("bind_msisdn")
+    private Boolean bindMsisdn;
+
+    /**
      * The basis for the localpart of the desired Matrix ID. If omitted, the homeserver MUST generate a Matrix ID local part.
      */
     @Schema(
@@ -114,6 +123,15 @@ public class RegisterRequest {
 
     public void setBindEmail(Boolean bindEmail) {
         this.bindEmail = bindEmail;
+    }
+
+    @JsonProperty("bind_msisdn")
+    public Boolean getBindMsisdn() {
+        return bindMsisdn;
+    }
+
+    public void setBindMsisdn(Boolean bindMsisdn) {
+        this.bindMsisdn = bindMsisdn;
     }
 
     public String getUsername() {

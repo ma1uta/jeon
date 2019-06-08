@@ -23,6 +23,7 @@ import io.github.ma1uta.matrix.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.account.AvailableResponse;
 import io.github.ma1uta.matrix.client.model.account.DeactivateRequest;
+import io.github.ma1uta.matrix.client.model.account.DeactivateResponse;
 import io.github.ma1uta.matrix.client.model.account.Delete3PidRequest;
 import io.github.ma1uta.matrix.client.model.account.EmailRequestToken;
 import io.github.ma1uta.matrix.client.model.account.MsisdnRequestToken;
@@ -583,7 +584,7 @@ public interface AccountApi {
      * <br>
      * <b>Requires auth</b>: Yes.
      * <br>
-     * Return: {@link EmptyResponse}.
+     * Return: {@link DeactivateResponse}.
      * <p>Status code 200: The account has been deactivated.</p>
      * <p>Status code 401: The homeserver requires additional authentication information.</p>
      * <p>Status code 429: This request was rate-limited.</p>
@@ -605,7 +606,7 @@ public interface AccountApi {
                 description = "The account has been deactivated.",
                 content = @Content(
                     schema = @Schema(
-                        implementation = EmptyResponse.class
+                        implementation = DeactivateResponse.class
                     )
                 )
             ),
@@ -864,7 +865,7 @@ public interface AccountApi {
      * <br>
      * <b>Requires auth</b>: Yes.
      * <br>
-     * Return: {@link EmptyResponse}.
+     * Return: {@link DeactivateResponse}.
      * <p>Status code 200: The homeserver has disassociated the third party identifier from the user.</p>
      *
      * @param request         JSON body request to delete 3pid.
@@ -882,7 +883,7 @@ public interface AccountApi {
                 description = "The homeserver has disassociated the third party identifier from the user.",
                 content = @Content(
                     schema = @Schema(
-                        implementation = EmptyResponse.class
+                        implementation = DeactivateResponse.class
                     )
                 )
             )

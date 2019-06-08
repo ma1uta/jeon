@@ -189,6 +189,17 @@ public class ErrorResponse {
          */
         public static final String M_RESOURCE_LIMIT_EXCEEDED = "M_RESOURCE_LIMIT_EXCEEDED";
 
+        /**
+         * The user is unable to reject an invite to join the server notices room. See the Server Notices module for more information.
+         */
+        public static final String M_CANNOT_LEAVE_SERVER_NOTICE_ROOM = "M_CANNOT_LEAVE_SERVER_NOTICE_ROOM";
+
+        /**
+         * Clients SHOULD enforce that the password provided is suitably complex. The password SHOULD include a lower-case letter,
+         * an upper-case letter, a number and a symbol and be at a minimum 8 characters in length.
+         */
+        public static final String M_WEAK_PASSWORD = "M_WEAK_PASSWORD";
+
         // Identity Service API
 
         /**
