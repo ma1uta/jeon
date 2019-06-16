@@ -19,6 +19,7 @@ package io.github.ma1uta.matrix.client.model.deprecatedsync;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.Page;
 import io.github.ma1uta.matrix.event.Event;
+import io.github.ma1uta.matrix.event.StateEvent;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class DeprecatedRoomInfo {
     @Schema(
         description = "The pagination chunk for this room."
     )
-    private Page<Event> messages;
+    private Page<Event, StateEvent> messages;
 
     /**
      * If the user is a member of the room this will be the current state of the room as a list of events.
@@ -123,11 +124,11 @@ public class DeprecatedRoomInfo {
         this.invite = invite;
     }
 
-    public Page<Event> getMessages() {
+    public Page<Event, StateEvent> getMessages() {
         return messages;
     }
 
-    public void setMessages(Page<Event> messages) {
+    public void setMessages(Page<Event, StateEvent> messages) {
         this.messages = messages;
     }
 

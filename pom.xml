@@ -90,11 +90,10 @@
         <version.lib.checkstyle>8.21</version.lib.checkstyle>
 
         <!-- dependency version -->
-        <version.lib.jakarta.ws.rs-api>2.1.5</version.lib.jakarta.ws.rs-api>
-        <version.lib.jakarta.json.bind-api>1.0.1</version.lib.jakarta.json.bind-api>
         <version.lib.swagger-annotations>2.0.8</version.lib.swagger-annotations>
         <version.lib.jackson-annotations>2.9.9</version.lib.jackson-annotations>
         <version.lib.jakarta.xml.bind-api>2.3.2</version.lib.jakarta.xml.bind-api>
+        <version.lib.microprofile>2.2</version.lib.microprofile>
 
         <!-- compatibility -->
         <version.lib.jakarta.activation-api>1.2.1</version.lib.jakarta.activation-api>
@@ -425,14 +424,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>jakarta.ws.rs</groupId>
-                <artifactId>jakarta.ws.rs-api</artifactId>
-                <version>${version.lib.jakarta.ws.rs-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.json.bind</groupId>
-                <artifactId>jakarta.json.bind-api</artifactId>
-                <version>${version.lib.jakarta.json.bind-api}</version>
+                <groupId>org.eclipse.microprofile</groupId>
+                <artifactId>microprofile</artifactId>
+                <version>${version.lib.microprofile}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
