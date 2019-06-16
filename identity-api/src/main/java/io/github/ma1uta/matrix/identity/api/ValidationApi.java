@@ -16,14 +16,17 @@
 
 package io.github.ma1uta.matrix.identity.api;
 
+import io.github.ma1uta.matrix.EmptyResponse;
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.validation.PublishRequest;
 import io.github.ma1uta.matrix.identity.model.validation.PublishResponse;
+import io.github.ma1uta.matrix.identity.model.validation.UnbindRequest;
 import io.github.ma1uta.matrix.identity.model.validation.ValidationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import javax.ws.rs.Consumes;
@@ -164,11 +167,109 @@ public interface ValidationApi {
     )
     @POST
     @Path("/bind")
-    void publish(
-        @Parameter(
-            description = "JSON boy request",
+    void bind(
+        @RequestBody(
+            description = "JSON body request",
             required = true
         ) PublishRequest request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse
+    );
+
+    /**
+     * Remove an association between a session and a Matrix user ID.
+     * <br>
+     * Future calls to /lookup for any of the session's 3pids will not return the removed association.
+     * <br>
+     * The identity server should authenticate the request in one of two ways:
+     * <ul>
+     * <li>The request is signed by the homeserver which controls the user_id.</li>
+     * <li>The request includes the sid and client_secret parameters, as per /3pid/bind, which proves ownership of the 3PID.</li>
+     * </ul>
+     * If this endpoint returns a JSON Matrix error, that error should be passed through to the client requesting an unbind through
+     * a homeserver, if the homeserver is acting on behalf of a client.
+     * <br>
+     * Return: {@link io.github.ma1uta.matrix.EmptyResponse}.
+     * <p>Status code 200: The association was successfully removed.</p>
+     * <p>Status code 400: If the response body is not a JSON Matrix error, the identity server does not support unbinds.
+     * If a JSON Matrix error is in the response body, the requesting party should respect the error.</p>
+     * <p>Status code 403: The credentials supplied to authenticate the request were invalid. This may also be returned if
+     * the identity server does not support the chosen authentication method (such as blocking homeservers from unbinding identifiers).</p>
+     * <p>Status code 404: If the response body is not a JSON Matrix error, the identity server does not support unbinds.
+     * If a JSON Matrix error is in the response body, the requesting party should respect the error.</p>
+     * <p>Status code 501: If the response body is not a JSON Matrix error, the identity server does not support unbinds.
+     * If a JSON Matrix error is in the response body, the requesting party should respect the error.</p>
+     *
+     * @param request       JSON body request.
+     * @param uriInfo       Request information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
+     */
+    @Operation(
+        summary = "Remove an association between a session and a Matrix user ID.",
+        description = "Future calls to /lookup for any of the session's 3pids will not return the removed association.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The association was successfully removed.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "If the response body is not a JSON Matrix error, the identity server does not support unbinds."
+                    + " If a JSON Matrix error is in the response body, the requesting party should respect the error.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "The credentials supplied to authenticate the request were invalid. This may also be returned if"
+                    + " the identity server does not support the chosen authentication method"
+                    + "(such as blocking homeservers from unbinding identifiers).",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "If the response body is not a JSON Matrix error, the identity server does not support unbinds."
+                    + " If a JSON Matrix error is in the response body, the requesting party should respect the error.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "501",
+                description = "If the response body is not a JSON Matrix error, the identity server does not support unbinds."
+                    + " If a JSON Matrix error is in the response body, the requesting party should respect the error.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = ErrorResponse.class
+                    )
+                )
+            ),
+        }
+    )
+    @POST
+    @Path("/unbind")
+    void unbind(
+        @RequestBody(
+            description = "JSON body request",
+            required = true
+        ) UnbindRequest request,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
