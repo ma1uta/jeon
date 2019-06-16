@@ -80,12 +80,36 @@ public class Filter {
     private List<String> types;
 
     /**
+     * If true, enables lazy-loading of membership events. See Lazy-loading room members for more information. Defaults to false.
+     */
+    @Schema(
+        name = "lazy_load_members",
+        description = "If true, enables lazy-loading of membership events. See Lazy-loading room members for more information.",
+        defaultValue = "false"
+    )
+    @JsonbProperty("lazy_load_members")
+    private Boolean lazyLoadMembers;
+
+    /**
+     * If true, sends all membership events for all events, even if they have already been sent to the client.
+     * Does not apply unless lazy_load_members is true. See Lazy- loading room members for more information. Defaults to false.
+     */
+    @Schema(
+        name = "include_redundant_members",
+        description = "If true, sends all membership events for all events, even if they have already been sent to the client."
+            + " Does not apply unless lazy_load_members is true. See Lazy- loading room members for more information.",
+        defaultValue = "false"
+    )
+    @JsonbProperty("include_redundant_members")
+    private Boolean includeRedundantMembers;
+
+    /**
      * A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded even if it is
      * listed in the 'rooms' filter.
      */
     @Schema(
         description = "A list of room IDs to exclude. If this list is absent then no rooms are excluded. A matching room will be excluded"
-        + " even if it is listed in the 'rooms' filter."
+            + " even if it is listed in the 'rooms' filter."
     )
     @JsonbProperty("not_rooms")
     private List<String> notRooms;
@@ -147,6 +171,24 @@ public class Filter {
 
     public void setTypes(List<String> types) {
         this.types = types;
+    }
+
+    @JsonProperty("lazy_load_members")
+    public Boolean getLazyLoadMembers() {
+        return lazyLoadMembers;
+    }
+
+    public void setLazyLoadMembers(Boolean lazyLoadMembers) {
+        this.lazyLoadMembers = lazyLoadMembers;
+    }
+
+    @JsonProperty("include_redundant_members")
+    public Boolean getIncludeRedundantMembers() {
+        return includeRedundantMembers;
+    }
+
+    public void setIncludeRedundantMembers(Boolean includeRedundantMembers) {
+        this.includeRedundantMembers = includeRedundantMembers;
     }
 
     @JsonProperty("not_rooms")

@@ -28,7 +28,7 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Room events."
 )
-public class RoomEvents {
+public class RoomEventsCriteria {
 
     /**
      * The keys to search. Possible values.

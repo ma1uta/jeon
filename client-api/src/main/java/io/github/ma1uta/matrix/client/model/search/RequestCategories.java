@@ -36,14 +36,14 @@ public class RequestCategories {
         description = "Mapping of category name to search criteria."
     )
     @JsonbProperty("room_events")
-    private RoomEvents roomEvents;
+    private RoomEventsCriteria roomEventsCriteria;
 
     @JsonProperty("room_events")
-    public RoomEvents getRoomEvents() {
-        return roomEvents;
+    public RoomEventsCriteria getRoomEventsCriteria() {
+        return roomEventsCriteria;
     }
 
-    public void setRoomEvents(RoomEvents roomEvents) {
-        this.roomEvents = roomEvents;
+    public void setRoomEventsCriteria(RoomEventsCriteria roomEventsCriteria) {
+        this.roomEventsCriteria = roomEventsCriteria;
     }
 }

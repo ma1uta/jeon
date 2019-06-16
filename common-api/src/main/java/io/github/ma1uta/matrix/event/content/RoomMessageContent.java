@@ -23,6 +23,7 @@ import io.github.ma1uta.matrix.event.message.File;
 import io.github.ma1uta.matrix.event.message.Image;
 import io.github.ma1uta.matrix.event.message.Location;
 import io.github.ma1uta.matrix.event.message.Notice;
+import io.github.ma1uta.matrix.event.message.ServerNotice;
 import io.github.ma1uta.matrix.event.message.Text;
 import io.github.ma1uta.matrix.event.message.Video;
 import io.github.ma1uta.matrix.event.nested.Relates;
@@ -48,7 +49,8 @@ import javax.json.bind.annotation.JsonbProperty;
         Location.class,
         Notice.class,
         Text.class,
-        Video.class
+        Video.class,
+        ServerNotice.class
     }
 )
 public abstract class RoomMessageContent implements EventContent {
@@ -62,7 +64,7 @@ public abstract class RoomMessageContent implements EventContent {
      */
     @Schema(
         description = "Message type.",
-        readOnly = true
+        accessMode = Schema.AccessMode.READ_ONLY
     )
     @JsonbProperty(value = "msgtype")
     @JsonProperty(value = "msgtype", access = JsonProperty.Access.READ_ONLY)
