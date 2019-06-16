@@ -138,7 +138,7 @@ public interface KeyApi {
         }
     )
     @GET
-    @Path("/query/${serverName}/${keyId}")
+    @Path("/query/{serverName}/{keyId}")
     void query(
         @Parameter(
             name = "serverName",
