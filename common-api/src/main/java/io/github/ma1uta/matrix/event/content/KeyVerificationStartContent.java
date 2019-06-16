@@ -19,6 +19,7 @@ package io.github.ma1uta.matrix.event.content;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
 import javax.json.bind.annotation.JsonbProperty;
 
 /**
@@ -74,6 +75,47 @@ public class KeyVerificationStartContent implements EventContent {
     @JsonbProperty("next_method")
     private String nextMethod;
 
+    /**
+     * Required. The key agreement protocols the sending device understands. Must include at least curve25519.
+     */
+    @Schema(
+        name = "key_agreement_protocol",
+        description = "The key agreement protocols the sending device understands. Must include at least curve25519."
+    )
+    @JsonbProperty("key_agreement_protocol")
+    private List<String> keyAgreementProtocol;
+
+    /**
+     * Required. The hash methods the sending device understands. Must include at least sha256.
+     */
+    @Schema(
+        description = "The hash methods the sending device understands. Must include at least sha256."
+    )
+    private List<String> hashes;
+
+    /**
+     * Required. The message authentication codes that the sending device understands. Must include at least hkdf-hmac-sha256.
+     */
+    @Schema(
+        name = "message_authentication_codes",
+        description = "The message authentication codes that the sending device understands. Must include at least hkdf-hmac-sha256."
+    )
+    @JsonbProperty("message_authentication_codes")
+    private List<String> messageAuthenticationCodes;
+
+    /**
+     * Required. The SAS methods the sending device (and the sending device's user) understands. Must include at least decimal.
+     * Optionally can include emoji. One of: ["decimal", "emoji"]
+     */
+    @Schema(
+        name = "short_authentication_string",
+        description = "The SAS methods the sending device (and the sending device's user) understands. Must include at least decimal."
+            + " Optionally can include emoji.",
+        allowableValues = {"decimal", "emoji"}
+    )
+    @JsonbProperty("short_authentication_string")
+    private List<String> shortAuthenticationString;
+
     @JsonProperty("from_device")
     public String getFromDevice() {
         return fromDevice;
@@ -107,5 +149,40 @@ public class KeyVerificationStartContent implements EventContent {
 
     public void setNextMethod(String nextMethod) {
         this.nextMethod = nextMethod;
+    }
+
+    @JsonProperty("key_agreement_protocol")
+    public List<String> getKeyAgreementProtocol() {
+        return keyAgreementProtocol;
+    }
+
+    public void setKeyAgreementProtocol(List<String> keyAgreementProtocol) {
+        this.keyAgreementProtocol = keyAgreementProtocol;
+    }
+
+    public List<String> getHashes() {
+        return hashes;
+    }
+
+    public void setHashes(List<String> hashes) {
+        this.hashes = hashes;
+    }
+
+    @JsonProperty("message_authentication_codes")
+    public List<String> getMessageAuthenticationCodes() {
+        return messageAuthenticationCodes;
+    }
+
+    public void setMessageAuthenticationCodes(List<String> messageAuthenticationCodes) {
+        this.messageAuthenticationCodes = messageAuthenticationCodes;
+    }
+
+    @JsonProperty("short_authentication_string")
+    public List<String> getShortAuthenticationString() {
+        return shortAuthenticationString;
+    }
+
+    public void setShortAuthenticationString(List<String> shortAuthenticationString) {
+        this.shortAuthenticationString = shortAuthenticationString;
     }
 }
