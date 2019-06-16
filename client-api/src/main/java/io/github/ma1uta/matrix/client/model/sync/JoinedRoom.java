@@ -30,6 +30,14 @@ import javax.json.bind.annotation.JsonbProperty;
 public class JoinedRoom {
 
     /**
+     * Information about the room which clients may need to correctly render it to users.
+     */
+    @Schema(
+        description = "Information about the room which clients may need to correctly render it to users."
+    )
+    private RoomSummary summary;
+
+    /**
      * Updates to the state, between the time indicated by the since parameter, and the start of the timeline (or all state up to the
      * start of the timeline, if since is not given, or full_state is true).
      */
@@ -72,6 +80,14 @@ public class JoinedRoom {
     )
     @JsonbProperty("unread_notifications")
     private UnreadNotificationCounts unreadNotifications;
+
+    public RoomSummary getSummary() {
+        return summary;
+    }
+
+    public void setSummary(RoomSummary summary) {
+        this.summary = summary;
+    }
 
     public State getState() {
         return state;

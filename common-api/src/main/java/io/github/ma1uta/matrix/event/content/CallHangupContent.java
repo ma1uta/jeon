@@ -35,6 +35,26 @@ import javax.json.bind.annotation.JsonbProperty;
 public class CallHangupContent implements EventContent {
 
     /**
+     * Hangup's reasons.
+     */
+    public static class Reason {
+
+        protected Reason() {
+            // singleton
+        }
+
+        /**
+         * ICE failed.
+         */
+        public static final String ICE_FAILED = "ice_failed";
+
+        /**
+         * Invite timeout.
+         */
+        public static final String INVITE_TIMEOUT = "invite_timeout";
+    }
+
+    /**
      * Required. The ID of the call this event relates to.
      */
     @Schema(
@@ -53,6 +73,19 @@ public class CallHangupContent implements EventContent {
     )
     private Long version;
 
+    /**
+     * Optional error reason for the hangup. This should not be provided when the user naturally ends or rejects the call.
+     * When there was an error in the call negotiation, this should be ice_failed for when ICE negotiation fails or invite_timeout
+     * for when the other party did not answer in time. One of: ["ice_failed", "invite_timeout"]
+     */
+    @Schema(
+        description = "Optional error reason for the hangup. This should not be provided when the user naturally ends or rejects the call."
+            + " When there was an error in the call negotiation, this should be ice_failed for when ICE negotiation fails or invite_timeout"
+            + " for when the other party did not answer in time.",
+        allowableValues = {"ice_failed", "invite_timeout"}
+    )
+    private String reason;
+
     @JsonProperty("call_id")
     public String getCallId() {
         return callId;
@@ -68,5 +101,13 @@ public class CallHangupContent implements EventContent {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

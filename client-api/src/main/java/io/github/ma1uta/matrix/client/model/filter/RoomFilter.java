@@ -75,7 +75,7 @@ public class RoomFilter {
     @Schema(
         description = "The state events to include for rooms."
     )
-    private StateFilter state;
+    private RoomEventFilter state;
 
     /**
      * The message and state update events to include for rooms.
@@ -128,11 +128,11 @@ public class RoomFilter {
         this.includeLeave = includeLeave;
     }
 
-    public StateFilter getState() {
+    public RoomEventFilter getState() {
         return state;
     }
 
-    public void setState(StateFilter state) {
+    public void setState(RoomEventFilter state) {
         this.state = state;
     }
 

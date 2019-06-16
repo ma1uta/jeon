@@ -24,11 +24,12 @@ import java.util.List;
  * Pagination.
  *
  * @param <T> pagination item.
+ * @param <S> state events.
  */
 @Schema(
     description = "Pagination."
 )
-public class Page<T> {
+public class Page<T, S> {
 
     /**
      * Query parameters.
@@ -84,6 +85,23 @@ public class Page<T> {
     )
     private List<T> chunk;
 
+    /**
+     * A list of state events relevant to showing the chunk.
+     * For example, if lazy_load_members is enabled in the filter then this may contain the membership events for the senders
+     * of events in the chunk.
+     * <p/>
+     * Unless include_redundant_members is true, the server may remove membership events which would have already been sent
+     * to the client in prior calls to this endpoint, assuming the membership of those members has not changed.
+     */
+    @Schema(
+        description = "A list of state events relevant to showing the chunk."
+            + " For example, if lazy_load_members is enabled in the filter then this may contain the membership events for the senders"
+            + " of events in the chunk. Unless include_redundant_members is true, the server may remove membership events which would"
+            + " have already been sent to the client in prior calls to this endpoint, assuming the membership of those members"
+            + " has not changed."
+    )
+    private List<S> state;
+
     public String getStart() {
         return start;
     }
@@ -106,5 +124,13 @@ public class Page<T> {
 
     public void setChunk(List<T> chunk) {
         this.chunk = chunk;
+    }
+
+    public List<S> getState() {
+        return state;
+    }
+
+    public void setState(List<S> state) {
+        this.state = state;
     }
 }

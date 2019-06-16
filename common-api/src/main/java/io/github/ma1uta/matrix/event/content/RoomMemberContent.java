@@ -17,8 +17,8 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.ma1uta.matrix.event.Unsigned;
 import io.github.ma1uta.matrix.event.nested.Invite;
-import io.github.ma1uta.matrix.event.nested.RoomMemberUnsigned;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -120,7 +120,7 @@ public class RoomMemberContent implements EventContent {
     @Schema(
         description = "Contains optional extra information about the event."
     )
-    private RoomMemberUnsigned unsigned;
+    private Unsigned unsigned;
 
     @JsonProperty("avatar_url")
     public String getAvatarUrl() {
@@ -166,11 +166,11 @@ public class RoomMemberContent implements EventContent {
         this.thirdPartyInvite = thirdPartyInvite;
     }
 
-    public RoomMemberUnsigned getUnsigned() {
+    public Unsigned getUnsigned() {
         return unsigned;
     }
 
-    public void setUnsigned(RoomMemberUnsigned unsigned) {
+    public void setUnsigned(Unsigned unsigned) {
         this.unsigned = unsigned;
     }
 }
