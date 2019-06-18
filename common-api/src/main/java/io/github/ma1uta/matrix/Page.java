@@ -16,6 +16,7 @@
 
 package io.github.ma1uta.matrix;
 
+import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -24,12 +25,11 @@ import java.util.List;
  * Pagination.
  *
  * @param <T> pagination item.
- * @param <S> state events.
  */
 @Schema(
     description = "Pagination."
 )
-public class Page<T, S> {
+public class Page<T> {
 
     /**
      * Query parameters.
@@ -100,7 +100,7 @@ public class Page<T, S> {
             + " have already been sent to the client in prior calls to this endpoint, assuming the membership of those members"
             + " has not changed."
     )
-    private List<S> state;
+    private List<Event> state;
 
     public String getStart() {
         return start;
@@ -126,11 +126,11 @@ public class Page<T, S> {
         this.chunk = chunk;
     }
 
-    public List<S> getState() {
+    public List<Event> getState() {
         return state;
     }
 
-    public void setState(List<S> state) {
+    public void setState(List<Event> state) {
         this.state = state;
     }
 }
