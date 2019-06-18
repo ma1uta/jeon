@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.info.License;
 @OpenAPIDefinition(
     info = @Info(
         title = "Push API",
-        version = "r0.1.0-4",
+        version = "0.1.0",
         description = "Clients may want to receive push notifications when events are received at the homeserver."
             + " This is managed by a distinct entity called the Push Gateway.",
         contact = @Contact(
