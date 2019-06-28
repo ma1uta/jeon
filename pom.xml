@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta.matrix</groupId>
     <artifactId>jeon</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -93,7 +93,7 @@
         <version.lib.swagger-annotations>2.0.8</version.lib.swagger-annotations>
         <version.lib.jackson-annotations>2.9.9</version.lib.jackson-annotations>
         <version.lib.jakarta.xml.bind-api>2.3.2</version.lib.jakarta.xml.bind-api>
-        <version.lib.microprofile>2.2</version.lib.microprofile>
+        <version.lib.microprofile>3.0</version.lib.microprofile>
 
         <!-- compatibility -->
         <version.lib.jakarta.activation-api>1.2.1</version.lib.jakarta.activation-api>
