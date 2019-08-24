@@ -83,6 +83,11 @@ public class ErrorResponse {
         public static final String M_UNAUTHORIZED = "M_UNAUTHORIZED";
 
         /**
+         * The user ID associated with the request has been deactivated. Typically for endpoints that prove authentication, such as /login.
+         */
+        public static final String M_USER_DEACTIVATED = "M_USER_DEACTIVATED";
+
+        /**
          * Encountered when trying to register a user ID which has been taken.
          */
         public static final String M_USER_IN_USE = "M_USER_IN_USE";

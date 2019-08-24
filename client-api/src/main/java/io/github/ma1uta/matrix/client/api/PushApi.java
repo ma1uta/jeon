@@ -233,6 +233,12 @@ public interface PushApi {
          * that are encrypted (in 1:1 rooms) or none.
          */
         public static final String ENCRYPTED = ".m.rule.encrypted";
+
+        /**
+         * Matches any state event whose type is m.room.tombstone. This is intended to notify users of a room when it is upgraded,
+         * similar to what an @room notification would accomplish.
+         */
+        public static final String TOMBSTONE = ".m.rule.tombstone";
     }
 
     /**

@@ -16,7 +16,10 @@
 
 package io.github.ma1uta.matrix.thirdpid;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * The sid generated for this session to the caller, in a JSON object containing the sid key.
@@ -37,11 +40,36 @@ public class SessionResponse {
     )
     private String sid;
 
+    /**
+     * An optional field containing a URL where the client must submit the validation token to, with identical parameters
+     * to the Identity Service API's POST /validate/email/submitToken endpoint. The homeserver must send this token
+     * to the user (if applicable), who should then be prompted to provide it to the client.
+     * <br>
+     * If this field is not present, the client can assume that verification will happen without the client's involvement provided
+     * the homeserver advertises this specification version in the /versions response (ie: r0.5.0).
+     */
+    @Schema(
+        description = "An optional field containing a URL where the client must submit the validation token to, with identical"
+            + " parameters to the Identity Service API's POST /validate/email/submitToken endpoint."
+            + " The homeserver must send this token to the user (if applicable), who should then be prompted to provide it to the client."
+    )
+    @JsonbProperty("submit_url")
+    private String submitUrl;
+
     public String getSid() {
         return sid;
     }
 
     public void setSid(String sid) {
         this.sid = sid;
+    }
+
+    @JsonProperty("submit_url")
+    public String getSubmitUrl() {
+        return submitUrl;
+    }
+
+    public void setSubmitUrl(String submitUrl) {
+        this.submitUrl = submitUrl;
     }
 }
