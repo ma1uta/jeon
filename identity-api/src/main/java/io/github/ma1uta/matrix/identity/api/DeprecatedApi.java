@@ -389,7 +389,7 @@ public interface DeprecatedApi {
      * @param uriInfo       Request Information.
      * @param httpHeaders   Http headers.
      * @param asyncResponse Asynchronous response.
-     * @deprecated in favor of {@link ValidationApi#publish(PublishRequest, UriInfo, HttpHeaders, AsyncResponse)}.
+     * @deprecated in favor of {@link ValidationApi#bind(PublishRequest, UriInfo, HttpHeaders, AsyncResponse)}.
      */
     @Deprecated
     @Operation(

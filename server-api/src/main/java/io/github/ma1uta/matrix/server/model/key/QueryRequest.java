@@ -33,7 +33,7 @@ public class QueryRequest {
     /**
      * Server keys.
      * <p/>
-     * Maps: server_name -> key_id -> {@link KeyTs}.
+     * Maps: server_name -&gt; key_id -&gt; {@link KeyTs}.
      */
     @Schema(
         name = "server_keys",

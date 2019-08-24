@@ -54,8 +54,8 @@ public class PushCondition {
     private String pattern;
 
     /**
-     * Required for room_member_count conditions. A decimal integer optionally prefixed by one of, ==, <, >, >= or <=.
-     * A prefix of < matches rooms where the member count is strictly less than the given number and so forth.
+     * Required for room_member_count conditions. A decimal integer optionally prefixed by one of, ==, &lt;, &gt;, &gt;= or &lt;=.
+     * A prefix of &lt; matches rooms where the member count is strictly less than the given number and so forth.
      * If no prefix is present, this parameter defaults to ==.
      */
     @Schema(
