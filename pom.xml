@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta.matrix</groupId>
     <artifactId>jeon</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -87,11 +87,11 @@
 
         <!-- plugins dependencies -->
         <version.lib.asm>7.1</version.lib.asm>
-        <version.lib.checkstyle>8.21</version.lib.checkstyle>
+        <version.lib.checkstyle>8.23</version.lib.checkstyle>
 
         <!-- dependency version -->
-        <version.lib.swagger-annotations>2.0.8</version.lib.swagger-annotations>
-        <version.lib.jackson-annotations>2.9.9</version.lib.jackson-annotations>
+        <version.lib.swagger-annotations>2.0.9</version.lib.swagger-annotations>
+        <version.lib.jackson-annotations>2.10.0.pr1</version.lib.jackson-annotations>
         <version.lib.jakarta.xml.bind-api>2.3.2</version.lib.jakarta.xml.bind-api>
         <version.lib.microprofile>3.0</version.lib.microprofile>
 
@@ -238,13 +238,13 @@
                     <configuration>
                         <argLine>--add-modules java.xml.bind --illegal-access=permit</argLine>
                     </configuration>
-                    <dependencies>
+                    <!--dependencies>
                         <dependency>
                             <groupId>org.ow2.asm</groupId>
                             <artifactId>asm</artifactId>
                             <version>${version.lib.asm}</version>
                         </dependency>
-                    </dependencies>
+                    </dependencies-->
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
