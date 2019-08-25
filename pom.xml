@@ -86,17 +86,12 @@
         <version.plugin.maven-bundle-plugin>4.1.0</version.plugin.maven-bundle-plugin>
 
         <!-- plugins dependencies -->
-        <version.lib.asm>7.1</version.lib.asm>
         <version.lib.checkstyle>8.23</version.lib.checkstyle>
 
         <!-- dependency version -->
         <version.lib.swagger-annotations>2.0.9</version.lib.swagger-annotations>
-        <version.lib.jackson-annotations>2.10.0.pr1</version.lib.jackson-annotations>
-        <version.lib.jakarta.xml.bind-api>2.3.2</version.lib.jakarta.xml.bind-api>
+        <version.lib.jackson-annotations>2.9.9</version.lib.jackson-annotations>
         <version.lib.microprofile>3.0</version.lib.microprofile>
-
-        <!-- compatibility -->
-        <version.lib.jakarta.activation-api>1.2.1</version.lib.jakarta.activation-api>
     </properties>
 
     <build>
@@ -238,13 +233,6 @@
                     <configuration>
                         <argLine>--add-modules java.xml.bind --illegal-access=permit</argLine>
                     </configuration>
-                    <!--dependencies>
-                        <dependency>
-                            <groupId>org.ow2.asm</groupId>
-                            <artifactId>asm</artifactId>
-                            <version>${version.lib.asm}</version>
-                        </dependency>
-                    </dependencies-->
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -518,16 +506,6 @@
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${version.lib.swagger-annotations}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.activation</groupId>
-                <artifactId>jakarta.activation-api</artifactId>
-                <version>${version.lib.jakarta.activation-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.xml.bind</groupId>
-                <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>${version.lib.jakarta.xml.bind-api}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

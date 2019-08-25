@@ -10,7 +10,6 @@ module matrix.common.api {
 
     requires transitive java.ws.rs;
     requires transitive java.json.bind;
-    requires transitive jakarta.activation;
     requires transitive com.fasterxml.jackson.annotation;
     requires transitive io.swagger.v3.oas.annotations;
 }
