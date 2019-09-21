@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.identity.api;
+package io.github.ma1uta.matrix.identity.api.deprecated;
 
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.signing.SigningRequest;
@@ -34,16 +34,18 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 /**
  * To aid clients who may not be able to perform crypto themselves, the identity server offers some crypto functionality to help
  * in accepting invitations. This is less secure than the client doing it itself, but may be useful where this isn't possible.
+ *
+ * @deprecated in favor of v2.
  */
-@Path("/_matrix/identity/v2")
+@Path("/_matrix/identity/api/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Deprecated
 public interface SigningApi {
 
     /**
@@ -51,17 +53,14 @@ public interface SigningApi {
      * <br>
      * The identity server will look up token which was stored in a call to store-invite, and fetch the sender of the invite.
      * <br>
-     * <b>Requires auth</b>:Yes.
-     * <br>
      * Return: {@link SigningResponse}.
      * <p>Status code 200: The signed JSON of the mxid, sender, and token.</p>
      * <p>Status code 404: The token was not found.</p>
      *
-     * @param request         JSON body request.
-     * @param uriInfo         Request information.
-     * @param httpHeaders     Http headers.
-     * @param asyncResponse   Asynchronous response.
-     * @param securityContext Security context.
+     * @param request       JSON body request.
+     * @param uriInfo       Request information.
+     * @param httpHeaders   Http headers.
+     * @param asyncResponse Asynchronous response.
      */
     @Operation(
         summary = "Sign invitation details.",
@@ -90,6 +89,7 @@ public interface SigningApi {
     )
     @POST
     @Path("/sign-ed25519")
+    @Deprecated
     void sign(
         @RequestBody(
             description = "JSON body request.",
@@ -98,7 +98,6 @@ public interface SigningApi {
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
-        @Suspended AsyncResponse asyncResponse,
-        @Context SecurityContext securityContext
+        @Suspended AsyncResponse asyncResponse
     );
 }

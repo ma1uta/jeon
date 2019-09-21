@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.identity.api;
+package io.github.ma1uta.matrix.identity.api.deprecated;
 
 import io.github.ma1uta.matrix.identity.model.invitation.InvitationRequest;
 import io.github.ma1uta.matrix.identity.model.invitation.InvitationResponse;
@@ -34,7 +34,6 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -44,10 +43,13 @@ import javax.ws.rs.core.UriInfo;
  * At a later point, if the owner of that particular 3pid binds it with a Matrix user ID, the identity server will attempt to make
  * an HTTP POST to the Matrix user's homeserver via the /3pid/onbind endpoint. The request MUST be signed with a long-term private
  * key for the identity server.
+ *
+ * @deprecated in favor of v2.
  */
-@Path("/_matrix/identity/v2")
+@Path("/_matrix/identity/api/v1")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Deprecated
 public interface InvitationApi {
 
     /**
@@ -69,18 +71,15 @@ public interface InvitationApi {
      * <br>
      * Currently, invites may only be issued for 3pids of the email medium.
      * <br>
-     * <b>Requires auth</b>:Yes.
-     * <br>
      * Return: {@link InvitationResponse}.
      * <p>Status code 200: The invitation was stored.</p>
      * <p>Status code 400: An error has occured. If the 3pid is already bound to a Matrix user ID, the error code
      * will be M_THREEPID_IN_USE. If the medium is unsupported, the error code will be M_UNRECOGNIZED.</p>
      *
-     * @param request         JSON body request.
-     * @param uriInfo         Request information.
-     * @param httpHeaders     Http headers.
-     * @param response        Asynchronous response.
-     * @param securityContext Security context.
+     * @param request     JSON body request.
+     * @param uriInfo     Request information.
+     * @param httpHeaders Http headers.
+     * @param response    Asynchronous response.
      */
     @Operation(
         summary = "Store pending invitations to a user's 3pid.",
@@ -116,6 +115,7 @@ public interface InvitationApi {
     )
     @POST
     @Path("/store-invite")
+    @Deprecated
     void invite(
         @RequestBody(
             description = "JSON body request"
@@ -123,7 +123,6 @@ public interface InvitationApi {
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
-        @Suspended AsyncResponse response,
-        @Context SecurityContext securityContext
+        @Suspended AsyncResponse response
     );
 }

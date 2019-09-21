@@ -16,14 +16,12 @@
 
 package io.github.ma1uta.matrix.identity.model.lookup;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
-import javax.json.bind.annotation.JsonbProperty;
 
 /**
- * Look up response the Matrix user ID for a 3pid.
+ * JSON body response.
  */
 @Schema(
     description = "Look up response the Matrix user ID for a 3pid."
@@ -31,129 +29,21 @@ import javax.json.bind.annotation.JsonbProperty;
 public class LookupResponse {
 
     /**
-     * Required. The 3pid address of the user being looked up, matching the address requested.
+     * Required. Any applicable mappings of addresses to Matrix User IDs. Addresses which do not have associations will not be included,
+     * which can make this property be an empty object.
      */
     @Schema(
-        description = "The 3pid address of the user being looked up, matching the address requested.",
+        description = "Any applicable mappings of addresses to Matrix User IDs. "
+            + " Addresses which do not have associations will not be included, which can make this property be an empty object.",
         required = true
     )
-    private String address;
+    private Map<String, String> mappings;
 
-    /**
-     * Required. A medium from the 3PID Types Appendix, matching the medium requested.
-     */
-    @Schema(
-        description = "A medium from the 3PID Types Appendix, matching the medium requested.",
-        required = true
-    )
-    private String medium;
-
-    /**
-     * Required. The Matrix user ID associated with the 3pid.
-     */
-    @Schema(
-        description = "The Matrix user ID associated with the 3pid.",
-        required = true
-    )
-    private String mxid;
-
-    /**
-     * Required. A unix timestamp before which the association is not known to be valid.
-     */
-    @Schema(
-        name = "not_before",
-        description = "A unix timestamp before which the association is not known to be valid.",
-        required = true
-    )
-    @JsonbProperty("not_before")
-    private Long notBefore;
-
-    /**
-     * Required. A unix timestamp after which the association is not known to be valid.
-     */
-    @Schema(
-        name = "not_after",
-        description = "A unix timestamp after which the association is not known to be valid.",
-        required = true
-    )
-    @JsonbProperty("not_after")
-    private Long notAfter;
-
-    /**
-     * Required. The unix timestamp at which the association was verified.
-     */
-    @Schema(
-        description = "The unix timestamp at which the association was verified.",
-        required = true
-    )
-    private Long ts;
-
-    /**
-     * Required. The signatures of the verifying identity services which show that the association should be trusted,
-     * if you trust the verifying identity services.
-     */
-    @Schema(
-        description = "The signatures of the verifying identity services which show that the association should be trusted, if you trust"
-            + " the verifying identity services.",
-        required = true
-    )
-    private Map<String, Map<String, String>> signatures;
-
-    public String getAddress() {
-        return address;
+    public Map<String, String> getMappings() {
+        return mappings;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getMedium() {
-        return medium;
-    }
-
-    public void setMedium(String medium) {
-        this.medium = medium;
-    }
-
-    public String getMxid() {
-        return mxid;
-    }
-
-    public void setMxid(String mxid) {
-        this.mxid = mxid;
-    }
-
-    @JsonProperty("not_before")
-    public Long getNotBefore() {
-        return notBefore;
-    }
-
-    public void setNotBefore(Long notBefore) {
-        this.notBefore = notBefore;
-    }
-
-    @JsonProperty("not_after")
-    public Long getNotAfter() {
-        return notAfter;
-    }
-
-    public void setNotAfter(Long notAfter) {
-        this.notAfter = notAfter;
-    }
-
-    public Long getTs() {
-        return ts;
-    }
-
-    public void setTs(Long ts) {
-        this.ts = ts;
-    }
-
-    public Map<String, Map<String, String>> getSignatures() {
-        return signatures;
-    }
-
-    public void setSignatures(Map<String, Map<String, String>> signatures) {
-        this.signatures = signatures;
+    public void setMappings(Map<String, String> mappings) {
+        this.mappings = mappings;
     }
 }

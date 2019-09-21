@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.identity.api;
+package io.github.ma1uta.matrix.identity.api.deprecated;
 
 import io.github.ma1uta.matrix.EmptyResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,9 +34,12 @@ import javax.ws.rs.core.UriInfo;
 
 /**
  * Checks that an Identity server is available at this API endpoint.
+ *
+ * @deprecated in favor of v2.
  */
-@Path("/_matrix/identity/v2")
+@Path("/_matrix/identity/api/v1")
 @Produces(MediaType.APPLICATION_JSON)
+@Deprecated
 public interface StatusApi {
 
     /**
@@ -71,6 +74,7 @@ public interface StatusApi {
     )
     @GET
     @Path("")
+    @Deprecated
     void v1Status(
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,

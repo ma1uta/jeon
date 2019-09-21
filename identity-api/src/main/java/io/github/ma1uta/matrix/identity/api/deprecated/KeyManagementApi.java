@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.identity.api;
+package io.github.ma1uta.matrix.identity.api.deprecated;
 
 import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.key.KeyValidationResponse;
@@ -43,9 +43,12 @@ import javax.ws.rs.core.UriInfo;
  * <br>
  * The identity server may also keep track of some short-term public-private keypairs, which may have different usage
  * and lifetime characteristics than the service's long-term keys.
+ *
+ * @deprecated in favor of v2.
  */
-@Path("/_matrix/identity/v2/pubkey")
+@Path("/_matrix/identity/api/v1/pubkey")
 @Produces(MediaType.APPLICATION_JSON)
+@Deprecated
 public interface KeyManagementApi {
 
     /**
