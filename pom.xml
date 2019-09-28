@@ -411,7 +411,7 @@
                 <jdk>[9,)</jdk>
             </activation>
             <properties>
-                <packaging.type>jar</packaging.type>
+                <packaging.type>bundle</packaging.type>
             </properties>
             <build>
                 <pluginManagement>
