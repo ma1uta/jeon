@@ -90,7 +90,7 @@
 
         <!-- dependency version -->
         <version.lib.swagger-annotations>2.0.9</version.lib.swagger-annotations>
-        <version.lib.jackson-annotations>2.9.9</version.lib.jackson-annotations>
+        <version.lib.jackson-annotations>2.9.10</version.lib.jackson-annotations>
         <version.lib.microprofile>3.0</version.lib.microprofile>
     </properties>
 
