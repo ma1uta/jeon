@@ -86,7 +86,7 @@
         <version.plugin.maven-bundle-plugin>4.1.0</version.plugin.maven-bundle-plugin>
 
         <!-- plugins dependencies -->
-        <version.lib.checkstyle>8.23</version.lib.checkstyle>
+        <version.lib.checkstyle>8.29</version.lib.checkstyle>
 
         <!-- dependency version -->
         <version.lib.swagger-annotations>2.0.9</version.lib.swagger-annotations>
