@@ -91,7 +91,7 @@
         <!-- dependency version -->
         <version.lib.swagger-annotations>2.1.1</version.lib.swagger-annotations>
         <version.lib.jackson-annotations>2.10.2</version.lib.jackson-annotations>
-        <version.lib.microprofile>3.0</version.lib.microprofile>
+        <version.lib.microprofile>3.2</version.lib.microprofile>
     </properties>
 
     <build>
