@@ -69,7 +69,7 @@
 
         <!-- plugin versions -->
         <version.plugin.maven-compiler-plugin>3.8.0</version.plugin.maven-compiler-plugin>
-        <version.plugin.maven-checkstyle-plugin>3.0.0</version.plugin.maven-checkstyle-plugin>
+        <version.plugin.maven-checkstyle-plugin>3.1.0</version.plugin.maven-checkstyle-plugin>
         <version.plugin.maven-surefire-plugin>2.22.0</version.plugin.maven-surefire-plugin>
         <version.plugin.maven-failsafe-plugin>2.22.0</version.plugin.maven-failsafe-plugin>
         <version.plugin.maven-source-plugin>3.0.1</version.plugin.maven-source-plugin>
