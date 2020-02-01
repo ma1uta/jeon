@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * JSON body request to delete 3pid.
  */
 @Schema(
-    description = "JSON body request to delte 3pid."
+    description = "JSON body request to delete 3pid."
 )
 public class Delete3PidRequest {
 

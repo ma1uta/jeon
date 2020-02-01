@@ -31,6 +31,7 @@ import io.github.ma1uta.matrix.client.model.account.PasswordRequest;
 import io.github.ma1uta.matrix.client.model.account.RegisterRequest;
 import io.github.ma1uta.matrix.client.model.account.ThreePidRequest;
 import io.github.ma1uta.matrix.client.model.account.ThreePidResponse;
+import io.github.ma1uta.matrix.client.model.account.UnbindRequest;
 import io.github.ma1uta.matrix.client.model.account.WhoamiResponse;
 import io.github.ma1uta.matrix.client.model.auth.LoginResponse;
 import io.github.ma1uta.matrix.thirdpid.SessionResponse;
@@ -904,6 +905,60 @@ public interface AccountApi {
         @RequestBody(
             description = "JSON body request."
         ) Delete3PidRequest request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse,
+        @Context SecurityContext securityContext
+    );
+
+    /**
+     * Removes a user's third party identifier from the provided identity server without removing it from the homeserver.
+     * Unlike other endpoints, this endpoint does not take an id_access_token parameter because the homeserver is expected
+     * to sign the request to the identity server instead.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link DeactivateResponse}.
+     * <p>Status code 200: The homeserver has disassociated the third party identifier from the user.</p>
+     *
+     * @param unbindRequest   JSON body request to unbind 3pid.
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
+     */
+    @Operation(
+        summary = "Removes a third party identifier from the provided identity server without removing it from the homeserver",
+        description = "Unlike other endpoints, this endpoint does not take an id_access_token parameter because the homeserver"
+            + " is expected to sign the request to the identity server instead",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The homeserver has disassociated the third party identifier from the user.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = DeactivateResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        },
+        tags = {
+            "User data"
+        }
+    )
+    @POST
+    @Secured
+    @Path("/account/3pid/unbind")
+    void unbind(
+        @RequestBody(
+            description = "JSON body request"
+        ) UnbindRequest unbindRequest,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
