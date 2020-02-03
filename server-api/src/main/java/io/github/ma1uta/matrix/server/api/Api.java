@@ -1,5 +1,5 @@
 /*
- * Copyright sablintolya@gmail.com
+ * Copyright Anatoliy Sablin tolya@sablin.xyz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.info.License;
             + " and to query profile and presence information about users on each other's servers.",
         contact = @Contact(
             name = "Anatoly Sablin",
-            email = "sablintolya@gmail.com"
+            email = "Anatoliy Sablin tolya@sablin.xyz"
         ),
         license = @License(
             url = "https://www.apache.org/licenses/LICENSE-2.0.html",
