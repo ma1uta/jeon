@@ -22,10 +22,10 @@
     <parent>
         <groupId>io.github.ma1uta.matrix</groupId>
         <artifactId>jeon</artifactId>
-        <version>0.9.2-SNAPSHOT</version>
+        <version>0.10.0</version>
     </parent>
     <artifactId>application-api</artifactId>
-    <version>0.9.2-SNAPSHOT</version>
+    <version>0.10.0</version>
 
     <name>application-api</name>
     <description>Application API</description>
