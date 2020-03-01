@@ -25,7 +25,6 @@
         <version>0.10.0</version>
     </parent>
     <artifactId>common-api</artifactId>
-    <version>0.10.0</version>
 
     <name>common-api</name>
     <description>Common Matrix classes: Id, Events, ...</description>
