@@ -31,7 +31,24 @@ import javax.json.bind.annotation.JsonbProperty;
     description = "Event.",
     subTypes = {
         RoomEvent.class,
-        StateEvent.class
+        Direct.class,
+        Dummy.class,
+        ForwardedRoomKey.class,
+        FullyRead.class,
+        IgnoredUserList.class,
+        KeyVerificationAccept.class,
+        KeyVerificationCancel.class,
+        KeyVerificationKey.class,
+        KeyVerificationMac.class,
+        KeyVerificationStart.class,
+        Presence.class,
+        PushRules.class,
+        RawEvent.class,
+        Receipt.class,
+        RoomKey.class,
+        RoomKeyRequest.class,
+        Tag.class,
+        Typing.class
     }
 )
 public abstract class Event<C extends EventContent> {

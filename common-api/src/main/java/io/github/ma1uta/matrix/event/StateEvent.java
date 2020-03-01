@@ -28,7 +28,28 @@ import javax.json.bind.annotation.JsonbProperty;
  * @param <C> type of the event content.
  */
 @Schema(
-    description = "Event."
+    description = "Event.",
+    subTypes = {
+        PolicyRuleRoom.class,
+        PolicyRuleServer.class,
+        PolicyRuleUser.class,
+        RoomAliases.class,
+        RoomAvatar.class,
+        RoomCanonicalAlias.class,
+        RoomCreate.class,
+        RoomEncryption.class,
+        RoomGuestAccess.class,
+        RoomHistoryVisibility.class,
+        RoomJoinRules.class,
+        RoomMember.class,
+        RoomName.class,
+        RoomPinned.class,
+        RoomPowerLevels.class,
+        RoomServerAcl.class,
+        RoomThirdPartyInvite.class,
+        RoomTombstone.class,
+        RoomTopic.class
+    }
 )
 public abstract class StateEvent<C extends EventContent> extends RoomEvent<C> {
 

@@ -28,7 +28,20 @@ import javax.json.bind.annotation.JsonbProperty;
  * @param <C> type of the event content.
  */
 @Schema(
-    description = "Room Event."
+    description = "Room Event.",
+    subTypes = {
+        AcceptedTerms.class,
+        CallAnswer.class,
+        CallCandidates.class,
+        CallHangup.class,
+        CallInvite.class,
+        RoomEncrypted.class,
+        RoomMessage.class,
+        RoomMessageFeedback.class,
+        RoomRedaction.class,
+        StateEvent.class,
+        Sticker.class
+    }
 )
 public abstract class RoomEvent<C extends EventContent> extends Event<C> {
 

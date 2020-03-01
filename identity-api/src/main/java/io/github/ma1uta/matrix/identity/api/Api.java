@@ -39,7 +39,7 @@ import io.swagger.v3.oas.annotations.info.License;
             + " server is left as an exercise for the client.\n",
         contact = @Contact(
             name = "Anatoly Sablin",
-            email = "Anatoliy Sablin tolya@sablin.xyz"
+            email = "tolya@sablin.xyz"
         ),
         license = @License(
             url = "http://www.apache.org/licenses/LICENSE-2.0.html",

@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.info.License;
             + " the homeserver with information about the application service.",
         contact = @Contact(
             name = "Anatoly Sablin",
-            email = "Anatoliy Sablin tolya@sablin.xyz"
+            email = "tolya@sablin.xyz"
         ),
         license = @License(
             url = "https://www.apache.org/licenses/LICENSE-2.0.html",

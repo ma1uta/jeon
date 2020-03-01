@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta.matrix</groupId>
     <artifactId>jeon</artifactId>
-    <version>0.10.1</version>
+    <version>0.11.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -37,7 +37,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/ma1uta/jeon</connection>
-        <developerConnection>scm:git:ssh://github.com:ma1uta/jeon</developerConnection>
+        <developerConnection>scm:git:ssh://github.com/ma1uta/jeon</developerConnection>
         <url>https://github.com/ma1uta/jeon/tree/master</url>
     </scm>
 
@@ -45,7 +45,7 @@
         <developer>
             <id>ma1uta</id>
             <name>Anatoly</name>
-            <email>Anatoliy Sablin tolya@sablin.xyz</email>
+            <email>tolya@sablin.xyz</email>
         </developer>
     </developers>
 
@@ -79,6 +79,7 @@
         <version.plugin.maven-gpg-plugin>1.6</version.plugin.maven-gpg-plugin>
         <version.plugin.nexus-staging-maven-plugin>1.6.8</version.plugin.nexus-staging-maven-plugin>
         <version.plugin.maven-enforcer-plugin>3.0.0-M2</version.plugin.maven-enforcer-plugin>
+        <version.plugin.maven-release-plugin>3.0.0-M1</version.plugin.maven-release-plugin>
         <version.plugin.swagger-maven-plugin>2.0.7</version.plugin.swagger-maven-plugin>
         <version.plugin.versions-maven-plugin>2.7</version.plugin.versions-maven-plugin>
         <version.plugin.maven-jar-plugin>3.1.0</version.plugin.maven-jar-plugin>
@@ -312,6 +313,14 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${version.plugin.maven-release-plugin}</version>
+                    <configuration>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -362,6 +371,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -488,29 +501,8 @@
         </profile>
     </profiles>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.eclipse.microprofile</groupId>
-                <artifactId>microprofile</artifactId>
-                <version>${version.lib.microprofile}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${version.lib.jackson-annotations}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${version.lib.swagger-annotations}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <modules>
+        <module>jeon-bom</module>
         <module>common-api</module>
         <module>push-api</module>
         <module>identity-api</module>

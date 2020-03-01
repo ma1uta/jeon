@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.info.License;
             + " This is managed by a distinct entity called the Push Gateway.",
         contact = @Contact(
             name = "Anatoly Sablin",
-            email = "Anatoliy Sablin tolya@sablin.xyz"
+            email = "tolya@sablin.xyz"
         ),
         license = @License(
             url = "https://www.apache.org/licenses/LICENSE-2.0.html",

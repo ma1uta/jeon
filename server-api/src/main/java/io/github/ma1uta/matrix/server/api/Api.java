@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.info.License;
             + " and to query profile and presence information about users on each other's servers.",
         contact = @Contact(
             name = "Anatoly Sablin",
-            email = "Anatoliy Sablin tolya@sablin.xyz"
+            email = "tolya@sablin.xyz"
         ),
         license = @License(
             url = "https://www.apache.org/licenses/LICENSE-2.0.html",

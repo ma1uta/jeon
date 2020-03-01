@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
             + " persistent copy of server state.",
         contact = @Contact(
             name = "Anatoly Sablin",
-            email = "Anatoliy Sablin tolya@sablin.xyz"
+            email = "tolya@sablin.xyz"
         ),
         license = @License(
             url = "http://www.apache.org/licenses/LICENSE-2.0.html",
