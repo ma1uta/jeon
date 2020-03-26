@@ -14,34 +14,51 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix.client.model.auth;
+package io.github.ma1uta.matrix;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Authentication flow.
+ * User-interactive response.
  */
-public class AuthenticationFlows {
+@Schema(
+    description = "User-interactive response."
+)
+public class UserInteractiveResponse implements ExceptionResponse {
 
     /**
      * Completed stages.
      */
+    @Schema(
+        description = "Completed stages."
+    )
     private List<String> completed;
 
     /**
      * Stages.
      */
+    @Schema(
+        description = "stages."
+    )
     private List<AuthenticationStage> flows;
 
     /**
-     * AuthType.
+     * Stage parameters.
      */
+    @Schema(
+        description = "Stage parameters."
+    )
     private Map<String, Map<String, String>> params;
 
     /**
-     * Authentication session.
+     * User-interactive session.
      */
+    @Schema(
+        description = "User-interactive session."
+    )
     private String session;
 
     public List<String> getCompleted() {

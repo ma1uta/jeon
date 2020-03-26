@@ -19,7 +19,7 @@ package io.github.ma1uta.matrix;
 /**
  * Any errors which occur at the Matrix API level MUST return a "standard error response".
  */
-public class ErrorResponse {
+public class ErrorResponse implements ExceptionResponse {
 
     /**
      * Standard error codes.
