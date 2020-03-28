@@ -51,7 +51,7 @@ public class UserInteractiveResponse implements ExceptionResponse {
     @Schema(
         description = "Stage parameters."
     )
-    private Map<String, Map<String, String>> params;
+    private Map<String, Object> params;
 
     /**
      * User-interactive session.
@@ -77,11 +77,11 @@ public class UserInteractiveResponse implements ExceptionResponse {
         this.flows = flows;
     }
 
-    public Map<String, Map<String, String>> getParams() {
+    public Map<String, Object> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Map<String, String>> params) {
+    public void setParams(Map<String, Object> params) {
         this.params = params;
     }
 
