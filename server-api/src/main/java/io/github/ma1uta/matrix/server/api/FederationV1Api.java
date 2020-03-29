@@ -168,62 +168,6 @@ public interface FederationV1Api {
     );
 
     /**
-     * Compares the auth chain provided with what the receiving server has for the room ID and event ID combination.
-     * <br>
-     * The auth difference can be calculated in two parts, where the "remote auth" is the auth chain provided by the sending server
-     * and the "local auth" is the auth chain the receiving server has. With those lists, the algorithm works bottom-up after sorting
-     * each chain by depth then by event ID. The differences are then discovered and returned as the response to this API call.
-     * <br>
-     * Return: {@link QueryAuth}.
-     * <b>Requires auth</b>: Yes.
-     * <p>Status code 200: The auth chain differences, as determined by the receiver.</p>
-     *
-     * @param roomId        Required. The room ID to compare the auth chain in.
-     * @param eventId       Required. The event ID to compare the auth chain of.
-     * @param request       Request JSON body.
-     * @param uriInfo       Request Information.
-     * @param httpHeaders   Http headers.
-     * @param asyncResponse Asynchronous response.
-     */
-    @Operation(
-        summary = "Compares the auth chain provided with what the receiving server has for the room ID and event ID combination.",
-        description = "The auth difference can be calculated in two parts, where the \"remote auth\" is the auth chain provided by"
-            + " the sending server and the \"local auth\" is the auth chain the receiving server has. With those lists, the algorithm works"
-            + " bottom-up after sorting each chain by depth then by event ID.The differences are then discovered and returned as"
-            + " the response to this API call.",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "The auth chain differences, as determined by the receiver.",
-                content = @Content(
-                    schema = @Schema(
-                        implementation = QueryAuth.class
-                    )
-                )
-            )
-        }
-    )
-    @POST
-    @Path("/query_auth/{roomId}/{eventId}")
-    void queryAuth(
-        @Parameter(
-            name = "roomId",
-            description = "The room ID to compare the auth chain in.",
-            required = true
-        ) @PathParam("roomId") String roomId,
-        @Parameter(
-            name = "eventId",
-            description = "The event ID to compare the auth chain of.",
-            required = true
-        ) @PathParam("eventId") String eventId,
-        @RequestBody QueryAuth request,
-
-        @Context UriInfo uriInfo,
-        @Context HttpHeaders httpHeaders,
-        @Suspended AsyncResponse asyncResponse
-    );
-
-    /**
      * Retrieves a sliding-window history of previous PDUs that occurred on the given room. Starting from the PDU ID(s) given in the
      * "v" argument, the PDUs that preceded it are retrieved, up to a total number given by the "limit".
      * <br>
