@@ -31,7 +31,6 @@ import io.github.ma1uta.matrix.server.model.federation.OnBindRequest;
 import io.github.ma1uta.matrix.server.model.federation.PersistedDataUnit;
 import io.github.ma1uta.matrix.server.model.federation.ProfileResponse;
 import io.github.ma1uta.matrix.server.model.federation.PublicRoomsResponse;
-import io.github.ma1uta.matrix.server.model.federation.QueryAuth;
 import io.github.ma1uta.matrix.server.model.federation.RoomStateResponse;
 import io.github.ma1uta.matrix.server.model.federation.SendRequest;
 import io.github.ma1uta.matrix.server.model.federation.StateIdResponse;

@@ -16,7 +16,11 @@
 
 package io.github.ma1uta.matrix.event.content;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * This event is used to inform the room about which alias should be considered the canonical one. This could be for display purposes
@@ -43,11 +47,29 @@ public class RoomCanonicalAliasContent implements EventContent {
     )
     private String alias;
 
+    /**
+     * List of alternative aliases for the room.
+     */
+    @Schema(
+        description = "List of alternative aliases for the room."
+    )
+    @JsonbProperty("alt_aliases")
+    private List<String> altAliases;
+
     public String getAlias() {
         return alias;
     }
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    @JsonProperty("alt_aliases")
+    public List<String> getAltAliases() {
+        return altAliases;
+    }
+
+    public void setAltAliases(List<String> altAliases) {
+        this.altAliases = altAliases;
     }
 }
