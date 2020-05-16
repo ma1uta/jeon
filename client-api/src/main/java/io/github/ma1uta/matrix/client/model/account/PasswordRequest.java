@@ -40,6 +40,18 @@ public class PasswordRequest {
     private char[] newPassword;
 
     /**
+     * Whether the other access tokens, and their associated devices, for the user should be revoked if the request succeeds.
+     * Defaults to true.
+     */
+    @Schema(
+        description = "Whether the other access tokens, and their associated devices,"
+            + " for the user should be revoked if the request succeeds.",
+        defaultValue = "true"
+    )
+    @JsonbProperty("logout_devices")
+    private boolean logoutDevices = true;
+
+    /**
      * Additional authentication information for the user-interactive authentication API.
      */
     @Schema(
@@ -54,6 +66,15 @@ public class PasswordRequest {
 
     public void setNewPassword(char[] newPassword) {
         this.newPassword = newPassword;
+    }
+
+    @JsonProperty("logout_devices")
+    public boolean isLogoutDevices() {
+        return logoutDevices;
+    }
+
+    public void setLogoutDevices(boolean logoutDevices) {
+        this.logoutDevices = logoutDevices;
     }
 
     public AuthenticationData getAuth() {

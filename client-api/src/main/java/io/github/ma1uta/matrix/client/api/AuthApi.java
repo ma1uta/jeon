@@ -79,6 +79,11 @@ public interface AuthApi {
         public static final String OAUTH2 = "m.login.oauth2";
 
         /**
+         * Authentication is supported by authorising with an external single sign-on provider.
+         */
+        public static final String SSO = "m.login.sso";
+
+        /**
          * Authentication is supported by authorising an email address with an identity server.
          */
         public static final String EMAIL_IDENTITY = "m.login.email.identity";
