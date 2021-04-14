@@ -72,7 +72,7 @@ public interface DeprecatedSyncApi {
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      * @deprecated in favor of
-     * {@link SyncApi#sync(String, String, Boolean, String, Long, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
+     *     {@link SyncApi#sync(String, String, Boolean, String, Long, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
      */
     @Operation(
         summary = "This returns the full state for this user, with an optional limit on the number of messages per room to return.",
@@ -141,7 +141,7 @@ public interface DeprecatedSyncApi {
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      * @deprecated in favor of {@link EventApi#roomEvent(String, String, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)} or
-     * {@link EventContextApi#context(String, String, Integer, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
+     *     {@link EventContextApi#context(String, String, Integer, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
      */
     @Operation(
         summary = "Get a single event based on event_id.",
@@ -212,7 +212,7 @@ public interface DeprecatedSyncApi {
      * @param asyncResponse   Asynchronous response.
      * @param securityContext Security context.
      * @deprecated in favor of
-     * {@link SyncApi#sync(String, String, Boolean, String, Long, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
+     *     {@link SyncApi#sync(String, String, Boolean, String, Long, UriInfo, HttpHeaders, AsyncResponse, SecurityContext)}.
      */
     @Operation(
         summary = "Get a copy of the current state and the most recent messages in a room.",

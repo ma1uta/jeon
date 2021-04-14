@@ -79,18 +79,18 @@
         <version.plugin.nexus-staging-maven-plugin>1.6.8</version.plugin.nexus-staging-maven-plugin>
         <version.plugin.maven-enforcer-plugin>3.0.0-M2</version.plugin.maven-enforcer-plugin>
         <version.plugin.maven-release-plugin>3.0.0-M1</version.plugin.maven-release-plugin>
-        <version.plugin.swagger-maven-plugin>2.1.4</version.plugin.swagger-maven-plugin>
+        <version.plugin.swagger-maven-plugin>2.1.7</version.plugin.swagger-maven-plugin>
         <version.plugin.versions-maven-plugin>2.7</version.plugin.versions-maven-plugin>
         <version.plugin.maven-jar-plugin>3.1.0</version.plugin.maven-jar-plugin>
         <version.plugin.buildnumber-maven-plugin>1.4</version.plugin.buildnumber-maven-plugin>
         <version.plugin.maven-bundle-plugin>4.1.0</version.plugin.maven-bundle-plugin>
 
         <!-- plugins dependencies -->
-        <version.lib.checkstyle>8.35</version.lib.checkstyle>
+        <version.lib.checkstyle>8.41.1</version.lib.checkstyle>
 
         <!-- dependency version -->
-        <version.lib.swagger-annotations>2.1.4</version.lib.swagger-annotations>
-        <version.lib.jackson-annotations>2.11.2</version.lib.jackson-annotations>
+        <version.lib.swagger-annotations>2.1.7</version.lib.swagger-annotations>
+        <version.lib.jackson-annotations>2.12.3</version.lib.jackson-annotations>
         <version.lib.microprofile>3.3</version.lib.microprofile>
     </properties>
 

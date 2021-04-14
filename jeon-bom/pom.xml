@@ -29,8 +29,8 @@
     <description>Java-based Matrix server. All dependencies.</description>
 
     <properties>
-        <version.lib.swagger-annotations>2.1.4</version.lib.swagger-annotations>
-        <version.lib.jackson-annotations>2.11.2</version.lib.jackson-annotations>
+        <version.lib.swagger-annotations>2.1.7</version.lib.swagger-annotations>
+        <version.lib.jackson-annotations>2.12.3</version.lib.jackson-annotations>
         <version.lib.microprofile>3.3</version.lib.microprofile>
     </properties>
 
