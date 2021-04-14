@@ -48,7 +48,7 @@ public class RoomRedaction extends RoomEvent<RoomRedactionContent> {
     public String getType() {
         return TYPE;
     }
-    
+
     @Schema(
         name = "redacts",
         description = "The event that has been redacted.",
