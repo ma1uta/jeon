@@ -14,15 +14,33 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
+package io.github.ma1uta.matrix.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+
 /**
- * Empty response.
+ * User-interactive stages.
  */
 @Schema(
-    description = "Empty response"
+    description = "User-interactive stages."
 )
-public class EmptyResponse {
+public class AuthenticationStage {
+
+    /**
+     * Stage.
+     */
+    @Schema(
+        description = "stages."
+    )
+    private List<String> stages;
+
+    public List<String> getStages() {
+        return stages;
+    }
+
+    public void setStages(List<String> stages) {
+        this.stages = stages;
+    }
 }

@@ -16,14 +16,14 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.device.Device;
 import io.github.ma1uta.matrix.client.model.device.DeviceDeleteRequest;
 import io.github.ma1uta.matrix.client.model.device.DeviceUpdateRequest;
 import io.github.ma1uta.matrix.client.model.device.DevicesDeleteRequest;
 import io.github.ma1uta.matrix.client.model.device.DevicesResponse;
+import io.github.ma1uta.matrix.common.EmptyResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
+import io.github.ma1uta.matrix.common.Secured;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

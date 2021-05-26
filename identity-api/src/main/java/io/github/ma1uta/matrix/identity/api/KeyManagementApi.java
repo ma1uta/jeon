@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.identity.api;
 
-import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.key.KeyValidationResponse;
 import io.github.ma1uta.matrix.identity.model.key.PublicKeyResponse;
 import io.swagger.v3.oas.annotations.Operation;

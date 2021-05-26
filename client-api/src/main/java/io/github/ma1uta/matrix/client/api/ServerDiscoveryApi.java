@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.ErrorResponse;
 import io.github.ma1uta.matrix.client.model.serverdiscovery.ServerDiscoveryResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

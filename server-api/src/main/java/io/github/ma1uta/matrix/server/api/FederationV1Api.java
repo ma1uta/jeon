@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.server.api;
 
-import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.common.EmptyResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.github.ma1uta.matrix.server.model.federation.DeviceResponse;
 import io.github.ma1uta.matrix.server.model.federation.DirectoryResponse;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;

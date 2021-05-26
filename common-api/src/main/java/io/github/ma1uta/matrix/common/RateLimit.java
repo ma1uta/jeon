@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
+package io.github.ma1uta.matrix.common;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.ws.rs.NameBinding;
 
 /**
- * Response.
+ * Interface marker for rate-limit request.
  */
-@Schema(
-    description = "response."
-)
-public interface ExceptionResponse {
+@NameBinding
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface RateLimit {
 }

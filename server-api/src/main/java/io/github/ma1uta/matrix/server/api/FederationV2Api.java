@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.server.api;
 
-import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.github.ma1uta.matrix.server.model.federation.EventContainer;
 import io.github.ma1uta.matrix.server.model.federation.InviteV2Request;
 import io.swagger.v3.oas.annotations.Operation;
