@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta.matrix</groupId>
     <artifactId>jeon</artifactId>
-    <version>0.13.0</version>
+    <version>0.13.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -67,7 +67,7 @@
         <packaging.type>bundle</packaging.type>
 
         <!-- plugin versions -->
-        <version.plugin.maven-compiler-plugin>3.8.0</version.plugin.maven-compiler-plugin>
+        <version.plugin.maven-compiler-plugin>3.8.1</version.plugin.maven-compiler-plugin>
         <version.plugin.maven-checkstyle-plugin>3.1.1</version.plugin.maven-checkstyle-plugin>
         <version.plugin.maven-surefire-plugin>2.22.0</version.plugin.maven-surefire-plugin>
         <version.plugin.maven-failsafe-plugin>2.22.0</version.plugin.maven-failsafe-plugin>
@@ -86,10 +86,10 @@
         <version.plugin.maven-bundle-plugin>4.1.0</version.plugin.maven-bundle-plugin>
 
         <!-- plugins dependencies -->
-        <version.lib.checkstyle>8.41.1</version.lib.checkstyle>
+        <version.lib.checkstyle>8.42</version.lib.checkstyle>
 
         <!-- dependency version -->
-        <version.lib.swagger-annotations>2.1.7</version.lib.swagger-annotations>
+        <version.lib.swagger-annotations>2.1.9</version.lib.swagger-annotations>
         <version.lib.jackson-annotations>2.12.3</version.lib.jackson-annotations>
         <version.lib.microprofile>3.3</version.lib.microprofile>
     </properties>
