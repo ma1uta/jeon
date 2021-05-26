@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-/**
- * Root of all matrix related classes.
- */
+package io.github.ma1uta.matrix.common;
 
-package io.github.ma1uta.matrix;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+/**
+ * Response.
+ */
+@Schema(
+    description = "response."
+)
+public interface ExceptionResponse {
+}

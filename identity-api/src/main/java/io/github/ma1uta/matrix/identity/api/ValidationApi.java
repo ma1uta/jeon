@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.identity.api;
 
-import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.common.EmptyResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.validation.PublishRequest;
 import io.github.ma1uta.matrix.identity.model.validation.PublishResponse;
 import io.github.ma1uta.matrix.identity.model.validation.UnbindRequest;
@@ -202,7 +202,7 @@ public interface ValidationApi {
      * <br>
      * <b>Requires auth</b>:Yes.
      * <br>
-     * Return: {@link io.github.ma1uta.matrix.EmptyResponse}.
+     * Return: {@link EmptyResponse}.
      * <p>Status code 200: The association was successfully removed.</p>
      * <p>Status code 400: If the response body is not a JSON Matrix error, the identity server does not support unbinds.
      * If a JSON Matrix error is in the response body, the requesting party should respect the error.</p>

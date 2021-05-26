@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
+package io.github.ma1uta.matrix.common;
 
 import io.github.ma1uta.matrix.event.Event;
 import io.swagger.v3.oas.annotations.media.Schema;

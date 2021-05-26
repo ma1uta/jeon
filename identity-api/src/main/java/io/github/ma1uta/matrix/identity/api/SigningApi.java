@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.identity.api;
 
-import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.signing.SigningRequest;
 import io.github.ma1uta.matrix.identity.model.signing.SigningResponse;
 import io.swagger.v3.oas.annotations.Operation;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
+package io.github.ma1uta.matrix.common;
 
 /**
  * Any errors which occur at the Matrix API level MUST return a "standard error response".

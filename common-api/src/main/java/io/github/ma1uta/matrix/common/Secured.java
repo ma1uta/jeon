@@ -14,33 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
+package io.github.ma1uta.matrix.common;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.ws.rs.NameBinding;
 
 /**
- * User-interactive stages.
+ * Interface marker for required authorization.
  */
-@Schema(
-    description = "User-interactive stages."
-)
-public class AuthenticationStage {
-
-    /**
-     * Stage.
-     */
-    @Schema(
-        description = "stages."
-    )
-    private List<String> stages;
-
-    public List<String> getStages() {
-        return stages;
-    }
-
-    public void setStages(List<String> stages) {
-        this.stages = stages;
-    }
+@NameBinding
+@Retention(RetentionPolicy.RUNTIME)
+@Target( {ElementType.TYPE, ElementType.METHOD})
+public @interface Secured {
 }

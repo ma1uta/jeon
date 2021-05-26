@@ -1,5 +1,5 @@
 module matrix.common.api {
-    exports io.github.ma1uta.matrix;
+    exports io.github.ma1uta.matrix.common;
     exports io.github.ma1uta.matrix.event;
     exports io.github.ma1uta.matrix.event.content;
     exports io.github.ma1uta.matrix.event.message;

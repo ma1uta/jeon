@@ -16,7 +16,7 @@
 
 package io.github.ma1uta.matrix.identity.model.invitation;
 
-import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**

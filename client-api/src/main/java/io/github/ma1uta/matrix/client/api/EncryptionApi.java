@@ -16,7 +16,6 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.encryption.ChangesResponse;
 import io.github.ma1uta.matrix.client.model.encryption.ClaimRequest;
 import io.github.ma1uta.matrix.client.model.encryption.ClaimResponse;
@@ -24,6 +23,7 @@ import io.github.ma1uta.matrix.client.model.encryption.QueryRequest;
 import io.github.ma1uta.matrix.client.model.encryption.QueryResponse;
 import io.github.ma1uta.matrix.client.model.encryption.UploadRequest;
 import io.github.ma1uta.matrix.client.model.encryption.UploadResponse;
+import io.github.ma1uta.matrix.common.Secured;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

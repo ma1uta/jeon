@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
+package io.github.ma1uta.matrix.common;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.ws.rs.NameBinding;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Interface marker for required authorization.
+ * Empty response.
  */
-@NameBinding
-@Retention(RetentionPolicy.RUNTIME)
-@Target( {ElementType.TYPE, ElementType.METHOD})
-public @interface Secured {
+@Schema(
+    description = "Empty response"
+)
+public class EmptyResponse {
 }

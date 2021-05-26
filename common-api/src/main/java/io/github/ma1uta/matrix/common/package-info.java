@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package io.github.ma1uta.matrix;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.ws.rs.NameBinding;
-
 /**
- * Interface marker for rate-limit request.
+ * Root of all matrix related classes.
  */
-@NameBinding
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-public @interface RateLimit {
-}
+
+package io.github.ma1uta.matrix.common;

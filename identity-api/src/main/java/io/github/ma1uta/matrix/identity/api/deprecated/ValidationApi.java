@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.identity.api.deprecated;
 
-import io.github.ma1uta.matrix.EmptyResponse;
-import io.github.ma1uta.matrix.ErrorResponse;
+import io.github.ma1uta.matrix.common.EmptyResponse;
+import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.github.ma1uta.matrix.identity.model.validation.PublishRequest;
 import io.github.ma1uta.matrix.identity.model.validation.PublishResponse;
 import io.github.ma1uta.matrix.identity.model.validation.UnbindRequest;

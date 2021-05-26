@@ -16,11 +16,11 @@
 
 package io.github.ma1uta.matrix.client.api;
 
-import io.github.ma1uta.matrix.RateLimit;
-import io.github.ma1uta.matrix.RateLimitedErrorResponse;
-import io.github.ma1uta.matrix.Secured;
 import io.github.ma1uta.matrix.client.model.userdirectory.SearchRequest;
 import io.github.ma1uta.matrix.client.model.userdirectory.SearchResponse;
+import io.github.ma1uta.matrix.common.RateLimit;
+import io.github.ma1uta.matrix.common.RateLimitedErrorResponse;
+import io.github.ma1uta.matrix.common.Secured;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

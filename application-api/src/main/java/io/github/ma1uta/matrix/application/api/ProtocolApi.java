@@ -16,8 +16,8 @@
 
 package io.github.ma1uta.matrix.application.api;
 
-import io.github.ma1uta.matrix.ErrorResponse;
-import io.github.ma1uta.matrix.Secured;
+import io.github.ma1uta.matrix.common.ErrorResponse;
+import io.github.ma1uta.matrix.common.Secured;
 import io.github.ma1uta.matrix.protocol.Protocol;
 import io.github.ma1uta.matrix.protocol.ProtocolLocation;
 import io.github.ma1uta.matrix.protocol.ProtocolUser;
