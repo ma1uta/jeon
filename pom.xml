@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.ma1uta.matrix</groupId>
     <artifactId>jeon</artifactId>
@@ -24,7 +25,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -37,8 +38,8 @@
         <connection>scm:git:git://github.com/ma1uta/jeon</connection>
         <developerConnection>scm:git:ssh://github.com/ma1uta/jeon</developerConnection>
         <url>https://github.com/ma1uta/jeon/tree/master</url>
-      <tag>0.12.0</tag>
-  </scm>
+        <tag>0.14.0</tag>
+    </scm>
 
     <developers>
         <developer>
@@ -63,11 +64,11 @@
         <!-- common properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <packaging.type>bundle</packaging.type>
 
         <!-- plugin versions -->
-        <version.plugin.maven-compiler-plugin>3.8.0</version.plugin.maven-compiler-plugin>
+        <version.plugin.maven-compiler-plugin>3.8.1</version.plugin.maven-compiler-plugin>
         <version.plugin.maven-checkstyle-plugin>3.1.1</version.plugin.maven-checkstyle-plugin>
         <version.plugin.maven-surefire-plugin>2.22.0</version.plugin.maven-surefire-plugin>
         <version.plugin.maven-failsafe-plugin>2.22.0</version.plugin.maven-failsafe-plugin>
@@ -91,7 +92,7 @@
         <!-- dependency version -->
         <version.lib.swagger-annotations>2.1.7</version.lib.swagger-annotations>
         <version.lib.jackson-annotations>2.12.3</version.lib.jackson-annotations>
-        <version.lib.microprofile>3.3</version.lib.microprofile>
+        <version.lib.microprofile>4.0</version.lib.microprofile>
     </properties>
 
     <build>
@@ -120,7 +121,7 @@
                                     <requireMavenVersion>
                                         <version>3.6.0</version>
                                     </requireMavenVersion>
-                                    <DependencyConvergence />
+                                    <DependencyConvergence/>
                                 </rules>
                             </configuration>
                         </execution>
@@ -272,10 +273,6 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration>
-                        <source>8</source>
-                        <show>private</show>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -358,10 +355,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <!-- https://bugs.openjdk.java.net/browse/JDK-8212233 -->
-                    <failOnError>false</failOnError>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -432,32 +425,8 @@
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-compiler-plugin</artifactId>
                             <version>${version.plugin.maven-compiler-plugin}</version>
-                            <executions>
-                                <execution>
-                                    <id>default-compile</id>
-                                    <configuration>
-                                        <!-- compile everything to ensure module-info contains right entries -->
-                                        <release>9</release>
-                                    </configuration>
-                                </execution>
-                                <execution>
-                                    <id>base-compile</id>
-                                    <goals>
-                                        <goal>compile</goal>
-                                    </goals>
-                                    <!-- recompile everything for target VM except the module-info.java -->
-                                    <configuration>
-                                        <excludes>
-                                            <exclude>module-info.java</exclude>
-                                        </excludes>
-                                        <source>${java.version}</source>
-                                        <target>${java.version}</target>
-                                    </configuration>
-                                </execution>
-                            </executions>
                             <configuration>
-                                <source>${java.version}</source>
-                                <target>${java.version}</target>
+                                <release>${java.version}</release>
                             </configuration>
                         </plugin>
                         <plugin>

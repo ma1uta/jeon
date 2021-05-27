@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>jeon</artifactId>
         <groupId>io.github.ma1uta.matrix</groupId>
@@ -30,8 +31,9 @@
 
     <properties>
         <version.lib.swagger-annotations>2.1.7</version.lib.swagger-annotations>
-        <version.lib.jackson-annotations>2.12.3</version.lib.jackson-annotations>
-        <version.lib.microprofile>3.3</version.lib.microprofile>
+        <version.lib.jackson-bom>2.12.3</version.lib.jackson-bom>
+        <version.lib.microprofile>4.0</version.lib.microprofile>
+        <version.lib.jakarta.xml-bind>2.3.3</version.lib.jakarta.xml-bind>
     </properties>
 
     <dependencyManagement>
@@ -44,14 +46,21 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${version.lib.jackson-annotations}</version>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${version.lib.jackson-bom}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${version.lib.swagger-annotations}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>${version.lib.jakarta.xml-bind}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
