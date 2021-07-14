@@ -134,8 +134,8 @@ public class CreateRoomRequest {
             + "override the default state events set in the new room. The expected format of the state events are an object with "
             + "type, state_key and content keys set."
     )
-    @JsonbProperty("initial_event")
-    private List<Event> initialEvent;
+    @JsonbProperty("initial_state")
+    private List<Event> initialState;
 
     /**
      * Convenience parameter for setting various default state events based on a preset.
@@ -235,13 +235,13 @@ public class CreateRoomRequest {
         this.creationContent = creationContent;
     }
 
-    @JsonProperty("initial_event")
-    public List<Event> getInitialEvent() {
-        return initialEvent;
+    @JsonProperty("initial_state")
+    public List<Event> getInitialState() {
+        return initialState;
     }
 
-    public void setInitialEvent(List<Event> initialEvent) {
-        this.initialEvent = initialEvent;
+    public void setInitialState(List<Event> initialState) {
+        this.initialState = initialState;
     }
 
     public String getPreset() {
