@@ -84,7 +84,7 @@
         <version.plugin.versions-maven-plugin>2.7</version.plugin.versions-maven-plugin>
         <version.plugin.maven-jar-plugin>3.1.0</version.plugin.maven-jar-plugin>
         <version.plugin.buildnumber-maven-plugin>1.4</version.plugin.buildnumber-maven-plugin>
-        <version.plugin.maven-bundle-plugin>4.1.0</version.plugin.maven-bundle-plugin>
+        <version.plugin.maven-bundle-plugin>5.1.2</version.plugin.maven-bundle-plugin>
 
         <!-- plugins dependencies -->
         <version.lib.checkstyle>8.41.1</version.lib.checkstyle>
