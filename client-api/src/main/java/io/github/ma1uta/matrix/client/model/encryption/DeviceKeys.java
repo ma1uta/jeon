@@ -84,6 +84,7 @@ public class DeviceKeys {
     @Schema(
         description = "Additional data added to the device key information by intermediate servers, and not covered by the signatures."
     )
+    @JsonbProperty("unsigned")
     private UnsignedDeviceInfo unsignedDeviceInfo;
 
     @JsonProperty("user_id")
@@ -128,6 +129,7 @@ public class DeviceKeys {
         this.signatures = signatures;
     }
 
+    @JsonProperty("unsigned")
     public UnsignedDeviceInfo getUnsignedDeviceInfo() {
         return unsignedDeviceInfo;
     }
