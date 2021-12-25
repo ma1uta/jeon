@@ -19,7 +19,9 @@ package io.github.ma1uta.matrix.client.model.encryption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
 import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
 
 /**
  * UnsignedDeviceInfo.
@@ -27,7 +29,10 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Unsigned device info."
 )
-public class UnsignedDeviceInfo {
+public class UnsignedDeviceInfo implements Serializable {
+
+    @JsonbTransient
+    private static final long serialVersionUID = 4184762434649188422L;
 
     /**
      * The display name which the user set on the device.

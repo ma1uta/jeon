@@ -19,9 +19,11 @@ package io.github.ma1uta.matrix.client.model.encryption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
 
 /**
  * Device Keys.
@@ -29,7 +31,10 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Device keys."
 )
-public class DeviceKeys {
+public class DeviceKeys implements Serializable {
+
+    @JsonbTransient
+    private static final long serialVersionUID = 1727882109027072362L;
 
     /**
      * Required. The ID of the user the device belongs to. Must match the user ID used when logging in.
