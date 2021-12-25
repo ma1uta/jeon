@@ -58,14 +58,15 @@ public interface KeyApi {
     /**
      * Gets the homeserver's published TLS fingerprints and signing keys.
      * The homeserver may have any number of active keys and may have a number of old keys.
-     * <p/>
-     * Intermediate notary servers should cache a response for half of its lifetime to avoid serving a stale response.
+     *
+     * <p>Intermediate notary servers should cache a response for half of its lifetime to avoid serving a stale response.
      * Originating servers should avoid returning responses that expire in less than an hour to avoid repeated requests
      * for a certificate that is about to expire. Requesting servers should limit how frequently they query for certificates
      * to avoid flooding a server with requests.
-     * <p/>
-     * If the server fails to respond to this request, intermediate notary servers should continue to return the last response
+     * </p>
+     * <p>If the server fails to respond to this request, intermediate notary servers should continue to return the last response
      * they received from the server so that the signatures of old events can still be checked.
+     * </p>
      * <br>
      * Return: {@link KeyResponse}
      * <p>Status code 200: The homeserver's keys</p>

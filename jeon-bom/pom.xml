@@ -30,10 +30,11 @@
     <description>Java-based Matrix server. All dependencies.</description>
 
     <properties>
-        <version.lib.swagger-annotations>2.1.7</version.lib.swagger-annotations>
-        <version.lib.jackson-bom>2.12.3</version.lib.jackson-bom>
+        <version.lib.swagger-annotations>2.1.12</version.lib.swagger-annotations>
+        <version.lib.jackson-bom>2.13.1</version.lib.jackson-bom>
         <version.lib.microprofile>4.0</version.lib.microprofile>
         <version.lib.jakarta.xml-bind>2.3.3</version.lib.jakarta.xml-bind>
+        <version.lib.jakarta.ws.rs-api>2.1.6</version.lib.jakarta.ws.rs-api>
     </properties>
 
     <dependencyManagement>
@@ -61,6 +62,21 @@
                 <groupId>jakarta.xml.bind</groupId>
                 <artifactId>jakarta.xml.bind-api</artifactId>
                 <version>${version.lib.jakarta.xml-bind}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>${version.lib.jakarta.ws.rs-api}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>jakarta.activation</groupId>
+                        <artifactId>jakarta.activation-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -124,7 +124,8 @@ public interface RoomApi {
      * <li>Invite events implied by invite and invite_3pid.</li>
      * </ol>
      * The available presets do the following with respect to room state:
-     * <table summary="Presets">
+     * <table>
+     * <caption>Presets</caption>
      * <tr>
      * <th>Preset</th>
      * <th>join_rules</th>

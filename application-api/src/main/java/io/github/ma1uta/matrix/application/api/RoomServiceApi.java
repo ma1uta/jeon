@@ -55,8 +55,14 @@ public interface RoomServiceApi {
         protected Visibility() {
         }
 
+        /**
+         * Public visibility.
+         */
         public static final String PUBLIC = "public";
 
+        /**
+         * Private visibility.
+         */
         public static final String PRIVATE = "private";
     }
 

@@ -165,7 +165,8 @@ public interface ContentApi {
      * <br>
      * Return: {@link OutputStream}.
      * <p>Response headers:</p>
-     * <table summary="Response header">
+     * <table>
+     * <caption>Response header</caption>
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
@@ -244,7 +245,8 @@ public interface ContentApi {
      * <br>
      * Return: {@link OutputStream}.
      * <p>Response headers:</p>
-     * <table summary="Response headers">
+     * <table>
+     * <caption>Response headers</caption>
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
@@ -328,7 +330,8 @@ public interface ContentApi {
      * <br>
      * Return: {@link OutputStream}.
      * <p>Response headers:</p>
-     * <table summary="Response headers">
+     * <table>
+     * <caption>Response headers</caption>
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
@@ -422,7 +425,8 @@ public interface ContentApi {
      * <br>
      * Return: {@link Map}.
      * <p>Response headers:</p>
-     * <table summary="Response headers">
+     * <table>
+     * <caption>Response headers</caption>
      * <tr>
      * <th>Parameter</th>
      * <th>Type</th>
