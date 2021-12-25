@@ -16,8 +16,12 @@
 
 package io.github.ma1uta.matrix.event;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.ma1uta.matrix.event.content.RoomKeyContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.json.bind.annotation.JsonbProperty;
+import java.util.Map;
 
 /**
  * This event type is used to exchange keys for end-to-end encryption. Typically it is encrypted as an m.room.encrypted event,
@@ -34,6 +38,72 @@ public class RoomKey extends Event<RoomKeyContent> {
      * then sent as a to-device event.
      */
     public static final String TYPE = "m.room_key";
+
+    /**
+     * Sender.
+     */
+    @Schema(
+        description = "Sender."
+    )
+    private String sender;
+
+    /**
+     * Recipient.
+     */
+    @Schema(
+        description = "Recipient."
+    )
+    private String recipient;
+
+    /**
+     * Recipient keys.
+     */
+    @Schema(
+        description = "Recipient keys."
+    )
+    @JsonbProperty("recipient_keys")
+    private Map<String, String> recipientKeys;
+
+    /**
+     * Keys.
+     */
+    @Schema(
+        description = "Keys."
+    )
+    private Map<String, String> keys;
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
+
+    @JsonProperty("recipient_keys")
+    public Map<String, String> getRecipientKeys() {
+        return recipientKeys;
+    }
+
+    public void setRecipientKeys(Map<String, String> recipientKeys) {
+        this.recipientKeys = recipientKeys;
+    }
+
+    public Map<String, String> getKeys() {
+        return keys;
+    }
+
+    public void setKeys(Map<String, String> keys) {
+        this.keys = keys;
+    }
 
     @Override
     public String getType() {
