@@ -46,7 +46,7 @@ import javax.ws.rs.core.UriInfo;
  * <br>
  * Content is reported based upon a negative score, where -100 is "most offensive" and 0 is "inoffensive".
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ReportApi {

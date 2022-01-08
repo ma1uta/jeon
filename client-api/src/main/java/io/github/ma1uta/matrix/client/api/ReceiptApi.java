@@ -50,7 +50,7 @@ import javax.ws.rs.core.UriInfo;
  * "up to and including" the event specified. For example, marking an event as "read" would indicate that the user had read all
  * events up to the referenced event.
  */
-@Path("/_matrix/client/r0/rooms")
+@Path("/_matrix/client/{v:r0|v3}/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 public interface ReceiptApi {
 

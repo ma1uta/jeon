@@ -42,7 +42,7 @@ import javax.ws.rs.core.UriInfo;
  * This API returns a number of events that happened just before and after the specified event. This allows clients to get the context
  * surrounding an event.
  */
-@Path("/_matrix/client/r0/rooms")
+@Path("/_matrix/client/{v:r0|v3}/rooms")
 @Produces(MediaType.APPLICATION_JSON)
 public interface EventContextApi {
 

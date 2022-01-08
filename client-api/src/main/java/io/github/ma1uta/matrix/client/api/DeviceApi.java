@@ -52,7 +52,7 @@ import javax.ws.rs.core.UriInfo;
  * Clients that implement this module should offer the user a list of registered devices, as well as the means to update their
  * display names. Clients should also allow users to delete disused devices.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface DeviceApi {

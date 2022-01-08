@@ -49,7 +49,7 @@ import javax.ws.rs.core.UriInfo;
  * <li>The Matrix client receives the login token and passes it to the /login API.</li>
  * </ul>
  */
-@Path("/_matrix/client/r0/login/sso")
+@Path("/_matrix/client/{v:r0|v3}/login/sso")
 public interface SsoApi {
 
     /**

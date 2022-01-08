@@ -47,7 +47,7 @@ import javax.ws.rs.core.UriInfo;
  * Users can add tags to rooms. Tags are short strings used to label rooms, e.g. "work", "family". A room may have multiple tags.
  * Tags are only visible to the user that set them but are shared across all their devices.
  */
-@Path("/_matrix/client/r0/user")
+@Path("/_matrix/client/{v:r0|v3}/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface TagApi {

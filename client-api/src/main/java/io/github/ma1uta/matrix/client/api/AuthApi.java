@@ -49,7 +49,7 @@ import javax.ws.rs.core.UriInfo;
  * <br>
  * Note that this endpoint does not currently use the user-interactive authentication API.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AuthApi {

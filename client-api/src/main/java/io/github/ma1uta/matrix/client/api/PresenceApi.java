@@ -69,7 +69,7 @@ import javax.ws.rs.core.UriInfo;
  * <li>offline : The user is not connected to an event stream or is explicitly suppressing their profile information from being sent.</li>
  * </ul>
  */
-@Path("/_matrix/client/r0/presence")
+@Path("/_matrix/client/{v:r0|v3}/presence")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface PresenceApi {

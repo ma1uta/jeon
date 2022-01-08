@@ -50,7 +50,7 @@ import javax.ws.rs.core.UriInfo;
  * Matrix optionally supports end-to-end encryption, allowing rooms to be created whose conversation contents is not decryptable or
  * interceptable on any of the participating homeservers.
  */
-@Path("/_matrix/client/r0/keys")
+@Path("/_matrix/client/{v:r0|v3}/keys")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface EncryptionApi {

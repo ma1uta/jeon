@@ -49,7 +49,7 @@ import javax.ws.rs.core.UriInfo;
  * that they have left. Only events that the user is allowed to see will be searched, e.g. it won't include events in rooms that
  * happened after you left.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SearchApi {

@@ -45,7 +45,7 @@ import javax.ws.rs.core.UriInfo;
  * <br>
  * Provides search over all users.
  */
-@Path("/_matrix/client/r0/user_directory")
+@Path("/_matrix/client/{v:r0|v3}/user_directory")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface UserDirectoryApi {

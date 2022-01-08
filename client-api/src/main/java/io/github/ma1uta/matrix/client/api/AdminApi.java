@@ -40,7 +40,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * Gets information about a particular user.
  */
-@Path("/_matrix/client/r0/admin")
+@Path("/_matrix/client/{v:r0|v3}/admin")
 @Produces(MediaType.APPLICATION_JSON)
 public interface AdminApi {
 

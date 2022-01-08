@@ -49,7 +49,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * Profiles.
  */
-@Path("/_matrix/client/r0/profile")
+@Path("/_matrix/client/{v:r0|v3}/profile")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ProfileApi {

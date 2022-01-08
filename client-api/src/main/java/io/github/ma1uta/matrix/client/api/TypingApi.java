@@ -54,7 +54,7 @@ import javax.ws.rs.core.UriInfo;
  * stops typing, the state change of the boolean to false should trigger another HTTP request to inform the server that the user has
  * stopped typing.
  */
-@Path("/_matrix/client/r0/rooms")
+@Path("/_matrix/client/{v:r0|v3}/rooms")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface TypingApi {

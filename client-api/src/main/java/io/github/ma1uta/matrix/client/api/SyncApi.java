@@ -48,7 +48,7 @@ import javax.ws.rs.core.UriInfo;
  * Finally, the response includes, for each room, a prev_batch field, which can be passed as a start parameter to
  * the /rooms/&lt;room_id&gt;/messages API to retrieve earlier messages.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SyncApi {

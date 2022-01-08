@@ -46,7 +46,7 @@ import javax.ws.rs.core.UriInfo;
  * Warning: This API is deprecated and will be removed from a future release.
  */
 @Deprecated
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface DeprecatedSyncApi {

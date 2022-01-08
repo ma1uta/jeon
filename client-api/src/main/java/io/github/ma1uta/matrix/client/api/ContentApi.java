@@ -63,7 +63,7 @@ import javax.ws.rs.core.UriInfo;
  * Key is downloaded from the recipient's local homeserver, which must first transfer the content from the origin homeserver
  * using the same API (unless the origin and destination homeservers are the same).
  */
-@Path("/_matrix/media/r0")
+@Path("/_matrix/media/{v:r0|v3}")
 public interface ContentApi {
 
     /**

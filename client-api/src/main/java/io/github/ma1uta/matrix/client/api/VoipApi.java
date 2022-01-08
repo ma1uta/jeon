@@ -41,7 +41,7 @@ import javax.ws.rs.core.UriInfo;
  * The homeserver MAY provide a TURN server which clients can use to contact the remote party. The following HTTP API endpoints will
  * be used by clients in order to get information about the TURN server.
  */
-@Path("/_matrix/client/r0/voip")
+@Path("/_matrix/client/{v:r0|v3}/voip")
 @Produces(MediaType.APPLICATION_JSON)
 public interface VoipApi {
 

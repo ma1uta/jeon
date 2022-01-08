@@ -44,7 +44,7 @@ import javax.ws.rs.core.UriInfo;
  * This module allows users to verify their identity with a third party service. The third party service does need to be matrix-aware
  * in that it will need to know to resolve matrix homeservers to exchange the user's token for identity information.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface OpenIdApi {

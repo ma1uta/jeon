@@ -59,7 +59,7 @@ import javax.ws.rs.core.UriInfo;
  * Users may also configure a number of rules that determine which events generate notifications. These are all stored and managed
  * by the user's homeserver. This allows user-specific push settings to be reused between client applications.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public interface PushApi {

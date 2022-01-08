@@ -48,7 +48,7 @@ import javax.ws.rs.core.UriInfo;
  * one-time authentication tokens or key data. It is not intended for conversational data, which should be sent using the normal
  * /rooms/&lt;room_id&gt;/send API for consistency throughout Matrix.
  */
-@Path("/_matrix/client/r0/sendToDevice")
+@Path("/_matrix/client/{v:r0|v3}/sendToDevice")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface SendToDeviceApi {

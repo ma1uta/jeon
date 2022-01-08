@@ -50,7 +50,7 @@ import javax.ws.rs.core.UriInfo;
  * may bridge multiple third party networks, and many individual locations within those networks. A single third party network
  * location may be bridged to multiple Matrix rooms.
  */
-@Path("/_matrix/client/r0/thirdparty")
+@Path("/_matrix/client/{v:r0|v3}/thirdparty")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ThirdPartyProtocolApi {

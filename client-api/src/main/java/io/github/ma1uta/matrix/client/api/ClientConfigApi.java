@@ -44,7 +44,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * Client Behaviour.
  */
-@Path("/_matrix/client/r0/user")
+@Path("/_matrix/client/{v:r0|v3}/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ClientConfigApi {

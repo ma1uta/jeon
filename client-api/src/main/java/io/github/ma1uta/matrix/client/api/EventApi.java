@@ -53,7 +53,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * There are several APIs provided to GET events for a room.
  */
-@Path("/_matrix/client/r0/rooms")
+@Path("/_matrix/client/{v:r0|v3}/rooms")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface EventApi {

@@ -46,7 +46,7 @@ import javax.ws.rs.core.UriInfo;
  * Filters can be created on the server and can be passed as as a parameter to APIs which return events. These filters alter the
  * data returned from those APIs. Not all APIs accept filters.
  */
-@Path("/_matrix/client/r0/user")
+@Path("/_matrix/client/{v:r0|v3}/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface FilterApi {

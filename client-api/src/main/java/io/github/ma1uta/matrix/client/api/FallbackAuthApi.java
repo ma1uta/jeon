@@ -100,7 +100,7 @@ public interface FallbackAuthApi {
         }
     )
     @GET
-    @Path("/client/r0/auth/{auth}/fallback/web")
+    @Path("/client/{v:r0|v3}/auth/{auth}/fallback/web")
     void auth(
         @Parameter(
             description = "The type name of the stage it is attempting."

@@ -41,7 +41,7 @@ import javax.ws.rs.core.UriInfo;
  * For example, a homeserver may not support users changing their password as it is configured to perform authentication against
  * an external system.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Produces(MediaType.APPLICATION_JSON)
 public interface CapabilitiesApi {
 

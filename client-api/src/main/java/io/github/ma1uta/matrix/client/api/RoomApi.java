@@ -63,7 +63,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * Rooms API.
  */
-@Path("/_matrix/client/r0")
+@Path("/_matrix/client/{v:r0|v3}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface RoomApi {
