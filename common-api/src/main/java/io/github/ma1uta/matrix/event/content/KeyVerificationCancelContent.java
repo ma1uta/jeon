@@ -84,6 +84,16 @@ public class KeyVerificationCancelContent implements EventContent {
          * The device receiving this error can ignore the verification request.
          */
         public static final String M_ACCEPTED = "m.accepted";
+
+        /**
+         * The hash commitment did not match.
+         */
+        public static final String M_MISMATCHED_COMMITMENT = "m.mismatched_commitment";
+
+        /**
+         *  The SAS did not match.
+         */
+        public static final String M_MISMATCHED_SAS = "m.mismatched_sas";
     }
 
     /**
