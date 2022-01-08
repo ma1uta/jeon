@@ -42,7 +42,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * Application service APIs which are used by the homeserver. All application services MUST implement these APIs.
  */
-@Path("/_matrix/app/v1")
+@Path("/_matrix/app/{v:v1|unstable}")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ApplicationApi {

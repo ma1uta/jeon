@@ -42,7 +42,7 @@ import javax.ws.rs.core.UriInfo;
  * Application services can maintain their own room directories for their defined third party protocols.
  * These room directories may be accessed by clients through additional parameters on the /publicRooms client-server endpoint.
  */
-@Path("/_matrix/client/r0/directory/list/appservice")
+@Path("/_matrix/client/{v:r0|v3}/directory/list/appservice")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface RoomServiceApi {

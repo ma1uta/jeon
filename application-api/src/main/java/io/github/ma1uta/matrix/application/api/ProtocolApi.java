@@ -54,7 +54,7 @@ import javax.ws.rs.core.UriInfo;
  * When clients request the homeserver to search in a particular "network" (protocol), the search fields will be passed along
  * to the application service for filtering.
  */
-@Path("/_matrix/app/v1/thirdparty")
+@Path("/_matrix/app/{v:v1|unstable}/thirdparty")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ProtocolApi {
