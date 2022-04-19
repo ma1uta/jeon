@@ -87,7 +87,7 @@ public interface AdminApi {
     @Path("/whois/{userId}")
     void whois(
         @Parameter(
-            description = "The use to look up",
+            description = "The user to look up",
             required = true
         ) @PathParam("userId") String userId,
 
