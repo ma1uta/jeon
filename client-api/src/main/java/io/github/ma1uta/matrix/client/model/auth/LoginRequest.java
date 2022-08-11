@@ -114,6 +114,15 @@ public class LoginRequest {
     @JsonbProperty("initial_device_display_name")
     private String initialDeviceDisplayName;
 
+    /**
+     * If true, the client supports refresh tokens.
+     */
+    @Schema(
+        description = "If true, the client supports refresh tokens. "
+    )
+    @JsonbProperty("refresh_token")
+    private Boolean refreshToken;
+
     public String getType() {
         return type;
     }
@@ -186,5 +195,14 @@ public class LoginRequest {
 
     public void setInitialDeviceDisplayName(String initialDeviceDisplayName) {
         this.initialDeviceDisplayName = initialDeviceDisplayName;
+    }
+
+    @JsonProperty("refresh_token")
+    public Boolean getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(Boolean refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

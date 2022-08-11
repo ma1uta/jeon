@@ -49,6 +49,36 @@ public class CapabilitiesResponse {
     @JsonbProperty("m.room_versions")
     private RoomVersionsCapability roomVersions;
 
+    /**
+     * Capability to indicate if the user is able to change their own display name via profile endpoints.
+     */
+    @Schema(
+        name = "m.set_displayname",
+        description = "Capability to indicate if the user is able to change their own display name via profile endpoints."
+    )
+    @JsonbProperty("m.set_displayname")
+    private DisplayNameCapability displayNameCapability;
+
+    /**
+     * Capability to indicate if the user is able to change their own avatar via profile endpoints.
+     */
+    @Schema(
+        name = "m.set_avatar_url",
+        description = "Capability to indicate if the user is able to change their own avatar via profile endpoints."
+    )
+    @JsonbProperty("m.set_avatar_url")
+    private SetAvatarUrlCapability setAvatarUrlCapability;
+
+    /**
+     * Capability to indicate if the user is able to add, remove or change 3PID associations on their account.
+     */
+    @Schema(
+        name = "m.3pid_change",
+        description = "Capability to indicate if the user is able to change their own avatar via profile endpoints."
+    )
+    @JsonbProperty("m.3pid_change")
+    private ThreePidChangeCapability threePidChangeCapability;
+
     @JsonProperty("m.change_password")
     public ChangePasswordCapability getChangePassword() {
         return changePassword;
@@ -65,5 +95,32 @@ public class CapabilitiesResponse {
 
     public void setRoomVersions(RoomVersionsCapability roomVersions) {
         this.roomVersions = roomVersions;
+    }
+
+    @JsonProperty("m.set_displayname")
+    public DisplayNameCapability getDisplayNameCapability() {
+        return displayNameCapability;
+    }
+
+    public void setDisplayNameCapability(DisplayNameCapability displayNameCapability) {
+        this.displayNameCapability = displayNameCapability;
+    }
+
+    @JsonProperty("m.set_avatar_url")
+    public SetAvatarUrlCapability getSetAvatarUrlCapability() {
+        return setAvatarUrlCapability;
+    }
+
+    public void setSetAvatarUrlCapability(SetAvatarUrlCapability setAvatarUrlCapability) {
+        this.setAvatarUrlCapability = setAvatarUrlCapability;
+    }
+
+    @JsonProperty("m.3pid_change")
+    public ThreePidChangeCapability getThreePidChangeCapability() {
+        return threePidChangeCapability;
+    }
+
+    public void setThreePidChangeCapability(ThreePidChangeCapability threePidChangeCapability) {
+        this.threePidChangeCapability = threePidChangeCapability;
     }
 }

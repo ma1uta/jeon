@@ -105,6 +105,13 @@ public interface AuthApi {
         public static final String DUMMY = "m.login.dummy";
 
         /**
+         * This authentication type provides homeservers the ability to allow registrations to a limited set of people instead of
+         * either offering completely open registrations or completely closed registration (where the homeserver administrators
+         * create and distribute accounts).
+         */
+        public static final String REGISTRATION_TOKEN = "m.login.registration_token";
+
+        /**
          * Bypassing registration flow for application service's users.
          */
         public static final String APPLICATION_SERVICE = "m.login.application_service";

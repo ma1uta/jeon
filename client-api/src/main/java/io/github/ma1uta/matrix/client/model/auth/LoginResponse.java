@@ -83,6 +83,19 @@ public class LoginResponse {
     @JsonbProperty("device_id")
     private String deviceId;
 
+    /**
+     * The lifetime of the access token, in milliseconds. Once the access token has expired a new access token can be obtained
+     * by using the provided refresh token. If no refresh token is provided, the client will need to re-log in to obtain a new access token.
+     * If not given, the client can assume that the access token will not expire.
+     */
+    @Schema(
+        description = "The lifetime of the access token, in milliseconds. Once the access token has expired a new access token"
+            + " can be obtained by using the provided refresh token. If no refresh token is provided, the client will need to re-log"
+            + " in to obtain a new access token. If not given, the client can assume that the access token will not expire."
+    )
+    @JsonbProperty("expires_in_ms")
+    private Long expiresInMs;
+
     @JsonProperty("user_id")
     public String getUserId() {
         return userId;
@@ -126,5 +139,14 @@ public class LoginResponse {
 
     public void setWellKnown(ServerDiscoveryResponse wellKnown) {
         this.wellKnown = wellKnown;
+    }
+
+    @JsonProperty("expires_in_ms")
+    public Long getExpiresInMs() {
+        return expiresInMs;
+    }
+
+    public void setExpiresInMs(Long expiresInMs) {
+        this.expiresInMs = expiresInMs;
     }
 }

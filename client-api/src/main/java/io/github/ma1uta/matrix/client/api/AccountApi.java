@@ -16,7 +16,9 @@
 
 package io.github.ma1uta.matrix.client.api;
 
+import io.github.ma1uta.matrix.client.model.account.Add3PidRequest;
 import io.github.ma1uta.matrix.client.model.account.AvailableResponse;
+import io.github.ma1uta.matrix.client.model.account.Bind3PidRequest;
 import io.github.ma1uta.matrix.client.model.account.DeactivateRequest;
 import io.github.ma1uta.matrix.client.model.account.DeactivateResponse;
 import io.github.ma1uta.matrix.client.model.account.Delete3PidRequest;
@@ -34,6 +36,7 @@ import io.github.ma1uta.matrix.common.ErrorResponse;
 import io.github.ma1uta.matrix.common.RateLimit;
 import io.github.ma1uta.matrix.common.RateLimitedErrorResponse;
 import io.github.ma1uta.matrix.common.Secured;
+import io.github.ma1uta.matrix.common.UserInteractiveResponse;
 import io.github.ma1uta.matrix.thirdpid.SessionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -847,6 +850,7 @@ public interface AccountApi {
             "User data"
         }
     )
+    @Deprecated
     @POST
     @Secured
     @Path("/account/3pid")
@@ -854,6 +858,145 @@ public interface AccountApi {
         @RequestBody(
             description = "New contact information."
         ) ThreePidRequest threePidRequest,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse,
+        @Context SecurityContext securityContext
+    );
+
+    /**
+     * Adds contact information to the user’s account. Homeservers should use 3PIDs added through this endpoint for password resets
+     * instead of relying on the identity server.
+     * <br/>
+     * Homeservers should prevent the caller from adding a 3PID to their account if it has already been added to another
+     * user’s account on the homeserver.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The addition was successful.</p>
+     * <p>Status code 401: The homeserver requires additional authentication information.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
+     *
+     * @param request         3pid request
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
+     */
+    @Operation(
+        summary = "Adds contact information to the user’s account",
+        description = "Homeservers should use 3PIDs added through this endpoint for password resets instead of"
+            + " relying on the identity server.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The addition was successful.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "The homeserver requires additional authentication information.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = UserInteractiveResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        },
+        tags = {
+            "User data"
+        }
+    )
+    @POST
+    @Path("/account/3pid/add")
+    void addThreePid(
+        @RequestBody(
+            description = "request"
+        ) Add3PidRequest request,
+
+        @Context UriInfo uriInfo,
+        @Context HttpHeaders httpHeaders,
+        @Suspended AsyncResponse asyncResponse,
+        @Context SecurityContext securityContext
+    );
+
+    /**
+     * Binds a 3PID to the user’s account through the specified identity server.
+     * <br/>
+     * Homeservers should not prevent this request from succeeding if another user has bound the 3PID.
+     * Homeservers should simply proxy any errors received by the identity server to the caller.
+     * <br/>
+     * Homeservers should track successful binds so they can be unbound later.
+     * <br>
+     * <b>Requires auth</b>: Yes.
+     * <br>
+     * Return: {@link EmptyResponse}.
+     * <p>Status code 200: The addition was successful.</p>
+     * <p>Status code 429: This request was rate-limited.</p>
+     *
+     * @param request         3pid request
+     * @param uriInfo         Request Information.
+     * @param httpHeaders     Http headers.
+     * @param asyncResponse   Asynchronous response.
+     * @param securityContext Security context.
+     */
+    @Operation(
+        summary = "Binds a 3PID to the user’s account through the specified identity server.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "The addition was successful.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = EmptyResponse.class
+                    )
+                )
+            ),
+            @ApiResponse(
+                responseCode = "429",
+                description = "This request was rate-limited.",
+                content = @Content(
+                    schema = @Schema(
+                        implementation = RateLimitedErrorResponse.class
+                    )
+                )
+            )
+        },
+        security = {
+            @SecurityRequirement(
+                name = "accessToken"
+            )
+        },
+        tags = {
+            "User data"
+        }
+    )
+    @POST
+    @Path("/account/3pid/bind")
+    void bindThreePid(
+        @RequestBody(
+            description = "request"
+        ) Bind3PidRequest request,
 
         @Context UriInfo uriInfo,
         @Context HttpHeaders httpHeaders,
