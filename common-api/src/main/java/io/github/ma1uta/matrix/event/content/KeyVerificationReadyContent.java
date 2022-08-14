@@ -17,7 +17,6 @@
 package io.github.ma1uta.matrix.event.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.event.nested.VerificationRelatesTo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.json.bind.annotation.JsonbProperty;
@@ -26,7 +25,7 @@ import java.util.List;
 /**
  * Accepts a key verification request. Sent in response to an m.key.verification.request event.
  */
-public class KeyVerificationReadyContent implements EventContent {
+public class KeyVerificationReadyContent extends AbstractKeyVerificationRelatesContent {
 
     /**
      * Required. The device ID which is initiating the request.
@@ -40,17 +39,6 @@ public class KeyVerificationReadyContent implements EventContent {
     private String fromDevice;
 
     /**
-     * Required. An opaque identifier for the verification request. Must be unique with respect to the devices involved.
-     */
-    @Schema(
-        name = "transaction_id",
-        description = "An opaque identifier for the verification request. Must be unique with respect to the devices involved.",
-        required = true
-    )
-    @JsonbProperty("transaction_id")
-    private String transactionId;
-
-    /**
      * Required. The verification methods supported by the sender.
      */
     @Schema(
@@ -58,19 +46,6 @@ public class KeyVerificationReadyContent implements EventContent {
         required = true
     )
     private List<String> methods;
-
-    /**
-     * Required when sent as an in-room message.
-     * Indicates the m.key.verification.request that this message is related to.
-     * Note that for encrypted messages, this property should be in the unencrypted portion of the event.
-     */
-    @Schema(
-        description = "Required when sent as an in-room message." +
-                " Indicates the m.key.verification.request that this message is related to." +
-                " Note that for encrypted messages, this property should be in the unencrypted portion of the event."
-    )
-    @JsonbProperty("m.relates_to")
-    private VerificationRelatesTo relatesTo;
 
     @JsonProperty("from_device")
     public String getFromDevice() {
@@ -81,29 +56,11 @@ public class KeyVerificationReadyContent implements EventContent {
         this.fromDevice = fromDevice;
     }
 
-    @JsonProperty("transaction_id")
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
     public List<String> getMethods() {
         return methods;
     }
 
     public void setMethods(List<String> methods) {
         this.methods = methods;
-    }
-
-    @JsonProperty("m.relates_to")
-    public VerificationRelatesTo getRelatesTo() {
-        return relatesTo;
-    }
-
-    public void setRelatesTo(VerificationRelatesTo relatesTo) {
-        this.relatesTo = relatesTo;
     }
 }

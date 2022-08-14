@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Cancels a key verification process/request. Typically sent as a to-device event.
@@ -27,7 +24,7 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Cancels a key verification process/request. Typically sent as a to-device event."
 )
-public class KeyVerificationCancelContent implements EventContent {
+public class KeyVerificationCancelContent extends AbstractKeyVerificationRelatesContent {
 
     /**
      * Cancel codes.
@@ -97,17 +94,6 @@ public class KeyVerificationCancelContent implements EventContent {
     }
 
     /**
-     * Required. The opaque identifier for the verification process/request.
-     */
-    @Schema(
-        name = "transaction_id",
-        description = "The opaque identifier for the verification process/request.",
-        required = true
-    )
-    @JsonbProperty("transaction_id")
-    private String transactionId;
-
-    /**
      * Required. A human readable description of the code. The client should only rely on this string if it does not understand the code.
      */
     @Schema(
@@ -129,15 +115,6 @@ public class KeyVerificationCancelContent implements EventContent {
             "m.key_mismatch", "m.user_mismatch", "m.invalid_message", "m.accepted"}
     )
     private String code;
-
-    @JsonProperty("transaction_id")
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
 
     public String getReason() {
         return reason;

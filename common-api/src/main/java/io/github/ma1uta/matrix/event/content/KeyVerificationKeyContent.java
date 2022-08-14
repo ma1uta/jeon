@@ -16,10 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Sends the ephemeral public key for a device to the partner device. Typically sent as a to-device event.
@@ -27,20 +24,7 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Sends the ephemeral public key for a device to the partner device. Typically sent as a to-device event."
 )
-public class KeyVerificationKeyContent implements EventContent {
-
-    /**
-     * Required. An opaque identifier for the verification process.
-     * Must be the same as the one used for the m.key.verification.start message.
-     */
-    @Schema(
-        name = "transaction_id",
-        description = "An opaque identifier for the verification process."
-            + " Must be the same as the one used for the m.key.verification.start message.",
-        required = true
-    )
-    @JsonbProperty("transaction_id")
-    private String transactionId;
+public class KeyVerificationKeyContent extends AbstractKeyVerificationRelatesContent {
 
     /**
      * Required. The device's ephemeral public key, encoded as unpadded base64.
@@ -50,15 +34,6 @@ public class KeyVerificationKeyContent implements EventContent {
         required = true
     )
     private String key;
-
-    @JsonProperty("transaction_id")
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
 
     public String getKey() {
         return key;

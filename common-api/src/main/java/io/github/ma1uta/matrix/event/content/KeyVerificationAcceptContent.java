@@ -27,20 +27,7 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Accepts a previously sent m.key.verification.start message. Typically sent as a to-device event."
 )
-public class KeyVerificationAcceptContent implements EventContent {
-
-    /**
-     * Required. An opaque identifier for the verification process.
-     * Must be the same as the one used for the m.key.verification.start message.
-     */
-    @Schema(
-        name = "transaction_id",
-        description = "An opaque identifier for the verification process."
-            + " Must be the same as the one used for the m.key.verification.start message.",
-        required = true
-    )
-    @JsonbProperty("transaction_id")
-    private String transactionId;
+public class KeyVerificationAcceptContent extends AbstractKeyVerificationRelatesContent {
 
     /**
      * Required. The verification method to use. Must be 'm.sas.v1'.
@@ -108,15 +95,6 @@ public class KeyVerificationAcceptContent implements EventContent {
         required = true
     )
     private String commitment;
-
-    @JsonProperty("transaction_id")
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
 
     public String getMethod() {
         return method;

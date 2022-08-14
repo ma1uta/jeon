@@ -16,12 +16,7 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.ma1uta.matrix.event.nested.VerificationRelatesTo;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.json.bind.annotation.JsonbProperty;
-import java.util.List;
 
 /**
  * Begins a SAS key verification process using the m.sas.v1 method.
@@ -30,27 +25,4 @@ import java.util.List;
     description = "Begins a SAS key verification process using the m.sas.v1 method."
 )
 public class KeyVerificationStartSasContent extends KeyVerificationStartContent {
-
-    /**
-     * Required when sent as an in-room message.
-     * Indicates the m.key.verification.request that this message is related to.
-     * Note that for encrypted messages, this property should be in the unencrypted portion of the event.
-     */
-    @Schema(
-        name = "m.relates_to",
-        description = "Required when sent as an in-room message." +
-            " Indicates the m.key.verification.request that this message is related to." +
-            " Note that for encrypted messages, this property should be in the unencrypted portion of the event."
-    )
-    @JsonbProperty("m.relates_to")
-    private VerificationRelatesTo relatesTo;
-
-    @JsonProperty("m.relates_to")
-    public VerificationRelatesTo getRelatesTo() {
-        return relatesTo;
-    }
-
-    public void setRelatesTo(VerificationRelatesTo relatesTo) {
-        this.relatesTo = relatesTo;
-    }
 }

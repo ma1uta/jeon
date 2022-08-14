@@ -19,8 +19,8 @@ package io.github.ma1uta.matrix.event.content;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
 import javax.json.bind.annotation.JsonbProperty;
+import java.util.List;
 
 /**
  * Begins a key verification process. Typically sent as a to-device event.
@@ -28,7 +28,7 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Begins a key verification process. Typically sent as a to-device event."
 )
-public class KeyVerificationStartContent implements EventContent {
+public class KeyVerificationStartContent extends AbstractKeyVerificationRelatesContent {
 
     /**
      * Required. The device ID which is initiating the process.
@@ -40,20 +40,6 @@ public class KeyVerificationStartContent implements EventContent {
     )
     @JsonbProperty("from_device")
     private String fromDevice;
-
-    /**
-     * Required. An opaque identifier for the verification process. Must be unique with respect to the devices involved.
-     * Must be the same as the transaction_id given in the m.key.verification.request if this process is originating from a request.
-     */
-    @Schema(
-        name = "transaction_id",
-        description = "An opaque identifier for the verification process. Must be unique with respect to the devices involved."
-            + " Must be the same as the transaction_id given in the m.key.verification.request if this process is originating"
-            + " from a request.",
-        required = true
-    )
-    @JsonbProperty("transaction_id")
-    private String transactionId;
 
     /**
      * Required. The verification method to use.
@@ -123,15 +109,6 @@ public class KeyVerificationStartContent implements EventContent {
 
     public void setFromDevice(String fromDevice) {
         this.fromDevice = fromDevice;
-    }
-
-    @JsonProperty("transaction_id")
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
     }
 
     public String getMethod() {

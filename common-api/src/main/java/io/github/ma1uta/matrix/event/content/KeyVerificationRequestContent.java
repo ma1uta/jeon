@@ -25,7 +25,7 @@ import javax.json.bind.annotation.JsonbProperty;
 /**
  * Requests a key verification with another user's devices. Typically sent as a to-device event.
  */
-public class KeyVerificationRequestContent implements EventContent {
+public class KeyVerificationRequestContent extends AbstractKeyVerificationTransactionContent {
 
     /**
      * Required. The device ID which is initiating the request.
@@ -37,17 +37,6 @@ public class KeyVerificationRequestContent implements EventContent {
     )
     @JsonbProperty("from_device")
     private String fromDevice;
-
-    /**
-     * Required. An opaque identifier for the verification request. Must be unique with respect to the devices involved.
-     */
-    @Schema(
-        name = "transaction_id",
-        description = "An opaque identifier for the verification request. Must be unique with respect to the devices involved.",
-        required = true
-    )
-    @JsonbProperty("transaction_id")
-    private String transactionId;
 
     /**
      * Required. The verification methods supported by the sender.
@@ -78,15 +67,6 @@ public class KeyVerificationRequestContent implements EventContent {
 
     public void setFromDevice(String fromDevice) {
         this.fromDevice = fromDevice;
-    }
-
-    @JsonProperty("transaction_id")
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
     }
 
     public List<String> getMethods() {

@@ -56,7 +56,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
         RoomKeyContent.class,
         RoomKeyRequestContent.class,
         ForwardedRoomKeyContent.class,
-        RoomServerAclContent.class
+        RoomServerAclContent.class,
+        KeyVerificationAcceptContent.class,
+        KeyVerificationCancelContent.class,
+        KeyVerificationDoneContent.class,
+        KeyVerificationMacContent.class,
+        KeyVerificationReadyContent.class,
+        KeyVerificationRequestContent.class,
+        KeyVerificationStartContent.class,
+        KeyVerificationStartSasContent.class
     }
 )
 public interface EventContent {

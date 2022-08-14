@@ -16,11 +16,9 @@
 
 package io.github.ma1uta.matrix.event.content;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Map;
-import javax.json.bind.annotation.JsonbProperty;
 
 /**
  * Sends the MAC of a device's key to the partner device. Typically sent as a to-device event.
@@ -28,20 +26,7 @@ import javax.json.bind.annotation.JsonbProperty;
 @Schema(
     description = "Sends the MAC of a device's key to the partner device. Typically sent as a to-device event."
 )
-public class KeyVerificationMacContent implements EventContent {
-
-    /**
-     * Required. An opaque identifier for the verification process.
-     * Must be the same as the one used for the m.key.verification.start message.
-     */
-    @Schema(
-        name = "transaction_id",
-        description = "An opaque identifier for the verification process."
-            + " Must be the same as the one used for the m.key.verification.start message.",
-        required = true
-    )
-    @JsonbProperty("transaction_id")
-    private String transactionId;
+public class KeyVerificationMacContent extends AbstractKeyVerificationRelatesContent {
 
     /**
      * Required. A map of the key ID to the MAC of the key, using the algorithm in the verification process.
@@ -62,15 +47,6 @@ public class KeyVerificationMacContent implements EventContent {
         required = true
     )
     private String keys;
-
-    @JsonProperty("transaction_id")
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
 
     public Map<String, String> getMac() {
         return mac;
